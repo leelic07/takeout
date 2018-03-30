@@ -1,0 +1,58 @@
+.seller-container {
+    padding: 32px;
+    // background-color: rgb(240, 242, 245);
+    .el-button {
+        padding:0;
+    }
+    .el-card.box-card {
+        margin-top: 20px;
+        .goods-management {
+            float: right;
+            padding: 0;
+            color: #909399;
+        }
+        .goods-body {
+            padding: 10px 30px;
+            >.el-col-12 {
+                p {
+                    color: #909399;
+                }
+                &:first-child {
+                    >p {
+                        padding-left: 5%;
+                    }
+                }
+                &:nth-child(2) {
+                    >p {
+                        padding-left: 28%;
+                    }
+                    .el-col-24 {
+                        >p {
+                            padding-left: 25%;
+                        }
+                    }
+                }
+            }
+            .order-amount-today {
+                margin-top: 10px;
+                padding-left: 15%;
+                h1 {
+                    float: left;
+                    margin: 0;
+                }
+                span {
+                    float: left;
+                    margin-left: 8px;
+                    margin-top: 8px;
+                }
+            }
+            .order-amount-yesterday {
+                padding-left: 15%;
+                p {
+                    margin:0;
+                    color: #909399;
+                }
+            }
+        }
+    }
+}
