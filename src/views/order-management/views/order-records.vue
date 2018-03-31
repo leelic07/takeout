@@ -91,7 +91,7 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="props">
-            <el-button type="primary" size="mini">打印订单</el-button>
+            <el-button type="primary" size="mini" @click="printOrder">打印订单</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -219,7 +219,19 @@ export default {
     Pagination
   },
   methods: {
-
+    // 点击打印订单执行的方法
+    printOrder() {
+      this.$confirm('确定打印该订单？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '打印成功'
+        })
+      }).catch(err => console.log(err))
+    }
   }
 }
 </script>
