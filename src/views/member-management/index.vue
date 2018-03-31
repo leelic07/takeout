@@ -15,6 +15,7 @@
             </el-date-picker>
             <el-button type="primary" icon="el-icon-search">搜索</el-button>
         </el-row>
+        <!--会员信息列表-->
         <el-row class="order-statics">
             <el-table :data="orderList" stripe border style="width: 100%">
                 <el-table-column prop="orderNumber" label="会员号"></el-table-column>

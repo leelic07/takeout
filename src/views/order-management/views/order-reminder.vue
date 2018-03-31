@@ -36,30 +36,28 @@
                                         </el-form-item>
                                         <!--商品信息-->
                                         <el-form-item label="商品信息:">
-                                            <template slot-scope="scope">
-                                                <el-table :data="tableData" style="width: 100%" :show-header="false">
-                                                    <el-table-column prop="date" label="商品">
-                                                    </el-table-column>
-                                                    <el-table-column prop="name" label="单价">
-                                                    </el-table-column>
-                                                    <el-table-column prop="address" label="数量">
-                                                    </el-table-column>
-                                                    <el-table-column prop="total" label="总价">
-                                                    </el-table-column>
-                                                </el-table>
-                                                <!--餐盒-->
-                                                <el-table :data="boxData" style="width: 100%" :show-header="false">
-                                                    <el-table-column label="餐盒">
-                                                        <template slot-scope="scope">餐盒</template>
-                                                    </el-table-column>
-                                                    <el-table-column prop="price" label="商品">
-                                                    </el-table-column>
-                                                    <el-table-column prop="amount" label="单价">
-                                                    </el-table-column>
-                                                    <el-table-column prop="total" label="数量">
-                                                    </el-table-column>
-                                                </el-table>
-                                            </template>
+                                            <el-table :data="tableData" style="width: 100%" :show-header="false">
+                                                <el-table-column prop="date" label="商品">
+                                                </el-table-column>
+                                                <el-table-column prop="name" label="单价">
+                                                </el-table-column>
+                                                <el-table-column prop="address" label="数量">
+                                                </el-table-column>
+                                                <el-table-column prop="total" label="总价">
+                                                </el-table-column>
+                                            </el-table>
+                                            <!--餐盒-->
+                                            <el-table :data="boxData" style="width: 100%" :show-header="false">
+                                                <el-table-column label="餐盒">
+                                                    <template slot-scope="scope">餐盒</template>
+                                                </el-table-column>
+                                                <el-table-column prop="price" label="商品">
+                                                </el-table-column>
+                                                <el-table-column prop="amount" label="单价">
+                                                </el-table-column>
+                                                <el-table-column prop="total" label="数量">
+                                                </el-table-column>
+                                            </el-table>
                                         </el-form-item>
                                         <el-form-item>
                                             <el-form inline>

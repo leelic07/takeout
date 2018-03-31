@@ -88,7 +88,6 @@
                                             <template slot-scope="props">
                                                 <el-button type="danger" plain size="mini" @click="cancelOrder">取消订单并退款</el-button>
                                                 <el-button type="danger" plain size="mini" @click="partCancelOrder">部分退款</el-button>
-                                                <el-button type="primary" plain size="mini" @click="printOrder">打印订单</el-button>
                                             </template>
                                         </el-form-item>
                                     </el-form>
@@ -281,19 +280,6 @@
         }
       },
       methods: {
-        // 点击打印订单执行的方法
-        printOrder() {
-          this.$confirm('确定打印订单？', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.$message({
-              type: 'success',
-              message: '打印订单成功'
-            }).catch(err => console.log(err))
-          })
-        },
         // 点击打印订单执行的方法
         cancelOrder() {
           this.$confirm('确定取消订单？', '提示', {

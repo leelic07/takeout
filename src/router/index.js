@@ -61,7 +61,7 @@ export const constantRouterMap = [
   {// 商家首页
     path: '/seller',
     component: Layout,
-    redirct: '/seller/index',
+    redirect: '/seller/index',
     name: 'Seller',
     children: [{
       path: 'index',
@@ -124,7 +124,7 @@ export const constantRouterMap = [
   { // 订单管理
     path: '/order',
     component: Layout,
-    redirct: '/order/acception',
+    redirect: '/order/acception',
     name: 'Order',
     meta: { title: '订单管理', icon: 'example' },
     children: [{// 接单
@@ -142,6 +142,35 @@ export const constantRouterMap = [
       name: 'Reminder',
       component: () => import('@/views/order-management/views/order-reminder'),
       meta: { title: '催单', icon: 'example' }
+    }, {// 退单
+      path: 'retreat',
+      name: 'Retreat',
+      component: () => import('@/views/order-management/views/order-retreat'),
+      meta: { title: '退单', icon: 'example' }
+    }, {// 历史订单
+      path: 'records',
+      name: 'Records',
+      component: () => import('@/views/order-management/views/order-records'),
+      meta: { title: '历史订单', icon: 'example' }
+    }]
+  },
+
+  {// 商品管理
+    path: '/goods',
+    component: Layout,
+    redirect: '/goods/list',
+    name: 'Goods',
+    meta: { title: '商品管理', icon: 'example' },
+    children: [{
+      path: 'list',
+      name: 'GoodsList',
+      component: () => import('@/views/goods-management/views/goods-list'),
+      meta: { title: '商品列表', icon: 'example' }
+    }, {
+      path: 'upload',
+      name: 'GoodsUpload',
+      component: () => import('@/views/goods-management/views/goods-upload'),
+      meta: { title: '商品上传', icon: 'example' }
     }]
   },
 

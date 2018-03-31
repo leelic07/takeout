@@ -36,30 +36,28 @@
                                         </el-form-item>
                                         <!--商品信息-->
                                         <el-form-item label="商品信息:">
-                                            <template slot-scope="scope">
-                                                <el-table :data="tableData" style="width: 100%" :show-header="false">
-                                                    <el-table-column prop="date" label="商品">
-                                                    </el-table-column>
-                                                    <el-table-column prop="name" label="单价">
-                                                    </el-table-column>
-                                                    <el-table-column prop="address" label="数量">
-                                                    </el-table-column>
-                                                    <el-table-column prop="total" label="总价">
-                                                    </el-table-column>
-                                                </el-table>
-                                                <!--餐盒-->
-                                                <el-table :data="boxData" style="width: 100%" :show-header="false">
-                                                    <el-table-column label="餐盒">
-                                                        <template slot-scope="scope">餐盒</template>
-                                                    </el-table-column>
-                                                    <el-table-column prop="price" label="商品">
-                                                    </el-table-column>
-                                                    <el-table-column prop="amount" label="单价">
-                                                    </el-table-column>
-                                                    <el-table-column prop="total" label="数量">
-                                                    </el-table-column>
-                                                </el-table>
-                                            </template>
+                                            <el-table :data="tableData" style="width: 100%" :show-header="false">
+                                                <el-table-column prop="date" label="商品">
+                                                </el-table-column>
+                                                <el-table-column prop="name" label="单价">
+                                                </el-table-column>
+                                                <el-table-column prop="address" label="数量">
+                                                </el-table-column>
+                                                <el-table-column prop="total" label="总价">
+                                                </el-table-column>
+                                            </el-table>
+                                            <!--餐盒-->
+                                            <el-table :data="boxData" style="width: 100%" :show-header="false">
+                                                <el-table-column label="餐盒">
+                                                    <template slot-scope="scope">餐盒</template>
+                                                </el-table-column>
+                                                <el-table-column prop="price" label="商品">
+                                                </el-table-column>
+                                                <el-table-column prop="amount" label="单价">
+                                                </el-table-column>
+                                                <el-table-column prop="total" label="数量">
+                                                </el-table-column>
+                                            </el-table>
                                         </el-form-item>
                                         <el-form-item>
                                             <el-form inline>
@@ -142,11 +140,13 @@
                     <el-row class="card-content">
                         <el-col>
                             <label for="">已接订单:</label>
-                            <b>1</b><span>笔</span>
+                            <b>1</b>
+                            <span>笔</span>
                         </el-col>
                         <el-col>
                             <label for="">今日营业总额:</label>
-                            <b>115</b><span>元</span>
+                            <b>115</b>
+                            <span>元</span>
                         </el-col>
                     </el-row>
                 </el-card>
@@ -157,34 +157,50 @@
                     <el-row>
                         <el-col :span="24">
                             <el-col :span="12">
-                                <label for="">紧急预订单：</label><span><b>0</b>笔</span>
+                                <label for="">紧急预订单：</label>
+                                <span>
+                                    <b>0</b>笔</span>
                             </el-col>
                             <el-col :span="12">
-                                <a href="#">查看订单<i class="el-icon-arrow-right"></i></a>
-                            </el-col>
-                        </el-col>
-                        <el-col :span="24">
-                            <el-col :span="12">
-                                <label for="">被取消配送：</label><span><b>0</b>笔</span>
-                            </el-col>
-                            <el-col :span="12">
-                                <a href="#">查看订单<i class="el-icon-arrow-right"></i></a>
+                                <a href="#">查看订单
+                                    <i class="el-icon-arrow-right"></i>
+                                </a>
                             </el-col>
                         </el-col>
                         <el-col :span="24">
                             <el-col :span="12">
-                                <label for="">待发配送：</label><span><b>0</b>笔</span>
+                                <label for="">被取消配送：</label>
+                                <span>
+                                    <b>0</b>笔</span>
                             </el-col>
                             <el-col :span="12">
-                                <a href="#">查看订单<i class="el-icon-arrow-right"></i></a>
+                                <a href="#">查看订单
+                                    <i class="el-icon-arrow-right"></i>
+                                </a>
                             </el-col>
                         </el-col>
                         <el-col :span="24">
                             <el-col :span="12">
-                                <label for="">未处理退款：</label><span><b>0</b>笔</span>
+                                <label for="">待发配送：</label>
+                                <span>
+                                    <b>0</b>笔</span>
                             </el-col>
                             <el-col :span="12">
-                                <a href="#">查看订单<i class="el-icon-arrow-right"></i></a>
+                                <a href="#">查看订单
+                                    <i class="el-icon-arrow-right"></i>
+                                </a>
+                            </el-col>
+                        </el-col>
+                        <el-col :span="24">
+                            <el-col :span="12">
+                                <label for="">未处理退款：</label>
+                                <span>
+                                    <b>0</b>笔</span>
+                            </el-col>
+                            <el-col :span="12">
+                                <a href="#">查看订单
+                                    <i class="el-icon-arrow-right"></i>
+                                </a>
                             </el-col>
                         </el-col>
                     </el-row>
