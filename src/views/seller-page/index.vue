@@ -21,13 +21,13 @@
         </el-row>
       </div>
       <el-row>
-        <el-col class="goods-body" :span="14">
+        <el-col class="goods-body" :span="12">
           <el-col :span="12">
-            <p>今日有效订单
+            <p>今日未处理订单
               <i class="el-icon-circle-check el-icon--right"></i>
             </p>
             <el-col :span="24" class="order-amount-today">
-              <router-link to="/seller/index">
+              <router-link to="/order/acception">
                 <h1>1</h1>
                 <span>单
                   <i class="el-icon-arrow-right el-icon--right"></i>
@@ -35,37 +35,36 @@
               </router-link>
             </el-col>
             <el-col :span="24" class="order-amount-yesterday">
-              <p>昨日12单</p>
+              <p>昨日1单</p>
             </el-col>
           </el-col>
           <el-col :span="12">
-            <p>今日订单收入
+            <p>今日退款中的外卖订单
               <i class="el-icon-circle-check el-icon--right"></i>
             </p>
             <el-col :span="24" class="order-amount-today">
-              <router-link to="/seller/index">
-                <h1>
-                  <svg-icon icon-class="money" /> 114.99
-                </h1>
+              <router-link to="/order/retreat">
+                <h1>2</h1>
                 <span>
+                  单
                   <i class="el-icon-arrow-right el-icon--right"></i>
                 </span>
               </router-link>
             </el-col>
             <el-col :span="24" class="order-amount-yesterday">
-              <p>昨日12单</p>
+              <p>昨日2单</p>
             </el-col>
           </el-col>
         </el-col>
 
-        <el-col class="goods-body" :span="10">
+        <el-col class="goods-body" :span="12">
           <el-col :span="12">
             <p>今日有效订单
               <i class="el-icon-circle-check el-icon--right"></i>
             </p>
             <el-col :span="24" class="order-amount-today">
-              <router-link to="/seller/index">
-                <h1>1</h1>
+              <router-link to="/order/records">
+                <h1>10</h1>
                 <span>单
                   <i class="el-icon-arrow-right el-icon--right"></i>
                 </span>
@@ -76,13 +75,14 @@
             </el-col>
           </el-col>
           <el-col :span="12">
-            <p>今日订单收入
+            <p class="income-today">今日订单收入
               <i class="el-icon-circle-check el-icon--right"></i>
             </p>
             <el-col :span="24" class="order-amount-today">
               <router-link to="/seller/index">
                 <h1>
-                  <svg-icon icon-class="money" /> 114.99
+                  <svg-icon icon-class="money"/>
+                  114.99
                 </h1>
                 <span>
                   <i class="el-icon-arrow-right el-icon--right"></i>
@@ -90,7 +90,7 @@
               </router-link>
             </el-col>
             <el-col :span="24" class="order-amount-yesterday">
-              <p>昨日12单</p>
+              <p class="income-today-money">昨日收入166.66元</p>
             </el-col>
           </el-col>
         </el-col>
@@ -104,48 +104,48 @@
 </template>
 
 <script>
-import PanelGroup from './components/panel-group'
-import LineChart from './components/line-chart'
-import DndList from '@/components/DndList'
+  import PanelGroup from './components/panel-group'
+  import LineChart from './components/line-chart'
+  import DndList from '@/components/DndList'
 
-export default {
-  data() {
-    return {
-      list1: [],
-      list2: [],
-      seller: {
-        title: '意甜蛋糕(友阿店)',
-        rate: 3.7
+  export default {
+    data() {
+      return {
+        list1: [],
+        list2: [],
+        seller: {
+          title: '意甜蛋糕(友阿店)',
+          rate: 3.7
+        }
       }
-    }
-  },
-  components: {
-    PanelGroup,
-    LineChart,
-    DndList
-  },
-  methods: {
-    handleSetLineChartData(type) {
-      switch (type) {
-        case 'orderList':
-          this.$router.push({
-            path: '/order/list'
-          })
-          break
-        case 'incomeList':
-          this.$router.push({
-            path: '/income/chart'
-          })
-          break
-        case 'menuList':
-          this.$router.push({
-            path: '/menu/list'
-          })
-          break
-        default:
-          break
+    },
+    components: {
+      PanelGroup,
+      LineChart,
+      DndList
+    },
+    methods: {
+      handleSetLineChartData(type) {
+        switch (type) {
+          case 'orderList':
+            this.$router.push({
+              path: '/order/list'
+            })
+            break
+          case 'incomeList':
+            this.$router.push({
+              path: '/income/chart'
+            })
+            break
+          case 'menuList':
+            this.$router.push({
+              path: '/menu/list'
+            })
+            break
+          default:
+            break
+        }
       }
     }
   }
-}
 </script>

@@ -14,7 +14,7 @@
         </el-row>
         <!--会员信息列表-->
         <el-row class="order-statics">
-            <el-table :data="orderList" stripe border fit="true" style="width: 100%">
+            <el-table :data="orderList" stripe border fit style="width: 100%">
                 <el-table-column type="index" :index="1" label="序号"></el-table-column>
                 <el-table-column prop="name" label="商品名称"></el-table-column>
                 <el-table-column prop="goodsNumber" label="编号"></el-table-column>
