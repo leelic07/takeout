@@ -11,7 +11,7 @@
                     </el-option>
                 </el-select>
             </el-col>
-            <el-date-picker v-model="datetime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+            <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
             </el-date-picker>
             <el-button type="primary" icon="el-icon-search">搜索</el-button>
         </el-row>
@@ -254,7 +254,7 @@ export default {
         imageUrl: ''
       }], // 订单统计列表
       orderNumber: '', // 订单号
-      datetime: '', // 日期时间
+      datetime: [], // 日期时间
       pagination: {// 分页信息
         page: 1,
         rows: 10

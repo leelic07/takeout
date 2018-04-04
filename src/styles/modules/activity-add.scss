@@ -1,0 +1,30 @@
+.activity-add-container {
+    padding: 32px;
+    .el-card {
+        &:first-child {
+            .el-card__body {
+                padding-bottom: 0;
+                .el-form {
+                    margin-left: 7.5%;
+                    .el-radio-group {
+                        margin-left:2%;
+                    }
+                }
+            }
+        }
+        &:nth-child(2) {
+            padding: 0 20% 0 5%;
+            margin-top: 25px;
+            .el-form {
+                .el-form-item {
+                    margin-bottom: 30px;
+                    &:last-child {
+                        .el-button {
+                            float:right;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -75,7 +75,7 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$router.push({ path: '/' })
+          this.$router.push({ path: '/seller/index' })
           // this.$store.dispatch('Login', this.loginForm).then(() => {
           //   this.loading = false
           //   this.$router.push({ path: '/' })

@@ -57,7 +57,7 @@
       <el-col :span="5">
         <el-input placeholder="请输入订单号" v-model="orderNumber"></el-input>
       </el-col>
-      <el-date-picker v-model="datetime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+      <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
       </el-date-picker>
       <el-button type="primary">搜索</el-button>
     </el-row>
@@ -159,7 +159,7 @@ export default {
         orderStatus: '已配送'
       }], // 订单统计列表
       orderNumber: '', // 订单号
-      datetime: '', // 日期时间
+      datetime: [], // 日期时间
       pagination: {// 分页信息
         page: 1,
         rows: 10

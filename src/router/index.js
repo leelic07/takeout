@@ -27,12 +27,12 @@ export const constantRouterMap = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
-    name: 'Dashboard',
+    redirect: '/login',
+    name: 'Login',
     hidden: true,
     children: [{
-      path: 'dashboard',
-      component: () => import('@/views/dashboard/index')
+      path: 'login',
+      component: () => import('@/views/login/index')
     }]
   },
 
@@ -161,16 +161,74 @@ export const constantRouterMap = [
     redirect: '/goods/list',
     name: 'Goods',
     meta: { title: '商品管理', icon: 'example' },
-    children: [{
+    children: [{// 商品列表
       path: 'list',
       name: 'GoodsList',
       component: () => import('@/views/goods-management/views/goods-list'),
       meta: { title: '商品列表', icon: 'example' }
-    }, {
+    }, {// 商品上传
       path: 'upload',
       name: 'GoodsUpload',
       component: () => import('@/views/goods-management/views/goods-upload'),
       meta: { title: '商品上传', icon: 'example' }
+    }, {// 商品分类
+      path: 'category',
+      name: 'Category',
+      component: () => import('@/views/goods-management/views/goods-category'),
+      meta: { title: '商品分类', icon: 'example' }
+    }, {// 新增分类
+      path: 'category/add',
+      name: 'Add',
+      component: () => import('@/views/goods-management/views/category-add'),
+      meta: { title: '新增分类', icon: 'example' }
+    }, {// 规格列表
+      path: 'standard',
+      name: 'Standard',
+      component: () => import('@/views/goods-management/views/goods-standard'),
+      meta: { title: '规格列表', icon: 'example' }
+    }, {// 新增规格
+      path: 'standard/add',
+      name: 'StandardAdd',
+      component: () => import('@/views/goods-management/views/standard-add'),
+      meta: { title: '新增规格', icon: 'example' }
+    }]
+  },
+
+  {// 活动管理
+    path: '/activity',
+    component: Layout,
+    name: 'Activity',
+    redirect: '/activity/list',
+    meta: { title: '活动管理', icon: 'example' },
+    children: [{// 活动列表
+      path: 'list',
+      component: () => import('@/views/activity-management/views/activity-list'),
+      name: 'ActivityList',
+      meta: { title: '活动列表', icon: 'example' }
+    }, {// 新增活动
+      path: 'add',
+      component: () => import('@/views/activity-management/views/activity-add'),
+      name: 'ActivityAdd',
+      meta: { title: '新增活动', icon: 'example' }
+    }]
+  },
+
+  {
+    path: '/data',
+    component: Layout,
+    name: 'Business',
+    redirect: '/data/statics',
+    meta: { title: '经营数据', icon: 'example' },
+    children: [{
+      path: 'statics',
+      name: 'BusinessStatics',
+      component: () => import('@/views/data-operation/views/business-statics'),
+      meta: { title: '营业统计', icon: 'example' }
+    }, {
+      path: 'sales',
+      name: 'SalesRankings',
+      component: () => import('@/views/data-operation/views/sales-rankings'),
+      meta: { title: '销量排行', icon: 'example' }
     }]
   },
 

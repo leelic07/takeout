@@ -8,7 +8,7 @@
       <el-col :span="5" class="records-select">
         <el-input placeholder="请输入姓名" v-model="orderNumber"></el-input>
       </el-col>
-      <el-date-picker v-model="datetime" type="daterange" range-separator="至" start-placeholder="开始日期"
+      <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期"
                       end-placeholder="结束日期">
       </el-date-picker>
       <el-button type="primary" icon="el-icon-search">搜索</el-button>

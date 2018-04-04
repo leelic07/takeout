@@ -1,10 +1,62 @@
 .goods-upload-container {
   padding: 32px;
   .goods-upload-box {
-    .el-form {
-      .el-form-item {
-        margin-bottom: 30px;
+    .el-card {
+      padding:0 20% 0 5%;
+      .el-card__body {
+        padding: 25px 0 0 0;
+        .el-form {
+          .el-form-item {
+            margin-bottom: 30px;
+            &:last-child {
+              .el-button {
+                float: right;
+                margin-left:20px;
+              }
+            }
+          }
+        }
       }
+    }
+    .property-dialog {
+      .el-row {
+        .el-col {
+          line-height: 40px;
+          margin-bottom: 10px;
+          input {
+            width: 100%;
+            height:35px;
+          }
+          
+        }
+      }
+    }
+    .property-button {
+      float:left;
+      width:20px;
+      height:20px;
+      text-align: center;
+      line-height: 20px;
+      border-radius: 50%;
+      background-color: $blue;
+      color: $white;
+      margin-top: 9px;
+      font-weight:bold;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    .add-properties {
+      background-color: $blue;
+    }
+    .decede-properties {
+      background-color: orange;
+      margin-left: 10px;
+    }
+    .decede-standard {
+      position: absolute;
+      top: 0;
+      right: -15%;
     }
   }
 }
