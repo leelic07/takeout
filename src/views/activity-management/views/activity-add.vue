@@ -91,7 +91,7 @@
           eventForm: {
             checkList: []
           },
-          labelPosition: 'right',
+          labelPosition: 'left',
           eventRules: {},
           discountRules: {}
         }

@@ -3,38 +3,37 @@
         <!--搜索框-->
         <el-row>
             <el-col :span="5">
-                <el-input placeholder="请输入会员号" v-model="orderNumber"></el-input>
+                <el-input placeholder="请输入手机号码" v-model="orderNumber"></el-input>
             </el-col>
             <el-col :span="5" class="member-select">
-                <el-select v-model="value" placeholder="请选择会员等级">
-                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                    </el-option>
-                </el-select>
+                <el-input placeholder="请输入微信昵称" v-model="orderNumber"></el-input>
             </el-col>
-            <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
-            </el-date-picker>
             <el-button type="primary" icon="el-icon-search">搜索</el-button>
         </el-row>
         <!--会员信息列表-->
         <el-row class="order-statics">
             <el-table :data="orderList" stripe border style="width: 100%">
-                <el-table-column prop="orderNumber" label="会员号"></el-table-column>
-                <el-table-column prop="name" label="姓名"></el-table-column>
-                <el-table-column prop="phone" label="电话"></el-table-column>
+                <el-table-column prop="orderNumber" label="会员编号"></el-table-column>
+                <el-table-column prop="name" label="微信昵称"></el-table-column>
+                <el-table-column prop="name" label="性别"></el-table-column>
+                <el-table-column prop="name" label="生日"></el-table-column>
+                <el-table-column prop="phone" label="手机号码"></el-table-column>
                 <el-table-column prop="address" label="地址"></el-table-column>
-                <el-table-column prop="orderTime" label="注册时间" width="180"></el-table-column>
-                <el-table-column label="会员等级">
+                <el-table-column prop="name" label="积分"></el-table-column>
+                <el-table-column prop="orderTime" label="注册时间"></el-table-column>
+                <el-table-column label="会员类型">
                     <template slot-scope="scope">
                         <el-tag v-if="scope.row.orderStatus === '钻石会员'" :closable="false">{{scope.row.orderStatus}}</el-tag>
                         <el-tag v-else-if="scope.row.orderStatus === '黄金会员'" type="warning" :closable="false">{{scope.row.orderStatus}}</el-tag>
                         <el-tag v-else-if="scope.row.orderStatus === '白银会员'" type="info" :closable="false">{{scope.row.orderStatus}}</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="210">
+                <el-table-column prop="name" label="订单数"></el-table-column>
+                <el-table-column prop="name" label="消费额"></el-table-column>
+                <el-table-column label="操作" width="140">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="showMemberDetail(scope.row)">详情</el-button>
-                        <el-button type="primary" size="mini" @click="editMember(scope.row)">编辑</el-button>
-                        <el-button type="danger" size="mini" @click="deleteMember(scope.row.id)">删除</el-button>
+                        <el-button type="success" size="mini" @click="showMemberDetail(scope.row)">查看</el-button>
+                        <el-button type="primary" size="mini" @click="editMember(scope.row)">送券</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -45,7 +44,7 @@
         <el-dialog class="member-detail" title="会员详情" :visible.sync="dialogDetailVisible">
             <el-row :gutter="10">
                 <el-col :span="10">
-                    <img src="../../assets/demo_images/000247589.jpg" alt="">
+                    <img src="../../../assets/demo_images/000247589.jpg" alt="">
                 </el-col>
                 <el-col :span="14">
                     <el-col :span="11">

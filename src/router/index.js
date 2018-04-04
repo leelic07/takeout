@@ -110,17 +110,6 @@ export const constantRouterMap = [
     }]
   },
 
-  {// 会员管理
-    path: '/member',
-    component: Layout,
-    children: [{
-      path: 'management',
-      name: 'MemberManagement',
-      component: () => import('@/views/member-management/index'),
-      meta: { title: '会员管理', icon: 'example' }
-    }]
-  },
-
   { // 订单管理
     path: '/order',
     component: Layout,
@@ -213,22 +202,100 @@ export const constantRouterMap = [
     }]
   },
 
-  {
+  {// 经营数据
     path: '/data',
     component: Layout,
     name: 'Business',
-    redirect: '/data/statics',
+    redirect: '/data/business',
     meta: { title: '经营数据', icon: 'example' },
-    children: [{
-      path: 'statics',
+    children: [{// 营业统计
+      path: 'business',
       name: 'BusinessStatics',
       component: () => import('@/views/data-operation/views/business-statics'),
       meta: { title: '营业统计', icon: 'example' }
-    }, {
+    }, {// 销量排行
       path: 'sales',
       name: 'SalesRankings',
       component: () => import('@/views/data-operation/views/sales-rankings'),
       meta: { title: '销量排行', icon: 'example' }
+    }, {// 访问统计
+      path: 'access',
+      name: 'AccessStatics',
+      component: () => import('@/views/data-operation/views/access-statics'),
+      meta: { title: '访问统计', icon: 'example' }
+    }]
+  },
+
+  {// 会员管理
+    path: '/member',
+    name: 'MemberManagement',
+    component: Layout,
+    redirect: '/member/list',
+    meta: { title: '会员管理', icon: 'example' },
+    children: [{// 会员列表
+      path: 'list',
+      name: 'MemberList',
+      component: () => import('@/views/member-management/views/member-list'),
+      meta: { title: '会员列表', icon: 'example' }
+    }, {// 会员查询
+      path: 'search',
+      name: 'MemberSearch',
+      component: () => import('@/views/member-management/views/member-search'),
+      meta: { title: '会员查询', icon: 'example' }
+    }]
+  },
+
+  {// 售后管理
+    path: '/customer',
+    name: 'CustomerManagement',
+    component: Layout,
+    redirect: '/customer/list',
+    meta: { title: '售后管理', icon: 'example' },
+    children: [{// 评价列表
+      path: 'list',
+      name: 'CommentsList',
+      component: () => import('@/views/customer-management/views/comments-list'),
+      meta: { title: '评价列表', icon: 'example' }
+    }, {
+      path: '/',
+      redirect: '/customer/list',
+      hidden: true
+    }]
+  },
+
+  {// 财务管理
+    path: '/finance',
+    name: 'FinanceManagement',
+    component: Layout,
+    redirect: '/finance/export',
+    meta: { title: '财务管理', icon: 'example' },
+    children: [{// 财务报表导出
+      path: 'export',
+      name: 'FinanceExport',
+      component: () => import('@/views/finance-management/views/finance-export'),
+      meta: { title: '财务报表导出', icon: 'example' }
+    }, {
+      path: '/',
+      redirect: '/finance/export',
+      hidden: true
+    }]
+  },
+
+  {// 商品管理
+    path: '/shop',
+    name: 'ShopManagement',
+    component: Layout,
+    redirect: '/shop/list',
+    meta: { title: '商品管理', icon: 'example' },
+    children: [{// 商品列表
+      path: 'list',
+      name: 'ShopList',
+      component: () => import('@/views/shop-management/views/shop-list'),
+      meta: { title: '商品列表', icon: 'example' }
+    }, {
+      path: '/',
+      redirect: '/finance/export',
+      hidden: true
     }]
   },
 

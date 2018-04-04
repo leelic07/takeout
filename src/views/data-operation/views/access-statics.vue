@@ -10,11 +10,9 @@
     <!--商品分类列表-->
     <el-row class="goods-statics">
       <el-table :data="categoryList" stripe border fit style="width: 100%" row-class-name="cell-center" header-cell-class-name="cell-center">
-        <el-table-column type="index" :index="1" label="排名"></el-table-column>
-        <el-table-column prop="name" label="商品名称"></el-table-column>
-        <el-table-column prop="categoryNumber" label="销量"></el-table-column>
-        <el-table-column prop="quantity" label="单价"></el-table-column>
-        <el-table-column prop="quantity" label="销售额"></el-table-column>
+        <el-table-column type="index" :index="1" label="序号"></el-table-column>
+        <el-table-column prop="name" label="时间"></el-table-column>
+        <el-table-column prop="categoryNumber" label="访问量"></el-table-column>
       </el-table>
     </el-row>
     <!--分页组件-->

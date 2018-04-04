@@ -159,7 +159,7 @@
               <el-col :span="12">
                 <label for="">紧急预订单：</label>
                 <span>
-                                    <b>0</b>笔</span>
+                  <b>0</b>笔</span>
               </el-col>
               <el-col :span="12">
                 <a href="#">查看订单
@@ -171,7 +171,7 @@
               <el-col :span="12">
                 <label for="">被取消配送：</label>
                 <span>
-                                    <b>0</b>笔</span>
+                  <b>0</b>笔</span>
               </el-col>
               <el-col :span="12">
                 <a href="#">查看订单
@@ -183,7 +183,7 @@
               <el-col :span="12">
                 <label for="">待发配送：</label>
                 <span>
-                                    <b>0</b>笔</span>
+                  <b>0</b>笔</span>
               </el-col>
               <el-col :span="12">
                 <a href="#">查看订单
@@ -195,7 +195,7 @@
               <el-col :span="12">
                 <label for="">未处理退款：</label>
                 <span>
-                                    <b>0</b>笔</span>
+                  <b>0</b>笔</span>
               </el-col>
               <el-col :span="12">
                 <a href="#">查看订单
