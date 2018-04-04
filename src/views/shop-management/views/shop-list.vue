@@ -1,86 +1,130 @@
 <template>
-    <el-row class="goods-management-container">
-        <!--搜索框-->
-        <el-row>
-            <el-col :span="5">
-                <el-input placeholder="请输入活动名称" v-model="orderNumber"></el-input>
-            </el-col>
-            <el-col :span="5" class="member-select">
-                <el-input placeholder="请输入活动编号" v-model="orderNumber"></el-input>
-            </el-col>
-            <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
-            </el-date-picker>
-            <el-button type="primary" icon="el-icon-search">搜索</el-button>
-        </el-row>
-        <!--会员信息列表-->
-        <el-row class="order-statics">
-            <el-table :data="orderList" stripe border fit style="width: 100%">
-                <el-table-column type="index" :index="1" label="序号"></el-table-column>
-                <el-table-column prop="activityCategory" label="店铺名称"></el-table-column>
-                <el-table-column prop="activityNumber" label="店铺编号"></el-table-column>
-                <el-table-column prop="name" label="店铺类型"></el-table-column>
-                <el-table-column prop="createdAt" label="联系电话"></el-table-column>
-                <el-table-column prop="endedAt" label="地址"></el-table-column>
-                <el-table-column prop="participant" label="本月营业额"></el-table-column>
-                <el-table-column prop="discountMoney" label="本月订单数"></el-table-column>
-                <el-table-column prop="discountTotal" label="商品数量"></el-table-column>
-                <el-table-column prop="discountRemain" label="分类数量"></el-table-column>
-                <el-table-column prop="activityQuantity" label="评分"></el-table-column>
-                <el-table-column prop="activityMoney" label="活动"></el-table-column>
-                <el-table-column label="操作" width="140">
-                    <template slot-scope="scope">
-                        <el-button type="primary" size="mini" @click="editMember(scope.row)">编辑</el-button>
-                        <el-button type="danger" size="mini" @click="deleteMember(scope.row.id)">下架</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-row>
-        <!--分页组件-->
-        <pagination :total="orderList.length" :page="pagination.page" :rows="pagination.rows"></pagination>
-        <!--编辑会员信息对话框-->
-        <el-dialog class="member-editor" title="编辑活动" :visible.sync="dialogFormVisible">
-            <el-form :model="memberMessage" size="mini">
-                <el-form-item label="活动类型" label-width="120px">
-                    <el-input v-model="memberMessage.activityCategory" auto-complete="off" placeholder="请填写活动类型"></el-input>
-                </el-form-item>
-                <el-form-item label="活动编号" label-width="120px">
-                    <el-input v-model="memberMessage.activityNumber" auto-complete="off" placeholder="请填写活动编号"></el-input>
-                </el-form-item>
-                <el-form-item label="活动名称" label-width="120px">
-                    <el-input v-model="memberMessage.name" auto-complete="off" placeholder="请填写活动名称"></el-input>
-                </el-form-item>
-                <el-form-item label="开始日期" label-width="120px">
-                    <el-date-picker v-model="value1" type="date" placeholder="选择日期">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item label="活动结束日期" label-width="120px">
-                    <el-input v-model="memberMessage.endedAt" auto-complete="off" placeholder="请填写地址"></el-input>
-                </el-form-item>
-                <el-form-item label="活动参与人数" label-width="120px">
-                    <el-input v-model="memberMessage.participant" auto-complete="off" placeholder="请填写备注"></el-input>
-                </el-form-item>
-                <el-form-item label="优惠券金额" label-width="120px">
-                    <el-input v-model="memberMessage.discountMoney" auto-complete="off" placeholder="请填写备注"></el-input>
-                </el-form-item>
-                <el-form-item label="优惠券总数" label-width="120px">
-                    <el-input v-model="memberMessage.discountTotal" auto-complete="off" placeholder="请填写备注"></el-input>
-                </el-form-item>
-                <el-form-item label="优惠券余量" label-width="120px">
-                    <el-input v-model="memberMessage.discountRemain" auto-complete="off" placeholder="请填写备注"></el-input>
-                </el-form-item>
-                <el-form-item label="活动核销数" label-width="120px">
-                    <el-input v-model="memberMessage.activityQuantity" auto-complete="off" placeholder="请填写备注"></el-input>
-                </el-form-item>
-                <el-form-item label="活动核销金额" label-width="120px">
-                    <el-input v-model="memberMessage.activityMoney" auto-complete="off" placeholder="请填写备注"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
-                <el-button size="mini" type="primary" @click="dialogFormVisible = false">确 定</el-button>
-            </div>
-        </el-dialog>
+  <el-row class="goods-management-container">
+    <!--搜索框-->
+    <el-row>
+      <el-col :span="5">
+        <el-input placeholder="请输入活动名称" v-model="orderNumber"></el-input>
+      </el-col>
+      <el-col :span="5" class="member-select">
+        <el-input placeholder="请输入活动编号" v-model="orderNumber"></el-input>
+      </el-col>
+      <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
+      </el-date-picker>
+      <el-button type="primary" icon="el-icon-search">搜索</el-button>
     </el-row>
+    <!--会员信息列表-->
+    <el-row class="order-statics">
+      <el-table :data="orderList" stripe border fit style="width: 100%">
+        <el-table-column type="index" :index="1" label="序号"></el-table-column>
+        <el-table-column label="店铺名称">
+          <template slot-scope="props">
+            <el-button type="text" @click="showMemberDetail(props.row)">{{props.row.name}}</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column prop="activityNumber" label="店铺编号"></el-table-column>
+        <el-table-column prop="name" label="店铺类型"></el-table-column>
+        <el-table-column prop="createdAt" label="联系电话"></el-table-column>
+        <el-table-column prop="endedAt" label="地址"></el-table-column>
+        <el-table-column prop="participant" label="本月营业额"></el-table-column>
+        <el-table-column prop="discountMoney" label="本月订单数"></el-table-column>
+        <el-table-column prop="discountTotal" label="商品数量"></el-table-column>
+        <el-table-column prop="discountRemain" label="分类数量"></el-table-column>
+        <el-table-column prop="activityQuantity" label="评分"></el-table-column>
+        <el-table-column prop="activityMoney" label="活动"></el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button type="primary" size="mini" @click="editMember(scope.row)">编辑</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-row>
+    <!--分页组件-->
+    <pagination :total="orderList.length" :page="pagination.page" :rows="pagination.rows"></pagination>
+    <!--店铺详情信息对话框-->
+    <el-dialog title="店铺详情" class="shop-detail" :visible.sync="dialogDetailVisible">
+      <el-form inline :model="memberMessage" size="mini">
+        <el-form-item label="店铺名称：" label-width="120px">
+          <span>{{memberMessage.activityCategory}}</span>
+        </el-form-item>
+        <el-form-item label="店铺编号：" label-width="120px">
+          <span>{{memberMessage.activityNumber}}</span>
+        </el-form-item>
+        <el-form-item label="店铺类型：" label-width="120px">
+          <span>{{memberMessage.name}}</span>
+        </el-form-item>
+        <el-form-item label="联系电话：" label-width="120px">
+          <span>{{memberMessage.name}}</span>
+        </el-form-item>
+        <el-form-item label="地址：" label-width="120px">
+          <span>{{memberMessage.endedAt}}</span>
+        </el-form-item>
+        <el-form-item label="本月营业额：" label-width="120px">
+          <span>{{memberMessage.participant}}</span>
+        </el-form-item>
+        <el-form-item label="本月订单数：" label-width="120px">
+          <span>{{memberMessage.discountMoney}}</span>
+        </el-form-item>
+        <el-form-item label="商品数量：" label-width="120px">
+          <span>{{memberMessage.discountTotal}}</span>
+        </el-form-item>
+        <el-form-item label="分类数量：" label-width="120px">
+          <span>{{memberMessage.discountRemain}}</span>
+        </el-form-item>
+        <el-form-item label="评分：" label-width="120px">
+          <span>{{memberMessage.activityQuantity}}</span>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="dialogDetailVisible = false">取 消</el-button>
+        <el-button size="mini" type="primary" @click="dialogDetailVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
+    <!--编辑店铺信息对话框-->
+    <el-dialog class="member-editor" title="编辑店铺" :visible.sync="dialogFormVisible">
+      <el-form :model="memberMessage" size="mini">
+        <el-form-item label="店铺名称" label-width="120px">
+          <el-input v-model="memberMessage.activityCategory" auto-complete="off" placeholder="请填写活动类型"></el-input>
+        </el-form-item>
+        <el-form-item label="店铺编号" label-width="120px">
+          <el-input v-model="memberMessage.activityNumber" auto-complete="off" placeholder="请填写活动编号"></el-input>
+        </el-form-item>
+        <el-form-item label="店铺类型" label-width="120px">
+          <el-input v-model="memberMessage.name" auto-complete="off" placeholder="请填写活动名称"></el-input>
+        </el-form-item>
+        <el-form-item label="联系电话" label-width="120px">
+          <el-input v-model="memberMessage.name" auto-complete="off" placeholder="请填写活动名称"></el-input>
+        </el-form-item>
+        <el-form-item label="地址" label-width="120px">
+          <el-input v-model="memberMessage.endedAt" auto-complete="off" placeholder="请填写地址"></el-input>
+        </el-form-item>
+        <el-form-item label="本月营业额" label-width="120px">
+          <el-input v-model="memberMessage.participant" auto-complete="off" placeholder="请填写备注"></el-input>
+        </el-form-item>
+        <el-form-item label="本月订单数" label-width="120px">
+          <el-input v-model="memberMessage.discountMoney" auto-complete="off" placeholder="请填写备注"></el-input>
+        </el-form-item>
+        <el-form-item label="商品数量" label-width="120px">
+          <el-input v-model="memberMessage.discountTotal" auto-complete="off" placeholder="请填写备注"></el-input>
+        </el-form-item>
+        <el-form-item label="分类数量" label-width="120px">
+          <el-input v-model="memberMessage.discountRemain" auto-complete="off" placeholder="请填写备注"></el-input>
+        </el-form-item>
+        <el-form-item label="评分" label-width="120px">
+          <el-input v-model="memberMessage.activityQuantity" auto-complete="off" placeholder="请填写备注"></el-input>
+        </el-form-item>
+        <el-form-item label="店铺状态" label-width="120px">
+          <el-radio-group v-model="memberMessage.shopStatus">
+            <el-radio label="1">上线店铺</el-radio>
+            <el-radio label="0">关闭店铺</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
+        <el-button size="mini" type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
+  </el-row>
 </template>
 
 <script>

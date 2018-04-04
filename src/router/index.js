@@ -281,21 +281,41 @@ export const constantRouterMap = [
     }]
   },
 
-  {// 商品管理
+  {// 店铺管理
     path: '/shop',
     name: 'ShopManagement',
     component: Layout,
     redirect: '/shop/list',
-    meta: { title: '商品管理', icon: 'example' },
-    children: [{// 商品列表
+    meta: { title: '店铺管理', icon: 'example' },
+    children: [{// 店铺列表
       path: 'list',
       name: 'ShopList',
       component: () => import('@/views/shop-management/views/shop-list'),
-      meta: { title: '商品列表', icon: 'example' }
-    }, {
-      path: '/',
-      redirect: '/finance/export',
-      hidden: true
+      meta: { title: '店铺列表', icon: 'example' }
+    }, {// 新增店铺
+      path: 'add',
+      name: 'ShopAdd',
+      component: () => import('@/views/shop-management/views/shop-add'),
+      meta: { title: '新增店铺', icon: 'example' }
+    }]
+  },
+
+  {// 系统管理
+    path: '/system',
+    name: 'SystemSetUp',
+    component: Layout,
+    redirect: '/system/account',
+    meta: { title: '系统设置', icon: 'example' },
+    children: [{// 账户管理
+      path: 'account',
+      name: 'AccountManagement',
+      component: () => import('@/views/system-setup/views/account-management'),
+      meta: { title: '账户管理', icon: 'example' }
+    }, {// 系统设置
+      path: 'setup',
+      name: 'SystemSetup',
+      component: () => import('@/views/system-setup/views/system-setup'),
+      meta: { title: '系统设置', icon: 'example' }
     }]
   },
 

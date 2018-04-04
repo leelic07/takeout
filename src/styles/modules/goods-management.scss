@@ -43,6 +43,13 @@
             }
         }
     }
+    .shop-detail {
+      .el-form {
+        span {
+          color: $gray;
+        }
+      }
+    }
 
     /*上传会员头像的文件选择框*/
     .avatar-uploader .el-upload {
