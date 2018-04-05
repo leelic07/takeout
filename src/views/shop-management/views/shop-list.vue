@@ -3,13 +3,13 @@
     <!--搜索框-->
     <el-row>
       <el-col :span="5">
-        <el-input placeholder="请输入活动名称" v-model="orderNumber"></el-input>
+        <el-input placeholder="请输入店铺名称" v-model="pagination.name"></el-input>
       </el-col>
-      <el-col :span="5" class="member-select">
-        <el-input placeholder="请输入活动编号" v-model="orderNumber"></el-input>
-      </el-col>
-      <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
-      </el-date-picker>
+      <!-- <el-col :span="5" class="member-select">
+        <el-input placeholder="请输入店铺编号" v-model="orderNumber"></el-input>
+      </el-col> -->
+      <!-- <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
+      </el-date-picker> -->
       <el-button type="primary" icon="el-icon-search">搜索</el-button>
     </el-row>
     <!--会员信息列表-->
@@ -129,6 +129,7 @@
 
 <script>
 import Pagination from '@/components/Pagination/index'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -307,7 +308,8 @@ export default {
       datetime: [], // 日期时间
       pagination: {// 分页信息
         page: 1,
-        rows: 10
+        rows: 10,
+        name: ''// 商铺名称
       },
       options: [{
         value: 1,
@@ -342,6 +344,9 @@ export default {
     Pagination
   },
   methods: {
+    ...mapActions({
+      getShopList: 'getShopList'
+    }),
     // 点击详情执行的方法
     showMemberDetail(row) {
       this.dialogDetailVisible = true
@@ -373,6 +378,9 @@ export default {
         })
       }).catch(err => console.log(err))
     }
+  },
+  mounted() {
+    this.getShopList(this.pagination)
   }
 }
 </script>

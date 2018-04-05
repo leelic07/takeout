@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
@@ -38,15 +38,11 @@ export default {
     ])
   },
   methods: {
+    ...mapActions({
+      logout: 'logout'
+    }),
     toggleSideBar() {
       this.$store.dispatch('ToggleSideBar')
-    },
-    logout() {
-      // this.$store.dispatch('LogOut').then(() => {
-      //   location.reload() // 为了重新实例化vue-router对象 避免bug
-      // })
-      this.$router.push({ path: '/login' })
-      // location.reload()
     }
   }
 }

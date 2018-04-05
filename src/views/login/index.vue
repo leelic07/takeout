@@ -3,18 +3,18 @@
     <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left" label-width="0px"
       class="card-box login-form">
       <h3 class="title">外卖管理系统</h3>
-      <el-form-item prop="username">
+      <el-form-item prop="name">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
+        <el-input name="username" type="text" v-model="loginForm.name" autoComplete="on" placeholder="请输入用户名" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password"></svg-icon>
         </span>
         <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
-          placeholder="password"></el-input>
+          placeholder="请输入用户密码"></el-input>
           <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
       </el-form-item>
       <el-form-item>
@@ -32,6 +32,7 @@
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'login',
@@ -52,18 +53,26 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
+        name: 'admin',
         password: 'admin'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        name: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePass }]
       },
       loading: false,
       pwdType: 'password'
     }
   },
+  computed: {
+    ...mapGetters({
+      user: 'user'
+    })
+  },
   methods: {
+    ...mapActions({
+      login: 'login'
+    }),
     showPwd() {
       if (this.pwdType === 'password') {
         this.pwdType = ''
@@ -75,13 +84,8 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$router.push({ path: '/seller/index' })
-          // this.$store.dispatch('Login', this.loginForm).then(() => {
-          //   this.loading = false
-          //   this.$router.push({ path: '/' })
-          // }).catch(() => {
-          //   this.loading = false
-          // })
+          // this.$router.push({ path: '/seller/index' })
+          this.login(this.loginForm)
         } else {
           console.log('error submit!!')
           return false
