@@ -2,40 +2,42 @@
     <el-row class="goods-upload-container">
         <el-col class="goods-upload-box" :span="14" :offset="5">
             <el-card>
-                <el-form :model="memberMessage" ref="goodsForm" :rules="rule" size="large">
+                <el-form :model="shopInfo" ref="shopForm" :rules="rule" size="large">
                     <el-col class="shop-message">
                         <el-tag>基本信息</el-tag>
                     </el-col>
-                    <el-form-item label="店铺编号" label-width="120px" prop="goodsNumber">
-                        <el-input v-model="memberMessage.goodsNumber" auto-complete="off" placeholder="请填写商品编号"></el-input>
+                    <el-form-item label="店铺编号" label-width="120px" prop="code">
+                        <el-input v-model="shopInfo.code" auto-complete="off" placeholder="请填写店铺编号"></el-input>
                     </el-form-item>
                     <el-form-item label="店铺名称" label-width="120px" prop="name">
-                        <el-input v-model="memberMessage.name" auto-complete="off" placeholder="请填写店铺名称"></el-input>
+                        <el-input v-model="shopInfo.name" auto-complete="off" placeholder="请填写店铺名称"></el-input>
                     </el-form-item>
-                    <el-form-item label="店铺类型" label-width="120px" prop="unit">
-                        <el-input v-model="memberMessage.unit" auto-complete="off" placeholder="请填写店铺类型"></el-input>
+                    <el-form-item label="店铺类型" label-width="120px" prop="typeId">
+                        <el-radio-group v-model="shopInfo.typeId">
+                            <el-radio label="1">普通</el-radio>
+                            <el-radio label="2">超级</el-radio>
+                        </el-radio-group>
                     </el-form-item>
-                    <el-form-item label="店铺经度" label-width="120px" prop="unit">
-                        <el-input v-model="memberMessage.unit" auto-complete="off" placeholder="请填写店铺经度"></el-input>
+                    <el-form-item label="店铺经度" label-width="120px" prop="lat">
+                        <el-input v-model="shopInfo.lat" auto-complete="off" placeholder="请填写店铺经度"></el-input>
                     </el-form-item>
-                    <el-form-item label="店铺维度" label-width="120px" prop="unit">
-                        <el-input v-model="memberMessage.unit" auto-complete="off" placeholder="请填写店铺维度"></el-input>
+                    <el-form-item label="店铺维度" label-width="120px" prop="lng">
+                        <el-input v-model="shopInfo.lng" auto-complete="off" placeholder="请填写店铺维度"></el-input>
                     </el-form-item>
-                    <el-form-item label="联系电话" label-width="120px" prop="price">
-                        <el-input v-model="memberMessage.price" auto-complete="off" placeholder="请填写联系电话"></el-input>
+                    <el-form-item label="联系电话" label-width="120px" prop="tel">
+                        <el-input v-model="shopInfo.tel" auto-complete="off" placeholder="请填写联系电话"></el-input>
                     </el-form-item>
-                    <el-form-item label="店铺地址" label-width="120px">
-                        <el-select v-model="memberMessage.category" placeholder="请选择店铺地址">
-                        </el-select>
+                    <el-form-item label="店铺地址" label-width="120px" prop="address">
+                        <el-input v-model="shopInfo.address" auto-complete="off" placeholder="请填店铺地址"></el-input>
                     </el-form-item>
-                    <el-form-item label="负责人姓名" label-width="120px">
-                        <el-input v-model="memberMessage.tag" auto-complete="off" placeholder="请填写负责人姓名"></el-input>
+                    <el-form-item label="负责人姓名" label-width="120px" prop="managerName">
+                        <el-input v-model="shopInfo.managerName" auto-complete="off" placeholder="请填写负责人姓名"></el-input>
                     </el-form-item>
-                    <el-form-item label="负责人手机号" label-width="120px">
-                        <el-input v-model="memberMessage.package" auto-complete="off" placeholder="请填写负责人手机号"></el-input>
+                    <el-form-item label="负责人手机号" label-width="120px" prop="managerPhone">
+                        <el-input v-model="shopInfo.managerPhone" auto-complete="off" placeholder="请填写负责人手机号"></el-input>
                     </el-form-item>
-                    <el-form-item label="店铺介绍" label-width="120px" prop="quantity">
-                        <el-input v-model="memberMessage.quantity" auto-complete="off" placeholder="请填写店铺介绍"></el-input>
+                    <el-form-item label="店铺介绍" label-width="120px" prop="description">
+                        <el-input v-model="shopInfo.description" auto-complete="off" placeholder="请填写店铺介绍"></el-input>
                     </el-form-item>
                     <el-form-item label="店铺图片" placeholder="请填写地址" label-width="120px">
                         <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList2" list-type="picture" :limit="5" show-file-list :auto-upload="false">
@@ -47,35 +49,44 @@
                         <el-tag>营业信息</el-tag>
                     </el-col>
                     <el-form-item label="店铺状态" label-width="120px" prop="goodsStatus">
-                        <el-radio-group v-model="memberMessage.goodsStatus">
+                        <el-radio-group v-model="shopInfo.goodsStatus">
                             <el-radio label="1">上线</el-radio>
                             <el-radio label="2">下线</el-radio>
                         </el-radio-group>
                     </el-form-item>
-                    <el-form-item label="店铺公告" label-width="120px">
-                        <el-input type="textarea" placeholder="请填写店铺公告" v-model="memberMessage.publish"></el-input>
+                    <el-form-item label="店铺公告" label-width="120px" prop="notice">
+                        <el-input type="textarea" placeholder="请填写店铺公告" v-model="shopInfo.notice"></el-input>
                     </el-form-item>
-                    <el-form-item label="营业时间" label-width="120px">
-                        <el-date-picker v-model="memberMessage.datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
+                    <el-form-item label="营业时间" label-width="120px" prop="datetime">
+                        <el-date-picker v-model="shopInfo.datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
                         </el-date-picker>
                     </el-form-item>
                     <el-col class="shop-message">
                         <el-tag>配送信息</el-tag>
                     </el-col>
-                    <el-form-item label="起送价" label-width="120px">
-                        <el-input v-model="memberMessage.quantity" auto-complete="off" placeholder="请填写起送价"></el-input>
+                    <el-form-item label="起送价" label-width="120px" prop="startingPrice">
+                        <el-input v-model="shopInfo.startingPrice" auto-complete="off" placeholder="请填写起送价"></el-input>
                     </el-form-item>
-                    <el-form-item label="满多少免配送费" label-width="120px">
-                        <el-input v-model="memberMessage.quantity" auto-complete="off" placeholder="请填写满多少免配送费"></el-input>
+                    <el-form-item label="满多少免配送费" label-width="120px" prop="fullFreeDistribution">
+                        <el-input v-model="shopInfo.fullFreeDistribution" auto-complete="off" placeholder="请填写满多少免配送费"></el-input>
                     </el-form-item>
-                    <el-form-item label="配送费" label-width="120px">
-                        <el-input v-model="memberMessage.quantity" auto-complete="off" placeholder="请填写配送费"></el-input>
+                    <el-form-item label="配送费" label-width="120px" prop="distributionFee">
+                        <el-input v-model="shopInfo.distributionFee" auto-complete="off" placeholder="请填写配送费"></el-input>
                     </el-form-item>
                     <el-form-item label="配送范围" label-width="120px">
-                        <el-input v-model="memberMessage.quantity" auto-complete="off" placeholder="请填写配送范围"></el-input>
+                        <el-input v-model="shopInfo.distributionScope" auto-complete="off" placeholder="请填写配送范围"></el-input>
+                    </el-form-item>
+                    <el-col class="shop-message">
+                        <el-tag>登录信息</el-tag>
+                    </el-col>
+                    <el-form-item label="商户登录账户" label-width="120px" prop="accountName">
+                        <el-input v-model="shopInfo.accountName" auto-complete="off" placeholder="请填写配送范围"></el-input>
+                    </el-form-item>
+                    <el-form-item label="商户登录密码" label-width="120px" prop="accountPassword">
+                        <el-input v-model="shopInfo.accountPassword" auto-complete="off" placeholder="请填写配送范围"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" size="medium">保存</el-button>
+                        <el-button type="primary" size="medium" @click="saveShopConfirm">保存</el-button>
                         <el-button type="success" size="medium">上线</el-button>
                     </el-form-item>
                 </el-form>
@@ -124,66 +135,84 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        memberMessage: {
-          checkList: []
-        },
-        fileList2: [],
-        dialogFormVisible: false,
-        propertyForm: [{
-          name: '',
-          properties: [{
-            value: '',
-            price: ''
-          }]
-        }],
-        formLabelWidth: '80px',
-        rule: {
-          goodsNumber: [{ required: true, message: '商品编号不能为空', trigger: 'blur' }],
-          name: [{ required: true, message: '商品名称不能为空', trigger: 'blur' }],
-          unit: [{ required: true, message: '商品单位不能为空', trigger: 'blur' }],
-          price: [{ required: true, message: '商品价格不能为空', trigger: 'blur' }],
-          goodsStatus: [{ required: true, message: '库存状态不能为空', trigger: 'blur' }],
-          quantity: [{ required: true, message: '商品库存不能为空', trigger: 'blur' }],
-          orderStatus: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
-          checkList: [{ required: true, message: '商品店铺不能为空', trigger: 'blur' }]
-        }
-      }
-    },
-    methods: {
-      handleRemove(file, fileList) {
-        console.log(file, fileList)
-      },
-      handlePreview(file) {
-        console.log(file)
-      },
-      // 添加属性名
-      addPropertyForm() {
-        this.propertyForm.push({
-          name: '',
-          properties: [{
-            value: '',
-            price: ''
-          }]
-        })
-      },
-      // 减少属性名
-      decedePropertyForm(index) {
-        this.propertyForm.length > 1 && this.propertyForm.splice(index, 1)
-      },
-      // 添加属性值
-      addProperties(index) {
-        this.propertyForm[index].properties.push({
+import { mapActions } from 'vuex'
+export default {
+  data() {
+    return {
+      shopInfo: {},
+      fileList2: [],
+      dialogFormVisible: false,
+      propertyForm: [{
+        name: '',
+        properties: [{
           value: '',
           price: ''
-        })
-      },
-      // 减少属性值
-      decedeProperties(index, i) {
-        this.propertyForm[index].properties.length > 1 && this.propertyForm[index].properties.splice(i, 1)
+        }]
+      }],
+      formLabelWidth: '80px',
+      rule: {
+        code: [{ required: true, message: '商户编号不能为空', trigger: 'blur' }],
+        name: [{ required: true, message: '商户名称不能为空', trigger: 'blur' }],
+        typeId: [{ required: true, message: '商户类型不能为空', trigger: 'blur' }],
+        lat: [{ required: true, message: '店铺经度不能为空', trigger: 'blur' }],
+        lng: [{ required: true, message: '店铺维度不能为空', trigger: 'blur' }],
+        tel: [{ required: true, message: '店铺联系电话不能为空', trigger: 'blur' }],
+        address: [{ required: true, message: '店铺地址不能为空', trigger: 'blur' }],
+        managerName: [{ required: true, message: '负责人姓名不能为空', trigger: 'blur' }],
+        managerPhone: [{ required: true, message: '负责人电话不能为空', trigger: 'blur' }],
+        description: [{ required: true, message: '店铺介绍不能为空', trigger: 'blur' }],
+        notice: [{ required: true, message: '店铺公告不能为空', trigger: 'blur' }],
+        datetime: [{ required: true, message: '店铺营业时间不能为空', trigger: 'blur' }],
+        startingPrice: [{ required: true, message: '起送价不能为空', trigger: 'blur' }],
+        fullFreeDistribution: [{ required: true, message: '满多少免配送费不能为空', trigger: 'blur' }],
+        distributionFee: [{ required: true, message: '配送费不能为空', trigger: 'blur' }],
+        accountName: [{ required: true, message: '商户登录账户不能为空', trigger: 'blur' }],
+        accountPassword: [{ required: true, message: '商户登录密码不能为空', trigger: 'blur' }]
       }
     }
+  },
+  methods: {
+    ...mapActions({
+      saveShop: 'saveShop'
+    }),
+    handleRemove(file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePreview(file) {
+      console.log(file)
+    },
+    // 添加属性名
+    addPropertyForm() {
+      this.propertyForm.push({
+        name: '',
+        properties: [{
+          value: '',
+          price: ''
+        }]
+      })
+    },
+    // 减少属性名
+    decedePropertyForm(index) {
+      this.propertyForm.length > 1 && this.propertyForm.splice(index, 1)
+    },
+    // 添加属性值
+    addProperties(index) {
+      this.propertyForm[index].properties.push({
+        value: '',
+        price: ''
+      })
+    },
+    // 减少属性值
+    decedeProperties(index, i) {
+      this.propertyForm[index].properties.length > 1 && this.propertyForm[index].properties.splice(i, 1)
+    },
+    // 保存新增商户信息
+    saveShopConfirm() {
+      this.$refs.shopForm.validate(valid => {
+        if (valid) this.saveShop()
+        else return
+      })
+    }
   }
+}
 </script>
