@@ -8,5 +8,9 @@ export default {
   // 添加商户信息
   saveShop(shopInfo) {
     service.post('/merchants/save', shopInfo).then(res => res).catch(err => err)
+  },
+  // 编辑商户信息
+  editShop(shopInfo) {
+    service.post('/merchants/update', shopInfo).then(res => res).catch(err => err)
   }
 }

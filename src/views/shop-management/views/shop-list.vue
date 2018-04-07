@@ -10,11 +10,11 @@
       </el-col> -->
       <!-- <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
       </el-date-picker> -->
-      <el-button type="primary" icon="el-icon-search">搜索</el-button>
+      <el-button type="primary" icon="el-icon-search" @click="getShopList(pagination)">搜索</el-button>
     </el-row>
     <!--会员信息列表-->
     <el-row class="order-statics">
-      <el-table :data="orderList" stripe border fit style="width: 100%">
+      <el-table :data="shopList" stripe border fit style="width: 100%">
         <el-table-column type="index" :index="1" label="序号"></el-table-column>
         <el-table-column label="店铺名称">
           <template slot-scope="props">
@@ -39,39 +39,39 @@
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="orderList.length" :page="pagination.page" :rows="pagination.rows"></pagination>
+    <pagination :total="shopList.length" :page="pagination.page" :rows="pagination.rows"></pagination>
     <!--店铺详情信息对话框-->
     <el-dialog title="店铺详情" class="shop-detail" :visible.sync="dialogDetailVisible">
-      <el-form inline :model="memberMessage" size="mini">
+      <el-form inline :model="shopDetail" size="mini">
         <el-form-item label="店铺名称：" label-width="120px">
-          <span>{{memberMessage.activityCategory}}</span>
+          <span>{{shopDetail.activityCategory}}</span>
         </el-form-item>
         <el-form-item label="店铺编号：" label-width="120px">
-          <span>{{memberMessage.activityNumber}}</span>
+          <span>{{shopDetail.activityNumber}}</span>
         </el-form-item>
         <el-form-item label="店铺类型：" label-width="120px">
-          <span>{{memberMessage.name}}</span>
+          <span>{{shopDetail.name}}</span>
         </el-form-item>
         <el-form-item label="联系电话：" label-width="120px">
-          <span>{{memberMessage.name}}</span>
+          <span>{{shopDetail.name}}</span>
         </el-form-item>
         <el-form-item label="地址：" label-width="120px">
-          <span>{{memberMessage.endedAt}}</span>
+          <span>{{shopDetail.endedAt}}</span>
         </el-form-item>
         <el-form-item label="本月营业额：" label-width="120px">
-          <span>{{memberMessage.participant}}</span>
+          <span>{{shopDetail.participant}}</span>
         </el-form-item>
         <el-form-item label="本月订单数：" label-width="120px">
-          <span>{{memberMessage.discountMoney}}</span>
+          <span>{{shopDetail.discountMoney}}</span>
         </el-form-item>
         <el-form-item label="商品数量：" label-width="120px">
-          <span>{{memberMessage.discountTotal}}</span>
+          <span>{{shopDetail.discountTotal}}</span>
         </el-form-item>
         <el-form-item label="分类数量：" label-width="120px">
-          <span>{{memberMessage.discountRemain}}</span>
+          <span>{{shopDetail.discountRemain}}</span>
         </el-form-item>
         <el-form-item label="评分：" label-width="120px">
-          <span>{{memberMessage.activityQuantity}}</span>
+          <span>{{shopDetail.activityQuantity}}</span>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -81,39 +81,39 @@
     </el-dialog>
     <!--编辑店铺信息对话框-->
     <el-dialog class="member-editor" title="编辑店铺" :visible.sync="dialogFormVisible">
-      <el-form :model="memberMessage" size="mini">
+      <el-form :model="shopForEdit" size="mini">
         <el-form-item label="店铺名称" label-width="120px">
-          <el-input v-model="memberMessage.activityCategory" auto-complete="off" placeholder="请填写活动类型"></el-input>
+          <el-input v-model="shopForEdit.activityCategory" auto-complete="off" placeholder="请填写活动类型"></el-input>
         </el-form-item>
         <el-form-item label="店铺编号" label-width="120px">
-          <el-input v-model="memberMessage.activityNumber" auto-complete="off" placeholder="请填写活动编号"></el-input>
+          <el-input v-model="shopForEdit.activityNumber" auto-complete="off" placeholder="请填写活动编号"></el-input>
         </el-form-item>
         <el-form-item label="店铺类型" label-width="120px">
-          <el-input v-model="memberMessage.name" auto-complete="off" placeholder="请填写活动名称"></el-input>
+          <el-input v-model="shopForEdit.name" auto-complete="off" placeholder="请填写活动名称"></el-input>
         </el-form-item>
         <el-form-item label="联系电话" label-width="120px">
-          <el-input v-model="memberMessage.name" auto-complete="off" placeholder="请填写活动名称"></el-input>
+          <el-input v-model="shopForEdit.name" auto-complete="off" placeholder="请填写活动名称"></el-input>
         </el-form-item>
         <el-form-item label="地址" label-width="120px">
-          <el-input v-model="memberMessage.endedAt" auto-complete="off" placeholder="请填写地址"></el-input>
+          <el-input v-model="shopForEdit.endedAt" auto-complete="off" placeholder="请填写地址"></el-input>
         </el-form-item>
         <el-form-item label="本月营业额" label-width="120px">
-          <el-input v-model="memberMessage.participant" auto-complete="off" placeholder="请填写备注"></el-input>
+          <el-input v-model="shopList.participant" auto-complete="off" placeholder="请填写备注"></el-input>
         </el-form-item>
         <el-form-item label="本月订单数" label-width="120px">
-          <el-input v-model="memberMessage.discountMoney" auto-complete="off" placeholder="请填写备注"></el-input>
+          <el-input v-model="shopForEdit.discountMoney" auto-complete="off" placeholder="请填写备注"></el-input>
         </el-form-item>
         <el-form-item label="商品数量" label-width="120px">
-          <el-input v-model="memberMessage.discountTotal" auto-complete="off" placeholder="请填写备注"></el-input>
+          <el-input v-model="shopForEdit.discountTotal" auto-complete="off" placeholder="请填写备注"></el-input>
         </el-form-item>
         <el-form-item label="分类数量" label-width="120px">
-          <el-input v-model="memberMessage.discountRemain" auto-complete="off" placeholder="请填写备注"></el-input>
+          <el-input v-model="shopForEdit.discountRemain" auto-complete="off" placeholder="请填写备注"></el-input>
         </el-form-item>
         <el-form-item label="评分" label-width="120px">
-          <el-input v-model="memberMessage.activityQuantity" auto-complete="off" placeholder="请填写备注"></el-input>
+          <el-input v-model="shopForEdit.activityQuantity" auto-complete="off" placeholder="请填写备注"></el-input>
         </el-form-item>
         <el-form-item label="店铺状态" label-width="120px">
-          <el-radio-group v-model="memberMessage.shopStatus">
+          <el-radio-group v-model="shopForEdit.shopStatus">
             <el-radio label="1">上线店铺</el-radio>
             <el-radio label="0">关闭店铺</el-radio>
           </el-radio-group>
@@ -121,7 +121,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button size="mini" type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button size="mini" type="primary" @click="editShopConfirm">确 定</el-button>
       </div>
     </el-dialog>
   </el-row>
@@ -134,7 +134,7 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      orderList: [{
+      shopList: [{
         activityCategory: '满减送',
         activityNumber: '1234547',
         name: '新店开张',
@@ -324,9 +324,10 @@ export default {
       value: '', // 选择会员等级
       dialogDetailVisible: false,
       dialogFormVisible: false,
-      memberMessage: {
+      shopForEdit: {// 待编辑的商户信息
         imageUrl: ''
-      }, // 会员详情信息
+      },
+      shopDetail: {}, // 商户详情信息
       form: {
         name: '',
         region: '',
@@ -345,17 +346,18 @@ export default {
   },
   methods: {
     ...mapActions({
-      getShopList: 'getShopList'
+      getShopList: 'getShopList',
+      editShop: 'editShop'
     }),
     // 点击详情执行的方法
     showMemberDetail(row) {
       this.dialogDetailVisible = true
-      this.memberMessage = row
+      this.shopDetail = row
     },
     // 点击编辑执行的方法
     editMember(row) {
       this.dialogFormVisible = true
-      this.memberMessage = row
+      this.shopForEdit = row
     },
     // 会员头像上传成功执行的方法
     handleAvatarSuccess(file) {
@@ -377,6 +379,10 @@ export default {
           message: '下架成功!'
         })
       }).catch(err => console.log(err))
+    },
+    // 确定编辑商户信息
+    editShopConfirm() {
+      this.editShop(this.shopForEdit)
     }
   },
   mounted() {

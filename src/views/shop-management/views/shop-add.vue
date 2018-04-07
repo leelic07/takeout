@@ -40,7 +40,7 @@
                         <el-input v-model="shopInfo.description" auto-complete="off" placeholder="请填写店铺介绍"></el-input>
                     </el-form-item>
                     <el-form-item label="店铺图片" placeholder="请填写地址" label-width="120px">
-                        <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList2" list-type="picture" :limit="5" show-file-list :auto-upload="false">
+                        <el-upload class="upload-demo" :action="$_baseUrl + '/upload/uploadfile'" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="handleSuccess" :on-exceed="handleExceed" :file-list="fileList2" list-type="picture" :limit="5" show-file-list>
                             <el-button size="small" type="primary">点击上传</el-button>
                             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片，最多只能上传五张图片</div>
                         </el-upload>
@@ -180,6 +180,17 @@ export default {
     },
     handlePreview(file) {
       console.log(file)
+    },
+    // 上传图片成功执行的方法
+    handleSuccess(res) {
+      console.log(res)
+    },
+    // 图片上传超过限制执行的方法
+    handleExceed() {
+      this.$message({
+        type: 'warning',
+        message: '最多只能上传5张图片'
+      })
     },
     // 添加属性名
     addPropertyForm() {

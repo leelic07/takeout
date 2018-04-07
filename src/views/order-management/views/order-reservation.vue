@@ -26,7 +26,7 @@
             <span type="text">待发配送</span>
           </div>
           <el-row>
-            <el-table :data="tableData5" style="width: 100%" :show-header="false" stripe>
+            <el-table :data="orderReservationList" style="width: 100%" :show-header="false" stripe>
               <el-table-column type="expand">
                 <template slot-scope="props">
                   <el-form label-position="right" class="demo-table-expand">
@@ -212,114 +212,126 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        form: {},
-        tableData5: [{
-          id: '12987122',
-          name: '不要香菜,不要香菜,不要香菜',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987123',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987125',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987126',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }],
-        tableData: [{
-          date: '3俩卤粉',
-          name: 8,
-          address: 'x1',
-          total: 8
-        }, {
-          date: '2俩卤粉加牛肉',
-          name: 12,
-          address: 'x3',
-          total: 36
-        }, {
-          date: '煎饺',
-          name: 8,
-          address: 'x2',
-          total: 16
-        }, {
-          date: '凉拌皮蛋',
-          name: 3,
-          address: 'x4',
-          total: 12
-        }],
-        boxData: [{
-          price: 1,
-          amount: 'x10',
-          total: 10
-        }],
-        deliveryData: [{
-          amount: 6
-        }]
-      }
-    },
-    methods: {
-      // 点击打印订单执行的方法
-      printOrder() {
-        this.$confirm('确定打印订单？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '打印订单成功'
-          }).catch(err => console.log(err))
-        })
-      },
-      // 点击打印订单执行的方法
-      cancelOrder() {
-        this.$confirm('确定取消订单？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '取消订单成功'
-          }).catch(err => console.log(err))
-        })
-      },
-      // 点击部分退款时执行的方法
-      partCancelOrder() {
-        this.$confirm('确定部分退款？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '部分退款成功'
-          }).catch(err => console.log(err))
-        })
+import { mapActions } from 'vuex'
+
+export default {
+  data() {
+    return {
+      form: {},
+      orderReservationList: [{
+        id: '12987122',
+        name: '不要香菜,不要香菜,不要香菜',
+        category: '江浙小吃、小吃零食',
+        desc: '荷兰优质淡奶，奶香浓而不腻',
+        address: '上海市普陀区真北路',
+        shop: '王小虎夫妻店',
+        shopId: '10333'
+      }, {
+        id: '12987123',
+        name: '好滋好味鸡蛋仔',
+        category: '江浙小吃、小吃零食',
+        desc: '荷兰优质淡奶，奶香浓而不腻',
+        address: '上海市普陀区真北路',
+        shop: '王小虎夫妻店',
+        shopId: '10333'
+      }, {
+        id: '12987125',
+        name: '好滋好味鸡蛋仔',
+        category: '江浙小吃、小吃零食',
+        desc: '荷兰优质淡奶，奶香浓而不腻',
+        address: '上海市普陀区真北路',
+        shop: '王小虎夫妻店',
+        shopId: '10333'
+      }, {
+        id: '12987126',
+        name: '好滋好味鸡蛋仔',
+        category: '江浙小吃、小吃零食',
+        desc: '荷兰优质淡奶，奶香浓而不腻',
+        address: '上海市普陀区真北路',
+        shop: '王小虎夫妻店',
+        shopId: '10333'
+      }],
+      tableData: [{
+        date: '3俩卤粉',
+        name: 8,
+        address: 'x1',
+        total: 8
+      }, {
+        date: '2俩卤粉加牛肉',
+        name: 12,
+        address: 'x3',
+        total: 36
+      }, {
+        date: '煎饺',
+        name: 8,
+        address: 'x2',
+        total: 16
+      }, {
+        date: '凉拌皮蛋',
+        name: 3,
+        address: 'x4',
+        total: 12
+      }],
+      boxData: [{
+        price: 1,
+        amount: 'x10',
+        total: 10
+      }],
+      deliveryData: [{
+        amount: 6
+      }],
+      pagination: {
+        page: 1,
+        rows: 10
       }
     }
+  },
+  methods: {
+    ...mapActions({
+      getOrderReservationList: 'getOrderReservationList'
+    }),
+    // 点击打印订单执行的方法
+    printOrder() {
+      this.$confirm('确定打印订单？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '打印订单成功'
+        }).catch(err => console.log(err))
+      })
+    },
+    // 点击打印订单执行的方法
+    cancelOrder() {
+      this.$confirm('确定取消订单？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '取消订单成功'
+        }).catch(err => console.log(err))
+      })
+    },
+    // 点击部分退款时执行的方法
+    partCancelOrder() {
+      this.$confirm('确定部分退款？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '部分退款成功'
+        }).catch(err => console.log(err))
+      })
+    }
+  },
+  mounted() {
+    this.getOrderReservationList(this.pagination)
   }
+}
 </script>

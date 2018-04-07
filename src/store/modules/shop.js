@@ -3,7 +3,8 @@ import http from '@/service'
 export default {
   state: {
     shopList: {},
-    saveShopResult: {}
+    saveShopResult: {},
+    editShopResult: {}
   },
   actions: {
     // 获取商户列表
@@ -13,16 +14,24 @@ export default {
     // 添加商户信息
     saveShop({ commit }, shopInfo) {
       http.saveShop(shopInfo).then(res => commit('saveShop', res)).catch(err => console.log(err))
+    },
+    // 编辑商户信息
+    editShop({ commit }, shopInfo) {
+      http.editShop(shopInfo).then(res => commit('editShop', res)).catch(err => console.log(err))
     }
   },
   mutations: {
     // 获取商户列表
     getShopList(state, shopList) {
-      state.shopList = shopList.merchants
+      state.shopList = shopList.data.merchants
     },
     // 添加商户信息
     saveShop(state, saveShopResult) {
       state.saveShopResult = saveShopResult
+    },
+    // 编辑商户信息
+    editShop(state, editShopResult) {
+      state.editShopResult = editShopResult
     }
   }
 }
