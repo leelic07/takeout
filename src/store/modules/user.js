@@ -1,4 +1,5 @@
 import http from '@/service'
+import router from '../../router'
 
 const user = {
   state: {
@@ -8,7 +9,7 @@ const user = {
   actions: {
     // 登录
     login({ commit }, userInfo) {
-      http.login(userInfo).then(res => commit('login', res)).catch(err => console.log(err))
+      http.login(userInfo).then(res => res.code === 200 && commit('login', res)).catch(err => console.log(err))
     },
     // 登出
     logout({ commit }) {
@@ -25,7 +26,11 @@ const user = {
   mutations: {
     // 登录
     login(state, user) {
-      state.user = user
+      state.users = user.data.users
+      sessionStorage.setItem('type', user.data.users.type)
+      router.push({
+        path: '/seller/index'
+      })
     },
     // 登出
     logout(state) {

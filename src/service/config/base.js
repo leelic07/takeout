@@ -4,7 +4,8 @@ export default {
   // 请求方式
   // method: 'get',
   // 基础url前缀
-  baseURL: 'http://localhost:8080',
+  baseURL: 'http://localhost:8080/takeaway',
+  // baseURL: 'http://192.168.1.195:8080',
   // 请求发送之前对出参进行处理
   // transformRequest: [data => data],
   // 请求发送之后对入参进行处理

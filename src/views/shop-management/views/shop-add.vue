@@ -13,10 +13,14 @@
                         <el-input v-model="shopInfo.name" auto-complete="off" placeholder="请填写店铺名称"></el-input>
                     </el-form-item>
                     <el-form-item label="店铺类型" label-width="120px" prop="typeId">
-                        <el-radio-group v-model="shopInfo.typeId">
+                        <!-- <el-radio-group v-model="shopInfo.typeId">
                             <el-radio label="1">普通</el-radio>
                             <el-radio label="2">超级</el-radio>
-                        </el-radio-group>
+                        </el-radio-group> -->
+                        <el-select v-model="shopInfo.typeId" placeholder="请选择店铺类型">
+                            <el-option v-for="item in shopTypeList" :key="item.id" :label="item.name" :value="item.id">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="店铺经度" label-width="120px" prop="lat">
                         <el-input v-model="shopInfo.lat" auto-complete="off" placeholder="请填写店铺经度"></el-input>
@@ -40,7 +44,7 @@
                         <el-input v-model="shopInfo.description" auto-complete="off" placeholder="请填写店铺介绍"></el-input>
                     </el-form-item>
                     <el-form-item label="店铺图片" placeholder="请填写地址" label-width="120px">
-                        <el-upload class="upload-demo" :action="$_baseUrl + '/upload/uploadfile'" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="handleSuccess" :on-exceed="handleExceed" :file-list="fileList2" list-type="picture" :limit="5" show-file-list>
+                        <el-upload class="upload-demo" :action="$_baseUrl + '/upload/uploadfile'" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="handleSuccess" :on-exceed="handleExceed" :file-list="shopInfo.pictures" list-type="picture" :limit="5" show-file-list>
                             <el-button size="small" type="primary">点击上传</el-button>
                             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片，最多只能上传五张图片</div>
                         </el-upload>
@@ -48,18 +52,18 @@
                     <el-col class="shop-message">
                         <el-tag>营业信息</el-tag>
                     </el-col>
-                    <el-form-item label="店铺状态" label-width="120px" prop="goodsStatus">
-                        <el-radio-group v-model="shopInfo.goodsStatus">
+                    <el-form-item label="店铺状态" label-width="120px" prop="isOnline">
+                        <el-radio-group v-model="shopInfo.isOnline">
                             <el-radio label="1">上线</el-radio>
-                            <el-radio label="2">下线</el-radio>
+                            <el-radio label="0">下线</el-radio>
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="店铺公告" label-width="120px" prop="notice">
                         <el-input type="textarea" placeholder="请填写店铺公告" v-model="shopInfo.notice"></el-input>
                     </el-form-item>
-                    <el-form-item label="营业时间" label-width="120px" prop="datetime">
-                        <el-date-picker v-model="shopInfo.datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
-                        </el-date-picker>
+                    <el-form-item label="营业时间" label-width="120px" prop="time">
+                        <el-time-picker is-range v-model="shopInfo.time" range-separator="——" start-placeholder="开始时间" end-placeholder="结束时间" placeholder="选择时间范围">
+                        </el-time-picker>
                     </el-form-item>
                     <el-col class="shop-message">
                         <el-tag>配送信息</el-tag>
@@ -83,7 +87,7 @@
                         <el-input v-model="shopInfo.accountName" auto-complete="off" placeholder="请填写配送范围"></el-input>
                     </el-form-item>
                     <el-form-item label="商户登录密码" label-width="120px" prop="accountPassword">
-                        <el-input v-model="shopInfo.accountPassword" auto-complete="off" placeholder="请填写配送范围"></el-input>
+                        <el-input type="password" v-model="shopInfo.accountPassword" auto-complete="off" placeholder="请填写配送范围"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" size="medium" @click="saveShopConfirm">保存</el-button>
@@ -135,7 +139,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -167,13 +171,21 @@ export default {
         fullFreeDistribution: [{ required: true, message: '满多少免配送费不能为空', trigger: 'blur' }],
         distributionFee: [{ required: true, message: '配送费不能为空', trigger: 'blur' }],
         accountName: [{ required: true, message: '商户登录账户不能为空', trigger: 'blur' }],
-        accountPassword: [{ required: true, message: '商户登录密码不能为空', trigger: 'blur' }]
+        accountPassword: [{ required: true, message: '商户登录密码不能为空', trigger: 'blur' }],
+        isOnline: [{ required: true, message: '店铺状态不能为空', trigger: 'blur' }],
+        time: [{ required: true, message: '营业时间不能为空', trigger: 'blur' }]
       }
     }
   },
+  computed: {
+    ...mapGetters([
+      'shopTypeList'
+    ])
+  },
   methods: {
     ...mapActions({
-      saveShop: 'saveShop'
+      saveShop: 'saveShop',
+      getShopTypeList: 'getShopTypeList'
     }),
     handleRemove(file, fileList) {
       console.log(file, fileList)
@@ -220,10 +232,13 @@ export default {
     // 保存新增商户信息
     saveShopConfirm() {
       this.$refs.shopForm.validate(valid => {
-        if (valid) this.saveShop()
+        if (valid) this.saveShop(this.shopInfo)
         else return
       })
     }
+  },
+  mounted() {
+    this.getShopTypeList()
   }
 }
 </script>

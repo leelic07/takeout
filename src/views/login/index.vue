@@ -23,8 +23,8 @@
         </el-button>
       </el-form-item>
       <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: admin</span>
+        <!-- <span style="margin-right:20px;">username: admin</span>
+        <span> password: admin</span> -->
       </div>
     </el-form>
   </div>
@@ -53,8 +53,8 @@ export default {
     }
     return {
       loginForm: {
-        name: 'admin',
-        password: 'admin'
+        name: '',
+        password: ''
       },
       loginRules: {
         name: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -82,13 +82,13 @@ export default {
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
+        this.loading = true
         if (valid) {
-          this.loading = true
-          // this.$router.push({ path: '/seller/index' })
           this.login(this.loginForm)
+          this.loading = false
         } else {
           console.log('error submit!!')
-          return false
+          this.loading = false
         }
       })
     }

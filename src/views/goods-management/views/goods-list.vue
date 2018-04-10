@@ -3,18 +3,18 @@
     <!--搜索框-->
     <el-row>
       <el-col :span="5">
-        <el-input placeholder="请输入商品名称" v-model="orderNumber"></el-input>
+        <el-input placeholder="请输入商品名称" v-model="pagination.name"></el-input>
       </el-col>
-      <el-col :span="5" class="member-select">
+      <!-- <el-col :span="5" class="member-select">
         <el-input placeholder="请输入商品编号" v-model="orderNumber"></el-input>
       </el-col>
       <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
-      </el-date-picker>
-      <el-button type="primary" icon="el-icon-search">搜索</el-button>
+      </el-date-picker> -->
+      <el-button type="primary" icon="el-icon-search" @click="getGoodsList(pagination)">搜索</el-button>
     </el-row>
     <!--会员信息列表-->
     <el-row class="order-statics">
-      <el-table :data="orderList" stripe border fit style="width: 100%">
+      <el-table :data="goodsList" stripe border fit style="width: 100%">
         <el-table-column type="index" :index="1" label="序号"></el-table-column>
         <el-table-column label="商品图片">
           <template slot-scope="props">
@@ -22,62 +22,62 @@
           </template>
         </el-table-column>
         <el-table-column prop="name" label="商品名称"></el-table-column>
-        <el-table-column prop="goodsNumber" label="编号"></el-table-column>
+        <el-table-column prop="code" label="编号"></el-table-column>
         <el-table-column prop="unit" label="商品单位"></el-table-column>
         <el-table-column prop="price" label="价格"></el-table-column>
-        <el-table-column prop="category" label="商品分类">
+        <el-table-column prop="itemTypeName" label="商品分类">
         </el-table-column>
-        <el-table-column prop="tag" label="标签"></el-table-column>
-        <el-table-column prop="saleQuantity" label="销售量"></el-table-column>
-        <el-table-column prop="status" label="库存状态"></el-table-column>
-        <el-table-column prop="quantity" label="库存量"></el-table-column>
-        <el-table-column prop="goodsStatus" label="商品状态"></el-table-column>
+        <el-table-column prop="label" label="标签"></el-table-column>
+        <el-table-column prop="salesVolume" label="销售量"></el-table-column>
+        <el-table-column prop="stockStatus" label="库存状态"></el-table-column>
+        <el-table-column prop="stock" label="库存量"></el-table-column>
+        <el-table-column prop="status" label="商品状态"></el-table-column>
         <el-table-column label="操作" width="140">
-          <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="editMember(scope.row)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="deleteMember(scope.row.id)">下架</el-button>
+          <template slot-scope="props">
+            <el-button type="primary" size="mini" @click="editGoods(props.row.id)">编辑</el-button>
+            <el-button type="danger" size="mini" @click="deleteMember(props.row.id)">下架</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="orderList.length" :page="pagination.page" :rows="pagination.rows"></pagination>
+    <pagination :total="goodsList.length" :page="pagination.page" :rows="pagination.rows"></pagination>
     <!--编辑会员信息对话框-->
     <el-dialog class="member-editor" title="编辑会员" :visible.sync="dialogFormVisible">
-      <el-form :model="memberMessage" size="mini">
+      <el-form :model="goodsForEdit" size="mini">
         <el-form-item label="商品名称" label-width="120px">
-          <el-input v-model="memberMessage.name" auto-complete="off" placeholder="请填写姓名"></el-input>
+          <el-input v-model="goodsForEdit.name" auto-complete="off" placeholder="请填写姓名"></el-input>
         </el-form-item>
         <el-form-item label="单位" label-width="120px">
-          <el-input v-model="memberMessage.unit" auto-complete="off" placeholder="请填写性别"></el-input>
+          <el-input v-model="goodsForEdit.unit" auto-complete="off" placeholder="请填写性别"></el-input>
         </el-form-item>
         <el-form-item label="价格" label-width="120px">
-          <el-input v-model="memberMessage.price" auto-complete="off" placeholder="请填写电话"></el-input>
+          <el-input v-model="goodsForEdit.price" auto-complete="off" placeholder="请填写电话"></el-input>
         </el-form-item>
         <el-form-item label="商品分类" label-width="120px">
-          <el-select v-model="memberMessage.orderStatus" placeholder="请选择会员等级">
+          <el-select v-model="goodsForEdit.itemTypeName" placeholder="请选择会员等级">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="标签" label-width="120px">
-          <el-input v-model="memberMessage.tag" auto-complete="off" placeholder="请填写地址"></el-input>
+          <el-input v-model="goodsForEdit.label" auto-complete="off" placeholder="请填写地址"></el-input>
         </el-form-item>
         <el-form-item label="库存状态" label-width="120px">
-          <el-input v-model="memberMessage.goodsStatus" auto-complete="off" placeholder="请填写备注"></el-input>
+          <el-input v-model="goodsForEdit.stockStatus" auto-complete="off" placeholder="请填写备注"></el-input>
         </el-form-item>
         <el-form-item label="库存量" label-width="120px">
-          <el-input v-model="memberMessage.quantity" auto-complete="off" placeholder="请填写备注"></el-input>
+          <el-input v-model="goodsForEdit.stock" auto-complete="off" placeholder="请填写备注"></el-input>
         </el-form-item>
         <el-form-item label="商品状态" label-width="120px">
-          <el-select v-model="memberMessage.orderStatus" placeholder="请选择会员等级">
+          <el-select v-model="goodsForEdit.status" placeholder="请选择会员等级">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="商品图片" placeholder="请填写地址" label-width="120px">
           <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-            <img v-if="memberMessage.imageUrl" :src="memberMessage.imageUrl" class="avatar">
+            <img v-if="goodsForEdit.imageUrl" :src="goodsForEdit.imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
@@ -92,159 +92,17 @@
 
 <script>
 import Pagination from '@/components/Pagination/index'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data() {
     return {
-      orderList: [{
-        goodsNumber: 12345678324324,
-        name: '扬州炒饭',
-        unit: '份',
-        tag: '必点,招牌',
-        price: 10,
-        category: '卤粉',
-        saleQuantity: 999,
-        status: '有货',
-        quantity: 9999,
-        goodsStatus: '在售'
-      }, {
-        goodsNumber: 12345678,
-        name: '扬州炒饭',
-        unit: '份',
-        tag: '必点,招牌',
-        price: 10,
-        category: '卤粉',
-        saleQuantity: 999,
-        status: '有货',
-        quantity: 9999,
-        goodsStatus: '在售'
-      }, {
-        goodsNumber: 12345678,
-        name: '扬州炒饭',
-        unit: '份',
-        tag: '必点,招牌',
-        price: 10,
-        category: '卤粉',
-        saleQuantity: 999,
-        status: '有货',
-        quantity: 9999,
-        goodsStatus: '在售'
-      }, {
-        goodsNumber: 12345678,
-        name: '扬州炒饭',
-        unit: '份',
-        tag: '必点,招牌',
-        price: 10,
-        category: '卤粉',
-        saleQuantity: 999,
-        status: '有货',
-        quantity: 9999,
-        goodsStatus: '在售'
-      }, {
-        goodsNumber: 12345678,
-        name: '扬州炒饭',
-        unit: '份',
-        tag: '必点,招牌',
-        price: 10,
-        category: '卤粉',
-        saleQuantity: 999,
-        status: '有货',
-        quantity: 9999,
-        goodsStatus: '在售'
-      }, {
-        goodsNumber: 12345678,
-        name: '扬州炒饭',
-        unit: '份',
-        tag: '必点,招牌',
-        price: 10,
-        category: '卤粉',
-        saleQuantity: 999,
-        status: '有货',
-        quantity: 9999,
-        goodsStatus: '在售'
-      }, {
-        goodsNumber: 12345678,
-        name: '扬州炒饭',
-        unit: '份',
-        tag: '必点,招牌',
-        price: 10,
-        category: '卤粉',
-        saleQuantity: 999,
-        status: '有货',
-        quantity: 9999,
-        goodsStatus: '在售'
-      }, {
-        goodsNumber: 12345678,
-        name: '扬州炒饭',
-        unit: '份',
-        tag: '必点,招牌',
-        price: 10,
-        category: '卤粉',
-        saleQuantity: 999,
-        status: '有货',
-        quantity: 9999,
-        goodsStatus: '在售'
-      }, {
-        goodsNumber: 12345678,
-        name: '扬州炒饭',
-        unit: '份',
-        tag: '必点,招牌',
-        price: 10,
-        category: '卤粉',
-        saleQuantity: 999,
-        status: '有货',
-        quantity: 9999,
-        goodsStatus: '在售'
-      }, {
-        goodsNumber: 12345678,
-        name: '扬州炒饭',
-        unit: '份',
-        tag: '必点,招牌',
-        price: 10,
-        category: '卤粉',
-        saleQuantity: 999,
-        status: '有货',
-        quantity: 9999,
-        goodsStatus: '在售'
-      }, {
-        goodsNumber: 12345678,
-        name: '扬州炒饭',
-        unit: '份',
-        tag: '必点,招牌',
-        price: 10,
-        category: '卤粉',
-        saleQuantity: 999,
-        status: '有货',
-        quantity: 9999,
-        goodsStatus: '在售'
-      }, {
-        goodsNumber: 12345678,
-        name: '扬州炒饭',
-        unit: '份',
-        tag: '必点,招牌',
-        price: 10,
-        category: '卤粉',
-        saleQuantity: 999,
-        status: '有货',
-        quantity: 9999,
-        goodsStatus: '在售'
-      }, {
-        goodsNumber: 12345678,
-        name: '扬州炒饭',
-        unit: '份',
-        tag: '必点,招牌',
-        price: 10,
-        category: '卤粉',
-        saleQuantity: 999,
-        status: '有货',
-        quantity: 9999,
-        goodsStatus: '在售'
-      }], // 订单统计列表
       orderNumber: '', // 订单号
       datetime: [], // 日期时间
       pagination: {// 分页信息
         page: 1,
-        rows: 10
+        rows: 10,
+        name: ''
       },
       options: [{
         value: 1,
@@ -275,10 +133,20 @@ export default {
       imageUrl: '' // 上传头像的图片路径
     }
   },
+  computed: {
+    ...mapGetters([
+      'goodsList',
+      'goodsForEdit'
+    ])
+  },
   components: {
     Pagination
   },
   methods: {
+    ...mapActions({
+      getGoodsList: 'getGoodsList',
+      editGoods: 'editGoods'
+    }),
     // 点击详情执行的方法
     showMemberDetail(row) {
       this.dialogDetailVisible = true
@@ -310,6 +178,9 @@ export default {
         })
       }).catch(err => console.log(err))
     }
+  },
+  mounted() {
+    this.getGoodsList()
   }
 }
 </script>

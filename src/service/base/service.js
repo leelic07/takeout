@@ -1,13 +1,14 @@
 import base from '../config/base'
 import axios from 'axios'
-import store from '@/store'
-import router from '@/router'
+// import store from '@/store'
+import router from '../../router/index'
 import { Message } from 'element-ui'
 import qs from 'qs'
 const instance = axios.create(base)
+
 // 代理服务器
-// export const agency = ''
-export const agency = '/takeaway'
+export const agency = ''
+// export const agency = '/takeaway'
 // 获取异步请求的url
 const getUrl = (url) => `${agency}${url}`
 // 处理服务端错误的方法
@@ -65,7 +66,7 @@ const handleSuccess = (res) => {
           message: res.data.msg ? res.data.msg : '查询数据成功'
         })
         break
-      case 20002:// 用户登录超时，返回登录页面
+      case 999:// 用户登录超时，返回登录页面
         Object.keys(sessionStorage).map(key => {
           sessionStorage.setItem(key, 'undefined')
         })
@@ -94,7 +95,7 @@ instance.interceptors.request.use(
     //   return
     // }
     // 加载loading遮罩层
-    store.commit('showLoading')
+    // store.commit('showLoading')
     return config
   },
   error => Promise.reject(error)
@@ -104,13 +105,13 @@ instance.interceptors.response.use(
   response => {
     handleSuccess(response) || (response.errors && Message.error(response.errors[0]))
     // 隐藏loading遮罩层
-    store.commit('hideLoading')
+    // store.commit('hideLoading')
     return response
   },
   error => {
     if (handleError(error)) {
       // 隐藏loading遮罩层
-      store.commit('hideLoading')
+      // store.commit('hideLoading')
       Promise.reject(error)
     }
   }

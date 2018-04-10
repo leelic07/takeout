@@ -21,16 +21,16 @@
             <el-button type="text" @click="showMemberDetail(props.row)">{{props.row.name}}</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="activityNumber" label="店铺编号"></el-table-column>
-        <el-table-column prop="name" label="店铺类型"></el-table-column>
-        <el-table-column prop="createdAt" label="联系电话"></el-table-column>
-        <el-table-column prop="endedAt" label="地址"></el-table-column>
-        <el-table-column prop="participant" label="本月营业额"></el-table-column>
-        <el-table-column prop="discountMoney" label="本月订单数"></el-table-column>
-        <el-table-column prop="discountTotal" label="商品数量"></el-table-column>
-        <el-table-column prop="discountRemain" label="分类数量"></el-table-column>
+        <el-table-column prop="code" label="店铺编号"></el-table-column>
+        <el-table-column prop="typeName" label="店铺类型"></el-table-column>
+        <el-table-column prop="tel" label="联系电话"></el-table-column>
+        <el-table-column prop="address" label="地址"></el-table-column>
+        <el-table-column prop="monthPrice" label="本月营业额"></el-table-column>
+        <el-table-column prop="monthOrder" label="本月订单数"></el-table-column>
+        <el-table-column prop="itemCount" label="商品数量"></el-table-column>
+        <el-table-column prop="itemTypeCount" label="分类数量"></el-table-column>
         <el-table-column prop="activityQuantity" label="评分"></el-table-column>
-        <el-table-column prop="activityMoney" label="活动"></el-table-column>
+        <el-table-column prop="activityCount" label="活动"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="editMember(scope.row)">编辑</el-button>
@@ -39,39 +39,45 @@
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="shopList.length" :page="pagination.page" :rows="pagination.rows"></pagination>
+    <pagination :total="shopTotal" :page="pagination.page" :rows="pagination.rows"></pagination>
     <!--店铺详情信息对话框-->
     <el-dialog title="店铺详情" class="shop-detail" :visible.sync="dialogDetailVisible">
       <el-form inline :model="shopDetail" size="mini">
         <el-form-item label="店铺名称：" label-width="120px">
-          <span>{{shopDetail.activityCategory}}</span>
+          <span>{{shopDetail.name}}</span>
         </el-form-item>
         <el-form-item label="店铺编号：" label-width="120px">
-          <span>{{shopDetail.activityNumber}}</span>
+          <span>{{shopDetail.code}}</span>
         </el-form-item>
         <el-form-item label="店铺类型：" label-width="120px">
-          <span>{{shopDetail.name}}</span>
+          <span>{{shopDetail.typeName}}</span>
         </el-form-item>
         <el-form-item label="联系电话：" label-width="120px">
-          <span>{{shopDetail.name}}</span>
+          <span>{{shopDetail.tel}}</span>
         </el-form-item>
         <el-form-item label="地址：" label-width="120px">
-          <span>{{shopDetail.endedAt}}</span>
+          <span>{{shopDetail.address}}</span>
         </el-form-item>
         <el-form-item label="本月营业额：" label-width="120px">
-          <span>{{shopDetail.participant}}</span>
+          <span>{{shopDetail.monthPrice}}</span>
         </el-form-item>
         <el-form-item label="本月订单数：" label-width="120px">
-          <span>{{shopDetail.discountMoney}}</span>
+          <span>{{shopDetail.monthOrder}}</span>
         </el-form-item>
         <el-form-item label="商品数量：" label-width="120px">
-          <span>{{shopDetail.discountTotal}}</span>
+          <span>{{shopDetail.itemCount}}</span>
         </el-form-item>
         <el-form-item label="分类数量：" label-width="120px">
-          <span>{{shopDetail.discountRemain}}</span>
+          <span>{{shopDetail.itemTypeCount}}</span>
         </el-form-item>
         <el-form-item label="评分：" label-width="120px">
           <span>{{shopDetail.activityQuantity}}</span>
+        </el-form-item>
+        <el-form-item label="活动：" label-width="120px">
+          <span>{{shopDetail.activityCount}}</span>
+        </el-form-item>
+        <el-form-item label="店铺状态：" label-width="120px">
+          <span>{{shopDetail.isOnline}}</span>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -83,37 +89,40 @@
     <el-dialog class="member-editor" title="编辑店铺" :visible.sync="dialogFormVisible">
       <el-form :model="shopForEdit" size="mini">
         <el-form-item label="店铺名称" label-width="120px">
-          <el-input v-model="shopForEdit.activityCategory" auto-complete="off" placeholder="请填写活动类型"></el-input>
+          <el-input v-model="shopForEdit.name" auto-complete="off" placeholder="请填写活动类型"></el-input>
         </el-form-item>
         <el-form-item label="店铺编号" label-width="120px">
-          <el-input v-model="shopForEdit.activityNumber" auto-complete="off" placeholder="请填写活动编号"></el-input>
+          <el-input v-model="shopForEdit.code" auto-complete="off" placeholder="请填写活动编号"></el-input>
         </el-form-item>
         <el-form-item label="店铺类型" label-width="120px">
-          <el-input v-model="shopForEdit.name" auto-complete="off" placeholder="请填写活动名称"></el-input>
+          <el-select v-model="shopForEdit.typeId" placeholder="请选择店铺类型">
+            <el-option v-for="item in shopTypeList" :key="item.id" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="联系电话" label-width="120px">
-          <el-input v-model="shopForEdit.name" auto-complete="off" placeholder="请填写活动名称"></el-input>
+          <el-input v-model="shopForEdit.tel" auto-complete="off" placeholder="请填写活动名称"></el-input>
         </el-form-item>
         <el-form-item label="地址" label-width="120px">
-          <el-input v-model="shopForEdit.endedAt" auto-complete="off" placeholder="请填写地址"></el-input>
+          <el-input v-model="shopForEdit.address" auto-complete="off" placeholder="请填写地址"></el-input>
         </el-form-item>
-        <el-form-item label="本月营业额" label-width="120px">
-          <el-input v-model="shopList.participant" auto-complete="off" placeholder="请填写备注"></el-input>
+        <!-- <el-form-item label="本月营业额" label-width="120px">
+          <el-input v-model="shopList.monthPrice" auto-complete="off" placeholder="请填写备注"></el-input>
         </el-form-item>
         <el-form-item label="本月订单数" label-width="120px">
-          <el-input v-model="shopForEdit.discountMoney" auto-complete="off" placeholder="请填写备注"></el-input>
+          <el-input v-model="shopForEdit.monthCount" auto-complete="off" placeholder="请填写备注"></el-input>
         </el-form-item>
         <el-form-item label="商品数量" label-width="120px">
-          <el-input v-model="shopForEdit.discountTotal" auto-complete="off" placeholder="请填写备注"></el-input>
+          <el-input v-model="shopForEdit.itemCount" auto-complete="off" placeholder="请填写备注"></el-input>
         </el-form-item>
         <el-form-item label="分类数量" label-width="120px">
-          <el-input v-model="shopForEdit.discountRemain" auto-complete="off" placeholder="请填写备注"></el-input>
+          <el-input v-model="shopForEdit.itemTypeCount" auto-complete="off" placeholder="请填写备注"></el-input>
         </el-form-item>
         <el-form-item label="评分" label-width="120px">
           <el-input v-model="shopForEdit.activityQuantity" auto-complete="off" placeholder="请填写备注"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="店铺状态" label-width="120px">
-          <el-radio-group v-model="shopForEdit.shopStatus">
+          <el-radio-group v-model="shopForEdit.isOnline">
             <el-radio label="1">上线店铺</el-radio>
             <el-radio label="0">关闭店铺</el-radio>
           </el-radio-group>
@@ -134,176 +143,6 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      shopList: [{
-        activityCategory: '满减送',
-        activityNumber: '1234547',
-        name: '新店开张',
-        createdAt: '2018-4-1 18:18',
-        endedAt: '2018-4-1 18:18',
-        participant: 222,
-        discountMoney: 3,
-        discountQuantity: 10000,
-        discountRemain: 333,
-        activityQuantity: 234,
-        activityMoney: 333,
-        discountTotal: 10000
-      }, {
-        activityCategory: '优惠券',
-        activityNumber: '1234547',
-        name: '新店开张',
-        createdAt: '2018-4-1 18:18',
-        endedAt: '2018-4-1 18:18',
-        participant: 222,
-        discountMoney: 3,
-        discountQuantity: 10000,
-        discountRemain: 333,
-        activityQuantity: 234,
-        activityMoney: 333,
-        discountTotal: 10000
-      }, {
-        activityCategory: '满减送',
-        activityNumber: '1234547',
-        name: '新店开张',
-        createdAt: '2018-4-1 18:18',
-        endedAt: '2018-4-1 18:18',
-        participant: 222,
-        discountMoney: 3,
-        discountQuantity: 10000,
-        discountRemain: 333,
-        activityQuantity: 234,
-        activityMoney: 333,
-        discountTotal: 10000
-      }, {
-        activityCategory: '优惠券',
-        activityNumber: '1234547',
-        name: '新店开张',
-        createdAt: '2018-4-1 18:18',
-        endedAt: '2018-4-1 18:18',
-        participant: 222,
-        discountMoney: 3,
-        discountQuantity: 10000,
-        discountRemain: 333,
-        activityQuantity: 234,
-        activityMoney: 333,
-        discountTotal: 10000
-      }, {
-        activityCategory: '满减送',
-        activityNumber: '1234547',
-        name: '新店开张',
-        createdAt: '2018-4-1 18:18',
-        endedAt: '2018-4-1 18:18',
-        participant: 222,
-        discountMoney: 3,
-        discountQuantity: 10000,
-        discountRemain: 333,
-        activityQuantity: 234,
-        activityMoney: 333,
-        discountTotal: 10000
-      }, {
-        activityCategory: '优惠券',
-        activityNumber: '1234547',
-        name: '新店开张',
-        createdAt: '2018-4-1 18:18',
-        endedAt: '2018-4-1 18:18',
-        participant: 222,
-        discountMoney: 3,
-        discountQuantity: 10000,
-        discountRemain: 333,
-        activityQuantity: 234,
-        activityMoney: 333,
-        discountTotal: 10000
-      }, {
-        activityCategory: '满减送',
-        activityNumber: '1234547',
-        name: '新店开张',
-        createdAt: '2018-4-1 18:18',
-        endedAt: '2018-4-1 18:18',
-        participant: 222,
-        discountMoney: 3,
-        discountQuantity: 10000,
-        discountRemain: 333,
-        activityQuantity: 234,
-        activityMoney: 333,
-        discountTotal: 10000
-      }, {
-        activityCategory: '优惠券',
-        activityNumber: '1234547',
-        name: '新店开张',
-        createdAt: '2018-4-1 18:18',
-        endedAt: '2018-4-1 18:18',
-        participant: 222,
-        discountMoney: 3,
-        discountQuantity: 10000,
-        discountRemain: 333,
-        activityQuantity: 234,
-        activityMoney: 333,
-        discountTotal: 10000
-      }, {
-        activityCategory: '优惠券',
-        activityNumber: '1234547',
-        name: '新店开张',
-        createdAt: '2018-4-1 18:18',
-        endedAt: '2018-4-1 18:18',
-        participant: 222,
-        discountMoney: 3,
-        discountQuantity: 10000,
-        discountRemain: 333,
-        activityQuantity: 234,
-        activityMoney: 333,
-        discountTotal: 10000
-      }, {
-        activityCategory: '满减送',
-        activityNumber: '1234547',
-        name: '新店开张',
-        createdAt: '2018-4-1 18:18',
-        endedAt: '2018-4-1 18:18',
-        participant: 222,
-        discountMoney: 3,
-        discountQuantity: 10000,
-        discountRemain: 333,
-        activityQuantity: 234,
-        activityMoney: 333,
-        discountTotal: 10000
-      }, {
-        activityCategory: '优惠券',
-        activityNumber: '1234547',
-        name: '新店开张',
-        createdAt: '2018-4-1 18:18',
-        endedAt: '2018-4-1 18:18',
-        participant: 222,
-        discountMoney: 3,
-        discountQuantity: 10000,
-        discountRemain: 333,
-        activityQuantity: 234,
-        activityMoney: 333,
-        discountTotal: 10000
-      }, {
-        activityCategory: '满减送',
-        activityNumber: '1234547',
-        name: '新店开张',
-        createdAt: '2018-4-1 18:18',
-        endedAt: '2018-4-1 18:18',
-        participant: 222,
-        discountMoney: 3,
-        discountQuantity: 10000,
-        discountRemain: 333,
-        activityQuantity: 234,
-        activityMoney: 333,
-        discountTotal: 10000
-      }, {
-        activityCategory: '满减送',
-        activityNumber: '1234547',
-        name: '新店开张',
-        createdAt: '2018-4-1 18:18',
-        endedAt: '2018-4-1 18:18',
-        participant: 222,
-        discountMoney: 3,
-        discountQuantity: 10000,
-        discountRemain: 333,
-        activityQuantity: 234,
-        activityMoney: 333,
-        discountTotal: 10000
-      }], // 订单统计列表
       orderNumber: '', // 订单号
       datetime: [], // 日期时间
       pagination: {// 分页信息
@@ -324,9 +163,7 @@ export default {
       value: '', // 选择会员等级
       dialogDetailVisible: false,
       dialogFormVisible: false,
-      shopForEdit: {// 待编辑的商户信息
-        imageUrl: ''
-      },
+      // shopForEdit: {}, // 待编辑的商户信息,
       shopDetail: {}, // 商户详情信息
       form: {
         name: '',
@@ -341,13 +178,29 @@ export default {
       imageUrl: '' // 上传头像的图片路径
     }
   },
+  watch: {
+    editShopResult(newValue) {
+      newValue.code === 200 && (this.dialogFormVisible = false)
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'shopList',
+      'shopTotal',
+      'shopForEdit',
+      'editShopResult',
+      'shopTypeList'
+    ])
+  },
   components: {
     Pagination
   },
   methods: {
     ...mapActions({
       getShopList: 'getShopList',
-      editShop: 'editShop'
+      editShop: 'editShop',
+      getShopForEdit: 'getShopForEdit',
+      getShopTypeList: 'getShopTypeList'
     }),
     // 点击详情执行的方法
     showMemberDetail(row) {
@@ -358,10 +211,13 @@ export default {
     editMember(row) {
       this.dialogFormVisible = true
       this.shopForEdit = row
+      this.getShopForEdit(row.id)
+      this.getShopTypeList()
     },
-    // 会员头像上传成功执行的方法
-    handleAvatarSuccess(file) {
-      console.log(file)
+    // 店铺图片上传成功执行的方法
+    handleAvatarSuccess(res) {
+      console.log(res)
+      // this.shopList.pictures.push(res.url)
     },
     // 会员头像上传之前执行的方法
     beforeAvatarUpload(file) {

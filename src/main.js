@@ -20,6 +20,7 @@ Vue.use(ElementUI, { locale })
 Vue.config.productionTip = false
 
 Vue.prototype.$_baseUrl = 'http://localhost:8080/takeaway'
+// Vue.prototype.$_baseUrl = 'http://192.168.1.195:8080'
 
 new Vue({
   el: '#app',
