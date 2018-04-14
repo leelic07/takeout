@@ -116,7 +116,7 @@ export default {
       }],
       value: '', // 选择会员等级
       dialogDetailVisible: false,
-      dialogFormVisible: false,
+      dialogFormVisible: true,
       memberMessage: {
         imageUrl: ''
       }, // 会员详情信息

@@ -11,6 +11,7 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import router from './router'
 import store from './store'
+import filters from './filters'
 
 import '@/icons' // icon
 // import '@/permission' // permission control
@@ -18,9 +19,11 @@ import '@/icons' // icon
 Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
-
 Vue.prototype.$_baseUrl = 'http://localhost:8080/takeaway'
-// Vue.prototype.$_baseUrl = 'http://192.168.1.195:8080'
+// Vue.prototype.$_baseUrl = 'http://192.168.1.194:8080'
+
+// 声明过滤器
+Object.keys(filters).forEach(key => Vue.filter(key, filters[key]))
 
 new Vue({
   el: '#app',

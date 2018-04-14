@@ -5,9 +5,9 @@
       <el-col :span="22" :offset="2">
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="处理状态">
-            <el-radio-group v-model="form.resrveStatus">
-              <el-radio label="新订单"></el-radio>
-              <el-radio label="已处理"></el-radio>
+            <el-radio-group v-model="form.status">
+              <el-radio label="0">未预定</el-radio>
+              <el-radio label="1">已预定</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -36,28 +36,29 @@
                     </el-form-item>
                     <!--商品信息-->
                     <el-form-item label="商品信息:">
-                      <el-table :data="tableData" style="width: 100%" :show-header="false">
-                        <el-table-column prop="date" label="商品">
+                      <el-table :data="props.row.orderItems" style="width: 100%" :show-header="false">
+                        <el-table-column prop="itemName" label="商品"></el-table-column>
+                        <el-table-column prop="itemPrice" label="单价"></el-table-column>
+                        <el-table-column label="数量">
+                          <template slot-scope="prop">
+                            {{`x ${prop.row.itemNums}`}}
+                          </template>
                         </el-table-column>
-                        <el-table-column prop="name" label="单价">
-                        </el-table-column>
-                        <el-table-column prop="address" label="数量">
-                        </el-table-column>
-                        <el-table-column prop="total" label="总价">
+                        <el-table-column label="总价">
+                          <template slot-scope="prop">
+                            {{prop.row.itemPrice * prop.row.itemNums}}
+                          </template>
                         </el-table-column>
                       </el-table>
                       <!--餐盒-->
-                      <el-table :data="boxData" style="width: 100%" :show-header="false">
+                      <!-- <el-table :data="boxData" style="width: 100%" :show-header="false">
                         <el-table-column label="餐盒">
                           <template slot-scope="scope">餐盒</template>
                         </el-table-column>
-                        <el-table-column prop="price" label="商品">
-                        </el-table-column>
-                        <el-table-column prop="amount" label="单价">
-                        </el-table-column>
-                        <el-table-column prop="total" label="数量">
-                        </el-table-column>
-                      </el-table>
+                        <el-table-column prop="price" label="商品"></el-table-column>
+                        <el-table-column prop="amount" label="单价"></el-table-column>
+                        <el-table-column prop="total" label="数量"></el-table-column>
+                      </el-table> -->
                     </el-form-item>
                     <el-form-item>
                       <el-form>
@@ -160,7 +161,7 @@
               <el-col :span="12">
                 <label for="">紧急预订单：</label>
                 <span>
-                                    <b>0</b>笔</span>
+                  <b>0</b>笔</span>
               </el-col>
               <el-col :span="12">
                 <a href="#">查看订单
@@ -172,7 +173,7 @@
               <el-col :span="12">
                 <label for="">被取消配送：</label>
                 <span>
-                                    <b>0</b>笔</span>
+                  <b>0</b>笔</span>
               </el-col>
               <el-col :span="12">
                 <a href="#">查看订单
@@ -184,7 +185,7 @@
               <el-col :span="12">
                 <label for="">待发配送：</label>
                 <span>
-                                    <b>0</b>笔</span>
+                  <b>0</b>笔</span>
               </el-col>
               <el-col :span="12">
                 <a href="#">查看订单
@@ -196,7 +197,7 @@
               <el-col :span="12">
                 <label for="">未处理退款：</label>
                 <span>
-                                    <b>0</b>笔</span>
+                  <b>0</b>笔</span>
               </el-col>
               <el-col :span="12">
                 <a href="#">查看订单
@@ -212,45 +213,14 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data() {
     return {
-      form: {},
-      orderReservationList: [{
-        id: '12987122',
-        name: '不要香菜,不要香菜,不要香菜',
-        category: '江浙小吃、小吃零食',
-        desc: '荷兰优质淡奶，奶香浓而不腻',
-        address: '上海市普陀区真北路',
-        shop: '王小虎夫妻店',
-        shopId: '10333'
-      }, {
-        id: '12987123',
-        name: '好滋好味鸡蛋仔',
-        category: '江浙小吃、小吃零食',
-        desc: '荷兰优质淡奶，奶香浓而不腻',
-        address: '上海市普陀区真北路',
-        shop: '王小虎夫妻店',
-        shopId: '10333'
-      }, {
-        id: '12987125',
-        name: '好滋好味鸡蛋仔',
-        category: '江浙小吃、小吃零食',
-        desc: '荷兰优质淡奶，奶香浓而不腻',
-        address: '上海市普陀区真北路',
-        shop: '王小虎夫妻店',
-        shopId: '10333'
-      }, {
-        id: '12987126',
-        name: '好滋好味鸡蛋仔',
-        category: '江浙小吃、小吃零食',
-        desc: '荷兰优质淡奶，奶香浓而不腻',
-        address: '上海市普陀区真北路',
-        shop: '王小虎夫妻店',
-        shopId: '10333'
-      }],
+      form: {
+        status: '0'
+      },
       tableData: [{
         date: '3俩卤粉',
         name: 8,
@@ -286,9 +256,20 @@ export default {
       }
     }
   },
+  watch: {
+    'form.status'(newValue) {
+      this.getOrderReservationByStatus({ ...this.pagination, status: newValue })
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'orderReservationList'
+    ])
+  },
   methods: {
     ...mapActions({
-      getOrderReservationList: 'getOrderReservationList'
+      getOrderReservationList: 'getOrderReservationList',
+      getOrderReservationByStatus: 'getOrderReservationByStatus'
     }),
     // 点击打印订单执行的方法
     printOrder() {
@@ -331,7 +312,7 @@ export default {
     }
   },
   mounted() {
-    this.getOrderReservationList(this.pagination)
+    this.getOrderReservationByStatus({ ...this.pagination, ...this.form })
   }
 }
 </script>

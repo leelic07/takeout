@@ -2,52 +2,54 @@
   <el-row class="goods-upload-container">
     <el-col class="goods-upload-box" :span="14" :offset="5">
       <el-card>
-        <el-form :model="memberMessage" ref="goodsForm" :rules="rule" size="large">
-          <el-form-item label="商品编号" label-width="120px" prop="goodsNumber">
-            <el-input v-model="memberMessage.goodsNumber" auto-complete="off" placeholder="请填写商品编号"></el-input>
+        <el-form :model="goods" ref="goodsForm" :rules="rule" size="large">
+          <el-form-item label="商品编号" label-width="120px" prop="code">
+            <el-input v-model="goods.code" auto-complete="off" placeholder="请填写商品编号"></el-input>
           </el-form-item>
           <el-form-item label="商品名称" label-width="120px" prop="name">
-            <el-input v-model="memberMessage.name" auto-complete="off" placeholder="请填写商品名称"></el-input>
+            <el-input v-model="goods.name" auto-complete="off" placeholder="请填写商品名称"></el-input>
           </el-form-item>
           <el-form-item label="单位" label-width="120px" prop="unit">
-            <el-input v-model="memberMessage.unit" auto-complete="off" placeholder="请填写商品单位(如:盒)"></el-input>
+            <el-input v-model="goods.unit" auto-complete="off" placeholder="请填写商品单位(如:盒)"></el-input>
           </el-form-item>
           <el-form-item label="价格" label-width="120px" prop="price">
-            <el-input v-model="memberMessage.price" auto-complete="off" placeholder="请填写价格"></el-input>
+            <el-input v-model="goods.price" auto-complete="off" placeholder="请填写价格"></el-input>
           </el-form-item>
-          <el-form-item label="商品分类" label-width="120px">
-            <el-select v-model="memberMessage.category" placeholder="请选择商品分类">
-              <!-- <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-            </el-option> -->
+          <el-form-item label="商品分类" label-width="120px" prop="itemType">
+            <el-select v-model="goods.itemType" placeholder="请选择商品分类">
+              <el-option v-for="item in goodsTypeList" :key="item.id" :label="item.name" :value="item.id">
+            </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="标签" label-width="120px">
-            <el-input v-model="memberMessage.tag" auto-complete="off" placeholder="请填写商品标签"></el-input>
+          <el-form-item label="标签" label-width="120px" prop="label">
+            <el-input v-model="goods.label" auto-complete="off" placeholder="请填写商品标签"></el-input>
           </el-form-item>
           <el-form-item label="打包费" label-width="120px">
-            <el-input v-model="memberMessage.package" auto-complete="off" placeholder="请填写打包费"></el-input>
+            <el-input v-model="goods.package" auto-complete="off" placeholder="请填写打包费"></el-input>
           </el-form-item>
-          <el-form-item label="库存状态" label-width="120px" prop="goodsStatus">
-            <el-radio v-model="memberMessage.goodsStatus" label="1">有限</el-radio>
-            <el-radio v-model="memberMessage.goodsStatus" label="2">无限</el-radio>
+          <el-form-item label="库存状态" label-width="120px" prop="stockStatus">
+            <el-radio-group v-model="goods.stockStatus">
+              <el-radio label="0">有限</el-radio>
+              <el-radio label="1">无限</el-radio>
+            </el-radio-group>
           </el-form-item>
-          <el-form-item label="库存量" label-width="120px" prop="quantity">
-            <el-input v-model="memberMessage.quantity" auto-complete="off" placeholder="请填写库存量"></el-input>
+          <el-form-item label="库存量" label-width="120px" prop="stock">
+            <el-input v-model="goods.stock" auto-complete="off" placeholder="请填写库存量"></el-input>
           </el-form-item>
-          <el-form-item label="商品状态" label-width="120px" prop="orderStatus">
-            <el-select v-model="memberMessage.orderStatus" placeholder="请选择商品状态">
-              <el-option value="1" label="在售"></el-option>
-              <el-option value="2" label="下架"></el-option>
-            </el-select>
+          <el-form-item label="商品状态" label-width="120px" prop="isPuton">
+            <el-radio-group v-model="goods.isPuton">
+              <el-radio label="1">在售</el-radio> 
+              <el-radio label="0">下架</el-radio>
+            </el-radio-group>
           </el-form-item>
           <el-form-item label="商品图片" placeholder="请填写地址" label-width="120px">
-            <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList2" list-type="picture" :limit="5" show-file-list :auto-upload="false">
+            <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="goods.pictures" list-type="picture" :limit="5" show-file-list :auto-upload="false">
               <el-button size="small" type="primary">点击上传</el-button>
               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片，最多只能上传五张图片</div>
             </el-upload>
           </el-form-item>
           <el-form-item label="商品售卖店铺" label-width="120px" prop="checkList">
-            <el-checkbox-group v-model="memberMessage.checkList">
+            <el-checkbox-group v-model="goods.checkList">
               <el-checkbox label="店铺A"></el-checkbox>
               <el-checkbox label="店铺B"></el-checkbox>
               <el-checkbox label="店铺C"></el-checkbox>
@@ -58,13 +60,13 @@
             <el-button type="primary" size="small" @click="dialogFormVisible = !dialogFormVisible">添加商品属性</el-button>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium">保存</el-button>
+            <el-button type="primary" size="medium" @click="saveGoodsConfirm">保存</el-button>
           </el-form-item>
         </el-form>
       </el-card>
       <!--添加商品属性弹出框-->
-      <el-dialog class="property-dialog" title="收货地址" :visible.sync="dialogFormVisible">
-        <el-row v-for="(pro,index) in propertyForm" :key="index">
+      <el-dialog class="property-dialog" title="商品属性" :visible.sync="dialogFormVisible">
+        <el-row v-for="(pro,index) in goods.propertys" :key="index">
           <el-col>
             <el-col :span="2">
               <label for="">属性名</label>
@@ -74,7 +76,7 @@
             </el-col>
             <el-col :span="2" :offset="2">
               <div class="property-button add-properties" @click="addPropertyForm">+</div>
-              <div class="property-button decede-properties" @click="decedePropertyForm(index)" v-if="propertyForm.length > 1">-</div>
+              <div class="property-button decede-properties" @click="decedePropertyForm(index)" v-if="goods.propertys.length > 1">-</div>
             </el-col>
           </el-col>
           <el-col v-for="(ps,ind) in pro.properties" :key="ind" label="">
@@ -92,7 +94,7 @@
             </el-col>
             <el-col :span="2" :offset="1">
               <div class="property-button add-properties" @click="addProperties(index)">+</div>
-              <div class="property-button decede-properties" @click="decedeProperties(index,ind)" v-if="propertyForm[index].properties.length > 1">-</div>
+              <div class="property-button decede-properties" @click="decedeProperties(index,ind)" v-if="goods.propertys[index].properties.length > 1">-</div>
             </el-col>
           </el-col>
         </el-row>
@@ -106,66 +108,89 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        memberMessage: {
-          checkList: []
-        },
-        fileList2: [],
-        dialogFormVisible: false,
-        propertyForm: [{
+import { mapActions, mapGetters } from 'vuex'
+
+export default {
+  data() {
+    return {
+      goods: {
+        checkList: [],
+        propertys: [{
           name: '',
           properties: [{
             value: '',
             price: ''
           }]
-        }],
-        formLabelWidth: '80px',
-        rule: {
-          goodsNumber: [{ required: true, message: '商品编号不能为空', trigger: 'blur' }],
-          name: [{ required: true, message: '商品名称不能为空', trigger: 'blur' }],
-          unit: [{ required: true, message: '商品单位不能为空', trigger: 'blur' }],
-          price: [{ required: true, message: '商品价格不能为空', trigger: 'blur' }],
-          goodsStatus: [{ required: true, message: '库存状态不能为空', trigger: 'blur' }],
-          quantity: [{ required: true, message: '商品库存不能为空', trigger: 'blur' }],
-          orderStatus: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
-          checkList: [{ required: true, message: '商品店铺不能为空', trigger: 'blur' }]
-        }
-      }
-    },
-    methods: {
-      handleRemove(file, fileList) {
-        console.log(file, fileList)
+        }]
       },
-      handlePreview(file) {
-        console.log(file)
-      },
-      // 添加属性名
-      addPropertyForm() {
-        this.propertyForm.push({
-          name: '',
-          properties: [{
-            value: '',
-            price: ''
-          }]
-        })
-      },
-      // 减少属性名
-      decedePropertyForm(index) {
-        this.propertyForm.length > 1 && this.propertyForm.splice(index, 1)
-      },
-      // 添加属性值
-      addProperties(index) {
-        this.propertyForm[index].properties.push({
-          value: '',
-          price: ''
-        })
-      },
-      // 减少属性值
-      decedeProperties(index, i) {
-        this.propertyForm[index].properties.length > 1 && this.propertyForm[index].properties.splice(i, 1)
+      fileList2: [],
+      dialogFormVisible: false,
+      formLabelWidth: '80px',
+      rule: {
+        code: [{ required: true, message: '商品编号不能为空', trigger: 'blur' }],
+        name: [{ required: true, message: '商品名称不能为空', trigger: 'blur' }],
+        unit: [{ required: true, message: '商品单位不能为空', trigger: 'blur' }],
+        price: [{ required: true, message: '商品价格不能为空', trigger: 'blur' }],
+        stockStatus: [{ required: true, message: '库存状态不能为空', trigger: 'blur' }],
+        stock: [{ required: true, message: '商品库存不能为空', trigger: 'blur' }],
+        itemType: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
+        label: [{ required: true, message: '标签不能为空', trigger: 'blur' }],
+        isPuton: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
+        checkList: [{ required: true, message: '商品店铺不能为空', trigger: 'blur' }]
       }
     }
+  },
+  computed: {
+    ...mapGetters([
+      'goodsTypeList'
+    ])
+  },
+  methods: {
+    ...mapActions({
+      getGoodsTypeList: 'getGoodsTypeList',
+      saveGoods: 'saveGoods'
+    }),
+    handleRemove(file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePreview(file) {
+      console.log(file)
+    },
+    // 添加属性名
+    addPropertyForm() {
+      this.goods.propertys.push({
+        name: '',
+        properties: [{
+          value: '',
+          price: ''
+        }]
+      })
+    },
+    // 减少属性名
+    decedePropertyForm(index) {
+      this.goods.propertys.length > 1 && this.goods.propertys.splice(index, 1)
+    },
+    // 添加属性值
+    addProperties(index) {
+      this.goods.propertys[index].properties.push({
+        value: '',
+        price: ''
+      })
+    },
+    // 减少属性值
+    decedeProperties(index, i) {
+      this.goods.propertys[index].properties.length > 1 && this.goods.propertys[index].properties.splice(i, 1)
+    },
+    // 确定保存商品
+    saveGoodsConfirm() {
+      this.$refs.goodsForm.validate(valid => {
+        if (valid) this.saveGoods(this.goods)
+        else console.log('err saveGoods')
+      })
+    }
+  },
+  mounted() {
+    this.getGoodsTypeList()
   }
+}
 </script>
