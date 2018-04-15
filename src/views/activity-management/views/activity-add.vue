@@ -34,8 +34,9 @@
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="活动参与店铺" label-width="100px">
-                        <el-checkbox-group v-model="activityForm.merchants">
-                            <el-checkbox v-for="(merchant,index) in merchantsList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
+                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange(checkAll,'acitivity')">全选</el-checkbox>
+                        <el-checkbox-group v-model="activityForm.merchants" @change="handleCheckMerchantChange">
+                            <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
                         </el-checkbox-group>
                     </el-form-item>
                     <el-form-item label="描述">
@@ -61,8 +62,9 @@
                         <el-date-picker v-model="discountForm.endDate" placeholder="选择结束日期"></el-date-picker>
                     </el-form-item>
                     <el-form-item label="活动参与店铺" label-width="100px">
-                        <el-checkbox-group v-model="discountForm.merchants">
-                            <el-checkbox v-for="(merchant,index) in merchantsList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
+                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange(checkAll,'discount')">全选</el-checkbox>
+                        <el-checkbox-group v-model="discountForm.merchants" @change="handleCheckMerchantChange">
+                            <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
                         </el-checkbox-group>
                     </el-form-item>
                     <el-form-item label="优惠券类型" label-width="100px" prop="couponSendType">
@@ -119,23 +121,9 @@ export default {
         startDate: [{ required: true, message: '优惠券开始时间不能为空', trigger: 'blur' }],
         endDate: [{ required: true, message: '优惠券结束时间不能为空', trigger: 'blur' }]
       },
-      //   couponTypeList: [{
-      //     id: 1,
-      //     name: '首页领取普通优惠券'
-      //   }, {
-      //     id: 2,
-      //     name: '实付满多少送券'
-      //   }, {
-      //     id: 3,
-      //     name: '后台操作送券'
-      //   }, {
-      //     id: 4,
-      //     name: '首次点餐成功送券'
-      //   }, {
-      //     id: 5,
-      //     name: '首次进入小程序送券'
-      //   }],
-      isEnoughSend: false
+      isEnoughSend: false,
+      isIndeterminate: true,
+      checkAll: false
     }
   },
   watch: {
@@ -148,7 +136,7 @@ export default {
     ...mapGetters([
       'couponTypeList',
       'couponSendTypes',
-      'merchantsList'
+      'merchantList'
     ])
   },
   methods: {
@@ -175,6 +163,20 @@ export default {
           return false
         }
       })
+    },
+    // 点击全选时候执行的方法
+    handleCheckAllChange(val, type) {
+      type === 'discount' ? val ? this.merchantList.forEach(merchant => {
+        this.discountForm.merchants.push(merchant.id)
+      }) : this.discountForm.merchants.splice(0) : val ? this.merchantList.forEach(merchant => {
+        this.activityForm.merchants.push(merchant.id)
+      }) : this.activityForm.merchants.splice(0)
+      this.isIndeterminate = false
+    },
+    // 选择商铺时执行的方法
+    handleCheckMerchantChange(val) {
+      this.checkAll = val.length === this.merchantList.length
+      this.isIndeterminate = val.length > 0 && val.length < this.merchantList.length
     }
   },
   mounted() {

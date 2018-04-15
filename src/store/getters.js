@@ -10,7 +10,9 @@ const getters = {
   shopTypeList: state => state.shop.shopTypeList,
   shopForEdit: state => state.shop.shopForEdit,
   editShopResult: state => state.shop.editShopResult,
-  // 商品管理f
+  merchantList: state => state.shop.merchantList,
+  merchantListByItemId: state => state.shop.merchantListByItemId,
+  // 商品管理
   goodsList: state => state.goods.goodsList,
   goodsForEdit: state => state.goods.goodsForEdit,
   goodsTypeList: state => state.goods.goodsTypeList,
@@ -20,6 +22,10 @@ const getters = {
   updateGoodsTypeResult: state => state.goods.updateGoodsTypeResult,
   saveGoodsTypeResult: state => state.goods.saveGoodsTypeResult,
   deleteGoodsTypeResult: state => state.goods.deleteGoodsTypeResult,
+  withdrawGoodsResult: state => state.goods.withdrawGoodsResult,
+  propertiesList: state => state.goods.propertiesList,
+  propertiesTotal: state => state.goods.propertiesTotal,
+  propertyForEdit: state => state.goods.propertyForEdit,
   // 订单管理
   orderAcceptionList: state => state.order.orderAcceptionList,
   orderReservationList: state => state.order.orderReservationList,
@@ -34,8 +40,7 @@ const getters = {
   saveActivityResult: state => state.activity.saveActivity,
   saveCouponResult: state => state.activity.saveCoupon,
   couponList: state => state.activity.couponList,
-  couponSendTypes: state => state.activity.couponSendTypes,
-  merchantsList: state => state.activity.merchantsList
+  couponSendTypes: state => state.activity.couponSendTypes
 }
 
 export default getters

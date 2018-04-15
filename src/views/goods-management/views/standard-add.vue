@@ -7,10 +7,12 @@
             <el-row v-for="(standard,index) in standardForm" :key="index">
               <el-form-item label="规格名称" label-width="120px" prop="categoryNumber">
                 <el-input v-model="standardForm[index].name" auto-complete="off" placeholder="请填写商品编号"></el-input>
-              </el-form-item>
-              <el-form-item label="规格参数" label-width="120px" prop="name">
-                <el-input v-model="standardForm[index].params" auto-complete="off" placeholder="请填写商品名称"></el-input>
                 <div class="property-button decede-properties decede-standard" @click="decedeStandardForm(index)" v-if="standardForm.length > 1">-</div>
+              </el-form-item>
+              <el-form-item v-for="(param,ind) in standardForm[index].params" :key="ind" label="规格参数" label-width="120px" prop="name">
+                <el-input v-model="param.value" auto-complete="off" placeholder="请填写商品名称"></el-input>
+                <div class="property-button add-properties add-standard" @click="addParams(index)" v-if="standardForm[index].params.length === ind + 1">+</div>
+                <div class="property-button decede-properties decede-standard" @click="decedeParams(index,ind)" v-if="standardForm[index].params.length > 1">-</div>
               </el-form-item>
               <el-row class="split-line"></el-row>
             </el-row>
@@ -31,7 +33,9 @@
       return {
         standardForm: [{
           name: '',
-          params: ''
+          params: [{
+            value: ''
+          }]
         }],
         fileList2: [],
         rule: {
@@ -54,8 +58,16 @@
       addStandard() {
         this.standardForm.push({
           name: '',
-          params: ''
+          params: [{
+            value: ''
+          }]
         })
+      },
+      addParams(index) {
+        this.standardForm[index].params.push({ value: '' })
+      },
+      decedeParams(index, ind) {
+        this.standardForm[index].params.splice(ind, 1)
       }
     }
   }

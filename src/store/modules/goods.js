@@ -11,7 +11,10 @@ export default {
     goodsTypeForEdit: {},
     updateGoodsTypeResult: {},
     saveGoodsTypeResult: {},
-    deleteGoodsTypeResult: {}
+    deleteGoodsTypeResult: {},
+    propertiesList: [],
+    propertiesTotal: 0,
+    propertyForEdit: {}
   },
   actions: {
     getGoodsList({ commit }, pagination) {
@@ -43,6 +46,18 @@ export default {
     },
     deleteGoodsType({ commit }, id) {
       http.deleteGoodsType({ id }).then(res => res.code === 200 && commit('deleteGoodsType', res)).catch(err => console.log(err))
+    },
+    withdrawGoodsConfirm({ commit }, goodsInfo) {
+      http.withdrawGoodsConfirm(goodsInfo).then(res => res.code === 200 && commit('withdrawGoodsConfirm', res)).catch(err => console.log(err))
+    },
+    withdrawGoodsConfirmForSuper({ commit }, goodsInfo) {
+      http.withdrawGoodsConfirmForSuper(goodsInfo).then(res => res.code === 200 && commit('withdrawGoodsConfirmForSuper', res)).catch(err => console.log(err))
+    },
+    getPropertiesPage({ commit }, pagination) {
+      http.getPropertiesPage(pagination).then(res => res.code === 200 && commit('getPropertiesPage', res)).catch(err => console.log(err))
+    },
+    getPropertyForEdit({ commit }, id) {
+      http.getPropertyForEdit({ id }).then(res => res.code === 200 && commit('getPropertyForEdit', res)).catch(err => console.log(err))
     }
   },
   mutations: {
@@ -74,6 +89,19 @@ export default {
     },
     deleteGoodsType(state, deleteGoodsTypeResult) {
       state.deleteGoodsTypeResult = deleteGoodsTypeResult
+    },
+    withdrawGoodsConfirm(state, withdrawGoodsResult) {
+      state.withdrawGoodsResult = withdrawGoodsResult
+    },
+    withdrawGoodsConfirmForSuper(state, withdrawGoodsResult) {
+      state.withdrawGoodsResult = withdrawGoodsResult
+    },
+    getPropertiesPage(state, propertiesPageResult) {
+      state.propertiesList = propertiesPageResult.data.propertys
+      state.propertiesTotal = propertiesPageResult.data.totalCount
+    },
+    getPropertyForEdit(state, propertyForEditResult) {
+      state.propertyForEdit = propertyForEditResult.data.property
     }
   }
 }

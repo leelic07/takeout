@@ -3,41 +3,41 @@
     <!--搜索框-->
     <el-row>
       <el-col :span="5">
-        <el-input placeholder="请输入规格名称" v-model="orderNumber"></el-input>
+        <el-input placeholder="请输入规格名称" v-model="pagination.name"></el-input>
       </el-col>
-      <el-col :span="5" class="member-select">
+      <!-- <el-col :span="5" class="member-select">
         <el-input placeholder="请输入规格编号" v-model="orderNumber"></el-input>
-      </el-col>
-      <el-button type="primary" icon="el-icon-search">搜索</el-button>
+      </el-col> -->
+      <el-button type="primary" icon="el-icon-search" @click="getPropertiesPage(pagination)">搜索</el-button>
     </el-row>
     <!--商品分类列表-->
     <el-row class="goods-statics">
-      <el-table :data="categoryList" stripe border fit style="width: 100%" row-class-name="cell-center" header-cell-class-name="cell-center">
+      <el-table :data="propertiesList" stripe border fit style="width: 100%" row-class-name="cell-center" header-cell-class-name="cell-center">
         <el-table-column type="index" :index="1" label="序号"></el-table-column>
         <el-table-column prop="name" label="规格名称"></el-table-column>
         <el-table-column prop="categoryNumber" label="规格编号"></el-table-column>
         <el-table-column prop="quantity" label="规格选项"></el-table-column>
         <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="editMember(scope.row)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="deleteMember(scope.row.id)">删除</el-button>
+          <template slot-scope="props">
+            <el-button type="primary" size="mini" @click="showEditProperty(props.row.id)">编辑</el-button>
+            <el-button type="danger" size="mini" @click="deleteMember(props.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="categoryList.length" :page="pagination.page" :rows="pagination.rows"></pagination>
+    <pagination :total="propertiesTotal" :page="pagination.page" :rows="pagination.rows"></pagination>
     <!--编辑商品分类信息对话框-->
     <el-dialog class="member-editor" title="编辑商品分类" :visible.sync="dialogFormVisible">
-      <el-form :model="memberMessage" size="mini">
+      <el-form :model="propertyForEdit" size="mini">
         <el-form-item label="分类编号" label-width="120px">
-          <el-input v-model="memberMessage.categoryNumber" auto-complete="off" placeholder="请填写商品分类编号"></el-input>
+          <el-input v-model="propertyForEdit.categoryNumber" auto-complete="off" placeholder="请填写商品分类编号"></el-input>
         </el-form-item>
         <el-form-item label="分类名称" label-width="120px">
-          <el-input v-model="memberMessage.name" auto-complete="off" placeholder="请填写分类名称"></el-input>
+          <el-input v-model="propertyForEdit.name" auto-complete="off" placeholder="请填写分类名称"></el-input>
         </el-form-item>
         <el-form-item label="分类商品数量" label-width="120px">
-          <el-input v-model="memberMessage.quantity" auto-complete="off" placeholder="请填写分类商品数量"></el-input>
+          <el-input v-model="propertyForEdit.quantity" auto-complete="off" placeholder="请填写分类商品数量"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -50,6 +50,7 @@
 
 <script>
 import Pagination from '@/components/Pagination/index'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -111,7 +112,8 @@ export default {
       datetime: '', // 日期时间
       pagination: {// 分页信息
         page: 1,
-        rows: 10
+        rows: 10,
+        name: ''
       },
       options: [{
         value: 1,
@@ -145,16 +147,27 @@ export default {
   components: {
     Pagination
   },
+  computed: {
+    ...mapGetters([
+      'propertiesList',
+      'propertiesTotal',
+      'propertyForEdit'
+    ])
+  },
   methods: {
+    ...mapActions({
+      getPropertiesPage: 'getPropertiesPage',
+      getPropertyForEdit: 'getPropertyForEdit'
+    }),
     // 点击详情执行的方法
     showMemberDetail(row) {
       this.dialogDetailVisible = true
       this.memberMessage = row
     },
     // 点击编辑执行的方法
-    editMember(row) {
+    showEditProperty(id) {
       this.dialogFormVisible = true
-      this.memberMessage = row
+      this.getPropertyForEdit(id)
     },
     // 会员头像上传成功执行的方法
     handleAvatarSuccess(file) {
@@ -177,6 +190,9 @@ export default {
         })
       }).catch(err => console.log(err))
     }
+  },
+  mounted() {
+    this.getPropertiesPage(this.pagination)
   }
 }
 </script>

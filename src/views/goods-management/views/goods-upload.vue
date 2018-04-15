@@ -49,11 +49,9 @@
             </el-upload>
           </el-form-item>
           <el-form-item label="商品售卖店铺" label-width="120px" prop="checkList">
-            <el-checkbox-group v-model="goods.checkList">
-              <el-checkbox label="店铺A"></el-checkbox>
-              <el-checkbox label="店铺B"></el-checkbox>
-              <el-checkbox label="店铺C"></el-checkbox>
-              <el-checkbox label="店铺D" disabled></el-checkbox>
+            <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+            <el-checkbox-group v-model="goods.merchants" @change="handleCheckMerchantChange">
+              <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="商品属性" label-width="120px">
@@ -117,7 +115,7 @@ export default {
   data() {
     return {
       goods: {
-        checkList: [],
+        merchants: [],
         propertys: [{
           name: '',
           properties: [{
@@ -150,18 +148,22 @@ export default {
       }, {
         id: 3,
         name: '甜度'
-      }]
+      }],
+      checkAll: false,
+      isIndeterminate: true
     }
   },
   computed: {
     ...mapGetters([
-      'goodsTypeList'
+      'goodsTypeList',
+      'merchantList'
     ])
   },
   methods: {
     ...mapActions({
       getGoodsTypeList: 'getGoodsTypeList',
-      saveGoods: 'saveGoods'
+      saveGoods: 'saveGoods',
+      getMerchantsList: 'getMerchantsList'
     }),
     handleRemove(file, fileList) {
       console.log(file, fileList)
@@ -200,10 +202,23 @@ export default {
         if (valid) this.saveGoods(this.goods)
         else console.log('err saveGoods')
       })
+    },
+    // 点击全选时执行的方法
+    handleCheckAllChange(val) {
+      val ? this.merchantList.forEach(merchant => {
+        this.goods.merchants.push(merchant.id)
+      }) : this.goods.merchants.splice(0)
+      this.isIndeterminate = false
+    },
+    // 选择商铺时执行的方法
+    handleCheckMerchantChange(val) {
+      this.checkAll = val.length === this.merchantList.length
+      this.isIndeterminate = val.length > 0 && val.length < this.merchantList.length
     }
   },
   mounted() {
     this.getGoodsTypeList()
+    this.getMerchantsList()
   }
 }
 </script>

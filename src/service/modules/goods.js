@@ -9,5 +9,9 @@ export default {
   editGoodsType: id => service.get('/item_types/edit', id).then(res => res).catch(err => err),
   updateGoodsType: goodsType => service.post('/item_types/update', goodsType).then(res => res).catch(err => err),
   saveGoodsType: goodsType => service.post('/item_types/save', goodsType).then(res => res).catch(err => err),
-  deleteGoodsType: id => service.post('/item_types/delete', id).then(res => res).catch(err => err)
+  deleteGoodsType: id => service.post('/item_types/delete', id).then(res => res).catch(err => err),
+  withdrawGoodsConfirm: goodsInfo => service.post('/items/updateIsPuton', goodsInfo).then(res => res).catch(err => err),
+  withdrawGoodsConfirmForSuper: goodsInfo => service.get('/items/superUpdate', goodsInfo).then(res => res).catch(err => err),
+  getPropertiesPage: pagination => service.get('/propertys/page', pagination).then(res => res).catch(err => err),
+  getPropertyForEdit: id => service.get('/propertys/edit', id).then(res => res).catch(err => err)
 }

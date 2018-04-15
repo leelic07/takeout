@@ -11,8 +11,7 @@ export default {
     updateActivityResult: {},
     couponTypeList: [],
     saveActivityResult: {},
-    saveCouponResult: {},
-    merchantsList: []
+    saveCouponResult: {}
   },
   actions: {
     getActivityList({ commit }, pagination) {
@@ -43,9 +42,6 @@ export default {
     },
     saveCoupon({ commit }, coupon) {
       http.saveCoupon(coupon).then(res => res.code === 200 && commit('saveCoupon', res)).catch(err => console.log(err))
-    },
-    getMerchantsList({ commit }) {
-      http.getMerchantsList().then(res => res.code === 200 && commit('getMerchantsList', res)).catch(err => console.log(err))
     }
   },
   mutations: {
@@ -73,9 +69,6 @@ export default {
     },
     saveCoupon(state, saveCouponResult) {
       state.saveCouponResult = saveCouponResult
-    },
-    getMerchantsList(state, merchantsListResult) {
-      state.merchantsList = merchantsListResult.data.merchants
     }
   }
 }

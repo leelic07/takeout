@@ -6,9 +6,9 @@
         <el-input placeholder="请输入商品名称" v-model="pagination.name"></el-input>
       </el-col>
       <el-col :span="4" class="member-select">
-        <el-select v-model="pagination.shopId" placeholder="请选择店铺">
+        <el-select v-model="pagination.merchantId" placeholder="请选择店铺">
           <el-option value="" label="全部"></el-option>
-          <el-option v-for="(merchant,index) in merchantsList" :value="merchant.id" :label="merchant.name" :key="index"></el-option>
+          <el-option v-for="(merchant,index) in merchantList" :value="merchant.id" :label="merchant.name" :key="index"></el-option>
         </el-select>
       </el-col>
       <!-- <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
@@ -92,18 +92,23 @@
         <el-button size="mini" type="primary" @click="dialogFormVisible = false">确 定</el-button>
       </div>
     </el-dialog>
-    <!--下架对话框-->
+    <!--商品下架对话框-->
     <el-dialog class="withdraw-dialog" title="商品下架" :visible.sync="dialogWithdrawVisible">
       <el-form ref="shopForm">
         <el-form-item label="选择下架商铺：">
-          <el-checkbox-group v-model="shopIds">
-            <el-checkbox v-for="(merchant,index) in merchantsList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
+          <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+          <el-checkbox-group v-model="merchantId" @change="handleCheckMerchantChange">
+            <el-checkbox v-for="(merchant,index) in merchantListByItemId" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="mini" @click="dialogWithdrawVisible = false">取 消</el-button>
-        <el-button size="mini" type="primary" @click="withdrawGoodsConfirm">确 定</el-button>
+        <el-button size="mini" type="primary" @click="withdrawGoodsConfirmForSuper({
+          itemId,
+          merchantId,
+          isPuton: 0
+        })">确 定</el-button>
       </div>
     </el-dialog>
   </el-row>
@@ -122,7 +127,7 @@ export default {
         page: 1,
         rows: 10,
         name: '',
-        shopId: ''
+        merchantId: ''
       },
       options: [{
         value: 1,
@@ -152,11 +157,14 @@ export default {
         desc: ''
       },
       imageUrl: '', // 上传头像的图片路径
-      shopIds: []
+      merchantId: [], // 选中的商品id的集合
+      itemId: '', // 需要下架或者上架的商品id
+      checkAll: false,
+      isIndeterminate: true
     }
   },
   watch: {
-    'pagination.shopId'() {
+    'pagination.merchantId'() {
       this.getGoodsList(this.pagination)
     }
   },
@@ -164,7 +172,8 @@ export default {
     ...mapGetters([
       'goodsList',
       'goodsForEdit',
-      'merchantsList'
+      'merchantList',
+      'merchantListByItemId'
     ])
   },
   components: {
@@ -174,7 +183,10 @@ export default {
     ...mapActions({
       getGoodsList: 'getGoodsList',
       editGoods: 'editGoods',
-      getMerchantsList: 'getMerchantsList'
+      getMerchantsList: 'getMerchantsList',
+      getMerchantsListByitemId: 'getMerchantsListByitemId',
+      withdrawGoodsConfirm: 'withdrawGoodsConfirm',
+      withdrawGoodsConfirmForSuper: 'withdrawGoodsConfirmForSuper'
     }),
     // 点击详情执行的方法
     showMemberDetail(row) {
@@ -195,21 +207,36 @@ export default {
       console.log(file)
     },
     // 点击下架执行的方法
-    withdrawGoods(id) {
-      if (this.pagination.shopId) {
+    withdrawGoods(itemId) {
+      if (this.pagination.merchantId) {
         this.$confirm('确定下架该商品?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '下架成功!'
+          this.withdrawGoodsConfirm({
+            itemId,
+            merchantId: this.merchantId.push(this.pagination.merchantId),
+            isPuton: 0
           })
         }).catch(err => console.log(err))
       } else {
+        this.getMerchantsListByitemId(itemId)
         this.dialogWithdrawVisible = true
+        this.itemId = itemId
       }
+    },
+    // 点击全选执行的方法
+    handleCheckAllChange(val) {
+      val ? this.merchantList.formEach(merchant => {
+        this.merchantId.push(merchant.id)
+      }) : this.merchantId.splice(0)
+      this.isIndeterminate = false
+    },
+    // 选择商铺时执行的方法
+    handleCheckMerchantChange(val) {
+      this.checkAll = val.length === this.merchantList.length
+      this.isIndeterminate = val.length > 0 && val.length < this.merchantList.length
     }
   },
   mounted() {

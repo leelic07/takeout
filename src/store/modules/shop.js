@@ -8,7 +8,9 @@ export default {
     editShopResult: {},
     shopTypeList: [],
     shopTotal: 0,
-    shopForEdit: {}
+    shopForEdit: {},
+    merchantList: [],
+    merchantListByItemId: []
   },
   actions: {
     // 获取商户列表
@@ -31,6 +33,12 @@ export default {
     },
     getShopForEdit({ commit }, id) {
       http.getShopForEdit({ id }).then(res => res.code === 200 && commit('getShopForEdit', res)).catch(err => console.log(err))
+    },
+    getMerchantsList({ commit }) {
+      http.getMerchantsList().then(res => res.code === 200 && commit('getMerchantsList', res)).catch(err => console.log(err))
+    },
+    getMerchantsListByitemId({ commit }, id) {
+      http.getMerchantsListByitemId({ id }).then(res => res.code === 200 && commit('getMerchantsListByitemId', res)).catch(err => console.log(err))
     }
   },
   mutations: {
@@ -54,6 +62,12 @@ export default {
       const shop = shopForEditResult.data.merchants
       shop.isOnline = shop.isOnline.toString()
       state.shopForEdit = shop
+    },
+    getMerchantsList(state, merchantsListResult) {
+      state.merchantList = merchantsListResult.data.merchants
+    },
+    getMerchantsListByitemId(state, getMerchantsListResult) {
+      state.merchantListByItemId = getMerchantsListResult.data.merchants
     }
   }
 }
