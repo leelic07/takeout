@@ -5,12 +5,17 @@
       <el-col :span="5">
         <el-input placeholder="请输入商品名称" v-model="pagination.name"></el-input>
       </el-col>
-      <!-- <el-col :span="5" class="member-select">
-        <el-input placeholder="请输入商品编号" v-model="orderNumber"></el-input>
+      <el-col :span="4" class="member-select">
+        <el-select v-model="pagination.shopId" placeholder="请选择店铺">
+          <el-option value="" label="全部"></el-option>
+          <el-option v-for="(merchant,index) in merchantsList" :value="merchant.id" :label="merchant.name" :key="index"></el-option>
+        </el-select>
       </el-col>
-      <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
+      <!-- <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
       </el-date-picker> -->
+      <!-- <el-col :span="1"> -->
       <el-button type="primary" icon="el-icon-search" @click="getGoodsList(pagination)">搜索</el-button>
+      <!-- </el-col> -->
     </el-row>
     <!--会员信息列表-->
     <el-row class="order-statics">
@@ -35,15 +40,15 @@
         <el-table-column label="操作" width="140">
           <template slot-scope="props">
             <el-button type="primary" size="mini" @click="editGoods(props.row.id)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="deleteMember(props.row.id)">下架</el-button>
+            <el-button type="danger" size="mini" @click="withdrawGoods(props.row.id)">下架</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-row>
     <!--分页组件-->
     <pagination :total="goodsList.length" :page="pagination.page" :rows="pagination.rows"></pagination>
-    <!--编辑会员信息对话框-->
-    <el-dialog class="member-editor" title="编辑会员" :visible.sync="dialogFormVisible">
+    <!--编辑商品信息对话框-->
+    <el-dialog class="member-editor" title="编辑商品" :visible.sync="dialogFormVisible">
       <el-form :model="goodsForEdit" size="mini">
         <el-form-item label="商品名称" label-width="120px">
           <el-input v-model="goodsForEdit.name" auto-complete="off" placeholder="请填写姓名"></el-input>
@@ -87,6 +92,20 @@
         <el-button size="mini" type="primary" @click="dialogFormVisible = false">确 定</el-button>
       </div>
     </el-dialog>
+    <!--下架对话框-->
+    <el-dialog class="withdraw-dialog" title="商品下架" :visible.sync="dialogWithdrawVisible">
+      <el-form ref="shopForm">
+        <el-form-item label="选择下架商铺：">
+          <el-checkbox-group v-model="shopIds">
+            <el-checkbox v-for="(merchant,index) in merchantsList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="dialogWithdrawVisible = false">取 消</el-button>
+        <el-button size="mini" type="primary" @click="withdrawGoodsConfirm">确 定</el-button>
+      </div>
+    </el-dialog>
   </el-row>
 </template>
 
@@ -102,7 +121,8 @@ export default {
       pagination: {// 分页信息
         page: 1,
         rows: 10,
-        name: ''
+        name: '',
+        shopId: ''
       },
       options: [{
         value: 1,
@@ -116,7 +136,8 @@ export default {
       }],
       value: '', // 选择会员等级
       dialogDetailVisible: false,
-      dialogFormVisible: true,
+      dialogFormVisible: false,
+      dialogWithdrawVisible: false,
       memberMessage: {
         imageUrl: ''
       }, // 会员详情信息
@@ -130,13 +151,20 @@ export default {
         resource: '',
         desc: ''
       },
-      imageUrl: '' // 上传头像的图片路径
+      imageUrl: '', // 上传头像的图片路径
+      shopIds: []
+    }
+  },
+  watch: {
+    'pagination.shopId'() {
+      this.getGoodsList(this.pagination)
     }
   },
   computed: {
     ...mapGetters([
       'goodsList',
-      'goodsForEdit'
+      'goodsForEdit',
+      'merchantsList'
     ])
   },
   components: {
@@ -145,7 +173,8 @@ export default {
   methods: {
     ...mapActions({
       getGoodsList: 'getGoodsList',
-      editGoods: 'editGoods'
+      editGoods: 'editGoods',
+      getMerchantsList: 'getMerchantsList'
     }),
     // 点击详情执行的方法
     showMemberDetail(row) {
@@ -165,22 +194,27 @@ export default {
     beforeAvatarUpload(file) {
       console.log(file)
     },
-    // 点击删除执行的方法
-    deleteMember(id) {
-      this.$confirm('确定下架该商品?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '下架成功!'
-        })
-      }).catch(err => console.log(err))
+    // 点击下架执行的方法
+    withdrawGoods(id) {
+      if (this.pagination.shopId) {
+        this.$confirm('确定下架该商品?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '下架成功!'
+          })
+        }).catch(err => console.log(err))
+      } else {
+        this.dialogWithdrawVisible = true
+      }
     }
   },
   mounted() {
-    this.getGoodsList()
+    this.getGoodsList(this.pagination)
+    this.getMerchantsList()
   }
 }
 </script>

@@ -18,7 +18,7 @@
           <el-form-item label="商品分类" label-width="120px" prop="itemType">
             <el-select v-model="goods.itemType" placeholder="请选择商品分类">
               <el-option v-for="item in goodsTypeList" :key="item.id" :label="item.name" :value="item.id">
-            </el-option>
+              </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="标签" label-width="120px" prop="label">
@@ -38,7 +38,7 @@
           </el-form-item>
           <el-form-item label="商品状态" label-width="120px" prop="isPuton">
             <el-radio-group v-model="goods.isPuton">
-              <el-radio label="1">在售</el-radio> 
+              <el-radio label="1">在售</el-radio>
               <el-radio label="0">下架</el-radio>
             </el-radio-group>
           </el-form-item>
@@ -72,7 +72,9 @@
               <label for="">属性名</label>
             </el-col>
             <el-col :span="8">
-              <el-input v-model="pro.name" auto-complete="off" placeholder="请填写属性名"></el-input>
+              <el-select v-model="pro.name" placeholder="请选择属性名">
+                <el-option v-for="(pro,index) in shopPropertyList" :value="pro.id" :label="pro.name" :key="index"></el-option>
+              </el-select>
             </el-col>
             <el-col :span="2" :offset="2">
               <div class="property-button add-properties" @click="addPropertyForm">+</div>
@@ -80,11 +82,12 @@
             </el-col>
           </el-col>
           <el-col v-for="(ps,ind) in pro.properties" :key="ind" label="">
-            <el-col :span="2">
-              <label for="">属性值</label>
+            <el-col :span="3">
+              <label for="">属性值：</label>
             </el-col>
-            <el-col :span="8">
-              <el-input v-model="ps.value" auto-complete="off" placeholder="请填写属性值"></el-input>
+            <el-col :span="7">
+              <!-- <el-input v-model="ps.value" auto-complete="off" placeholder="请填写属性值"></el-input> -->
+              <span>{{ps.value}}</span>
             </el-col>
             <el-col :span="2" :offset="1">
               <label for="">价格</label>
@@ -118,7 +121,7 @@ export default {
         propertys: [{
           name: '',
           properties: [{
-            value: '',
+            value: 'xxx',
             price: ''
           }]
         }]
@@ -137,7 +140,17 @@ export default {
         label: [{ required: true, message: '标签不能为空', trigger: 'blur' }],
         isPuton: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
         checkList: [{ required: true, message: '商品店铺不能为空', trigger: 'blur' }]
-      }
+      },
+      shopPropertyList: [{
+        id: 1,
+        name: '辣椒'
+      }, {
+        id: 2,
+        name: '冰块'
+      }, {
+        id: 3,
+        name: '甜度'
+      }]
     }
   },
   computed: {
@@ -161,7 +174,7 @@ export default {
       this.goods.propertys.push({
         name: '',
         properties: [{
-          value: '',
+          value: 'xxx',
           price: ''
         }]
       })
@@ -173,7 +186,7 @@ export default {
     // 添加属性值
     addProperties(index) {
       this.goods.propertys[index].properties.push({
-        value: '',
+        value: 'xxx',
         price: ''
       })
     },

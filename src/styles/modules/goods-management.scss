@@ -50,6 +50,13 @@
         }
       }
     }
+    .withdraw-dialog {
+      .el-dialog {
+        .el-dialog__body {
+          padding-bottom: 0
+        }
+      }
+    }
 
     /*上传会员头像的文件选择框*/
     .avatar-uploader .el-upload {

@@ -5,14 +5,16 @@
       <el-col :span="5">
         <el-input placeholder="请输入活动名称" v-model="pagination.name"></el-input>
       </el-col>
-      <!-- <el-col :span="5" class="member-select">
-        <el-input placeholder="请输入活动编号" v-model="orderNumber"></el-input>
+      <el-col :span="5" class="member-select">
+        <el-select v-model="activityType" placeholder="请选择活动类型">
+          <el-option v-for="(activity,index) in activityTypeList" :value="activity.id" :label="activity.name" :key="index"></el-option>
+        </el-select>
       </el-col>
-      <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
+      <!-- <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
       </el-date-picker> -->
-      <el-button type="primary" icon="el-icon-search" @click="getActivityList(pagination)">搜索</el-button>
+      <el-button type="primary" icon="el-icon-search" @click="searchActivity">搜索</el-button>
     </el-row>
-    <!--会员信息列表-->
+    <!--满减活动列表-->
     <el-row class="order-statics">
       <el-table :data="activityList" stripe border fit style="width: 100%">
         <el-table-column type="index" :index="1" label="序号"></el-table-column>
@@ -121,7 +123,24 @@ export default {
         resource: '',
         desc: ''
       },
-      imageUrl: '' // 上传头像的图片路径
+      imageUrl: '', // 上传头像的图片路径
+      activityTypeList: [{
+        id: 1,
+        name: '满减活动'
+      }, {
+        id: 2,
+        name: '优惠券'
+      }],
+      activityType: 1
+    }
+  },
+  watch: {
+    activityType(newValue) {
+      if (newValue === 1) {
+        this.getActivityList(this.pagination)
+      } else {
+        this.getCouponList(this.pagination)
+      }
     }
   },
   computed: {
@@ -137,6 +156,7 @@ export default {
   methods: {
     ...mapActions({
       getActivityList: 'getActivityList',
+      getCouponList: 'getCouponList',
       editActivity: 'editActivity',
       updateActivity: 'updateActivity'
     }),
@@ -178,6 +198,10 @@ export default {
     updateActivityConfirm() {
       this.dialogFormVisible = true
       this.updateActivity(this.activityForEdit)
+    },
+    searchActivity() {
+      if (this.activityType === 1) this.getActivityList(this.pagination)
+      else this.getCouponList(this.pagination)
     }
   },
   mounted() {

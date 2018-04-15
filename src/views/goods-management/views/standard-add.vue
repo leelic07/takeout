@@ -3,7 +3,7 @@
     <el-col class="goods-upload-box" :span="14" :offset="5">
       <el-col :span="20">
         <el-card>
-          <el-form :model="standardForm" ref="categoryForm" :rules="rule" size="large">
+          <el-form ref="categoryForm" :rules="rule" size="large">
             <el-row v-for="(standard,index) in standardForm" :key="index">
               <el-form-item label="规格名称" label-width="120px" prop="categoryNumber">
                 <el-input v-model="standardForm[index].name" auto-complete="off" placeholder="请填写商品编号"></el-input>
@@ -12,6 +12,7 @@
                 <el-input v-model="standardForm[index].params" auto-complete="off" placeholder="请填写商品名称"></el-input>
                 <div class="property-button decede-properties decede-standard" @click="decedeStandardForm(index)" v-if="standardForm.length > 1">-</div>
               </el-form-item>
+              <el-row class="split-line"></el-row>
             </el-row>
             <el-form-item>
               <el-button type="primary" size="medium">保存</el-button>

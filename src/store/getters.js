@@ -29,7 +29,13 @@ const getters = {
   activityList: state => state.activity.activityList,
   activityTotal: state => state.activity.activityTotal,
   activityForEdit: state => state.activity.activityForEdit,
-  updateActivityResult: state => state.activity.updateActivityResult
+  updateActivityResult: state => state.activity.updateActivityResult,
+  couponTypeList: state => state.activity.couponTypeList,
+  saveActivityResult: state => state.activity.saveActivity,
+  saveCouponResult: state => state.activity.saveCoupon,
+  couponList: state => state.activity.couponList,
+  couponSendTypes: state => state.activity.couponSendTypes,
+  merchantsList: state => state.activity.merchantsList
 }
 
 export default getters
