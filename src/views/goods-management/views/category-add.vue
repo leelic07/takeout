@@ -7,7 +7,7 @@
                         <el-input v-model="goodsType.categoryNumber" auto-complete="off" placeholder="请填写商品编号"></el-input>
                     </el-form-item> -->
           <el-form-item label="分类名称" label-width="120px" prop="name">
-            <el-input v-model="goodsType.name" auto-complete="off" placeholder="请填写商品名称"></el-input>
+            <el-input v-model="goodsType.name" auto-complete="off" placeholder="请填写分类名称"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" @click="saveGoodsTypeConfirm">保存</el-button>

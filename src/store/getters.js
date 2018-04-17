@@ -40,7 +40,15 @@ const getters = {
   saveActivityResult: state => state.activity.saveActivity,
   saveCouponResult: state => state.activity.saveCoupon,
   couponList: state => state.activity.couponList,
-  couponSendTypes: state => state.activity.couponSendTypes
+  couponSendTypes: state => state.activity.couponSendTypes,
+  // 上传文件
+  uploadFileUrl: state => state.upload.uploadFileUrl,
+  // 会员管理
+  userList: state => state.member.userList,
+  userTotal: state => state.member.userTotal,
+  userForEdit: state => state.member.userForEdit,
+  // 售后管理
+  feedbacksList: state => state.customer.feedbacksList
 }
 
 export default getters
