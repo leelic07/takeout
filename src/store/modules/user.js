@@ -1,5 +1,5 @@
 import http from '@/service'
-import router from '../../router'
+import router from '@/router'
 
 const user = {
   state: {
@@ -25,16 +25,22 @@ const user = {
   },
   mutations: {
     // 登录
-    login(state, user) {
-      state.users = user.data.users
-      sessionStorage.setItem('type', user.data.users.type)
+    login(state, userResult) {
+      const users = userResult.data.users
+      sessionStorage.setItem('type', users.type)
+      sessionStorage.setItem('userId', users.id)
+      sessionStorage.setItem('userName', users.name)
+      sessionStorage.setItem('merchantId', users.merchantId)
+      state.users = users
       router.push({
         path: '/seller/index'
       })
     },
     // 登出
     logout(state) {
-
+      router.push({
+        path: '/login'
+      })
     },
     // 修改密码
     resetPwd(state, resetResult) {

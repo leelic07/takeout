@@ -6,6 +6,20 @@
   }
   .el-card.box-card {
     margin-top: 20px;
+    .el-card__header {
+      .el-col-3 {
+        > span {
+          float: left;
+          margin-top: 7px;
+        }
+      }
+      .el-col-4 {
+        .el-rate {
+          margin-top: 5px;
+          margin-left: 8px;
+        }
+      }
+    }
     .goods-management {
       float: right;
       padding: 0;

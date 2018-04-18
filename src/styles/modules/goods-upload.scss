@@ -2,7 +2,6 @@
   padding: 32px;
   .goods-upload-box {
     .el-card {
-      // padding:0 20% 0 5%;
       .el-card__body {
         padding: 25px 0 0 0;
         .el-form {
@@ -39,7 +38,6 @@
             width: 100%;
             height:35px;
           }
-          
         }
       }
     }
@@ -60,6 +58,7 @@
     }
     .add-properties {
       background-color: $blue;
+      margin-left: 10px;
     }
     .decede-properties {
       background-color: orange;
@@ -68,12 +67,12 @@
     .decede-standard {
       position: absolute;
       top: 0;
-      right: -22%;
+      right: -12%;
     }
     .add-standard {
       position: absolute;
       top: 0;
-      right: -12%;
+      right: -22%;
     }
   }
   .modify-box {

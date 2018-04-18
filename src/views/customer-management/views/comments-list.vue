@@ -39,26 +39,30 @@
                     <div slot="header" class="card-header clearfix" v-if="true">
                         <el-col :span="20">
                             <label>符合条件的评价:</label>
-                            <span>106条</span>
+                            <span>{{feedbacksList.length}}条</span>
                         </el-col>
                         <span type="text">待发配送</span>
                     </div>
                     <el-row>
-                        <el-table :data="tableData5" style="width: 100%" :show-header="false" stripe>
+                        <el-table :data="feedbacksList" style="width: 100%" :show-header="false" stripe>
                             <el-table-column label="" prop="id">
                                 <template slot-scope="props">
                                     <el-row class="card-content comments-box">
                                         <el-col :span="20">
                                             <label>曾女士</label>
-                                            <span>2018-3-14</span>
+                                            <span>{{props.row.createdAt | Date}}</span>
                                         </el-col>
                                         <el-col :span="20">
                                             <label>商家评分:无懈可击</label>
-                                            <span>该用户没有填写评论内容</span>
+                                            <span></span>
+                                        </el-col>
+                                        <el-col :span="20">
+                                            <label>评论内容:</label>
+                                            <span>{{props.row.content}}</span>
                                         </el-col>
                                         <el-col :span="20" class="seller-box">
                                             <label>商家</label>
-                                            <el-rate v-model="sellerLevel" disabled show-score text-color="#ff9900" score-template="{value}">
+                                            <el-rate v-model="props.row.distributionScore" disabled show-score text-color="#ff9900" score-template="{value}">
                                             </el-rate>
                                             <el-col :span="14">
                                                 <el-button type="text">回复</el-button>
@@ -145,45 +149,12 @@
 </template>
 
 <script>
-// import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data() {
     return {
       form: {},
-      tableData5: [{
-        id: '12987122',
-        name: '不要香菜,不要香菜,不要香菜',
-        category: '江浙小吃、小吃零食',
-        desc: '荷兰优质淡奶，奶香浓而不腻',
-        address: '上海市普陀区真北路',
-        shop: '王小虎夫妻店',
-        shopId: '10333'
-      }, {
-        id: '12987123',
-        name: '好滋好味鸡蛋仔',
-        category: '江浙小吃、小吃零食',
-        desc: '荷兰优质淡奶，奶香浓而不腻',
-        address: '上海市普陀区真北路',
-        shop: '王小虎夫妻店',
-        shopId: '10333'
-      }, {
-        id: '12987125',
-        name: '好滋好味鸡蛋仔',
-        category: '江浙小吃、小吃零食',
-        desc: '荷兰优质淡奶，奶香浓而不腻',
-        address: '上海市普陀区真北路',
-        shop: '王小虎夫妻店',
-        shopId: '10333'
-      }, {
-        id: '12987126',
-        name: '好滋好味鸡蛋仔',
-        category: '江浙小吃、小吃零食',
-        desc: '荷兰优质淡奶，奶香浓而不腻',
-        address: '上海市普陀区真北路',
-        shop: '王小虎夫妻店',
-        shopId: '10333'
-      }],
       tableData: [{
         date: '3俩卤粉',
         name: 8,
@@ -216,7 +187,16 @@ export default {
       sellerLevel: '3.7'
     }
   },
+  computed: {
+    ...mapGetters([
+      'feedbacksList',
+      'feedbacksTotal'
+    ])
+  },
   methods: {
+    ...mapActions({
+      getFeedbacksList: 'getFeedbacksList'
+    }),
     // 点击打印订单执行的方法
     printOrder() {
       this.$confirm('确定打印订单？', '提示', {
@@ -243,6 +223,9 @@ export default {
         }).catch(err => console.log(err))
       })
     }
+  },
+  mounted() {
+    this.getFeedbacksList(sessionStorage.getItem('userId'))
   }
 }
 </script>

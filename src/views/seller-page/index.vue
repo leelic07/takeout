@@ -11,13 +11,17 @@
       <div slot="header" class="clearfix">
         <el-row>
           <el-col :span="3">
-            <span>{{seller.title}}</span>
+            <el-select v-if="$_type === '1'" v-model="seller.merchantId" placeholder="请选择店铺" size="small">
+              <el-option value="" label="全部店铺"></el-option>
+              <el-option v-for="(merchant,index) in merchantList" :key="index" :value="merchant.id" :label="merchant.name"></el-option>
+            </el-select>
+            <span v-else>{{seller.title}}</span>
           </el-col>
           <el-col :span="4">
             <el-rate v-model="seller.rate" disabled show-score text-color="#ff9900" score-template="{value}">
             </el-rate>
           </el-col>
-          <el-button class="goods-management" icon="el-icon-goods" type="text">商品管理</el-button>
+          <el-button class="goods-management" icon="el-icon-goods" type="text" @click="showGoodsManagement">商品管理</el-button>
         </el-row>
       </div>
       <el-row>
@@ -56,7 +60,6 @@
             </el-col>
           </el-col>
         </el-col>
-
         <el-col class="goods-body" :span="12">
           <el-col :span="12">
             <p>今日有效订单
@@ -81,8 +84,7 @@
             <el-col :span="24" class="order-amount-today">
               <router-link to="/seller/index">
                 <h1>
-                  <svg-icon icon-class="money"/>
-                  114.99
+                  <svg-icon icon-class="money" /> 114.99
                 </h1>
                 <span>
                   <i class="el-icon-arrow-right el-icon--right"></i>
@@ -104,48 +106,69 @@
 </template>
 
 <script>
-  import PanelGroup from './components/panel-group'
-  import LineChart from './components/line-chart'
-  import DndList from '@/components/DndList'
+import PanelGroup from './components/panel-group'
+import LineChart from './components/line-chart'
+import DndList from '@/components/DndList'
+import { mapActions, mapGetters } from 'vuex'
 
-  export default {
-    data() {
-      return {
-        list1: [],
-        list2: [],
-        seller: {
-          title: '意甜蛋糕(友阿店)',
-          rate: 3.7
-        }
-      }
-    },
-    components: {
-      PanelGroup,
-      LineChart,
-      DndList
-    },
-    methods: {
-      handleSetLineChartData(type) {
-        switch (type) {
-          case 'orderList':
-            this.$router.push({
-              path: '/order/list'
-            })
-            break
-          case 'incomeList':
-            this.$router.push({
-              path: '/income/chart'
-            })
-            break
-          case 'menuList':
-            this.$router.push({
-              path: '/menu/list'
-            })
-            break
-          default:
-            break
-        }
+export default {
+  data() {
+    return {
+      list1: [],
+      list2: [],
+      seller: {
+        title: '意甜蛋糕(友阿店)',
+        rate: 3.7,
+        merchantId: ''
       }
     }
+  },
+  components: {
+    PanelGroup,
+    LineChart,
+    DndList
+  },
+  computed: {
+    ...mapGetters([
+      'merchantList'
+    ]),
+    type() {
+      return sessionStorage.getItem('type')
+    }
+  },
+  methods: {
+    ...mapActions({
+      getMerchantsList: 'getMerchantsList'
+    }),
+    handleSetLineChartData(type) {
+      switch (type) {
+        case 'orderList':
+          this.$router.push({
+            path: '/order/list'
+          })
+          break
+        case 'incomeList':
+          this.$router.push({
+            path: '/income/chart'
+          })
+          break
+        case 'menuList':
+          this.$router.push({
+            path: '/menu/list'
+          })
+          break
+        default:
+          break
+      }
+    },
+    showGoodsManagement() {
+      this.$router.push({
+        path: '/goods/list'
+      })
+    }
+  },
+  mounted() {
+    this.getMerchantsList()
   }
+}
 </script>

@@ -6,7 +6,7 @@
         <el-input placeholder="请输入商品名称" v-model="pagination.name"></el-input>
       </el-col>
       <el-col :span="4" class="member-select">
-        <el-select v-model="pagination.merchantId" placeholder="请选择店铺">
+        <el-select v-model="pagination.merchantId" placeholder="请选择店铺" v-if="$_type === '1'">
           <el-option value="" label="全部"></el-option>
           <el-option v-for="(merchant,index) in merchantList" :value="merchant.id" :label="merchant.name" :key="index"></el-option>
         </el-select>
@@ -39,7 +39,7 @@
         <el-table-column prop="status" label="商品状态"></el-table-column>
         <el-table-column label="操作" width="140">
           <template slot-scope="props">
-            <el-button type="primary" size="mini" @click="editGoods(props.row.id)">编辑</el-button>
+            <el-button type="primary" size="mini" @click="showGoodsEdit(props.row.id)">编辑</el-button>
             <el-button type="danger" size="mini" @click="withdrawGoods(props.row.id)">下架</el-button>
           </template>
         </el-table-column>
@@ -175,6 +175,7 @@ export default {
       'merchantList',
       'merchantListByItemId'
     ])
+
   },
   components: {
     Pagination
@@ -194,9 +195,10 @@ export default {
       this.memberMessage = row
     },
     // 点击编辑执行的方法
-    editMember(row) {
+    showGoodsEdit(id) {
       this.dialogFormVisible = true
-      this.memberMessage = row
+      console.log('itemId', id)
+      this.editGoods(id)
     },
     // 会员头像上传成功执行的方法
     handleAvatarSuccess(file) {

@@ -14,7 +14,7 @@
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
-          <span @click="logout" style="display:block;">退出</span>
+          <span @click="logoutConfirm" style="display:block;">退出</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -43,6 +43,15 @@ export default {
     }),
     toggleSideBar() {
       this.$store.dispatch('ToggleSideBar')
+    },
+    logoutConfirm() {
+      this.$confirm('确定退出登录？', '提示', {
+        type: 'warning',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(() => {
+        this.logout()
+      }).catch(err => console.log(err))
     }
   }
 }
