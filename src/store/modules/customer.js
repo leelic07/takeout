@@ -3,7 +3,6 @@ import http from '@/service'
 export default {
   state: {
     feedbacksList: []
-    // feedbacksTotal: 0
   },
   actions: {
     getFeedbacksList({ commit }, userId) {

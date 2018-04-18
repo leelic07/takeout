@@ -14,7 +14,8 @@ export default {
     deleteGoodsTypeResult: {},
     propertiesList: [],
     propertiesTotal: 0,
-    propertyForEdit: {}
+    propertyForEdit: {},
+    saveStandardResult: {}
   },
   actions: {
     getGoodsList({ commit }, pagination) {
@@ -58,6 +59,9 @@ export default {
     },
     getPropertyForEdit({ commit }, id) {
       http.getPropertyForEdit({ id }).then(res => res.code === 200 && commit('getPropertyForEdit', res)).catch(err => console.log(err))
+    },
+    saveStandard({ commit }, standard) {
+      http.saveStandard(standard).then(res => res.code === 200 && commit('saveStandard', res)).catch(err => console.log(err))
     }
   },
   mutations: {
@@ -102,6 +106,9 @@ export default {
     },
     getPropertyForEdit(state, propertyForEditResult) {
       state.propertyForEdit = propertyForEditResult.data.property
+    },
+    saveStandard(state, saveStandardResult) {
+      state.saveStandardResult = saveStandardResult
     }
   }
 }
