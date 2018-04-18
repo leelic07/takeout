@@ -160,6 +160,7 @@ export default {
       background: rgba(0, 0, 0, 0.1);
       border-radius: 5px;
       color: #454545;
+      margin-bottom: 20px;
     }
     .show-pwd {
       position: absolute;
