@@ -23,8 +23,8 @@ const user = {
         new_password: passwordInfo.new_password
       }).then(res => commit('resetPwd', res)).catch(err => console.log(err))
     },
-    getManagerById({ commit }, id) {
-      http.getManagerById({ id }).then(res => res.code === 200 && commit('getManagerById', res)).catch(err => console.log(err))
+    getUserById({ commit }, id) {
+      http.getUserById({ id }).then(res => res.code === 200 && commit('getUserById', res)).catch(err => console.log(err))
     }
   },
   mutations: {
@@ -49,8 +49,11 @@ const user = {
     // 修改密码
     resetPwd(state, resetResult) {
       state.resetResult = resetResult
+      router.push({
+        path: '/login'
+      })
     },
-    getManagerById(state, getManagerResult) {
+    getUserById(state, getManagerResult) {
       state.manager = getManagerResult.data.managers
     }
   }

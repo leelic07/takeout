@@ -14,5 +14,6 @@ export default {
   withdrawGoodsConfirmForSuper: goodsInfo => service.get('/items/superUpdate', goodsInfo).then(res => res).catch(err => err),
   getPropertiesPage: pagination => service.get('/propertys/page', pagination).then(res => res).catch(err => err),
   getPropertyForEdit: id => service.get('/propertys/edit', id).then(res => res).catch(err => err),
-  saveStandard: standard => service.post('/propertys/save', standard).then(res => res).catch(err => err)
+  saveStandard: standard => service.post('/propertys/save', standard).then(res => res).catch(err => err),
+  updateGoods: goods => service.post('/items/update', goods).then(res => res).catch(err => err)
 }

@@ -60,7 +60,7 @@ export default {
     },
     getShopForEdit(state, shopForEditResult) {
       const shop = shopForEditResult.data.merchants
-      shop.isOnline = shop.isOnline.toString()
+      shop.isOnline = shop.isOnline ? shop.isOnline.toString() : ''
       state.shopForEdit = shop
     },
     getMerchantsList(state, merchantsListResult) {

@@ -141,6 +141,12 @@ export const constantRouterMap = [
       name: 'Records',
       component: () => import('@/views/order-management/views/order-records'),
       meta: { title: '历史订单', icon: 'example' }
+    }, {// 会员的历史订单
+      path: 'records/:id',
+      name: 'RecordsById',
+      component: () => import('@/views/order-management/views/order-records'),
+      meta: { title: '会员历史订单', icon: 'example' },
+      hidden: true
     }]
   },
 
@@ -180,6 +186,12 @@ export const constantRouterMap = [
       name: 'StandardAdd',
       component: () => import('@/views/goods-management/views/standard-add'),
       meta: { title: '新增规格', icon: 'example' }
+    }, {
+      path: 'edit/:id',
+      name: 'GoodsEdit',
+      component: () => import('@/views/goods-management/views/goods-edit'),
+      meta: { title: '编辑商品', icon: 'example' },
+      hidden: true
     }]
   },
 

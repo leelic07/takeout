@@ -11,14 +11,14 @@
       <div slot="header" class="clearfix">
         <el-row>
           <el-col :span="3">
-            <el-select v-if="$_type === '1'" v-model="seller.merchantId" placeholder="请选择店铺" size="small">
+            <el-select v-if="type === '1'" v-model="seller.merchantId" placeholder="请选择店铺" size="small">
               <el-option value="" label="全部店铺"></el-option>
               <el-option v-for="(merchant,index) in merchantList" :key="index" :value="merchant.id" :label="merchant.name"></el-option>
             </el-select>
-            <span v-else>{{seller.title}}</span>
+            <span v-else>{{shopForEdit.name}}</span>
           </el-col>
           <el-col :span="4">
-            <el-rate v-model="seller.rate" disabled show-score text-color="#ff9900" score-template="{value}">
+            <el-rate v-model="shopForEdit.rate" disabled show-score text-color="#ff9900" score-template="{value}">
             </el-rate>
           </el-col>
           <el-button class="goods-management" icon="el-icon-goods" type="text" @click="showGoodsManagement">商品管理</el-button>
@@ -128,9 +128,23 @@ export default {
     LineChart,
     DndList
   },
+  watch: {
+    type: {
+      handler: function(newValue) {
+        if (newValue === '1') this.getMerchantsList()
+        else this.getShopForEdit(sessionStorage.getItem('merchantId'))
+      },
+      immediate: true
+    },
+    'seller.merchantId'(newValue) {
+      newValue = newValue || 1
+      this.getShopForEdit(newValue)
+    }
+  },
   computed: {
     ...mapGetters([
-      'merchantList'
+      'merchantList',
+      'shopForEdit'
     ]),
     type() {
       return sessionStorage.getItem('type')
@@ -138,7 +152,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      getMerchantsList: 'getMerchantsList'
+      getMerchantsList: 'getMerchantsList',
+      getShopForEdit: 'getShopForEdit'
     }),
     handleSetLineChartData(type) {
       switch (type) {
@@ -168,7 +183,7 @@ export default {
     }
   },
   mounted() {
-    this.getMerchantsList()
+    // this.getMerchantsList()
   }
 }
 </script>

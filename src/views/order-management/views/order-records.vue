@@ -149,7 +149,9 @@
         }],
         pagination: {
           page: 1,
-          rows: 10
+          rows: 10,
+          orderNo: '',
+          userId: ''
         }
       }
     },
@@ -180,6 +182,7 @@
       }
     },
     mounted() {
+      this.pagination.userId = this.$route.params.id || ''
       this.getOrderRecordsList(this.pagination)
     }
   }

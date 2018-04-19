@@ -15,7 +15,8 @@ export default {
     propertiesList: [],
     propertiesTotal: 0,
     propertyForEdit: {},
-    saveStandardResult: {}
+    saveStandardResult: {},
+    updateGoodsResult: {}
   },
   actions: {
     getGoodsList({ commit }, pagination) {
@@ -62,6 +63,9 @@ export default {
     },
     saveStandard({ commit }, standard) {
       http.saveStandard(standard).then(res => res.code === 200 && commit('saveStandard', res)).catch(err => console.log(err))
+    },
+    updateGoods({ commit }, goods) {
+      http.updateGoods(goods).then(res => res.code === 200 && commit('updateGoods', res)).catch(err => console.log(err))
     }
   },
   mutations: {
@@ -109,6 +113,9 @@ export default {
     },
     saveStandard(state, saveStandardResult) {
       state.saveStandardResult = saveStandardResult
+    },
+    updateGoods(state, updateGoodsResult) {
+      state.updateGoodsResult = updateGoodsResult
     }
   }
 }

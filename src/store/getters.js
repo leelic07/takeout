@@ -28,6 +28,7 @@ const getters = {
   propertiesTotal: state => state.goods.propertiesTotal,
   propertyForEdit: state => state.goods.propertyForEdit,
   saveStandardResult: state => state.goods.saveStandardResult,
+  updateGoodsResult: state => state.goods.updateGoodsResult,
   // 订单管理
   orderAcceptionList: state => state.order.orderAcceptionList,
   orderReservationList: state => state.order.orderReservationList,

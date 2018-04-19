@@ -7,5 +7,5 @@ export default {
   logout: () => service.get('/logout').then(res => res).catch(err => err),
   // 修改密码
   resetPwd: passwordInfo => service.post('/resetPwd', passwordInfo).then(res => res).catch(err => err),
-  getManagerById: id => service.get('/managers/edit', id).then(res => res).catch(err => err)
+  getUserById: id => service.get('/managers/edit', id).then(res => res).catch(err => err)
 }

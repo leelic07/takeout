@@ -69,6 +69,7 @@
       return {
         fileList2: [],
         dialogFormVisible: false,
+        formLabelWidth: '120px',
         propertyForm: [{
           name: '',
           properties: [{
@@ -81,23 +82,16 @@
           new_password: '',
           repeat_password: ''
         },
-        formLabelWidth: '120px',
-        rule: {
-          goodsNumber: [{ required: true, message: '商品编号不能为空', trigger: 'blur' }],
-          name: [{ required: true, message: '商品名称不能为空', trigger: 'blur' }],
-          unit: [{ required: true, message: '商品单位不能为空', trigger: 'blur' }],
-          price: [{ required: true, message: '商品价格不能为空', trigger: 'blur' }],
-          goodsStatus: [{ required: true, message: '库存状态不能为空', trigger: 'blur' }],
-          quantity: [{ required: true, message: '商品库存不能为空', trigger: 'blur' }],
-          orderStatus: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
-          checkList: [{ required: true, message: '商品店铺不能为空', trigger: 'blur' }]
-        },
         userRule: {
-          old_password: [{ required: true, message: '旧用户密码不能为空', trigger: 'blur' }],
-          new_password: [{ required: true, message: '新用户密码不能为空', trigger: 'blur' }],
+          old_password: [{ required: true, message: '旧密码不能为空', trigger: 'blur' }],
+          new_password: [
+            { required: true, message: '新密码不能为空', trigger: 'blur' },
+            { min: 5, message: '密码长度不能小于5', trigger: 'blur' }
+          ],
           repeat_password: [
             { validator: validatePassword, trigger: 'blur' },
-            { required: true, message: '请输入确认密码', trigger: 'blur' }
+            { required: true, message: '请输入确认密码', trigger: 'blur' },
+            { min: 5, message: '密码长度不能小于5', trigger: 'blur' }
           ]
         }
       }
@@ -110,7 +104,7 @@
     methods: {
       ...mapActions({
         resetPwd: 'resetPwd',
-        getManagerById: 'getManagerById'
+        getUserById: 'getUserById'
       }),
       handleRemove(file, fileList) {
         console.log(file, fileList)
@@ -130,7 +124,7 @@
       }
     },
     mounted() {
-      this.getManagerById(sessionStorage.getItem('userId'))
+      this.getUserById(sessionStorage.getItem('userId'))
     }
   }
 </script>
