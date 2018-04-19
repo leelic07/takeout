@@ -91,7 +91,7 @@
         </el-table-column>
         <el-table-column label="下单时间">
           <template slot-scope="props">
-            {{ props.row.receivedDate | Date}}
+            {{props.row.receivedDate | Date}}
           </template>
         </el-table-column>
         <el-table-column label="订单状态" prop="status">

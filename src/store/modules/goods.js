@@ -29,6 +29,21 @@ export default {
       http.getGoodsTypeList().then(res => res.code === 200 && commit('getGoodsTypeList', res)).catch(err => console.log(err))
     },
     saveGoods({ commit }, goods) {
+      const merchants = []
+      const pictures = []
+      goods.merchants.forEac(merchant => {
+        merchants.push({
+          merchantId: merchant,
+          isPuton: goods.isPuton
+        })
+      })
+      goods.pictures.forEach(picture => {
+        pictures.push({
+          url: picture
+        })
+      })
+      goods.merchants = merchants
+      goods.pictures = pictures
       http.saveGoods(goods).then(res => res.code === 200 && commit('saveGoods', res)).catch(err => err)
     },
     getGoodsTypePage({ commit }, pagination) {

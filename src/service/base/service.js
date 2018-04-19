@@ -7,8 +7,8 @@ import qs from 'qs'
 const instance = axios.create(base)
 
 // 代理服务器
-// export const agency = ''
-export const agency = '/takeaway'
+export const agency = ''
+// export const agency = '/takeaway'
 // 获取异步请求的url
 const getUrl = (url) => `${agency}${url}`
 // 处理服务端错误的方法
@@ -132,8 +132,8 @@ export const get = (url, params = {}) =>
  * @returns {Promise}
  */
 export const post = (url, data = {}, config = {}) =>
-  // instance.post(getUrl(url), data, config).then(res => res.data).catch(err => err)
-  instance.post(getUrl(url), qs.stringify(data), config).then(res => res.data).catch(err => err)
+  instance.post(getUrl(url), data, config).then(res => res.data).catch(err => err)
+  // instance.post(getUrl(url), qs.stringify(data), config).then(res => res.data).catch(err => err)
 // instance.post(url, qs.stringify(data), config).then(res => res.data).catch(err => err)
 /**
  * 封装post文件请求
