@@ -38,7 +38,11 @@
                         <el-tag v-else-if="scope.row.orderStatus === '白银会员'" type="info" :closable="false">{{scope.row.orderStatus}}</el-tag> -->
                     </template>
                 </el-table-column>
-                <el-table-column prop="orderCount" label="订单数"></el-table-column>
+                <el-table-column label="订单数">
+                    <template slot-scope="props">
+                        <el-button type="text" @click="showOrdersByUserId(props.row.id)">{{props.row.orderCount}}</el-button>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="totalPrice" label="消费额"></el-table-column>
                 <el-table-column label="操作" width="140">
                     <template slot-scope="props">
@@ -211,6 +215,11 @@ export default {
           message: '删除成功!'
         })
       }).catch(err => console.log(err))
+    },
+    showOrdersByUserId(id) {
+      this.$router.push({
+        path: `/order/records/${id}`
+      })
     }
   },
   mounted() {

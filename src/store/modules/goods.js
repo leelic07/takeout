@@ -15,7 +15,8 @@ export default {
     propertiesList: [],
     propertiesTotal: 0,
     propertyForEdit: {},
-    saveStandardResult: {}
+    saveStandardResult: {},
+    updateGoodsResult: {}
   },
   actions: {
     getGoodsList({ commit }, pagination) {
@@ -28,6 +29,21 @@ export default {
       http.getGoodsTypeList().then(res => res.code === 200 && commit('getGoodsTypeList', res)).catch(err => console.log(err))
     },
     saveGoods({ commit }, goods) {
+      const merchants = []
+      const pictures = []
+      goods.merchants.forEac(merchant => {
+        merchants.push({
+          merchantId: merchant,
+          isPuton: goods.isPuton
+        })
+      })
+      goods.pictures.forEach(picture => {
+        pictures.push({
+          url: picture
+        })
+      })
+      goods.merchants = merchants
+      goods.pictures = pictures
       http.saveGoods(goods).then(res => res.code === 200 && commit('saveGoods', res)).catch(err => err)
     },
     getGoodsTypePage({ commit }, pagination) {
@@ -62,6 +78,9 @@ export default {
     },
     saveStandard({ commit }, standard) {
       http.saveStandard(standard).then(res => res.code === 200 && commit('saveStandard', res)).catch(err => console.log(err))
+    },
+    updateGoods({ commit }, goods) {
+      http.updateGoods(goods).then(res => res.code === 200 && commit('updateGoods', res)).catch(err => console.log(err))
     }
   },
   mutations: {
@@ -109,6 +128,9 @@ export default {
     },
     saveStandard(state, saveStandardResult) {
       state.saveStandardResult = saveStandardResult
+    },
+    updateGoods(state, updateGoodsResult) {
+      state.updateGoodsResult = updateGoodsResult
     }
   }
 }

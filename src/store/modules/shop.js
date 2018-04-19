@@ -19,8 +19,8 @@ export default {
     },
     // 添加商户信息
     saveShop({ commit }, shopInfo) {
-      shopInfo.startDate = parseTime(shopInfo.time[0])
-      shopInfo.endDate = parseTime(shopInfo.time[1])
+      shopInfo.startDate = shopInfo.startDate ? parseTime(shopInfo.time[0]) : ''
+      shopInfo.endDate = shopInfo.endDate ? parseTime(shopInfo.time[1]) : ''
       delete shopInfo.time
       http.saveShop(shopInfo).then(res => commit('saveShop', res)).catch(err => console.log(err))
     },
@@ -60,7 +60,7 @@ export default {
     },
     getShopForEdit(state, shopForEditResult) {
       const shop = shopForEditResult.data.merchants
-      shop.isOnline = shop.isOnline.toString()
+      // shop.isOnline = shop.isOnline ? shop.isOnline.toString() : ''
       state.shopForEdit = shop
     },
     getMerchantsList(state, merchantsListResult) {

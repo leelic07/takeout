@@ -4,6 +4,7 @@ const getters = {
   avatar: state => state.user.avatar,
   name: state => state.user.name,
   roles: state => state.user.roles,
+  manager: state => state.user.manager,
   // 商户管理
   shopList: state => state.shop.shopList,
   shopTotal: state => state.shop.shopTotal,
@@ -27,6 +28,7 @@ const getters = {
   propertiesTotal: state => state.goods.propertiesTotal,
   propertyForEdit: state => state.goods.propertyForEdit,
   saveStandardResult: state => state.goods.saveStandardResult,
+  updateGoodsResult: state => state.goods.updateGoodsResult,
   // 订单管理
   orderAcceptionList: state => state.order.orderAcceptionList,
   orderReservationList: state => state.order.orderReservationList,

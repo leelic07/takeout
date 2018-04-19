@@ -4,7 +4,8 @@ import router from '@/router'
 const user = {
   state: {
     user: {},
-    resetResult: {}
+    resetResult: {},
+    manager: {}
   },
   actions: {
     // 登录
@@ -21,6 +22,9 @@ const user = {
         old_password: passwordInfo.old_password,
         new_password: passwordInfo.new_password
       }).then(res => commit('resetPwd', res)).catch(err => console.log(err))
+    },
+    getUserById({ commit }, id) {
+      http.getUserById({ id }).then(res => res.code === 200 && commit('getUserById', res)).catch(err => console.log(err))
     }
   },
   mutations: {
@@ -45,6 +49,12 @@ const user = {
     // 修改密码
     resetPwd(state, resetResult) {
       state.resetResult = resetResult
+      router.push({
+        path: '/login'
+      })
+    },
+    getUserById(state, getManagerResult) {
+      state.manager = getManagerResult.data.managers
     }
   }
 }

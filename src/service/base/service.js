@@ -132,8 +132,8 @@ export const get = (url, params = {}) =>
  * @returns {Promise}
  */
 export const post = (url, data = {}, config = {}) =>
-  // instance.post(getUrl(url), data, config).then(res => res.data).catch(err => err)
-  instance.post(getUrl(url), qs.stringify(data), config).then(res => res.data).catch(err => err)
+  instance.post(getUrl(url), data, config).then(res => res.data).catch(err => err)
+  // instance.post(getUrl(url), qs.stringify(data), config).then(res => res.data).catch(err => err)
 // instance.post(url, qs.stringify(data), config).then(res => res.data).catch(err => err)
 /**
  * 封装post文件请求

@@ -48,7 +48,7 @@
               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片，最多只能上传五张图片</div>
             </el-upload>
           </el-form-item>
-          <el-form-item label="商品售卖店铺" label-width="120px" prop="checkList">
+          <el-form-item label="商品售卖店铺" label-width="120px" prop="propertys">
             <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
             <el-checkbox-group v-model="goods.merchants" @change="handleCheckMerchantChange">
               <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
@@ -65,7 +65,6 @@
       <!--添加商品属性弹出框-->
       <el-dialog class="property-dialog" title="商品属性" :visible.sync="dialogFormVisible">
         <el-row v-for="(pro,index) in goods.propertys" :key="index">
-          <!-- <el-col> -->
           <el-col :span="2">
             <label for="">属性名</label>
           </el-col>
@@ -78,7 +77,6 @@
             <div class="property-button decede-properties" @click="decedePropertyForm(index)" v-if="goods.propertys.length > 1">-</div>
             <div class="property-button add-properties" @click="addPropertyForm" v-if="goods.propertys.length === index + 1">+</div>
           </el-col>
-          <!-- </el-col> -->
           <el-col v-for="(ps,ind) in pro.properties" :key="ind" label="">
             <el-col :span="3">
               <label for="">属性值：</label>
@@ -143,7 +141,7 @@ export default {
         itemType: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
         label: [{ required: true, message: '标签不能为空', trigger: 'blur' }],
         isPuton: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
-        checkList: [{ required: true, message: '商品店铺不能为空', trigger: 'blur' }]
+        propertys: [{ required: true, message: '商品店铺不能为空', trigger: 'blur' }]
       },
       shopPropertyList: [{
         id: 1,

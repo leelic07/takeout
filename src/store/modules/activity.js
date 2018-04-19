@@ -37,11 +37,29 @@ export default {
     getCouponTypeList({ commit }) {
       http.getCouponTypeList().then(res => res.code === 200 && commit('getCouponTypeList', res)).catch(err => console.log(err))
     },
-    saveActivity({ commit }, activity) {
-      http.saveActivity(activity).then(res => res.code === 200 && commit('saveActivity', res)).catch(err => console.log(err))
+    saveActivity({ commit }, activitys) {
+      const merchants = []
+      // activity.startDate = activity.startDate ? parseTime(activity.startDate) : ''
+      // activity.endDate = activity.endDate ? parseTime(activity.endDate) : ''
+      activitys.merchants.forEach(merchant => {
+        merchants.push({
+          merchantId: merchant,
+          type: 0
+        })
+      })
+      activitys.merchants = merchants
+      http.saveActivity(activitys).then(res => res.code === 200 && commit('saveActivity', res)).catch(err => console.log(err))
     },
-    saveCoupon({ commit }, coupon) {
-      http.saveCoupon(coupon).then(res => res.code === 200 && commit('saveCoupon', res)).catch(err => console.log(err))
+    saveCoupon({ commit }, coupons) {
+      const merchants = []
+      coupons.merchants.forEach(merchant => {
+        merchants.push({
+          merchantId: merchant,
+          type: 1
+        })
+      })
+      coupons.merchants = merchants
+      http.saveCoupon(coupons).then(res => res.code === 200 && commit('saveCoupon', res)).catch(err => console.log(err))
     }
   },
   mutations: {

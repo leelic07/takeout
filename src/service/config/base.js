@@ -15,7 +15,7 @@ export default {
   // 设置请求头
   headers: {
     //  'X-Requested-With': 'XMLHttpRequest',
-    'Content-Type': 'application/x-www-form-urlencoded'
+    // 'Content-Type': 'application/x-www-form-urlencoded'
     // 'Content-Type': 'application/json'
   },
   // post 请求参数

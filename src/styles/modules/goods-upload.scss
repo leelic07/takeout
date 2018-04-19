@@ -28,6 +28,16 @@
           margin-bottom: 25px;
         }
       }
+      &.user-box {
+        padding-left: 7%;
+        .el-form {
+          .el-form-item {
+            > label {
+              color: $blue;
+            }
+          }
+        }
+      }
     }
     .property-dialog {
       .el-row {

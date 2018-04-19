@@ -7,7 +7,7 @@
       </el-col>
       <el-col :span="4" class="member-select">
         <el-select v-model="pagination.merchantId" placeholder="请选择店铺" v-if="$_type === '1'">
-          <el-option value="" label="全部"></el-option>
+          <el-option value="" label="全部店铺"></el-option>
           <el-option v-for="(merchant,index) in merchantList" :value="merchant.id" :label="merchant.name" :key="index"></el-option>
         </el-select>
       </el-col>
@@ -81,10 +81,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="商品图片" placeholder="请填写地址" label-width="120px">
-          <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-            <img v-if="goodsForEdit.imageUrl" :src="goodsForEdit.imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          <!-- <el-upload :action="$_baseURL + '/upload/uploadfile'" with-credentials="true" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :limit="5" list-type="picture-card"> -->
+          <!-- <img v-if="goodsForEdit.imageUrl" :src="goodsForEdit.imageUrl" class="avatar"> -->
+          <!-- <i class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload> -->
+          <el-upload :action="$_baseURL + '/upload/uploadfile'" list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
+            <i class="el-icon-plus"></i>
           </el-upload>
+          <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="dialogImageUrl" alt="">
+          </el-dialog>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -129,16 +135,6 @@ export default {
         name: '',
         merchantId: ''
       },
-      options: [{
-        value: 1,
-        label: '钻石会员'
-      }, {
-        value: '2',
-        label: '黄金会员'
-      }, {
-        value: '3',
-        label: '白银会员'
-      }],
       value: '', // 选择会员等级
       dialogDetailVisible: false,
       dialogFormVisible: false,
@@ -156,11 +152,14 @@ export default {
         resource: '',
         desc: ''
       },
+      fileList: [], // 图片上传的数组
       imageUrl: '', // 上传头像的图片路径
       merchantId: [], // 选中的商品id的集合
       itemId: '', // 需要下架或者上架的商品id
       checkAll: false,
-      isIndeterminate: true
+      isIndeterminate: true,
+      dialogVisible: false,
+      dialogImageUrl: ''
     }
   },
   watch: {
@@ -196,9 +195,11 @@ export default {
     },
     // 点击编辑执行的方法
     showGoodsEdit(id) {
-      this.dialogFormVisible = true
-      console.log('itemId', id)
-      this.editGoods(id)
+      // this.dialogFormVisible = true
+      // this.editGoods(id)
+      this.$router.push({
+        path: `/goods/edit/${id}`
+      })
     },
     // 会员头像上传成功执行的方法
     handleAvatarSuccess(file) {
@@ -207,6 +208,12 @@ export default {
     // 会员头像上传之前执行的方法
     beforeAvatarUpload(file) {
       console.log(file)
+    },
+    handlePictureCardPreview() {
+
+    },
+    handleRemove() {
+
     },
     // 点击下架执行的方法
     withdrawGoods(itemId) {

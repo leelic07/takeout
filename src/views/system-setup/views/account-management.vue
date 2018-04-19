@@ -1,25 +1,28 @@
 <template>
   <el-row class="goods-upload-container">
     <el-col class="goods-upload-box" :span="14" :offset="5">
-      <el-card>
-        <el-form label-position="right" :model="memberMessage" ref="goodsForm" :rules="rule" size="large">
+      <el-card class="user-box">
+        <el-form label-position="right" :model="manager" ref="goodsForm" :rules="rule" size="large">
           <el-col class="shop-message">
             <el-tag>基本信息</el-tag>
           </el-col>
-          <el-form-item label="用户名" label-width="120px" prop="goodsNumber">
-            <el-input v-model="memberMessage.goodsNumber" auto-complete="off" placeholder="请填写用户名"></el-input>
+          <el-form-item label="用户名：" label-width="120px">
+            <!-- <el-input v-model="manager.name" auto-complete="off" placeholder="请填写用户名"></el-input> -->
+            <span>{{manager.name}}</span>
           </el-form-item>
-          <el-form-item label="用户手机号码" label-width="120px" prop="name">
-            <el-input v-model="memberMessage.name" auto-complete="off" placeholder="请填写用户手机号码"></el-input>
+          <el-form-item label="用户手机号码：" label-width="120px">
+            <!-- <el-input v-model="manager.merchants.tel" auto-complete="off" placeholder="请填写用户手机号码"></el-input> -->
+            <span>{{manager.merchants.tel}}</span>
           </el-form-item>
-          <el-form-item label="店铺" label-width="120px" prop="unit">
-            <el-input v-model="memberMessage.unit" auto-complete="off" placeholder="请填写店铺名称"></el-input>
+          <el-form-item label="店铺：" label-width="120px">
+            <!-- <el-input v-model="manager.merchants.name" auto-complete="off" placeholder="请填写店铺名称"></el-input> -->
+            <span>{{manager.merchants.name}}</span>
           </el-form-item>
-          <el-form-item label="登录时间" label-width="120px" prop="unit">
-            <el-input v-model="memberMessage.unit" auto-complete="off" placeholder="请填写登录时间"></el-input>
+          <el-form-item label="登录时间：" label-width="120px">
+            <!-- <el-input v-model="manager.unit" auto-complete="off" placeholder="请填写登录时间"></el-input> -->
           </el-form-item>
-          <el-form-item label="类型" label-width="120px" prop="unit">
-            <el-radio-group v-model="memberMessage.type">
+          <el-form-item label="类型：" label-width="120px">
+            <el-radio-group v-model="manager.type">
               <el-radio label="0">普通</el-radio>
               <el-radio label="1">超级</el-radio>
             </el-radio-group>
@@ -52,7 +55,7 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
 
   export default {
     data() {
@@ -64,11 +67,9 @@
         }
       }
       return {
-        memberMessage: {
-          checkList: []
-        },
         fileList2: [],
         dialogFormVisible: false,
+        formLabelWidth: '120px',
         propertyForm: [{
           name: '',
           properties: [{
@@ -81,30 +82,29 @@
           new_password: '',
           repeat_password: ''
         },
-        formLabelWidth: '120px',
-        rule: {
-          goodsNumber: [{ required: true, message: '商品编号不能为空', trigger: 'blur' }],
-          name: [{ required: true, message: '商品名称不能为空', trigger: 'blur' }],
-          unit: [{ required: true, message: '商品单位不能为空', trigger: 'blur' }],
-          price: [{ required: true, message: '商品价格不能为空', trigger: 'blur' }],
-          goodsStatus: [{ required: true, message: '库存状态不能为空', trigger: 'blur' }],
-          quantity: [{ required: true, message: '商品库存不能为空', trigger: 'blur' }],
-          orderStatus: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
-          checkList: [{ required: true, message: '商品店铺不能为空', trigger: 'blur' }]
-        },
         userRule: {
-          old_password: [{ required: true, message: '旧用户密码不能为空', trigger: 'blur' }],
-          new_password: [{ required: true, message: '新用户密码不能为空', trigger: 'blur' }],
+          old_password: [{ required: true, message: '旧密码不能为空', trigger: 'blur' }],
+          new_password: [
+            { required: true, message: '新密码不能为空', trigger: 'blur' },
+            { min: 5, message: '密码长度不能小于5', trigger: 'blur' }
+          ],
           repeat_password: [
             { validator: validatePassword, trigger: 'blur' },
-            { required: true, message: '请输入确认密码', trigger: 'blur' }
+            { required: true, message: '请输入确认密码', trigger: 'blur' },
+            { min: 5, message: '密码长度不能小于5', trigger: 'blur' }
           ]
         }
       }
     },
+    computed: {
+      ...mapGetters([
+        'manager'
+      ])
+    },
     methods: {
       ...mapActions({
-        resetPwd: 'resetPwd'
+        resetPwd: 'resetPwd',
+        getUserById: 'getUserById'
       }),
       handleRemove(file, fileList) {
         console.log(file, fileList)
@@ -122,6 +122,9 @@
           else return
         })
       }
+    },
+    mounted() {
+      this.getUserById(sessionStorage.getItem('userId'))
     }
   }
 </script>
