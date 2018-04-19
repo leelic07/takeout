@@ -65,7 +65,6 @@
       <!--添加商品属性弹出框-->
       <el-dialog class="property-dialog" title="商品属性" :visible.sync="dialogFormVisible">
         <el-row v-for="(pro,index) in goods.propertys" :key="index">
-          <!-- <el-col> -->
           <el-col :span="2">
             <label for="">属性名</label>
           </el-col>
@@ -78,7 +77,6 @@
             <div class="property-button decede-properties" @click="decedePropertyForm(index)" v-if="goods.propertys.length > 1">-</div>
             <div class="property-button add-properties" @click="addPropertyForm" v-if="goods.propertys.length === index + 1">+</div>
           </el-col>
-          <!-- </el-col> -->
           <el-col v-for="(ps,ind) in pro.properties" :key="ind" label="">
             <el-col :span="3">
               <label for="">属性值：</label>
