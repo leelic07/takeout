@@ -34,14 +34,12 @@ import { mapActions } from 'vuex'
 export default {
   data() {
     return {
-      standardForm: [
-        {
-          name: '',
-          params: [{
-            value: ''
-          }]
-        }
-      ],
+      standardForm: [{
+        name: '',
+        params: [{
+          value: ''
+        }]
+      }],
       fileList2: [],
       rule: {
         categoryNumber: [

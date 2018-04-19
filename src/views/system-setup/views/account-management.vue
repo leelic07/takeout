@@ -1,25 +1,28 @@
 <template>
   <el-row class="goods-upload-container">
     <el-col class="goods-upload-box" :span="14" :offset="5">
-      <el-card>
-        <el-form label-position="right" :model="memberMessage" ref="goodsForm" :rules="rule" size="large">
+      <el-card class="user-box">
+        <el-form label-position="right" :model="manager" ref="goodsForm" :rules="rule" size="large">
           <el-col class="shop-message">
             <el-tag>基本信息</el-tag>
           </el-col>
-          <el-form-item label="用户名" label-width="120px" prop="goodsNumber">
-            <el-input v-model="memberMessage.goodsNumber" auto-complete="off" placeholder="请填写用户名"></el-input>
+          <el-form-item label="用户名：" label-width="120px">
+            <!-- <el-input v-model="manager.name" auto-complete="off" placeholder="请填写用户名"></el-input> -->
+            <span>{{manager.name}}</span>
           </el-form-item>
-          <el-form-item label="用户手机号码" label-width="120px" prop="name">
-            <el-input v-model="memberMessage.name" auto-complete="off" placeholder="请填写用户手机号码"></el-input>
+          <el-form-item label="用户手机号码：" label-width="120px">
+            <!-- <el-input v-model="manager.merchants.tel" auto-complete="off" placeholder="请填写用户手机号码"></el-input> -->
+            <span>{{manager.merchants.tel}}</span>
           </el-form-item>
-          <el-form-item label="店铺" label-width="120px" prop="unit">
-            <el-input v-model="memberMessage.unit" auto-complete="off" placeholder="请填写店铺名称"></el-input>
+          <el-form-item label="店铺：" label-width="120px">
+            <!-- <el-input v-model="manager.merchants.name" auto-complete="off" placeholder="请填写店铺名称"></el-input> -->
+            <span>{{manager.merchants.name}}</span>
           </el-form-item>
-          <el-form-item label="登录时间" label-width="120px" prop="unit">
-            <el-input v-model="memberMessage.unit" auto-complete="off" placeholder="请填写登录时间"></el-input>
+          <el-form-item label="登录时间：" label-width="120px">
+            <!-- <el-input v-model="manager.unit" auto-complete="off" placeholder="请填写登录时间"></el-input> -->
           </el-form-item>
-          <el-form-item label="类型" label-width="120px" prop="unit">
-            <el-radio-group v-model="memberMessage.type">
+          <el-form-item label="类型：" label-width="120px">
+            <el-radio-group v-model="manager.type">
               <el-radio label="0">普通</el-radio>
               <el-radio label="1">超级</el-radio>
             </el-radio-group>
@@ -52,7 +55,7 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
 
   export default {
     data() {
@@ -64,9 +67,6 @@
         }
       }
       return {
-        memberMessage: {
-          checkList: []
-        },
         fileList2: [],
         dialogFormVisible: false,
         propertyForm: [{
@@ -102,9 +102,15 @@
         }
       }
     },
+    computed: {
+      ...mapGetters([
+        'manager'
+      ])
+    },
     methods: {
       ...mapActions({
-        resetPwd: 'resetPwd'
+        resetPwd: 'resetPwd',
+        getManagerById: 'getManagerById'
       }),
       handleRemove(file, fileList) {
         console.log(file, fileList)
@@ -122,6 +128,9 @@
           else return
         })
       }
+    },
+    mounted() {
+      this.getManagerById(sessionStorage.getItem('userId'))
     }
   }
 </script>
