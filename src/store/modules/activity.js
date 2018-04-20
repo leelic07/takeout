@@ -1,5 +1,4 @@
 import http from '@/service'
-// import { parseTime } from '@/utils'
 
 export default {
   state: {
