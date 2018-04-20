@@ -15,7 +15,7 @@
       <el-button type="primary" icon="el-icon-search" @click="searchActivity">搜索</el-button>
     </el-row>
     <!--满减活动列表-->
-    <el-row class="order-statics">
+    <el-row class="order-statics" v-if="activityList.length">
       <el-table :data="activityList" stripe border fit style="width: 100%">
         <el-table-column type="index" :index="1" label="序号"></el-table-column>
         <el-table-column prop="activityType" label="活动类型"></el-table-column>
@@ -32,6 +32,28 @@
         <el-table-column label="操作" width="140">
           <template slot-scope="props">
             <el-button type="primary" size="mini" @click="showEditActivity(props.row.id)">编辑</el-button>
+            <el-button type="danger" size="mini" @click="deleteMember(props.row.id)">下架</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-row>
+    <el-row class="order-statics" v-if="couponList.length">
+      <el-table :data="couponList" stripe border fit style="width: 100%">
+        <el-table-column type="index" :index="1" label="序号"></el-table-column>
+        <el-table-column prop="activityType" label="活动类型"></el-table-column>
+        <el-table-column prop="code" label="活动编号"></el-table-column>
+        <el-table-column prop="name" label="活动名称"></el-table-column>
+        <el-table-column prop="startDate" label="开始日期"></el-table-column>
+        <el-table-column prop="ednDate" label="活动结束日期"></el-table-column>
+        <el-table-column prop="participant" label="活动参与人数"></el-table-column>
+        <el-table-column prop="money" label="优惠券金额"></el-table-column>
+        <el-table-column prop="exchangeCount" label="优惠券总数"></el-table-column>
+        <el-table-column prop="discountRemain" label="优惠券余量"></el-table-column>
+        <el-table-column prop="activityCount" label="活动核销数"></el-table-column>
+        <el-table-column prop="activityMoney" label="活动核销金额"></el-table-column>
+        <el-table-column label="操作" width="140">
+          <template slot-scope="props">
+            <el-button type="primary" size="mini" @click="showEditCoupon(props.row.id)">编辑</el-button>
             <el-button type="danger" size="mini" @click="deleteMember(props.row.id)">下架</el-button>
           </template>
         </el-table-column>
@@ -135,17 +157,23 @@ export default {
     }
   },
   watch: {
-    activityType(newValue) {
-      if (newValue === 1) {
-        this.getActivityList(this.pagination)
-      } else {
-        this.getCouponList(this.pagination)
-      }
+    activityType: {
+      handler: function(newValue) {
+        if (newValue === 1) {
+          this.getActivityList(this.pagination)
+          this.couponList.splice(0)
+        } else {
+          this.getCouponList(this.pagination)
+          this.activityList.splice(0)
+        }
+      },
+      immediate: true
     }
   },
   computed: {
     ...mapGetters([
       'activityList',
+      'couponList',
       'activityTotal',
       'activityForEdit'
     ])
@@ -163,11 +191,6 @@ export default {
     // 点击详情执行的方法
     showMemberDetail(row) {
       this.dialogDetailVisible = true
-      this.activityForEdit = row
-    },
-    // 点击编辑执行的方法
-    editMember(row) {
-      this.dialogFormVisible = true
       this.activityForEdit = row
     },
     // 会员头像上传成功执行的方法
@@ -192,10 +215,13 @@ export default {
       }).catch(err => console.log(err))
     },
     showEditActivity(id) {
-      // this.dialogFormVisible = true
-      // this.editActivity(id)
       this.$router.push({
         path: `/activity/edit/${id}`
+      })
+    },
+    showEditCoupon(id) {
+      this.$router.push({
+        path: `/activity/edit-coupons/${id}`
       })
     },
     updateActivityConfirm() {
@@ -203,12 +229,8 @@ export default {
       this.updateActivity(this.activityForEdit)
     },
     searchActivity() {
-      if (this.activityType === 1) this.getActivityList(this.pagination)
-      else this.getCouponList(this.pagination)
+      this.activityType === 1 && this.getActivityList(this.pagination) || this.getCouponList(this.pagination)
     }
-  },
-  mounted() {
-    this.getActivityList(this.pagination)
   }
 }
 </script>

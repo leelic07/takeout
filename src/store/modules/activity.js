@@ -8,6 +8,7 @@ export default {
     // couponTotal: 0,
     couponSendTypes: [],
     activityForEdit: {},
+    couponForEdit: {},
     updateActivityResult: {},
     couponTypeList: [],
     saveActivityResult: {},
@@ -25,6 +26,9 @@ export default {
     editActivity({ commit }, id) {
       http.editActivity({ id }).then(res => res.code === 200 && commit('editActivity', res)).catch(err => console.log(err))
     },
+    editCoupon({ commit }, id) {
+      http.editCoupon({ id }).then(res => res.code === 200 && commit('editCoupon', res)).catch(err => console.log(err))
+    },
     updateActivity({ commit }, activity) {
       const params = {
         id: activity.id,
@@ -39,8 +43,6 @@ export default {
     },
     saveActivity({ commit }, activitys) {
       const merchants = []
-      // activity.startDate = activity.startDate ? parseTime(activity.startDate) : ''
-      // activity.endDate = activity.endDate ? parseTime(activity.endDate) : ''
       activitys.merchants.forEach(merchant => {
         merchants.push({
           merchantId: merchant,
@@ -74,7 +76,10 @@ export default {
       state.activityTotal = data.totalCount
     },
     editActivity(state, editActivityResult) {
-      state.activityForEdit = editActivityResult.data.couponExchanges
+      state.activityForEdit = editActivityResult.data.activitys
+    },
+    editCoupon(state, editCouponResult) {
+      state.couponForEdit = editCouponResult.data.coupons
     },
     updateActivity(state, updateActivityResult) {
       state.updateActivityResult = updateActivityResult

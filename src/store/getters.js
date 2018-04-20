@@ -46,6 +46,7 @@ const getters = {
   saveCouponResult: state => state.activity.saveCoupon,
   couponList: state => state.activity.couponList,
   couponSendTypes: state => state.activity.couponSendTypes,
+  couponForEdit: state => state.activity.couponForEdit,
   // 上传文件
   uploadFileUrl: state => state.upload.uploadFileUrl,
   // 会员管理

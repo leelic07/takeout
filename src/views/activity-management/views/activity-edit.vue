@@ -42,7 +42,7 @@
                         <el-input type="textarea" v-model="activityForEdit.description" placeholder="请输入描述"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" size="medium" @click="publishActivity">发布活动</el-button>
+                        <el-button type="primary" size="medium" @click="publishActivity">更新活动</el-button>
                     </el-form-item>
                 </el-form>
                 <!--优惠券-->
@@ -96,19 +96,13 @@ export default {
     publishActivity() {
       this.$refs.activityForm.validate(valid => {
         if (valid) this.saveActivity(this.activityForEdit)
-        else {
-          console.log('saveActivity err')
-          return false
-        }
+        else console.log('saveActivity err')
       })
     },
     publishCoupon() {
       this.$refs.discountForm.validate(valid => {
         if (valid) this.saveCoupon(this.discountForm)
-        else {
-          console.log('saveCoupon err')
-          return false
-        }
+        else console.log('saveCoupon err')
       })
     },
     // 点击全选时候执行的方法
