@@ -59,12 +59,12 @@
         <el-form-item label="价格" label-width="120px">
           <el-input v-model="goodsForEdit.price" auto-complete="off" placeholder="请填写电话"></el-input>
         </el-form-item>
-        <el-form-item label="商品分类" label-width="120px">
+        <!-- <el-form-item label="商品分类" label-width="120px">
           <el-select v-model="goodsForEdit.itemTypeName" placeholder="请选择会员等级">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="标签" label-width="120px">
           <el-input v-model="goodsForEdit.label" auto-complete="off" placeholder="请填写地址"></el-input>
         </el-form-item>
@@ -74,12 +74,12 @@
         <el-form-item label="库存量" label-width="120px">
           <el-input v-model="goodsForEdit.stock" auto-complete="off" placeholder="请填写备注"></el-input>
         </el-form-item>
-        <el-form-item label="商品状态" label-width="120px">
+        <!-- <el-form-item label="商品状态" label-width="120px">
           <el-select v-model="goodsForEdit.status" placeholder="请选择会员等级">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="商品图片" placeholder="请填写地址" label-width="120px">
           <!-- <el-upload :action="$_baseURL + '/upload/uploadfile'" with-credentials="true" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :limit="5" list-type="picture-card"> -->
           <!-- <img v-if="goodsForEdit.imageUrl" :src="goodsForEdit.imageUrl" class="avatar"> -->

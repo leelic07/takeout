@@ -1,5 +1,5 @@
 import http from '@/service'
-import { parseTime } from '@/utils'
+import router from '@/router'
 
 export default {
   state: {
@@ -10,23 +10,20 @@ export default {
     shopTotal: 0,
     shopForEdit: {},
     merchantList: [],
-    merchantListByItemId: []
+    merchantListByItemId: [],
+    updateShopResult: {}
   },
   actions: {
     // 获取商户列表
     getShopList({ commit }, pagination) {
-      http.getShopList(pagination).then(res => commit('getShopList', res)).catch(err => console.log(err))
+      http.getShopList(pagination).then(res => res.code === 200 && commit('getShopList', res)).catch(err => console.log(err))
     },
     // 添加商户信息
     saveShop({ commit }, shopInfo) {
-      shopInfo.startDate = shopInfo.startDate ? parseTime(shopInfo.time[0]) : ''
-      shopInfo.endDate = shopInfo.endDate ? parseTime(shopInfo.time[1]) : ''
+      shopInfo.startDate = shopInfo.time[0] || ''
+      shopInfo.endDate = shopInfo.time[1] || ''
       delete shopInfo.time
-      http.saveShop(shopInfo).then(res => commit('saveShop', res)).catch(err => console.log(err))
-    },
-    // 编辑商户信息
-    editShop({ commit }, shopInfo) {
-      http.editShop(shopInfo).then(res => commit('editShop', res)).catch(err => console.log(err))
+      http.saveShop(shopInfo).then(res => res.code === 200 && commit('saveShop', res)).catch(err => console.log(err))
     },
     getShopTypeList({ commit }) {
       http.getShopTypeList().then(res => res.code === 200 && commit('getShopTypeList', res)).catch(err => console.log(err))
@@ -39,6 +36,9 @@ export default {
     },
     getMerchantsListByitemId({ commit }, id) {
       http.getMerchantsListByitemId({ id }).then(res => res.code === 200 && commit('getMerchantsListByitemId', res)).catch(err => console.log(err))
+    },
+    updateShop({ commit }, shopInfo) {
+      http.updateShop(shopInfo).then(res => res.code === 200 && commit('updateShop', res)).catch(err => console.log(err))
     }
   },
   mutations: {
@@ -50,17 +50,20 @@ export default {
     // 添加商户信息
     saveShop(state, saveShopResult) {
       state.saveShopResult = saveShopResult
-    },
-    // 编辑商户信息
-    editShop(state, editShopResult) {
-      state.editShopResult = editShopResult
+      router.push({
+        path: '/shop/list'
+      })
     },
     getShopTypeList(state, shopTypeResult) {
       state.shopTypeList = shopTypeResult.data.merchantTypes
     },
     getShopForEdit(state, shopForEditResult) {
       const shop = shopForEditResult.data.merchants
-      // shop.isOnline = shop.isOnline ? shop.isOnline.toString() : ''
+      shop.isOnline = shop.isOnline ? shop.isOnline.toString() : ''
+      shop.time = []
+      shop.time.push(shop.startDate)
+      shop.time.push(shop.endDate)
+      console.log(shop)
       state.shopForEdit = shop
     },
     getMerchantsList(state, merchantsListResult) {
@@ -68,6 +71,9 @@ export default {
     },
     getMerchantsListByitemId(state, getMerchantsListResult) {
       state.merchantListByItemId = getMerchantsListResult.data.merchants
+    },
+    updateShop(state, updateShopResult) {
+      state.updateShopResult = updateShopResult
     }
   }
 }

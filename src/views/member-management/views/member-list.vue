@@ -91,9 +91,9 @@
             </el-row>
         </el-dialog>
         <!--编辑会员信息对话框-->
-        <el-dialog class="member-editor" title="编辑会员" :visible.sync="dialogFormVisible">
+        <el-dialog class="member-editor" title="会员送券" :visible.sync="dialogFormVisible">
             <el-form :model="userForEdit" size="mini">
-                <el-form-item label="姓名" label-width="120px">
+                <!-- <el-form-item label="姓名" label-width="120px">
                     <el-input v-model="userForEdit.name" auto-complete="off" placeholder="请填写姓名"></el-input>
                 </el-form-item>
                 <el-form-item label="性别" label-width="120px">
@@ -101,14 +101,14 @@
                 </el-form-item>
                 <el-form-item label="电话" label-width="120px">
                     <el-input v-model="userForEdit.phone" auto-complete="off" placeholder="请填写电话"></el-input>
-                </el-form-item>
-                <el-form-item label="会员等级" label-width="120px">
-                    <el-select v-model="userForEdit.orderStatus" placeholder="请选择会员等级">
+                </el-form-item> -->
+                <el-form-item label="选择优惠券" label-width="120px">
+                    <el-select v-model="userForEdit.orderStatus" placeholder="请选择会优惠券">
                         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="地址" label-width="120px">
+                <!-- <el-form-item label="地址" label-width="120px">
                     <el-input type="textarea" v-model="userForEdit.address" auto-complete="off" placeholder="请填写地址"></el-input>
                 </el-form-item>
                 <el-form-item label="备注" label-width="120px">
@@ -119,11 +119,11 @@
                         <img v-if="userForEdit.imageUrl" :src="userForEdit.imageUrl" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
-                </el-form-item>
+                </el-form-item> -->
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
-                <el-button size="mini" type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                <el-button size="mini" type="primary" @click="sendCouponConfirm">确 定</el-button>
             </div>
         </el-dialog>
     </el-row>
@@ -146,13 +146,13 @@ export default {
       },
       options: [{
         value: 1,
-        label: '钻石会员'
+        label: '满200送50'
       }, {
         value: '2',
-        label: '黄金会员'
+        label: '全场88折'
       }, {
         value: '3',
-        label: '白银会员'
+        label: '第一件商品半价'
       }],
       value: '', // 选择会员等级
       dialogDetailVisible: false,
@@ -219,6 +219,13 @@ export default {
     showOrdersByUserId(id) {
       this.$router.push({
         path: `/order/records/${id}`
+      })
+    },
+    sendCouponConfirm() {
+      this.dialogFormVisible = false
+      this.$message({
+        type: 'success',
+        message: '送券成功'
       })
     }
   },

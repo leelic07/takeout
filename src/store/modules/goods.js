@@ -1,4 +1,5 @@
 import http from '@/service'
+import router from '@/router'
 
 export default {
   state: {
@@ -16,7 +17,8 @@ export default {
     propertiesTotal: 0,
     propertyForEdit: {},
     saveStandardResult: {},
-    updateGoodsResult: {}
+    updateGoodsResult: {},
+    deletePropertyResult: {}
   },
   actions: {
     getGoodsList({ commit }, pagination) {
@@ -73,14 +75,17 @@ export default {
     getPropertiesPage({ commit }, pagination) {
       http.getPropertiesPage(pagination).then(res => res.code === 200 && commit('getPropertiesPage', res)).catch(err => console.log(err))
     },
-    getPropertyForEdit({ commit }, id) {
-      http.getPropertyForEdit({ id }).then(res => res.code === 200 && commit('getPropertyForEdit', res)).catch(err => console.log(err))
+    editProperty({ commit }, id) {
+      http.editProperty({ id }).then(res => res.code === 200 && commit('editProperty', res)).catch(err => console.log(err))
     },
     saveStandard({ commit }, standard) {
       http.saveStandard(standard).then(res => res.code === 200 && commit('saveStandard', res)).catch(err => console.log(err))
     },
     updateGoods({ commit }, goods) {
       http.updateGoods(goods).then(res => res.code === 200 && commit('updateGoods', res)).catch(err => console.log(err))
+    },
+    deleteProperty({ commit }, id) {
+      http.deleteProperty({ id }).then(res => res.code === 200 && commit('deleteProperty', res)).catch(err => console.log(err))
     }
   },
   mutations: {
@@ -95,6 +100,9 @@ export default {
     },
     saveGoods(state, saveGoodsResult) {
       state.saveGoodsResult = saveGoodsResult
+      router.push({
+        path: '/goods/list'
+      })
     },
     getGoodsTypePage(state, goodsTypesResult) {
       const data = goodsTypesResult.data
@@ -120,17 +128,36 @@ export default {
       state.withdrawGoodsResult = withdrawGoodsResult
     },
     getPropertiesPage(state, propertiesPageResult) {
-      state.propertiesList = propertiesPageResult.data.propertys
-      state.propertiesTotal = propertiesPageResult.data.totalCount
+      const data = propertiesPageResult.data
+      data.propertys.forEach(property => {
+        if (!property.pid) {
+          property.properties = []
+          data.propertys.forEach(prop => {
+            if (prop.pid === property.id) property.properties.push(prop)
+          })
+        }
+      })
+      data.propertiesList = data.propertys.filter(prop => !prop.pid)
+      state.propertiesList = data.propertiesList
+      state.propertiesTotal = data.totalCount
     },
-    getPropertyForEdit(state, propertyForEditResult) {
-      state.propertyForEdit = propertyForEditResult.data.property
+    editProperty(state, propertyForEditResult) {
+      state.propertyForEdit = propertyForEditResult.data.propertys
     },
     saveStandard(state, saveStandardResult) {
       state.saveStandardResult = saveStandardResult
+      router.push({
+        path: '/goods/standard'
+      })
     },
     updateGoods(state, updateGoodsResult) {
       state.updateGoodsResult = updateGoodsResult
+      router.push({
+        path: '/goods/list'
+      })
+    },
+    deleteProperty(state, deletePropertyResult) {
+      state.deletePropertyResult = deletePropertyResult
     }
   }
 }

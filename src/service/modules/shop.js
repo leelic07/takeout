@@ -6,8 +6,8 @@ export default {
   // 添加商户信息
   saveShop: shopInfo => service.post('/merchants/save', shopInfo).then(res => res).catch(err => err),
   // 编辑商户信息
-  editShop: shopInfo => service.post('/merchants/update', shopInfo).then(res => res).catch(err => err),
   getShopTypeList: () => service.get('/merchant_types/list').then(res => res).catch(err => err),
   getShopForEdit: id => service.get('/merchants/edit', id).then(res => res).catch(err => err),
-  getMerchantsListByitemId: id => service.get('/merchants/bindItemlist', id).then(res => res).catch(err => err)
+  getMerchantsListByitemId: id => service.get('/merchants/bindItemlist', id).then(res => res).catch(err => err),
+  updateShop: shopInfo => service.post('/merchants/update', shopInfo).then(res => res).catch(err => err)
 }

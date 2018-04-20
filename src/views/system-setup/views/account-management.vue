@@ -2,7 +2,7 @@
   <el-row class="goods-upload-container">
     <el-col class="goods-upload-box" :span="14" :offset="5">
       <el-card class="user-box">
-        <el-form label-position="right" :model="manager" ref="goodsForm" :rules="rule" size="large">
+        <el-form label-position="right" :model="manager" ref="goodsForm" size="large">
           <el-col class="shop-message">
             <el-tag>基本信息</el-tag>
           </el-col>
@@ -12,11 +12,11 @@
           </el-form-item>
           <el-form-item label="用户手机号码：" label-width="120px">
             <!-- <el-input v-model="manager.merchants.tel" auto-complete="off" placeholder="请填写用户手机号码"></el-input> -->
-            <span>{{manager.merchants.tel}}</span>
+            <span>{{manager.merchants ? manager.merchants.tel : ''}}</span>
           </el-form-item>
           <el-form-item label="店铺：" label-width="120px">
             <!-- <el-input v-model="manager.merchants.name" auto-complete="off" placeholder="请填写店铺名称"></el-input> -->
-            <span>{{manager.merchants.name}}</span>
+            <span>{{manager.merchants ? manager.merchants.name : ''}}</span>
           </el-form-item>
           <el-form-item label="登录时间：" label-width="120px">
             <!-- <el-input v-model="manager.unit" auto-complete="off" placeholder="请填写登录时间"></el-input> -->

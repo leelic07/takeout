@@ -31,7 +31,7 @@
         <el-table-column prop="activityMoney" label="活动核销金额"></el-table-column>
         <el-table-column label="操作" width="140">
           <template slot-scope="props">
-            <el-button type="primary" size="mini" @click="editActivityById(props.row.id)">编辑</el-button>
+            <el-button type="primary" size="mini" @click="showEditActivity(props.row.id)">编辑</el-button>
             <el-button type="danger" size="mini" @click="deleteMember(props.row.id)">下架</el-button>
           </template>
         </el-table-column>
@@ -191,9 +191,12 @@ export default {
         })
       }).catch(err => console.log(err))
     },
-    editActivityById(id) {
-      this.dialogFormVisible = true
-      this.editActivity(id)
+    showEditActivity(id) {
+      // this.dialogFormVisible = true
+      // this.editActivity(id)
+      this.$router.push({
+        path: `/activity/edit/${id}`
+      })
     },
     updateActivityConfirm() {
       this.dialogFormVisible = true

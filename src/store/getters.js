@@ -13,6 +13,7 @@ const getters = {
   editShopResult: state => state.shop.editShopResult,
   merchantList: state => state.shop.merchantList,
   merchantListByItemId: state => state.shop.merchantListByItemId,
+  updateShopResult: state => state.shop.updateShopResult,
   // 商品管理
   goodsList: state => state.goods.goodsList,
   goodsForEdit: state => state.goods.goodsForEdit,
@@ -29,6 +30,7 @@ const getters = {
   propertyForEdit: state => state.goods.propertyForEdit,
   saveStandardResult: state => state.goods.saveStandardResult,
   updateGoodsResult: state => state.goods.updateGoodsResult,
+  deletePropertyResult: state => state.goods.deletePropertyResult,
   // 订单管理
   orderAcceptionList: state => state.order.orderAcceptionList,
   orderReservationList: state => state.order.orderReservationList,

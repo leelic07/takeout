@@ -186,11 +186,17 @@ export const constantRouterMap = [
       name: 'StandardAdd',
       component: () => import('@/views/goods-management/views/standard-add'),
       meta: { title: '新增规格', icon: 'example' }
-    }, {
+    }, {// 编辑商品
       path: 'edit/:id',
       name: 'GoodsEdit',
       component: () => import('@/views/goods-management/views/goods-edit'),
       meta: { title: '编辑商品', icon: 'example' },
+      hidden: true
+    }, {
+      path: 'standard/edit/:id',
+      name: 'StandardEdit',
+      component: () => import('@/views/goods-management/views/standard-edit'),
+      meta: { title: '编辑规格', icon: 'example' },
       hidden: true
     }]
   },
@@ -211,6 +217,18 @@ export const constantRouterMap = [
       component: () => import('@/views/activity-management/views/activity-add'),
       name: 'ActivityAdd',
       meta: { title: '新增活动', icon: 'example' }
+    }, {// 编辑活动
+      path: 'edit/:id',
+      component: () => import('@/views/activity-management/views/activity-edit'),
+      name: 'ActivityEdit',
+      meta: { title: '编辑活动', icon: 'example' },
+      hidden: true
+    }, {// 编辑优惠券
+      path: 'edit-coupons/:id',
+      component: () => import('@/views/activity-management/views/coupons-edit'),
+      name: 'CouponsEdit',
+      meta: { title: '编辑优惠券', icon: 'example' },
+      hidden: true
     }]
   },
 
@@ -309,6 +327,12 @@ export const constantRouterMap = [
       name: 'ShopAdd',
       component: () => import('@/views/shop-management/views/shop-add'),
       meta: { title: '新增店铺', icon: 'example' }
+    }, {// 编辑店铺
+      path: 'edit/:id',
+      name: 'ShopEdit',
+      component: () => import('@/views/shop-management/views/shop-edit'),
+      meta: { title: '编辑店铺', icon: 'example' },
+      hidden: true
     }]
   },
 

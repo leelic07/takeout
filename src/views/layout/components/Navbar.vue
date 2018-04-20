@@ -8,9 +8,9 @@
         <i class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
-        <router-link class="inlineBlock" to="/">
+        <router-link class="inlineBlock" to="/system/account">
           <el-dropdown-item>
-            个人主页
+            <span>个人主页</span>
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>

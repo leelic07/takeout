@@ -54,7 +54,10 @@ const user = {
       })
     },
     getUserById(state, getManagerResult) {
-      state.manager = getManagerResult.data.managers
+      const managers = getManagerResult.data.managers
+      managers.merchants = managers.merchants || []
+      managers.type = managers.type.toString()
+      state.manager = managers
     }
   }
 }

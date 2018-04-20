@@ -33,7 +33,7 @@
         <el-table-column prop="activityCount" label="活动"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="editMember(scope.row)">编辑</el-button>
+            <el-button type="primary" size="mini" @click="showShopEdit(scope.row.id)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -208,11 +208,13 @@ export default {
       this.shopDetail = row
     },
     // 点击编辑执行的方法
-    editMember(row) {
-      this.dialogFormVisible = true
-      this.shopForEdit = row
-      this.getShopForEdit(row.id)
-      this.getShopTypeList()
+    showShopEdit(id) {
+      // this.dialogFormVisible = true
+      // this.getShopForEdit(id)
+      // this.getShopTypeList()
+      this.$router.push({
+        path: `/shop/edit/${id}`
+      })
     },
     // 店铺图片上传成功执行的方法
     handleAvatarSuccess(res) {

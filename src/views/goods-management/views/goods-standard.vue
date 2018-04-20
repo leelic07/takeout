@@ -20,7 +20,7 @@
         <el-table-column label="操作">
           <template slot-scope="props">
             <el-button type="primary" size="mini" @click="showEditProperty(props.row.id)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="deleteMember(props.row.id)">删除</el-button>
+            <el-button type="danger" size="mini" @click="deletePropertyConfirm(props.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -157,7 +157,8 @@ export default {
   methods: {
     ...mapActions({
       getPropertiesPage: 'getPropertiesPage',
-      getPropertyForEdit: 'getPropertyForEdit'
+      getPropertyForEdit: 'getPropertyForEdit',
+      deleteProperty: 'deleteProperty'
     }),
     // 点击详情执行的方法
     showMemberDetail(row) {
@@ -166,8 +167,11 @@ export default {
     },
     // 点击编辑执行的方法
     showEditProperty(id) {
-      this.dialogFormVisible = true
-      this.getPropertyForEdit(id)
+      // this.dialogFormVisible = true
+      // this.getPropertyForEdit(id)
+      this.$router.push({
+        path: `/goods/standard/edit/${id}`
+      })
     },
     // 会员头像上传成功执行的方法
     handleAvatarSuccess(file) {
@@ -178,16 +182,13 @@ export default {
       console.log(file)
     },
     // 点击删除执行的方法
-    deleteMember(id) {
-      this.$confirm('确定删除该分类吗?', '提示', {
+    deletePropertyConfirm(id) {
+      this.$confirm('确定删除该规格吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        })
+        this.deleteProperty(id)
       }).catch(err => console.log(err))
     }
   },
