@@ -1,6 +1,6 @@
 import base from '../config/base'
 import axios from 'axios'
-// import store from '@/store'
+import store from '@/store'
 import router from '../../router/index'
 import { Message } from 'element-ui'
 import qs from 'qs'
@@ -13,7 +13,6 @@ export const agency = '/takeaway'
 const getUrl = (url) => `${agency}${url}`
 // 处理服务端错误的方法
 const handleError = (error) => {
-  console.dir(error)
   if (error.response !== undefined) {
     switch (error.response.status) {
       case 401:
@@ -105,13 +104,13 @@ instance.interceptors.response.use(
   response => {
     handleSuccess(response) || (response.errors && Message.error(response.errors[0]))
     // 隐藏loading遮罩层
-    // store.commit('hideLoading')
+    store.commit('hideLoading')
     return response
   },
   error => {
     if (handleError(error)) {
       // 隐藏loading遮罩层
-      // store.commit('hideLoading')
+      store.commit('hideLoading')
       Promise.reject(error)
     }
   }

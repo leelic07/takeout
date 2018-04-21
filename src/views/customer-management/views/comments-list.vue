@@ -145,14 +145,14 @@
                 </el-card>
             </el-col>
         </el-row>
-        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
+        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading" style="height:30px;">
             <!-- <img src="../assets/loading-spinning-bubbles.svg" alt="" v-show="loading"> -->
         </div>
     </el-row>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -200,12 +200,16 @@ export default {
   computed: {
     ...mapGetters([
       'feedbacksList',
-      'feedbacksTotal'
+      'feedbacksTotal',
+      'loading'
     ])
   },
   methods: {
     ...mapActions({
       getFeedbacksList: 'getFeedbacksList'
+    }),
+    ...mapMutations({
+      showLoading: 'showLoading'
     }),
     // 点击打印订单执行的方法
     printOrder() {
@@ -235,6 +239,7 @@ export default {
     },
     loadMore() {
       this.busy = true
+      this.showLoading()
       setTimeout(() => {
         this.getFeedbacksList(sessionStorage.getItem('userId'))
       }, 1000)

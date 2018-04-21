@@ -29,7 +29,7 @@
                         <el-date-picker v-model="couponForEdit.endDate" placeholder="选择结束日期"></el-date-picker>
                     </el-form-item>
                     <el-form-item label="活动参与店铺" label-width="100px">
-                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange(checkAll,'discount')">全选</el-checkbox>
+                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange(checkAll)">全选</el-checkbox>
                         <el-checkbox-group v-model="couponForEdit.merchants" @change="handleCheckMerchantChange">
                             <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
                         </el-checkbox-group>
@@ -107,12 +107,10 @@ export default {
       })
     },
     // 点击全选时候执行的方法
-    handleCheckAllChange(val, type) {
-      type === 'discount' ? val ? this.merchantList.forEach(merchant => {
+    handleCheckAllChange(val) {
+      val ? this.merchantList.forEach(merchant => {
         this.couponForEdit.merchants.push(merchant.id)
-      }) : this.couponForEdit.merchants.splice(0) : val ? this.merchantList.forEach(merchant => {
-        this.activityForm.merchants.push(merchant.id)
-      }) : this.activityForm.merchants.splice(0)
+      }) : this.couponForEdit.merchants.splice(0)
       this.isIndeterminate = false
     },
     // 选择商铺时执行的方法

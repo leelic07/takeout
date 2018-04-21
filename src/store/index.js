@@ -9,6 +9,7 @@ import activity from './modules/activity'
 import upload from './modules/upload'
 import member from './modules/member'
 import customer from './modules/customer'
+import loading from './modules/loading'
 import getters from './getters'
 
 Vue.use(Vuex)
@@ -23,7 +24,8 @@ const store = new Vuex.Store({
     activity,
     upload,
     member,
-    customer
+    customer,
+    loading
   },
   getters
 })

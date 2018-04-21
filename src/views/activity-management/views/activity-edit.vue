@@ -33,7 +33,7 @@
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="活动参与店铺" label-width="100px">
-                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange(checkAll,'acitivity')">全选</el-checkbox>
+                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange(checkAll)">全选</el-checkbox>
                         <el-checkbox-group v-model="activityForEdit.merchants" @change="handleCheckMerchantChange">
                             <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
                         </el-checkbox-group>
@@ -101,10 +101,8 @@ export default {
       })
     },
     // 点击全选时候执行的方法
-    handleCheckAllChange(val, type) {
-      type === 'discount' ? val ? this.merchantList.forEach(merchant => {
-        this.discountForm.merchants.push(merchant.id)
-      }) : this.discountForm.merchants.splice(0) : val ? this.merchantList.forEach(merchant => {
+    handleCheckAllChange(val) {
+      val ? this.merchantList.forEach(merchant => {
         this.activityForEdit.merchants.push(merchant.id)
       }) : this.activityForEdit.merchants.splice(0)
       this.isIndeterminate = false

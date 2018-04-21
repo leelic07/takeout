@@ -1,4 +1,5 @@
 import http from '@/service'
+import router from '@/router'
 
 export default {
   state: {
@@ -96,9 +97,15 @@ export default {
     },
     saveActivity(state, saveActivityResult) {
       state.saveActivityResult = saveActivityResult
+      router.push({
+        path: '/activity/list'
+      })
     },
     saveCoupon(state, saveCouponResult) {
       state.saveCouponResult = saveCouponResult
+      router.push({
+        path: '/activity/list'
+      })
     }
   }
 }

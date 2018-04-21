@@ -55,7 +55,9 @@ const getters = {
   userTotal: state => state.member.userTotal,
   userForEdit: state => state.member.userForEdit,
   // 售后管理
-  feedbacksList: state => state.customer.feedbacksList
+  feedbacksList: state => state.customer.feedbacksList,
+  // 加载图标
+  loading: state => state.loading.loading
 }
 
 export default getters

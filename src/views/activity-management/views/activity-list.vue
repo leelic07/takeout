@@ -15,7 +15,7 @@
       <el-button type="primary" icon="el-icon-search" @click="searchActivity">搜索</el-button>
     </el-row>
     <!--满减活动列表-->
-    <el-row class="order-statics" v-if="activityList.length">
+    <el-row class="order-statics" v-if="showActivityList">
       <el-table :data="activityList" stripe border fit style="width: 100%">
         <el-table-column type="index" :index="1" label="序号"></el-table-column>
         <el-table-column prop="activityType" label="活动类型"></el-table-column>
@@ -37,7 +37,7 @@
         </el-table-column>
       </el-table>
     </el-row>
-    <el-row class="order-statics" v-if="couponList.length">
+    <el-row class="order-statics" v-if="showCouponList">
       <el-table :data="couponList" stripe border fit style="width: 100%">
         <el-table-column type="index" :index="1" label="序号"></el-table-column>
         <el-table-column prop="activityType" label="活动类型"></el-table-column>
@@ -153,7 +153,9 @@ export default {
         id: 2,
         name: '优惠券'
       }],
-      activityType: 1
+      activityType: 1,
+      showCouponList: false,
+      showActivityList: true
     }
   },
   watch: {
@@ -168,6 +170,19 @@ export default {
         }
       },
       immediate: true
+    },
+    activityList() {
+      this.showActivityList = true
+      this.showCouponList = false
+    },
+    couponList() {
+      this.showCouponList = true
+      this.showActivityList = false
+    },
+    $router(to, from) {
+      const path = from.path.substring(0, path.lastIndexOf('/'))
+      if (path === '/activity/edit') this.activityType = 1
+      else if (path === '/activity/edit-coupons') this.activityType = 2
     }
   },
   computed: {
