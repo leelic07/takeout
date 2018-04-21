@@ -33,7 +33,7 @@ export default {
     saveGoods({ commit }, goods) {
       const merchants = []
       const pictures = []
-      goods.merchants.forEac(merchant => {
+      goods.merchants.forEach(merchant => {
         merchants.push({
           merchantId: merchant,
           isPuton: goods.isPuton
@@ -128,18 +128,16 @@ export default {
       state.withdrawGoodsResult = withdrawGoodsResult
     },
     getPropertiesPage(state, propertiesPageResult) {
-      const data = propertiesPageResult.data
-      data.propertys.forEach(property => {
-        if (!property.pid) {
-          property.properties = []
-          data.propertys.forEach(prop => {
-            if (prop.pid === property.id) property.properties.push(prop)
-          })
-        }
+      const propertys = propertiesPageResult.data.propertys
+      const total = propertiesPageResult.data.totalCount
+      propertys.forEach(property => {
+        property.standardOption = ''
+        property.subPropertys.forEach((sub, index, arr) => {
+          (arr.length === index + 1) && (property.standardOption += `${sub.name || ''}`) || (property.standardOption += `${sub.name || ''}  `)
+        })
       })
-      data.propertiesList = data.propertys.filter(prop => !prop.pid)
-      state.propertiesList = data.propertiesList
-      state.propertiesTotal = data.totalCount
+      state.propertiesList = propertys
+      state.propertiesTotal = total
     },
     editProperty(state, propertyForEditResult) {
       state.propertyForEdit = propertyForEditResult.data.propertys

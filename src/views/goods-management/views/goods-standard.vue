@@ -16,7 +16,7 @@
         <el-table-column type="index" :index="1" label="序号"></el-table-column>
         <el-table-column prop="name" label="规格名称"></el-table-column>
         <el-table-column prop="categoryNumber" label="规格编号"></el-table-column>
-        <el-table-column prop="quantity" label="规格选项"></el-table-column>
+        <el-table-column prop="standardOption" label="规格选项"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="props">
             <el-button type="primary" size="mini" @click="showEditProperty(props.row.id)">编辑</el-button>
