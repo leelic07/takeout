@@ -49,7 +49,7 @@
                         <el-input type="textarea" v-model="couponForEdit.description" placeholder="请输入描述"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" size="medium" @click="publishCoupon">更新活动</el-button>
+                        <el-button type="primary" size="medium" @click="updateCouponConfirm">更新活动</el-button>
                     </el-form-item>
                 </el-form>
             </el-card>
@@ -96,20 +96,14 @@ export default {
   methods: {
     ...mapActions({
       getCouponTypeList: 'getCouponTypeList',
-      saveCoupon: 'saveCoupon',
+      updateCoupon: 'updateCoupon',
       editCoupon: 'editCoupon',
       getMerchantsList: 'getMerchantsList'
     }),
-    publishActivity() {
-      this.$refs.activityForm.validate(valid => {
-        if (valid) this.saveActivity(this.activityForm)
-        else console.log('saveActivity err')
-      })
-    },
-    publishCoupon() {
+    updateCouponConfirm() {
       this.$refs.discountForm.validate(valid => {
-        if (valid) this.saveCoupon(this.couponForEdit)
-        else console.log('saveCoupon err')
+        if (valid) this.updateCoupon(this.couponForEdit)
+        else console.log('updateCoupon err')
       })
     },
     // 点击全选时候执行的方法

@@ -12,7 +12,8 @@ export default {
     updateActivityResult: {},
     couponTypeList: [],
     saveActivityResult: {},
-    saveCouponResult: {}
+    saveCouponResult: {},
+    updateCouponResult: {}
   },
   actions: {
     getActivityList({ commit }, pagination) {
@@ -30,13 +31,16 @@ export default {
       http.editCoupon({ id }).then(res => res.code === 200 && commit('editCoupon', res)).catch(err => console.log(err))
     },
     updateActivity({ commit }, activity) {
-      const params = {
-        id: activity.id,
-        code: activity.code,
-        startDate: activity.startDate,
-        endDate: activity.endDate
-      }
-      http.updateActivity(params).then(res => res.code === 200 && commit('updateActivity', res)).catch(err => console.log(err))
+      // const params = {
+      //   id: activity.id,
+      //   code: activity.code,
+      //   startDate: activity.startDate,
+      //   endDate: activity.endDate
+      // }
+      http.updateActivity(activity).then(res => res.code === 200 && commit('updateActivity', res)).catch(err => console.log(err))
+    },
+    updateCoupon({ commit }, coupon) {
+      http.updateCoupon(coupon).then(res => res.code === 200 && commit('updateCoupon', res)).catch(err => console.log(err))
     },
     getCouponTypeList({ commit }) {
       http.getCouponTypeList().then(res => res.code === 200 && commit('getCouponTypeList', res)).catch(err => console.log(err))
@@ -83,6 +87,9 @@ export default {
     },
     updateActivity(state, updateActivityResult) {
       state.updateActivityResult = updateActivityResult
+    },
+    updateCoupon(state, updateCouponResult) {
+      state.updateCouponResult = updateCouponResult
     },
     getCouponTypeList(state, couponTypeListResult) {
       state.couponSendTypes = couponTypeListResult.data.couponSendTypes

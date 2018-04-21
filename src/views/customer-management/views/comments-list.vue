@@ -145,6 +145,9 @@
                 </el-card>
             </el-col>
         </el-row>
+        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
+            <!-- <img src="../assets/loading-spinning-bubbles.svg" alt="" v-show="loading"> -->
+        </div>
     </el-row>
 </template>
 
@@ -155,6 +158,7 @@ export default {
   data() {
     return {
       form: {},
+      datetime: '',
       tableData: [{
         date: '3俩卤粉',
         name: 8,
@@ -184,7 +188,13 @@ export default {
       deliveryData: [{
         amount: 6
       }],
-      sellerLevel: '3.7'
+      sellerLevel: '3.7',
+      busy: true
+    }
+  },
+  watch: {
+    feedbacksList() {
+      this.busy = false
     }
   },
   computed: {
@@ -222,6 +232,12 @@ export default {
           message: '取消订单成功'
         }).catch(err => console.log(err))
       })
+    },
+    loadMore() {
+      this.busy = true
+      setTimeout(() => {
+        this.getFeedbacksList(sessionStorage.getItem('userId'))
+      }, 1000)
     }
   },
   mounted() {

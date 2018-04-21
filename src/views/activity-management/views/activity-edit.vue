@@ -14,7 +14,7 @@
             <!--活动内容-->
             <el-card>
                 <!--满减活动-->
-                <el-form :label-position="labelPosition" :model="activityForEdit" ref="activityForEdit" :rules="activityRules" label-width="80px">
+                <el-form :label-position="labelPosition" :model="activityForEdit" ref="activityForm" :rules="activityRules" label-width="80px">
                     <el-form-item label="活动名称" prop="name">
                         <el-input v-model="activityForEdit.name" placeholder="请输入活动名称"></el-input>
                     </el-form-item>
@@ -42,7 +42,7 @@
                         <el-input type="textarea" v-model="activityForEdit.description" placeholder="请输入描述"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" size="medium" @click="publishActivity">更新活动</el-button>
+                        <el-button type="primary" size="medium" @click="updateActivityConfirm">更新活动</el-button>
                     </el-form-item>
                 </el-form>
                 <!--优惠券-->
@@ -91,18 +91,13 @@ export default {
     ...mapActions({
       saveActivity: 'saveActivity',
       getMerchantsList: 'getMerchantsList',
-      editActivity: 'editActivity'
+      editActivity: 'editActivity',
+      updateActivity: 'updateActivity'
     }),
-    publishActivity() {
+    updateActivityConfirm() {
       this.$refs.activityForm.validate(valid => {
-        if (valid) this.saveActivity(this.activityForEdit)
-        else console.log('saveActivity err')
-      })
-    },
-    publishCoupon() {
-      this.$refs.discountForm.validate(valid => {
-        if (valid) this.saveCoupon(this.discountForm)
-        else console.log('saveCoupon err')
+        if (valid) this.updateActivity(this.activityForEdit)
+        else console.log('updateActivity err')
       })
     },
     // 点击全选时候执行的方法
