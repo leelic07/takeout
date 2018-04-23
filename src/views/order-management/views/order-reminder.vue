@@ -74,8 +74,6 @@
                     <el-form-item label="本顾客实际支付:">
                       <span style="color: orange;font-size: 18px;">{{props.row.realTotalMoney}}</span>
                     </el-form-item>
-                    <!-- </el-form>
-                    </el-form-item> -->
                     <el-form-item>
                       <!-- <template slot-scope="props"> -->
                       <el-button type="danger" plain size="mini" @click="cancelOrder">取消订单并退款</el-button>

@@ -14,7 +14,9 @@ export default {
     couponTypeList: [],
     saveActivityResult: {},
     saveCouponResult: {},
-    updateCouponResult: {}
+    updateCouponResult: {},
+    deleteActivityResult: {},
+    deleteCouponResult: {}
   },
   actions: {
     getActivityList({ commit }, pagination) {
@@ -67,6 +69,12 @@ export default {
       })
       coupons.merchants = merchants
       http.saveCoupon(coupons).then(res => res.code === 200 && commit('saveCoupon', res)).catch(err => console.log(err))
+    },
+    deleteActivity({ commit }, id) {
+      http.deleteActivity({ id }).then(res => res.code === 200 && commit('deleteActivity', res)).catch(err => console.log(err))
+    },
+    deleteCoupon({ commit }, id) {
+      http.deleteCoupon({ id }).then(res => res.code === 200 && commit('deleteCoupon', res)).catch(err => console.log(err))
     }
   },
   mutations: {
@@ -106,6 +114,12 @@ export default {
       router.push({
         path: '/activity/list'
       })
+    },
+    deleteActivity(state, deleteActivityResult) {
+      state.deleteActivityResult = deleteActivityResult
+    },
+    deleteCoupon(state, deleteCouponResult) {
+      state.deleteCouponResult = deleteCouponResult
     }
   }
 }

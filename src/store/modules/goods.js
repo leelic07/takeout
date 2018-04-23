@@ -18,7 +18,9 @@ export default {
     propertyForEdit: {},
     saveStandardResult: {},
     updateGoodsResult: {},
-    deletePropertyResult: {}
+    deletePropertyResult: {},
+    propertyParents: [],
+    proertyChildren: []
   },
   actions: {
     getGoodsList({ commit }, pagination) {
@@ -86,6 +88,17 @@ export default {
     },
     deleteProperty({ commit }, id) {
       http.deleteProperty({ id }).then(res => res.code === 200 && commit('deleteProperty', res)).catch(err => console.log(err))
+    },
+    getPropertysParent({ commit }) {
+      http.getPropertysParent().then(res => res.code === 200 && commit('getPropertysParent', res)).catch(err => console.log(err))
+    },
+    getPropertysChildren({ commit }, property) {
+      http.getPropertysChildren({ pid: property.id }).then(res => {
+        if (res.code === 200) {
+          res.property = property
+          commit('getPropertysChildren', res)
+        }
+      }).catch(err => console.log(err))
     }
   },
   mutations: {
@@ -133,7 +146,7 @@ export default {
       propertys.forEach(property => {
         property.standardOption = ''
         property.subPropertys.forEach((sub, index, arr) => {
-          (arr.length === index + 1) && (property.standardOption += `${sub.name || ''}`) || (property.standardOption += `${sub.name || ''}  `)
+          (arr.length === index + 1) && (property.standardOption += `${sub.name || ''}`) || (property.standardOption += `${sub.name || ''} / `)
         })
       })
       state.propertiesList = propertys
@@ -156,6 +169,15 @@ export default {
     },
     deleteProperty(state, deletePropertyResult) {
       state.deletePropertyResult = deletePropertyResult
+    },
+    getPropertysParent(state, propertysParentResult) {
+      state.propertyParents = propertysParentResult.data.propertys
+    },
+    getPropertysChildren(state, propertysChildrenResult) {
+      const property = propertysChildrenResult.property
+      const subPropertys = propertysChildrenResult.data.propertys
+      property.subPropertys = subPropertys
+      state.proertyChildren = subPropertys
     }
   }
 }

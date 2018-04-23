@@ -18,7 +18,7 @@
               <el-row class="split-line"></el-row>
             <!-- </el-row> -->
             <el-form-item label="">
-              <el-button type="primary" size="medium" @click="saveStandardConfirm">保存</el-button>
+              <el-button type="primary" size="medium" @click="saveStandardConfirm">更新</el-button>
               <!-- <el-button type="success" size="medium" @click="addStandard">新增</el-button> -->
             </el-form-item>
           </el-form>
@@ -37,7 +37,7 @@ export default {
       standardForm: [{
         name: '',
         subPropertys: [{
-          value: ''
+          name: ''
         }]
       }],
       fileList2: [],
@@ -75,12 +75,12 @@ export default {
       this.standardForm.push({
         name: '',
         subPropertys: [{
-          value: ''
+          name: ''
         }]
       })
     },
     addParams(index) {
-      this.standardForm[index].subPropertys.push({ value: '' })
+      this.standardForm[index].subPropertys.push({ name: '' })
     },
     decedeParams(index, ind) {
       this.standardForm[index].subPropertys.splice(ind, 1)

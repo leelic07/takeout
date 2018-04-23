@@ -32,7 +32,7 @@
         <el-table-column label="操作" width="140">
           <template slot-scope="props">
             <el-button type="primary" size="mini" @click="showEditActivity(props.row.id)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="deleteMember(props.row.id)">下架</el-button>
+            <el-button type="danger" size="mini" @click="deleteActivityConfirm(props.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -54,7 +54,7 @@
         <el-table-column label="操作" width="140">
           <template slot-scope="props">
             <el-button type="primary" size="mini" @click="showEditCoupon(props.row.id)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="deleteMember(props.row.id)">下架</el-button>
+            <el-button type="danger" size="mini" @click="deleteActivityConfirm(props.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -201,7 +201,9 @@ export default {
       getActivityList: 'getActivityList',
       getCouponList: 'getCouponList',
       editActivity: 'editActivity',
-      updateActivity: 'updateActivity'
+      updateActivity: 'updateActivity',
+      deleteActivity: 'deleteActivity',
+      deleteCoupon: 'deleteCoupon'
     }),
     // 点击详情执行的方法
     showMemberDetail(row) {
@@ -217,16 +219,13 @@ export default {
       console.log(file)
     },
     // 点击删除执行的方法
-    deleteMember(id) {
-      this.$confirm('确定下架该商品?', '提示', {
+    deleteActivityConfirm(id) {
+      this.$confirm('确定删除商品?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '下架成功!'
-        })
+        this.activityType === 1 && this.deleteActivity(id) || this.deleteCoupon(id)
       }).catch(err => console.log(err))
     },
     showEditActivity(id) {

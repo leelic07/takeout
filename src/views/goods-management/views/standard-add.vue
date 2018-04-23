@@ -11,7 +11,7 @@
                 <div class="property-button decede-properties decede-standard" @click="decedeStandardForm(index)" v-if="standardForm.length > 1">-</div>
               </el-form-item>
               <el-form-item v-for="(param,ind) in standardForm[index].subPropertys" :key="ind" label="规格参数" label-width="120px">
-                <el-input v-model="param.value" auto-complete="off" placeholder="请填写规格参数"></el-input>
+                <el-input v-model="param.name" auto-complete="off" placeholder="请填写规格参数"></el-input>
                 <div class="property-button add-properties add-standard" @click="addParams(index)" v-if="standardForm[index].subPropertys.length === ind + 1">+</div>
                 <div class="property-button decede-properties decede-standard" @click="decedeParams(index,ind)" v-if="standardForm[index].subPropertys.length > 1">-</div>
               </el-form-item>
@@ -37,7 +37,7 @@ export default {
       standardForm: [{
         name: '',
         subPropertys: [{
-          value: ''
+          name: ''
         }]
       }],
       fileList2: [],
@@ -69,12 +69,12 @@ export default {
       this.standardForm.push({
         name: '',
         subPropertys: [{
-          value: ''
+          name: ''
         }]
       })
     },
     addParams(index) {
-      this.standardForm[index].subPropertys.push({ value: '' })
+      this.standardForm[index].subPropertys.push({ name: '' })
     },
     decedeParams(index, ind) {
       this.standardForm[index].subPropertys.splice(ind, 1)

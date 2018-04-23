@@ -69,39 +69,39 @@
             <label for="">属性名</label>
           </el-col>
           <el-col :span="8">
-            <el-select v-model="pro.name" placeholder="请选择属性名">
-              <el-option v-for="(pro,index) in shopPropertyList" :value="pro.id" :label="pro.name" :key="index"></el-option>
+            <el-select v-model="pro.id" placeholder="请选择属性名" @change="propertyChange(pro)">
+              <el-option v-for="(prop,index) in propertyParents" :value="prop.id" :label="prop.name" :key="index"></el-option>
             </el-select>
           </el-col>
           <el-col :span="3" :offset="2">
             <div class="property-button decede-properties" @click="decedePropertyForm(index)" v-if="goods.propertys.length > 1">-</div>
             <div class="property-button add-properties" @click="addPropertyForm" v-if="goods.propertys.length === index + 1">+</div>
           </el-col>
-          <el-col v-for="(ps,ind) in pro.properties" :key="ind" label="">
+          <el-col v-for="(ps,ind) in pro.subPropertys" :key="ind" label="">
             <el-col :span="3">
               <label for="">属性值：</label>
             </el-col>
             <el-col :span="4">
               <!-- <el-input v-model="ps.value" auto-complete="off" placeholder="请填写属性值"></el-input> -->
-              <span>{{ps.value}}</span>
+              <span>{{ps.name}}</span>
             </el-col>
             <el-col :span="2" :offset="1">
               <label for="">价格</label>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="7">
               <el-input v-model="ps.price" auto-complete="off" placeholder="请填写价格"></el-input>
             </el-col>
-            <el-col :span="2" :offset="1">
+            <el-col :span="2" :offset="2">
               <el-checkbox v-model="ps.isOpen">启用</el-checkbox>
             </el-col>
-            <el-col :span="3" :offset="1">
-              <div class="property-button decede-properties" @click="decedeProperties(index,ind)" v-if="goods.propertys[index].properties.length > 1">-</div>
-              <div class="property-button add-properties" @click="addProperties(index)" v-if="goods.propertys[index].properties.length === ind + 1">+</div>
-            </el-col>
+            <!-- <el-col :span="3" :offset="1">
+              <div class="property-button decede-properties" @click="decedeProperties(index,ind)" v-if="goods.propertys[index].subPropertys.length > 1">-</div>
+              <div class="property-button add-properties" @click="addProperties(index)" v-if="goods.propertys[index].subPropertys.length === ind + 1">+</div>
+            </el-col> -->
           </el-col>
         </el-row>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
+          <el-button size="small" @click="resetPropertys">取 消</el-button>
           <el-button type="primary" @click="dialogFormVisible = false" size="small">确 定</el-button>
         </div>
       </el-dialog>
@@ -119,12 +119,8 @@ export default {
         pictures: [],
         merchants: [],
         propertys: [{
-          name: '',
-          properties: [{
-            value: 'xxx',
-            price: '',
-            isOpen: true
-          }]
+          id: '',
+          subPropertys: []
         }]
       },
       fileList: [],
@@ -157,10 +153,20 @@ export default {
       isIndeterminate: true
     }
   },
+  watch: {
+    // 'goods.propertys': {
+    //   handler: function(newValue) {
+
+    //   },
+    //   deep: true
+    // }
+  },
   computed: {
     ...mapGetters([
       'goodsTypeList',
-      'merchantList'
+      'merchantList',
+      'propertyParents',
+      'propertyChildren'
     ])
   },
   methods: {
@@ -168,7 +174,9 @@ export default {
       getGoodsTypeList: 'getGoodsTypeList',
       saveGoods: 'saveGoods',
       getMerchantsList: 'getMerchantsList',
-      uploadFile: 'uploadFile'
+      uploadFile: 'uploadFile',
+      getPropertysParent: 'getPropertysParent',
+      getPropertysChildren: 'getPropertysChildren'
     }),
     handleRemove(file) {
       this.fileListTemp.forEach((f, index, arr) => {
@@ -185,12 +193,8 @@ export default {
     // 添加属性名
     addPropertyForm() {
       this.goods.propertys.push({
-        name: '',
-        properties: [{
-          value: 'xxx',
-          price: '',
-          isOpen: true
-        }]
+        id: '',
+        subPropertys: []
       })
     },
     // 减少属性名
@@ -199,15 +203,19 @@ export default {
     },
     // 添加属性值
     addProperties(index) {
-      this.goods.propertys[index].properties.push({
-        value: 'xxx',
+      this.goods.propertys[index].subPropertys.push({
+        value: '',
         price: '',
         isOpen: true
       })
     },
     // 减少属性值
     decedeProperties(index, i) {
-      this.goods.propertys[index].properties.length > 1 && this.goods.propertys[index].properties.splice(i, 1)
+      this.goods.propertys[index].subPropertys.length > 1 && this.goods.propertys[index].subPropertys.splice(i, 1)
+    },
+    // 选择商品属性名
+    propertyChange(property) {
+      this.getPropertysChildren(property)
     },
     // 确定保存商品
     saveGoodsConfirm() {
@@ -215,6 +223,13 @@ export default {
         if (valid) this.saveGoods(this.goods)
         else console.log('err saveGoods')
       })
+    },
+    resetPropertys() {
+      this.dialogFormVisible = false
+      this.goods.propertys = [{
+        id: '',
+        subPropertys: []
+      }]
     },
     // 点击全选时执行的方法
     handleCheckAllChange(val) {
@@ -232,6 +247,7 @@ export default {
   mounted() {
     this.getGoodsTypeList()
     this.getMerchantsList()
+    this.getPropertysParent()
   }
 }
 </script>

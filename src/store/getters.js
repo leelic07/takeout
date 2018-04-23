@@ -31,6 +31,8 @@ const getters = {
   saveStandardResult: state => state.goods.saveStandardResult,
   updateGoodsResult: state => state.goods.updateGoodsResult,
   deletePropertyResult: state => state.goods.deletePropertyResult,
+  propertyParents: state => state.goods.propertyParents,
+  propertyChildren: state => state.goods.propertyChildren,
   // 订单管理
   orderAcceptionList: state => state.order.orderAcceptionList,
   orderReservationList: state => state.order.orderReservationList,
@@ -49,6 +51,8 @@ const getters = {
   couponSendTypes: state => state.activity.couponSendTypes,
   couponForEdit: state => state.activity.couponForEdit,
   updateCouponResult: state => state.activity.updateCouponResult,
+  deleteActivityResult: state => state.activity.deleteActivityResult,
+  deleteCouponResult: state => state.activity.deleteCouponResult,
   // 上传文件
   uploadFileUrl: state => state.upload.uploadFileUrl,
   // 会员管理

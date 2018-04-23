@@ -16,5 +16,7 @@ export default {
   editProperty: id => service.get('/propertys/edit', id).then(res => res).catch(err => err),
   saveStandard: standard => service.post('/propertys/bathcSave', standard).then(res => res).catch(err => err),
   updateGoods: goods => service.post('/items/update', goods).then(res => res).catch(err => err),
-  deleteProperty: id => service.post('/propertys/delete', id).then(res => res).catch(err => err)
+  deleteProperty: id => service.post('/propertys/delete', id).then(res => res).catch(err => err),
+  getPropertysParent: () => service.get('/propertys/parent').then(res => res).catch(err => err),
+  getPropertysChildren: pid => service.get('/propertys/children', pid).then(res => res).catch(err => err)
 }
