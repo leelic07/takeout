@@ -18,7 +18,7 @@
               <el-row class="split-line"></el-row>
             <!-- </el-row> -->
             <el-form-item label="">
-              <el-button type="primary" size="medium" @click="saveStandardConfirm">更新</el-button>
+              <el-button type="primary" size="medium" @click="updateStandardConfirm">更新</el-button>
               <!-- <el-button type="success" size="medium" @click="addStandard">新增</el-button> -->
             </el-form-item>
           </el-form>
@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      saveStandard: 'saveStandard',
+      updateStandard: 'updateStandard',
       editProperty: 'editProperty'
     }),
     handleRemove(file, fileList) {
@@ -85,10 +85,10 @@ export default {
     decedeParams(index, ind) {
       this.standardForm[index].subPropertys.splice(ind, 1)
     },
-    saveStandardConfirm() {
+    updateStandardConfirm() {
       this.$refs['categoryForm'].validate(valid => {
-        if (valid) this.saveStandard(this.standardForm)
-        else console.log('saveStandard err')
+        if (valid) this.updateStandard(this.propertyForEdit)
+        else console.log('updateStandard err')
       })
     }
   },

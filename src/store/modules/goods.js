@@ -17,6 +17,7 @@ export default {
     propertiesTotal: 0,
     propertyForEdit: {},
     saveStandardResult: {},
+    updateStandardResult: {},
     updateGoodsResult: {},
     deletePropertyResult: {},
     propertyParents: [],
@@ -82,6 +83,9 @@ export default {
     },
     saveStandard({ commit }, standard) {
       http.saveStandard(standard).then(res => res.code === 200 && commit('saveStandard', res)).catch(err => console.log(err))
+    },
+    updateStandard({ commit }, standard) {
+      http.updateStandard(standard).then(res => res.code === 200 && commit('updateStandard', res)).catch(err => console.log(err))
     },
     updateGoods({ commit }, goods) {
       http.updateGoods(goods).then(res => res.code === 200 && commit('updateGoods', res)).catch(err => console.log(err))
@@ -157,6 +161,12 @@ export default {
     },
     saveStandard(state, saveStandardResult) {
       state.saveStandardResult = saveStandardResult
+      router.push({
+        path: '/goods/standard'
+      })
+    },
+    updateStandard(state, updateStandardResult) {
+      state.updateStandardResult = updateStandardResult
       router.push({
         path: '/goods/standard'
       })

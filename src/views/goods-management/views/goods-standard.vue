@@ -55,59 +55,6 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      categoryList: [{
-        categoryNumber: 12345678324324,
-        name: '卤粉',
-        quantity: '微辣,中辣,加辣'
-      }, {
-        categoryNumber: 12345678324324,
-        name: '卤粉',
-        quantity: '微辣,中辣,加辣'
-      }, {
-        categoryNumber: 12345678324324,
-        name: '卤粉',
-        quantity: '微辣,中辣,加辣'
-      }, {
-        categoryNumber: 12345678324324,
-        name: '卤粉',
-        quantity: '微辣,中辣,加辣'
-      }, {
-        categoryNumber: 12345678324324,
-        name: '卤粉',
-        quantity: '微辣,中辣,加辣'
-      }, {
-        categoryNumber: 12345678324324,
-        name: '卤粉',
-        quantity: '微辣,中辣,加辣'
-      }, {
-        categoryNumber: 12345678324324,
-        name: '卤粉',
-        quantity: '微辣,中辣,加辣'
-      }, {
-        categoryNumber: 12345678324324,
-        name: '卤粉',
-        quantity: '微辣,中辣,加辣'
-      }, {
-        categoryNumber: 12345678324324,
-        name: '卤粉',
-        quantity: '微辣,中辣,加辣'
-      }, {
-        categoryNumber: 12345678324324,
-        name: '卤粉',
-        quantity: '微辣,中辣,加辣'
-      }, {
-        categoryNumber: 12345678324324,
-        name: '卤粉',
-        quantity: '微辣,中辣,加辣'
-      }, {
-        categoryNumber: 12345678324324,
-        name: '卤粉',
-        quantity: '微辣,中辣,加辣'
-      }, {
-        categoryNumber: 12345678324324,
-        name: '卤粉',
-        quantity: '微辣,中辣,加辣'
-      }], // 订单统计列表
       orderNumber: '', // 订单号
       datetime: '', // 日期时间
       pagination: {// 分页信息
@@ -147,11 +94,17 @@ export default {
   components: {
     Pagination
   },
+  watch: {
+    deletePropertyResult() {
+      this.getPropertiesPage(this.pagination)
+    }
+  },
   computed: {
     ...mapGetters([
       'propertiesList',
       'propertiesTotal',
-      'propertyForEdit'
+      'propertyForEdit',
+      'deletePropertyResult'
     ])
   },
   methods: {
