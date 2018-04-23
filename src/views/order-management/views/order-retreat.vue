@@ -27,92 +27,86 @@
           </div>
           <el-row>
             <el-table :data="orderRetreatList" style="width: 100%" :show-header="false" stripe>
-              <el-table-column type="expand">
+               <el-table-column type="expand">
                 <template slot-scope="props">
-                  <el-form label-position="right" class="demo-table-expand">
+                  <el-form :model="props.row" label-position="right" class="demo-table-expand">
                     <!--备注-->
                     <el-form-item label="备注:">
                       <span>{{ props.row.remark }}</span>
                     </el-form-item>
                     <!--商品信息-->
                     <el-form-item label="商品信息:">
-                      <el-table :data="props.row.merchants" style="width: 100%" :show-header="false">
-                        <el-table-column prop="date" label="商品">
+                      <el-table :data="props.row.orderItems" style="width: 100%" :show-header="false">
+                        <el-table-column prop="itemName" label="商品">
                         </el-table-column>
-                        <el-table-column prop="name" label="单价">
+                        <el-table-column prop="itemPrice" label="单价">
                         </el-table-column>
-                        <el-table-column prop="address" label="数量">
+                        <el-table-column label="数量">
+                          <template slot-scope="prop">
+                            {{`x ${prop.row.itemNums}`}}
+                          </template>
                         </el-table-column>
-                        <el-table-column prop="total" label="总价">
+                        <el-table-column label="总价">
+                          <template slot-scope="prop">
+                            {{prop.row.itemPrice * prop.row.itemNums}}
+                          </template>
                         </el-table-column>
                       </el-table>
-                      <!--餐盒-->
-                      <!-- <el-table :data="boxData" style="width: 100%" :show-header="false">
-                        <el-table-column label="餐盒">
-                          <template slot-scope="scope">餐盒</template>
-                        </el-table-column>
-                        <el-table-column prop="price" label="商品">
-                        </el-table-column>
-                        <el-table-column prop="amount" label="单价">
-                        </el-table-column>
-                        <el-table-column prop="total" label="数量">
-                        </el-table-column>
-                      </el-table> -->
                     </el-form-item>
-                    <!-- <el-form-item>
-                      <el-form> -->
                     <el-form-item label="配送费:">
-                      <span>6元</span>
+                      <span>{{props.row.deliverMoney}}</span>
                     </el-form-item>
                     <el-form-item label="小计:">
-                      <span>82元</span>
+                      <span>{{props.row.totalPrice}}</span>
                     </el-form-item>
                     <el-form-item label="活动减免:">
-                      <span>8元</span>
+                      <span>{{props.row.activityMoney}}</span>
                     </el-form-item>
                     <el-form-item label="优惠券:">
-                      <span>3元</span>
+                      <span>{{props.row.couponMoney}}</span>
                     </el-form-item>
                     <el-form-item label="平台佣金:">
-                      <span>4.1元</span>
+                      <span>{{props.row.platformCommission}}</span>
                     </el-form-item>
                     <el-form-item label="本单预计收入:">
-                      <span style="color: orange;font-size: 18px;">66.9元</span>
+                      <span style="color: orange;font-size: 18px;"></span>
                     </el-form-item>
                     <el-form-item label="本顾客实际支付:">
-                      <span style="color: orange;font-size: 18px;">77元</span>
+                      <span style="color: orange;font-size: 18px;">{{props.row.realTotalMoney}}</span>
                     </el-form-item>
                     <!-- </el-form>
                     </el-form-item> -->
                     <el-form-item>
+                      <!-- <template slot-scope="props"> -->
                       <el-button type="danger" plain size="mini" @click="cancelOrder">取消订单并退款</el-button>
-                      <el-button type="danger" plain size="mini" @click="partCancelOrder">部分退款</el-button>
+                      <el-button type="primary" plain size="mini" @click="printOrder">打印订单</el-button>
+                      <!-- </template> -->
                     </el-form-item>
                   </el-form>
                 </template>
               </el-table-column>
-              <el-table-column label="" prop="id">
+              <el-table-column label="">
                 <template slot-scope="props">
                   <el-row class="card-content">
                     <el-col :span="20">
-                      <h3>曾(女士)</h3>
+                      <h3>{{props.row.name}}</h3>
                     </el-col>
                     <el-col :span="20">
                       <label>订单号:</label>
-                      <span>112222</span>
+                      <span>{{props.row.orderNo}}</span>
                     </el-col>
                     <el-col :span="20">
                       <label>下单时间:</label>
-                      <span>2018年3月26日 12:12:12下单</span>
+                      <span>{{props.row.createdAt | Date}}</span>
                     </el-col>
                     <span type="text">待发配送</span>
                     <el-col>
                       <label for="">电话:</label>
-                      <span>1324564345</span>
+                      <span>{{props.row.userPhone}}</span>
                     </el-col>
                     <el-col :span="18">
                       <label for="">地址:</label>
-                      <span>湖南省衡阳市蒸湘区华新大道福悦名居B栋</span>
+                      <span>{{props.row.userAddress}}</span>
                     </el-col>
                   </el-row>
                 </template>

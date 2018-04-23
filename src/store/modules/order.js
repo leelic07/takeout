@@ -5,7 +5,8 @@ export default {
     orderAcceptionList: [],
     orderReservationList: [],
     orderRetreatList: [],
-    orderRecordsList: []
+    orderRecordsList: [],
+    orderReminderList: []
   },
   actions: {
     // 获取接单信息
@@ -36,6 +37,11 @@ export default {
     },
     getOrderRecordsList({ commit }, pagination) {
       http.getOrderRecordsList(pagination).then(res => res.code === 200 && commit('getOrderRecordsList', res)).catch(err => console.log(err))
+    },
+    getOrderReminderByStatus({ commit }, pagination) {
+      const status = pagination.status
+      delete pagination.status
+      http.getOrderReminderByStatus(pagination).then(res => res.code === 200 && commit('getOrderReminderByStatus', { ...res, status })).catch(err => console.log(err))
     }
   },
   mutations: {
@@ -67,6 +73,11 @@ export default {
     },
     getOrderRecordsList(state, orderRecordsList) {
       state.orderRecordsList = orderRecordsList.data.orders
+    },
+    getOrderReminderByStatus(state, orderReminderList) {
+      const orders = orderReminderList.data.orders
+      const status = orderReminderList.status
+      state.orderReminderList = orders.filter(order => order.status === Number(status))
     }
   }
 }

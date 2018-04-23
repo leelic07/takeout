@@ -36,6 +36,7 @@ const getters = {
   orderReservationList: state => state.order.orderReservationList,
   orderRetreatList: state => state.order.orderRetreatList,
   orderRecordsList: state => state.order.orderRecordsList,
+  orderReminderList: state => state.order.orderReminderList,
   // 活动管理
   activityList: state => state.activity.activityList,
   activityTotal: state => state.activity.activityTotal,
