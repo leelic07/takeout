@@ -1,5 +1,6 @@
 import http from '@/service'
 import router from '@/router'
+const baseURL = 'http://47.106.143.22:8080'
 
 export default {
   state: {
@@ -125,6 +126,11 @@ export default {
       state.goodsList = goodsListResult.data.items
     },
     editGoods(state, editGoodsResult) {
+      const goodsForEdit = editGoodsResult.data.items
+      goodsForEdit.pictures.forEach(picture => {
+        picture.url = `${baseURL}${picture.url}`
+        picture.name = picture.url.substring(picture.url.lastIndexOf('/'))
+      })
       state.goodsForEdit = editGoodsResult.data.items
     },
     getGoodsTypeList(state, goodsTypeResult) {

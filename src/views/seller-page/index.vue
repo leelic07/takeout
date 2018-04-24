@@ -32,7 +32,7 @@
             </p>
             <el-col :span="24" class="order-amount-today">
               <router-link to="/order/acception">
-                <h1>1</h1>
+                <h1>{{merchantHomePage.pendingOrder || 0}}</h1>
                 <span>单
                   <i class="el-icon-arrow-right el-icon--right"></i>
                 </span>
@@ -48,7 +48,7 @@
             </p>
             <el-col :span="24" class="order-amount-today">
               <router-link to="/order/retreat">
-                <h1>2</h1>
+                <h1>{{merchantHomePage.refundingOrder}}</h1>
                 <span>
                   单
                   <i class="el-icon-arrow-right el-icon--right"></i>
@@ -67,7 +67,7 @@
             </p>
             <el-col :span="24" class="order-amount-today">
               <router-link to="/order/records">
-                <h1>10</h1>
+                <h1>{{merchantHomePage.dayOrder || 0}}</h1>
                 <span>单
                   <i class="el-icon-arrow-right el-icon--right"></i>
                 </span>
@@ -84,7 +84,7 @@
             <el-col :span="24" class="order-amount-today">
               <router-link to="/seller/index">
                 <h1>
-                  <svg-icon icon-class="money" /> 114.99
+                  <svg-icon icon-class="money" /> {{merchantHomePage.dayPrice || '0.00'}}
                 </h1>
                 <span>
                   <i class="el-icon-arrow-right el-icon--right"></i>
@@ -118,8 +118,8 @@ export default {
       list2: [],
       seller: {
         title: '意甜蛋糕(友阿店)',
-        rate: 3.7
-        // merchantId: ''
+        rate: 3.7,
+        merchantId: ''
       }
     }
   },
@@ -149,10 +149,10 @@ export default {
     ]),
     type() {
       return sessionStorage.getItem('type')
-    },
-    'seller.merchantId'() {
-      return sessionStorage.getItem('merchantId')
     }
+    // 'seller.merchantId'() {
+    //   return sessionStorage.getItem('merchantId')
+    // }
   },
   methods: {
     ...mapActions({
@@ -189,6 +189,9 @@ export default {
     merchantChange(merchantId) {
       this.getMerchantsHomePage(merchantId)
     }
+  },
+  mounted() {
+    this.getMerchantsHomePage(sessionStorage.getItem('merchantId'))
   }
 }
 </script>

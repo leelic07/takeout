@@ -159,6 +159,11 @@ export default {
       isIndeterminate: true
     }
   },
+  watch: {
+    goodsForEdit(newValue) {
+      this.fileList = newValue.pictures
+    }
+  },
   computed: {
     ...mapGetters([
       'goodsTypeList',
