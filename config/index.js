@@ -57,7 +57,7 @@ module.exports = {
     assetsSubDirectory: 'front/static',
 
     // you can set by youself according to actual condition
-    assetsPublicPath: './',
+    assetsPublicPath: '/',
 
     /**
      * Source Maps

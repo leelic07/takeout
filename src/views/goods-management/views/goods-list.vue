@@ -40,7 +40,8 @@
         <el-table-column label="操作" width="140">
           <template slot-scope="props">
             <el-button type="primary" size="mini" @click="showGoodsEdit(props.row.id)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="withdrawGoods(props.row.id)">下架</el-button>
+            <el-button type="danger" size="mini" @click="withdrawGoods(props.row.id)" v-if="props.row.isPuton">下架</el-button>
+            <el-button type="success" size="mini" @click="groundGoods(props.row.id)" v-else>上架</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -117,6 +118,25 @@
         })">确 定</el-button>
       </div>
     </el-dialog>
+    <!--商品上架对话框-->
+    <el-dialog class="withdraw-dialog" title="商品下架" :visible.sync="dialogGroundVisible">
+      <el-form ref="shopForm">
+        <el-form-item label="选择下架商铺：">
+          <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+          <el-checkbox-group v-model="merchantId" @change="handleCheckMerchantChange">
+            <el-checkbox v-for="(merchant,index) in merchantListByItemId" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="dialogGroundVisible = false">取 消</el-button>
+        <el-button size="mini" type="primary" @click="groundGoodsConfirmForSuper({
+          itemId,
+          merchantId,
+          isPuton: 0
+        })">确 定</el-button>
+      </div>
+    </el-dialog>
   </el-row>
 </template>
 
@@ -133,12 +153,13 @@ export default {
         page: 1,
         rows: 10,
         name: '',
-        merchantId: ''
+        c: ''
       },
       value: '', // 选择会员等级
       dialogDetailVisible: false,
       dialogFormVisible: false,
       dialogWithdrawVisible: false,
+      dialogGroundVisible: false,
       memberMessage: {
         imageUrl: ''
       }, // 会员详情信息
@@ -165,6 +186,12 @@ export default {
   watch: {
     'pagination.merchantId'() {
       this.getGoodsList(this.pagination)
+    },
+    withdrawGoodsResult() {
+      this.dialogWithdrawVisible = false
+    },
+    groundGoodsResult() {
+      this.dialogGroundVisible = false
     }
   },
   computed: {
@@ -172,9 +199,10 @@ export default {
       'goodsList',
       'goodsForEdit',
       'merchantList',
-      'merchantListByItemId'
+      'merchantListByItemId',
+      'withdrawGoodsResult',
+      'groundGoodsResult'
     ])
-
   },
   components: {
     Pagination
@@ -186,7 +214,8 @@ export default {
       getMerchantsList: 'getMerchantsList',
       getMerchantsListByitemId: 'getMerchantsListByitemId',
       withdrawGoodsConfirm: 'withdrawGoodsConfirm',
-      withdrawGoodsConfirmForSuper: 'withdrawGoodsConfirmForSuper'
+      withdrawGoodsConfirmForSuper: 'withdrawGoodsConfirmForSuper',
+      groundGoodsConfirmForSuper: 'groundGoodsConfirmForSuper'
     }),
     // 点击详情执行的方法
     showMemberDetail(row) {
@@ -232,6 +261,26 @@ export default {
       } else {
         this.getMerchantsListByitemId(itemId)
         this.dialogWithdrawVisible = true
+        this.itemId = itemId
+      }
+    },
+    // 点击上架执行的方法
+    groundGoods(itemId) {
+      if (this.pagination.merchantId) {
+        this.$confirm('确定上架该商品?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.withdrawGoodsConfirm({
+            itemId,
+            merchantId: this.merchantId.push(this.pagination.merchantId),
+            isPuton: 1
+          })
+        }).catch(err => console.log(err))
+      } else {
+        this.getMerchantsListByitemId(itemId)
+        this.dialogGroundVisible = true
         this.itemId = itemId
       }
     },

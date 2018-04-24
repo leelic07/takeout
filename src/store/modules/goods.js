@@ -21,7 +21,9 @@ export default {
     updateGoodsResult: {},
     deletePropertyResult: {},
     propertyParents: [],
-    proertyChildren: []
+    proertyChildren: [],
+    groundGoodsResult: {},
+    withdrawGoodsResult: {}
   },
   actions: {
     getGoodsList({ commit }, pagination) {
@@ -74,6 +76,9 @@ export default {
     },
     withdrawGoodsConfirmForSuper({ commit }, goodsInfo) {
       http.withdrawGoodsConfirmForSuper(goodsInfo).then(res => res.code === 200 && commit('withdrawGoodsConfirmForSuper', res)).catch(err => console.log(err))
+    },
+    groundGoodsConfirmForSuper({ commit }, goodsInfo) {
+      http.groundGoodsConfirmForSuper(goodsInfo).then(res => res.code === 200 && commit('groundGoodsConfirmForSuper', res)).catch(err => console.log(err))
     },
     getPropertiesPage({ commit }, pagination) {
       http.getPropertiesPage(pagination).then(res => res.code === 200 && commit('getPropertiesPage', res)).catch(err => console.log(err))
@@ -143,6 +148,9 @@ export default {
     },
     withdrawGoodsConfirmForSuper(state, withdrawGoodsResult) {
       state.withdrawGoodsResult = withdrawGoodsResult
+    },
+    groundGoodsConfirmForSuper(state, groundGoodsResult) {
+      state.groundGoodsResult = groundGoodsResult
     },
     getPropertiesPage(state, propertiesPageResult) {
       const propertys = propertiesPageResult.data.propertys

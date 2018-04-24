@@ -35,7 +35,7 @@ export default {
       http.getMerchantsList().then(res => res.code === 200 && commit('getMerchantsList', res)).catch(err => console.log(err))
     },
     getMerchantsListByitemId({ commit }, id) {
-      http.getMerchantsListByitemId({ id }).then(res => res.code === 200 && commit('getMerchantsListByitemId', res)).catch(err => console.log(err))
+      http.getMerchantsListByitemId({ itemId: id }).then(res => res.code === 200 && commit('getMerchantsListByitemId', res)).catch(err => console.log(err))
     },
     updateShop({ commit }, shopInfo) {
       http.updateShop(shopInfo).then(res => res.code === 200 && commit('updateShop', res)).catch(err => console.log(err))

@@ -25,6 +25,7 @@ const getters = {
   saveGoodsTypeResult: state => state.goods.saveGoodsTypeResult,
   deleteGoodsTypeResult: state => state.goods.deleteGoodsTypeResult,
   withdrawGoodsResult: state => state.goods.withdrawGoodsResult,
+  groundGoodsResult: state => state.goods.groundGoodsResult,
   propertiesList: state => state.goods.propertiesList,
   propertiesTotal: state => state.goods.propertiesTotal,
   propertyForEdit: state => state.goods.propertyForEdit,
