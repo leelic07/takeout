@@ -14,6 +14,7 @@ const getters = {
   merchantList: state => state.shop.merchantList,
   merchantListByItemId: state => state.shop.merchantListByItemId,
   updateShopResult: state => state.shop.updateShopResult,
+  merchantHomePage: state => state.shop.merchantHomePage,
   // 商品管理
   goodsList: state => state.goods.goodsList,
   goodsForEdit: state => state.goods.goodsForEdit,

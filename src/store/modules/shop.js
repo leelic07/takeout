@@ -11,7 +11,8 @@ export default {
     shopForEdit: {},
     merchantList: [],
     merchantListByItemId: [],
-    updateShopResult: {}
+    updateShopResult: {},
+    merchantHomePage: {}
   },
   actions: {
     // 获取商户列表
@@ -39,6 +40,9 @@ export default {
     },
     updateShop({ commit }, shopInfo) {
       http.updateShop(shopInfo).then(res => res.code === 200 && commit('updateShop', res)).catch(err => console.log(err))
+    },
+    getMerchantsHomePage({ commit }, merchantId) {
+      http.getMerchantsHomePage({ merchantId }).then(res => res.code === 200 && commit('getMerchantsHomePage', res)).catch(err => console.log(err))
     }
   },
   mutations: {
@@ -63,7 +67,6 @@ export default {
       shop.time = []
       shop.time.push(shop.startDate)
       shop.time.push(shop.endDate)
-      console.log(shop)
       state.shopForEdit = shop
     },
     getMerchantsList(state, merchantsListResult) {
@@ -74,6 +77,9 @@ export default {
     },
     updateShop(state, updateShopResult) {
       state.updateShopResult = updateShopResult
+    },
+    getMerchantsHomePage(state, merchantHomePageResult) {
+      state.merchantHomePage = merchantHomePageResult.data.merchants
     }
   }
 }

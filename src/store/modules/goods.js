@@ -38,6 +38,7 @@ export default {
     saveGoods({ commit }, goods) {
       const merchants = []
       const pictures = []
+      const propertys = []
       goods.merchants.forEach(merchant => {
         merchants.push({
           merchantId: merchant,
@@ -49,8 +50,17 @@ export default {
           url: picture
         })
       })
+      goods.propertys.forEach(property => {
+        property.subPropertys.forEach(sub => {
+          sub.propertyId = sub.id
+          sub.isOpen = sub.isOpen ? 1 : 0
+          delete sub.id
+          propertys.push(sub)
+        })
+      })
       goods.merchants = merchants
       goods.pictures = pictures
+      goods.propertys = propertys
       http.saveGoods(goods).then(res => res.code === 200 && commit('saveGoods', res)).catch(err => err)
     },
     getGoodsTypePage({ commit }, pagination) {

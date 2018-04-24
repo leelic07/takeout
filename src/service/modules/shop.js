@@ -9,5 +9,6 @@ export default {
   getShopTypeList: () => service.get('/merchant_types/list').then(res => res).catch(err => err),
   getShopForEdit: id => service.get('/merchants/edit', id).then(res => res).catch(err => err),
   getMerchantsListByitemId: id => service.get('/merchants/bindItemlist', id).then(res => res).catch(err => err),
-  updateShop: shopInfo => service.post('/merchants/update', shopInfo).then(res => res).catch(err => err)
+  updateShop: shopInfo => service.post('/merchants/update', shopInfo).then(res => res).catch(err => err),
+  getMerchantsHomePage: merchantId => service.get('/merchants/homePage', merchantId).then(res => res).catch(err => err)
 }

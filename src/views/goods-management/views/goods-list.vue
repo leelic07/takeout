@@ -6,7 +6,7 @@
         <el-input placeholder="请输入商品名称" v-model="pagination.name"></el-input>
       </el-col>
       <el-col :span="4" class="member-select">
-        <el-select v-model="pagination.merchantId" placeholder="请选择店铺" v-if="$_type === '1'">
+        <el-select v-model="pagination.merchantId" placeholder="请选择店铺" v-if="type === '1'">
           <el-option value="" label="全部店铺"></el-option>
           <el-option v-for="(merchant,index) in merchantList" :value="merchant.id" :label="merchant.name" :key="index"></el-option>
         </el-select>
@@ -40,7 +40,7 @@
         <el-table-column label="操作" width="140">
           <template slot-scope="props">
             <el-button type="primary" size="mini" @click="showGoodsEdit(props.row.id)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="withdrawGoods(props.row.id)" v-if="props.row.isPuton">下架</el-button>
+            <el-button type="danger" size="mini" @click="withdrawGoods(props.row.id)" v-if="props.row.isPuton === '1'">下架</el-button>
             <el-button type="success" size="mini" @click="groundGoods(props.row.id)" v-else>上架</el-button>
           </template>
         </el-table-column>
@@ -189,9 +189,11 @@ export default {
     },
     withdrawGoodsResult() {
       this.dialogWithdrawVisible = false
+      this.getGoodsList(this.pagination)
     },
     groundGoodsResult() {
       this.dialogGroundVisible = false
+      this.getGoodsList(this.pagination)
     }
   },
   computed: {
@@ -202,7 +204,10 @@ export default {
       'merchantListByItemId',
       'withdrawGoodsResult',
       'groundGoodsResult'
-    ])
+    ]),
+    type() {
+      return sessionStorage.getItem('type')
+    }
   },
   components: {
     Pagination

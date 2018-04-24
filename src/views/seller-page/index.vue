@@ -11,7 +11,7 @@
       <div slot="header" class="clearfix">
         <el-row>
           <el-col :span="3">
-            <el-select v-if="type === '1'" v-model="seller.merchantId" placeholder="请选择店铺" size="small">
+            <el-select v-if="type === '1'" v-model="seller.merchantId" placeholder="请选择店铺" size="small" @change="merchantChange">
               <el-option value="" label="全部店铺"></el-option>
               <el-option v-for="(merchant,index) in merchantList" :key="index" :value="merchant.id" :label="merchant.name"></el-option>
             </el-select>
@@ -118,8 +118,8 @@ export default {
       list2: [],
       seller: {
         title: '意甜蛋糕(友阿店)',
-        rate: 3.7,
-        merchantId: ''
+        rate: 3.7
+        // merchantId: ''
       }
     }
   },
@@ -129,31 +129,36 @@ export default {
     DndList
   },
   watch: {
+    // 'seller.merchantId'(newValue) {
+    //   newValue = newValue || 1
+    //   this.getShopForEdit(newValue)
+    // },
     type: {
       handler: function(newValue) {
         if (newValue === '1') this.getMerchantsList()
-        else this.getShopForEdit(sessionStorage.getItem('merchantId'))
+        else this.getShopForEdit(this.seller.merchantId)
       },
       immediate: true
-    },
-    'seller.merchantId'(newValue) {
-      newValue = newValue || 1
-      this.getShopForEdit(newValue)
     }
   },
   computed: {
     ...mapGetters([
       'merchantList',
-      'shopForEdit'
+      'shopForEdit',
+      'merchantHomePage'
     ]),
     type() {
       return sessionStorage.getItem('type')
+    },
+    'seller.merchantId'() {
+      return sessionStorage.getItem('merchantId')
     }
   },
   methods: {
     ...mapActions({
       getMerchantsList: 'getMerchantsList',
-      getShopForEdit: 'getShopForEdit'
+      getShopForEdit: 'getShopForEdit',
+      getMerchantsHomePage: 'getMerchantsHomePage'
     }),
     handleSetLineChartData(type) {
       switch (type) {
@@ -180,10 +185,10 @@ export default {
       this.$router.push({
         path: '/goods/list'
       })
+    },
+    merchantChange(merchantId) {
+      this.getMerchantsHomePage(merchantId)
     }
-  },
-  mounted() {
-    // this.getMerchantsList()
   }
 }
 </script>
