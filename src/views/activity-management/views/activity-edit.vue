@@ -77,6 +77,11 @@ export default {
     'discountForm.couponSendType'(newValue) {
       if (newValue === 2) this.isEnoughSend = true
       else this.isEnoughSend = false
+    },
+    updateActivityResult() {
+      this.$router.push({
+        path: '/activity/list'
+      })
     }
   },
   computed: {
@@ -84,12 +89,12 @@ export default {
       'couponTypeList',
       'couponSendTypes',
       'merchantList',
-      'activityForEdit'
+      'activityForEdit',
+      'updateActivityResult'
     ])
   },
   methods: {
     ...mapActions({
-      saveActivity: 'saveActivity',
       getMerchantsList: 'getMerchantsList',
       editActivity: 'editActivity',
       updateActivity: 'updateActivity'

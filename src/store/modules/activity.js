@@ -34,15 +34,25 @@ export default {
       http.editCoupon({ id }).then(res => res.code === 200 && commit('editCoupon', res)).catch(err => console.log(err))
     },
     updateActivity({ commit }, activity) {
-      // const params = {
-      //   id: activity.id,
-      //   code: activity.code,
-      //   startDate: activity.startDate,
-      //   endDate: activity.endDate
-      // }
+      const merchants = []
+      activity.merchants.forEach(merchant => {
+        merchants.push({
+          merchantId: merchant,
+          type: 0
+        })
+      })
+      activity.merchants = merchants
       http.updateActivity(activity).then(res => res.code === 200 && commit('updateActivity', res)).catch(err => console.log(err))
     },
     updateCoupon({ commit }, coupon) {
+      const merchants = []
+      coupon.merchants.forEach(merchant => {
+        merchants.push({
+          merchantId: merchant,
+          type: 1
+        })
+      })
+      coupon.merchants = merchants
       http.updateCoupon(coupon).then(res => res.code === 200 && commit('updateCoupon', res)).catch(err => console.log(err))
     },
     getCouponTypeList({ commit }) {
@@ -89,10 +99,22 @@ export default {
       state.activityTotal = data.totalCount
     },
     editActivity(state, editActivityResult) {
-      state.activityForEdit = editActivityResult.data.activitys
+      const merchants = []
+      const activityForEdit = editActivityResult.data.activitys
+      activityForEdit.merchants.forEach(merchant => {
+        merchants.push(merchant.merchantId)
+      })
+      activityForEdit.merchants = merchants
+      state.activityForEdit = activityForEdit
     },
     editCoupon(state, editCouponResult) {
-      state.couponForEdit = editCouponResult.data.coupons
+      const merchants = []
+      const couponForEdit = editCouponResult.data.coupons
+      couponForEdit.merchants.forEach(merchant => {
+        merchants.push(merchant.merchantId)
+      })
+      couponForEdit.merchants = merchants
+      state.couponForEdit = couponForEdit
     },
     updateActivity(state, updateActivityResult) {
       state.updateActivityResult = updateActivityResult

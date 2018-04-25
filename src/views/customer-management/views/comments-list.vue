@@ -145,9 +145,7 @@
                 </el-card>
             </el-col>
         </el-row>
-        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading" style="height:30px;">
-            <!-- <img src="../assets/loading-spinning-bubbles.svg" alt="" v-show="loading"> -->
-        </div>
+        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading" style="height:30px;"></div>
     </el-row>
 </template>
 
@@ -193,8 +191,8 @@ export default {
     }
   },
   watch: {
-    feedbacksList() {
-      this.busy = false
+    feedbacksList(newValue) {
+      newValue === 0 && (this.busy = true) || (this.busy = false)
     }
   },
   computed: {

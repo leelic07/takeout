@@ -117,18 +117,6 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-    //   goods: {
-    //     pictures: [],
-    //     merchants: [],
-    //     propertys: [{
-    //       name: '',
-    //       properties: [{
-    //         value: 'xxx',
-    //         price: '',
-    //         isOpen: true
-    //       }]
-    //     }]
-    //   },
       fileList: [],
       fileListTemp: [],
       dialogFormVisible: false,

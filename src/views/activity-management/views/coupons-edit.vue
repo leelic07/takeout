@@ -83,6 +83,11 @@ export default {
   watch: {
     'couponForEdit.couponSendType'(newValue) {
       newValue === 2 && (this.isEnoughSend = true) || (this.isEnoughSend = false)
+    },
+    updateCouponResult() {
+      this.$router.push({
+        path: '/activity/list'
+      })
     }
   },
   computed: {
@@ -90,7 +95,8 @@ export default {
       'couponTypeList',
       'couponSendTypes',
       'merchantList',
-      'couponForEdit'
+      'couponForEdit',
+      'updateCouponResult'
     ])
   },
   methods: {

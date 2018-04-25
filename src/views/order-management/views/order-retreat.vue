@@ -26,7 +26,7 @@
             <span type="text">待发配送</span>
           </div>
           <el-row>
-            <el-table :data="orderRetreatList" style="width: 100%" :show-header="false" stripe>
+            <el-table :data="orderRetreats" style="width: 100%" :show-header="false" stripe>
                <el-table-column type="expand">
                 <template slot-scope="props">
                   <el-form :model="props.row" label-position="right" class="demo-table-expand">
@@ -74,8 +74,6 @@
                     <el-form-item label="本顾客实际支付:">
                       <span style="color: orange;font-size: 18px;">{{props.row.realTotalMoney}}</span>
                     </el-form-item>
-                    <!-- </el-form>
-                    </el-form-item> -->
                     <el-form-item>
                       <!-- <template slot-scope="props"> -->
                       <el-button type="danger" plain size="mini" @click="cancelOrder">取消订单并退款</el-button>
@@ -199,11 +197,12 @@
         </el-card>
       </el-col>
     </el-row>
+    <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading" style="height:30px;"></div>
   </el-row>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -222,23 +221,42 @@ export default {
       pagination: {
         page: 1,
         rows: 10
-      }
+      },
+      orderRetreats: [],
+      busy: true
     }
   },
   watch: {
-    'form.status'(newValue) {
-      this.getOrderRetreatByStatus({ ...this.pagination, status: newValue })
+    'form.status': {
+      handler: function(newValue) {
+        this.pagination.page = 1
+        this.getOrderRetreatByStatus({ ...this.pagination, status: newValue })
+      },
+      immediate: true
+    },
+    orderRetreatList(newValue, oldValue) {
+      if (newValue.length === 0) {
+        this.busy = true
+        this.orderRetreats = oldValue
+      } else {
+        this.busy = false
+        this.orderRetreats = oldValue.concat(newValue)
+      }
     }
   },
   computed: {
     ...mapGetters([
-      'orderRetreatList'
+      'orderRetreatList',
+      'loading'
     ])
   },
   methods: {
     ...mapActions({
       getOrderRetreatList: 'getOrderRetreatList',
       getOrderRetreatByStatus: 'getOrderRetreatByStatus'
+    }),
+    ...mapMutations({
+      showLoading: 'showLoading'
     }),
     // 点击打印订单执行的方法
     cancelOrder() {
@@ -265,10 +283,18 @@ export default {
           message: '部分退款成功'
         }).catch(err => console.log(err))
       })
+    },
+    loadMore() {
+      this.busy = true
+      this.showLoading()
+      setTimeout(() => {
+        this.pagination.page++
+        this.getOrderRetreatByStatus({ ...this.pagination, ...this.form })
+      }, 1000)
+    },
+    printOrder() {
+      console.log('printOrder')
     }
-  },
-  mounted() {
-    this.getOrderRetreatByStatus({ ...this.pagination, ...this.form })
   }
 }
 </script>

@@ -26,7 +26,7 @@
             <span type="text">待发配送</span>
           </div>
           <el-row>
-            <el-table :data="orderReminderList" style="width: 100%" :show-header="false" stripe>
+            <el-table :data="orderReminders" style="width: 100%" :show-header="false" stripe>
               <el-table-column type="expand">
                 <template slot-scope="props">
                   <el-form :model="props.row" label-position="right" class="demo-table-expand">
@@ -197,11 +197,12 @@
         </el-card>
       </el-col>
     </el-row>
+    <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading" style="height:30px;"></div>
   </el-row>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -221,25 +222,41 @@ export default {
       deliveryData: [{
         amount: 6
       }],
-      reminder: false
+      reminder: false,
+      busy: true,
+      orderReminders: []
     }
   },
   watch: {
     'form.status': {
       handler: function(newValue) {
+        this.pagination.page = 1
         this.getOrderReminderByStatus({ ...this.pagination, status: newValue })
       },
       immediate: true
+    },
+    orderReminderList(newValue, oldValue) {
+      if (newValue.length === 0) {
+        this.busy = true
+        this.orderReminders = oldValue
+      } else {
+        this.busy = false
+        this.orderReminders = oldValue.concat(newValue)
+      }
     }
   },
   computed: {
     ...mapGetters([
-      'orderReminderList'
+      'orderReminderList',
+      'loading'
     ])
   },
   methods: {
     ...mapActions({
       getOrderReminderByStatus: 'getOrderReminderByStatus'
+    }),
+    ...mapMutations({
+      showLoading: 'showLoading'
     }),
     // 点击催单执行的方法
     remindOrder() {
@@ -248,6 +265,14 @@ export default {
         type: 'success',
         message: '催单成功'
       })
+    },
+    loadMore() {
+      this.busy = true
+      this.showLoading()
+      setTimeout(() => {
+        this.pagination.page++
+        this.getOrderReminderByStatus({ ...this.pagination, ...this.form })
+      }, 1000)
     }
   }
 }

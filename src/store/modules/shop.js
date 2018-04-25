@@ -1,5 +1,6 @@
 import http from '@/service'
 import router from '@/router'
+const baseURL = 'http://47.106.143.22:8080'
 
 export default {
   state: {
@@ -67,6 +68,10 @@ export default {
       shop.time = []
       shop.time.push(shop.startDate)
       shop.time.push(shop.endDate)
+      shop.pictures.forEach(picture => {
+        picture.url = `${baseURL}${picture.url}`
+        picture.name = picture.url.substring(picture.url.lastIndexOf('/') + 1)
+      })
       state.shopForEdit = shop
     },
     getMerchantsList(state, merchantsListResult) {

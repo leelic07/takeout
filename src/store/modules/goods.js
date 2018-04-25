@@ -127,10 +127,15 @@ export default {
     },
     editGoods(state, editGoodsResult) {
       const goodsForEdit = editGoodsResult.data.items
+      const merchants = []
       goodsForEdit.pictures.forEach(picture => {
         picture.url = `${baseURL}${picture.url}`
-        picture.name = picture.url.substring(picture.url.lastIndexOf('/'))
+        picture.name = picture.url.substring(picture.url.lastIndexOf('/') + 1)
       })
+      goodsForEdit.merchants.ForEach(merchant => {
+        merchants.push(merchant.merchatId)
+      })
+      goodsForEdit.merchants = merchants
       state.goodsForEdit = editGoodsResult.data.items
     },
     getGoodsTypeList(state, goodsTypeResult) {

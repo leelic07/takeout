@@ -183,6 +183,14 @@ export default {
       const path = from.path.substring(0, path.lastIndexOf('/'))
       if (path === '/activity/edit') this.activityType = 1
       else if (path === '/activity/edit-coupons') this.activityType = 2
+    },
+    deleteActivityResult() {
+      this.getActivityList(this.pagination)
+      this.couponList.splice(0)
+    },
+    deleteCouponResult() {
+      this.getCouponList(this.pagination)
+      this.activityList.splice(0)
     }
   },
   computed: {
@@ -190,7 +198,9 @@ export default {
       'activityList',
       'couponList',
       'activityTotal',
-      'activityForEdit'
+      'activityForEdit',
+      'deleteActivityResult',
+      'deleteCouponResult'
     ])
   },
   components: {

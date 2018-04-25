@@ -48,7 +48,7 @@
             </p>
             <el-col :span="24" class="order-amount-today">
               <router-link to="/order/retreat">
-                <h1>{{merchantHomePage.refundingOrder}}</h1>
+                <h1>{{merchantHomePage.refundingOrder || 0}}</h1>
                 <span>
                   单
                   <i class="el-icon-arrow-right el-icon--right"></i>

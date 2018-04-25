@@ -26,7 +26,7 @@
             <span type="text">待发配送</span>
           </div>
           <el-row>
-            <el-table :data="orderAcceptionList" style="width: 100%" :show-header="false" stripe>
+            <el-table :data="orderAcceptions" style="width: 100%" :show-header="false" stripe>
               <el-table-column type="expand">
                 <template slot-scope="props">
                   <el-form :model="props.row" label-position="right" class="demo-table-expand">
@@ -213,11 +213,12 @@
         </el-card>
       </el-col>
     </el-row>
+    <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading" style="height:30px;"></div>
   </el-row>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -236,23 +237,42 @@ export default {
       pagination: {
         page: 1,
         rows: 10
-      }
+      },
+      busy: true,
+      orderAcceptions: []
     }
   },
   watch: {
-    'form.status'(newValue) {
-      this.getOrderAcceptionByStatus({ ...this.pagination, status: newValue })
+    'form.status': {
+      handler: function(newValue) {
+        this.pagination.page = 1
+        this.getOrderAcceptionByStatus({ ...this.pagination, status: newValue })
+      },
+      immediate: true
+    },
+    orderAcceptionList(newValue, oldValue) {
+      if (newValue.length === 0) {
+        this.busy = true
+        this.orderAcceptions = oldValue
+      } else {
+        this.busy = false
+        this.orderAcceptions = oldValue.concat(newValue)
+      }
     }
   },
   computed: {
     ...mapGetters([
-      'orderAcceptionList'
+      'orderAcceptionList',
+      'loading'
     ])
   },
   methods: {
     ...mapActions({
       getOrderAcceptionList: 'getOrderAcceptionList',
       getOrderAcceptionByStatus: 'getOrderAcceptionByStatus'
+    }),
+    ...mapMutations({
+      showLoading: 'showLoading'
     }),
     // 点击打印订单执行的方法
     printOrder() {
@@ -279,6 +299,14 @@ export default {
           message: '取消订单成功'
         }).catch(err => console.log(err))
       })
+    },
+    loadMore() {
+      this.busy = true
+      this.showLoading()
+      setTimeout(() => {
+        this.pagination.page++
+        this.getOrderAcceptionByStatus({ ...this.pagination, ...this.form })
+      }, 1000)
     }
   },
   mounted() {

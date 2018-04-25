@@ -31,19 +31,19 @@
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
+// import { isvalidUsername } from '@/utils/validate'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('请输入正确的用户名'))
-      } else {
-        callback()
-      }
-    }
+    // const validateUsername = (rule, value, callback) => {
+    //   if (!isvalidUsername(value)) {
+    //     callback(new Error('请输入正确的用户名'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     const validatePass = (rule, value, callback) => {
       if (value.length < 5) {
         callback(new Error('密码不能小于5位'))
@@ -57,7 +57,7 @@ export default {
         passwordHash: ''
       },
       loginRules: {
-        name: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        name: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
         passwordHash: [{ required: true, trigger: 'blur', validator: validatePass }]
       },
       loading: false,

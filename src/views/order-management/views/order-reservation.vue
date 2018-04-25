@@ -26,7 +26,7 @@
             <span type="text">待发配送</span>
           </div>
           <el-row>
-            <el-table :data="orderReservationList" style="width: 100%" :show-header="false" stripe>
+            <el-table :data="orderReservations" style="width: 100%" :show-header="false" stripe>
               <el-table-column type="expand">
                 <template slot-scope="props">
                   <el-form label-position="right" class="demo-table-expand">
@@ -209,11 +209,12 @@
         </el-card>
       </el-col>
     </el-row>
+    <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading" style="height:30px;"></div>
   </el-row>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -221,27 +222,6 @@ export default {
       form: {
         status: '0'
       },
-      tableData: [{
-        date: '3俩卤粉',
-        name: 8,
-        address: 'x1',
-        total: 8
-      }, {
-        date: '2俩卤粉加牛肉',
-        name: 12,
-        address: 'x3',
-        total: 36
-      }, {
-        date: '煎饺',
-        name: 8,
-        address: 'x2',
-        total: 16
-      }, {
-        date: '凉拌皮蛋',
-        name: 3,
-        address: 'x4',
-        total: 12
-      }],
       boxData: [{
         price: 1,
         amount: 'x10',
@@ -253,23 +233,42 @@ export default {
       pagination: {
         page: 1,
         rows: 10
-      }
+      },
+      orderReservations: [],
+      busy: true
     }
   },
   watch: {
-    'form.status'(newValue) {
-      this.getOrderReservationByStatus({ ...this.pagination, status: newValue })
+    'form.status': {
+      handler: function(newValue) {
+        this.pagination.page = 1
+        this.getOrderReservationByStatus({ ...this.pagination, status: newValue })
+      },
+      immediate: true
+    },
+    orderReservationList(newValue, oldValue) {
+      if (newValue.length === 0) {
+        this.busy = true
+        this.orderReservations = oldValue
+      } else {
+        this.busy = false
+        this.orderReservations = oldValue.concat(newValue)
+      }
     }
   },
   computed: {
     ...mapGetters([
-      'orderReservationList'
+      'orderReservationList',
+      'loading'
     ])
   },
   methods: {
     ...mapActions({
       getOrderReservationList: 'getOrderReservationList',
       getOrderReservationByStatus: 'getOrderReservationByStatus'
+    }),
+    ...mapMutations({
+      showLoading: 'showLoading'
     }),
     // 点击打印订单执行的方法
     printOrder() {
@@ -309,10 +308,15 @@ export default {
           message: '部分退款成功'
         }).catch(err => console.log(err))
       })
+    },
+    loadMore() {
+      this.busy = true
+      this.showLoading()
+      setTimeout(() => {
+        this.pagination.page++
+        this.getOrderReservationByStatus({ ...this.pagination, ...this.form })
+      }, 1000)
     }
-  },
-  mounted() {
-    this.getOrderReservationByStatus({ ...this.pagination, ...this.form })
   }
 }
 </script>

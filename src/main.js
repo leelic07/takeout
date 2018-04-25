@@ -21,8 +21,8 @@ Vue.use(ElementUI, { locale })
 Vue.use(infiniteScroll)
 
 Vue.config.productionTip = false
-// Vue.prototype.$_baseURL = 'http://localhost:8080/takeaway'
-Vue.prototype.$_baseURL = 'http://47.106.143.22:8080/takeaway'
+Vue.prototype.$_baseURL = 'https://pandax.mofasion.com/takeaway'
+// Vue.prototype.$_baseURL = 'http://47.106.143.22:8080/takeaway'
 // Vue.prototype.$_baseURL = 'http://10.10.10.21:8080'
 
 Vue.prototype.$_type = sessionStorage.getItem('type')
