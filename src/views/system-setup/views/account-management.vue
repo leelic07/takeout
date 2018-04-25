@@ -23,8 +23,8 @@
           </el-form-item>
           <el-form-item label="类型：" label-width="120px">
             <el-radio-group v-model="manager.type">
-              <el-radio label="0">普通</el-radio>
-              <el-radio label="1">超级</el-radio>
+              <el-radio label="0" :disabled="manager.type === '1'">普通</el-radio>
+              <el-radio label="1" :disabled="manager.type === '0'">超级</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item>

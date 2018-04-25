@@ -91,7 +91,6 @@
                     </el-form-item> -->
                     <el-form-item>
                         <el-button type="primary" size="medium" @click="updateShopConfirm">保存</el-button>
-                        <el-button type="success" size="medium">上线</el-button>
                     </el-form-item>
                 </el-form>
             </el-card>

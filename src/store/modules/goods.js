@@ -1,6 +1,6 @@
 import http from '@/service'
 import router from '@/router'
-const baseURL = 'http://47.106.143.22:8080'
+import config from '@/service/config/base'
 
 export default {
   state: {
@@ -129,7 +129,7 @@ export default {
       const goodsForEdit = editGoodsResult.data.items
       const merchants = []
       goodsForEdit.pictures.forEach(picture => {
-        picture.url = `${baseURL}${picture.url}`
+        picture.url = `${config.baseURL}${picture.url}`
         picture.name = picture.url.substring(picture.url.lastIndexOf('/') + 1)
       })
       goodsForEdit.merchants.ForEach(merchant => {

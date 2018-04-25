@@ -230,6 +230,7 @@ export default {
     'form.status': {
       handler: function(newValue) {
         this.pagination.page = 1
+        this.orderRetreatList.splice(0)
         this.getOrderRetreatByStatus({ ...this.pagination, status: newValue })
       },
       immediate: true
