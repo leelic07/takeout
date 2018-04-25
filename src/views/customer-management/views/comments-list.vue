@@ -150,35 +150,6 @@ export default {
     return {
       form: {},
       datetime: '',
-      tableData: [{
-        date: '3俩卤粉',
-        name: 8,
-        address: 'x1',
-        total: 8
-      }, {
-        date: '2俩卤粉加牛肉',
-        name: 12,
-        address: 'x3',
-        total: 36
-      }, {
-        date: '煎饺',
-        name: 8,
-        address: 'x2',
-        total: 16
-      }, {
-        date: '凉拌皮蛋',
-        name: 3,
-        address: 'x4',
-        total: 12
-      }],
-      boxData: [{
-        price: 1,
-        amount: 'x10',
-        total: 10
-      }],
-      deliveryData: [{
-        amount: 6
-      }],
       pagination: {
         page: 1,
         rows: 10
@@ -189,7 +160,6 @@ export default {
   },
   watch: {
     feedbacksList(newValue, oldValue) {
-    //   newValue.length === 0 && (this.busy = true) || (this.busy = false)
       if (newValue.length === 0) {
         this.busy = true
         this.feedbacks = oldValue
@@ -249,7 +219,6 @@ export default {
     }
   },
   mounted() {
-    // this.getFeedbacksList(sessionStorage.getItem('userId'))
     this.getFeedbacksPage({ ...this.pagination, merchantId: sessionStorage.getItem('merchantId') })
   }
 }
