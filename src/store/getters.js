@@ -64,6 +64,7 @@ const getters = {
   userForEdit: state => state.member.userForEdit,
   // 售后管理
   feedbacksList: state => state.customer.feedbacksList,
+  feedbacksTotal: state => state.customer.feedbacksTotal,
   // 加载图标
   loading: state => state.loading.loading
 }

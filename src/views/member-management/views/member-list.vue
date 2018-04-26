@@ -13,15 +13,15 @@
         <!--会员信息列表-->
         <el-row class="order-statics">
             <el-table :data="userList" stripe border style="width: 100%">
-                <el-table-column prop="orderNumber" label="会员编号"></el-table-column>
-                <el-table-column prop="name" label="微信昵称"></el-table-column>
+                <el-table-column prop="userNo" label="会员编号"></el-table-column>
+                <el-table-column prop="loginName" label="微信昵称"></el-table-column>
                 <el-table-column label="性别">
                     <template slot-scope="props">
-                        {{ props.row.sex | gender}}
+                        {{ props.row.userSex | gender}}
                     </template>
                 </el-table-column>
                 <el-table-column prop="birthday" label="生日"></el-table-column>
-                <el-table-column prop="phone" label="手机号码"></el-table-column>
+                <el-table-column prop="userPhone" label="手机号码"></el-table-column>
                 <el-table-column label="地址">
                     <template slot-scope="props">
                         <el-popover placement="bottom" title="地址" width="200" trigger="click" :content="props.row.address">
@@ -29,8 +29,12 @@
                         </el-popover>
                     </template>
                 </el-table-column>
-                <el-table-column prop="name" label="积分"></el-table-column>
-                <el-table-column prop="createdAt" label="注册时间"></el-table-column>
+                <el-table-column prop="userScore" label="积分"></el-table-column>
+                <el-table-column label="注册时间">
+                    <template slot-scope="props">
+                        {{props.row.createdAt | Date}}
+                    </template>
+                </el-table-column>
                 <el-table-column label="会员类型">
                     <template slot-scope="props">
                         <el-tag :closable="false" :type="props.row.gradeType">{{props.row.grade | grade}}</el-tag>
@@ -63,29 +67,29 @@
                 <el-col :span="14">
                     <el-col :span="11">
                         <label for="">姓名：</label>
-                        <span>{{userForEdit.name}}</span>
+                        <span>{{userForEdit.loginName}}</span>
                     </el-col>
                     <el-col :span="11">
                         <label for="">性别：</label>
-                        <span>{{userForEdit.gender}}</span>
+                        <span>{{userForEdit.userSex | gender}}</span>
                     </el-col>
                 </el-col>
                 <el-col :span="14">
                     <el-col>
                         <label for="">电话：</label>
-                        <span>{{userForEdit.phone}}</span>
+                        <span>{{userForEdit.userPhone}}</span>
                     </el-col>
                     <el-col>
                         <label for="">地址：</label>
-                        <span>{{userForEdit.address}}</span>
+                        <span>{{userForEdit.userAddress}}</span>
                     </el-col>
                     <el-col>
                         <label for="">注册时间：</label>
-                        <span>{{userForEdit.orderTime}}</span>
+                        <span>{{userForEdit.createdAt | Date}}</span>
                     </el-col>
                     <el-col>
                         <label for="">备注：</label>
-                        <span>{{userForEdit.remarks}}</span>
+                        <span>{{userForEdit.remark}}</span>
                     </el-col>
                 </el-col>
             </el-row>

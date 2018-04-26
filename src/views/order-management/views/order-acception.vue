@@ -52,21 +52,7 @@
                           </template>
                         </el-table-column>
                       </el-table>
-                      <!--餐盒-->
-                      <!-- <el-table :data="boxData" style="width: 100%" :show-header="false">
-                        <el-table-column label="餐盒">
-                          <template slot-scope="scope">餐盒</template>
-                        </el-table-column>
-                        <el-table-column prop="price" label="商品">
-                        </el-table-column>
-                        <el-table-column prop="amount" label="单价">
-                        </el-table-column>
-                        <el-table-column prop="total" label="数量">
-                        </el-table-column>
-                      </el-table> -->
                     </el-form-item>
-                    <!-- <el-form-item>
-                      <el-form> -->
                     <el-form-item label="配送费:">
                       <span>{{props.row.deliverMoney}}</span>
                     </el-form-item>
@@ -77,24 +63,20 @@
                       <span>{{props.row.activityMoney}}</span>
                     </el-form-item>
                     <el-form-item label="优惠券:">
-                      <span>{{props.row.couponMoney}}</span>
+                      <span>{{props.row.targetName}}</span>
                     </el-form-item>
                     <el-form-item label="平台佣金:">
                       <span>{{props.row.platformCommission}}</span>
                     </el-form-item>
                     <el-form-item label="本单预计收入:">
-                      <span style="color: orange;font-size: 18px;"></span>
+                      <span style="color: orange;font-size: 18px;">{{props.row.orderIncome}}</span>
                     </el-form-item>
                     <el-form-item label="本顾客实际支付:">
                       <span style="color: orange;font-size: 18px;">{{props.row.realTotalMoney}}</span>
                     </el-form-item>
-                    <!-- </el-form>
-                    </el-form-item> -->
                     <el-form-item>
-                      <!-- <template slot-scope="props"> -->
                       <el-button type="danger" plain size="mini" @click="cancelOrder">取消订单并退款</el-button>
                       <el-button type="primary" plain size="mini" @click="printOrder">打印订单</el-button>
-                      <!-- </template> -->
                     </el-form-item>
                   </el-form>
                 </template>
@@ -246,6 +228,7 @@ export default {
     'form.status': {
       handler: function(newValue) {
         this.pagination.page = 1
+        this.orderAcceptionList.splice(0)
         this.getOrderAcceptionByStatus({ ...this.pagination, status: newValue })
       },
       immediate: true
@@ -308,9 +291,6 @@ export default {
         this.getOrderAcceptionByStatus({ ...this.pagination, ...this.form })
       }, 1000)
     }
-  },
-  mounted() {
-    this.getOrderAcceptionByStatus({ ...this.pagination, ...this.form })
   }
 }
 </script>

@@ -39,26 +39,31 @@
                     <div slot="header" class="card-header clearfix" v-if="true">
                         <el-col :span="20">
                             <label>符合条件的评价:</label>
-                            <span>{{feedbacksList.length}}条</span>
+                            <span>{{feedbacksTotal}}条</span>
                         </el-col>
                         <span type="text">待发配送</span>
                     </div>
                     <el-row>
-                        <el-table :data="feedbacksList" style="width: 100%" :show-header="false" stripe>
+                        <el-table :data="feedbacks" style="width: 100%" :show-header="false" stripe>
                             <el-table-column label="" prop="id">
                                 <template slot-scope="props">
                                     <el-row class="card-content comments-box">
                                         <el-col :span="20">
-                                            <label>曾女士</label>
+                                            <label>{{props.row.userName}}</label>
                                             <span>{{props.row.createdAt | Date}}</span>
                                         </el-col>
                                         <el-col :span="20">
-                                            <label>商家评分:无懈可击</label>
+                                            <label>商家评分:{{props.row.distributionScore}}</label>
                                             <span></span>
                                         </el-col>
                                         <el-col :span="20">
                                             <label>评论内容:</label>
                                             <span>{{props.row.content}}</span>
+                                        </el-col>
+                                        <el-col :span="20" class="seller-box">
+                                            <label>商品</label>
+                                            <el-rate v-model="props.row.goodsScore" disabled show-score text-color="#ff9900" score-template="{value}">
+                                            </el-rate>
                                         </el-col>
                                         <el-col :span="20" class="seller-box">
                                             <label>商家</label>
@@ -79,11 +84,11 @@
                                     <el-form label-position="right" class="demo-table-expand">
                                         <!--备注-->
                                         <el-form-item label="备注:">
-                                            <span>{{ props.row.name }}</span>
+                                            <span>{{ props.row.remark }}</span>
                                         </el-form-item>
                                         <!--商品信息-->
                                         <el-form-item label="商品信息:">
-                                            <el-table :data="tableData" style="width: 100%" :show-header="false">
+                                            <el-table :data="props.row.orderItems" style="width: 100%" :show-header="false">
                                                 <el-table-column prop="date" label="商品">
                                                 </el-table-column>
                                                 <el-table-column prop="name" label="单价">
@@ -93,41 +98,29 @@
                                                 <el-table-column prop="total" label="总价">
                                                 </el-table-column>
                                             </el-table>
-                                            <!--餐盒-->
-                                            <el-table :data="boxData" style="width: 100%" :show-header="false">
-                                                <el-table-column label="餐盒">
-                                                    <template slot-scope="scope">餐盒</template>
-                                                </el-table-column>
-                                                <el-table-column prop="price" label="商品">
-                                                </el-table-column>
-                                                <el-table-column prop="amount" label="单价">
-                                                </el-table-column>
-                                                <el-table-column prop="total" label="数量">
-                                                </el-table-column>
-                                            </el-table>
                                         </el-form-item>
                                         <el-form-item>
                                             <el-form>
                                                 <el-form-item label="配送费:">
-                                                    <span>6元</span>
+                                                    <span>{{props.row.deliverMoney}}</span>
                                                 </el-form-item>
                                                 <el-form-item label="小计:">
-                                                    <span>82元</span>
+                                                    <span>{{props.row.totalMoney}}</span>
                                                 </el-form-item>
                                                 <el-form-item label="活动减免:">
-                                                    <span>8元</span>
+                                                    <span>{{props.row.activityMoney}}</span>
                                                 </el-form-item>
                                                 <el-form-item label="优惠券:">
-                                                    <span>3元</span>
+                                                    <span>{{props.row.targetName}}</span>
                                                 </el-form-item>
                                                 <el-form-item label="平台佣金:">
-                                                    <span>4.1元</span>
+                                                    <span>{{props.row.platformCommission}}</span>
                                                 </el-form-item>
                                                 <el-form-item label="本单预计收入:">
-                                                    <span style="color: orange;font-size: 18px;">66.9元</span>
+                                                    <span style="color: orange;font-size: 18px;">{{props.row.orderIncome}}元</span>
                                                 </el-form-item>
                                                 <el-form-item label="本顾客实际支付:">
-                                                    <span style="color: orange;font-size: 18px;">77元</span>
+                                                    <span style="color: orange;font-size: 18px;">{{props.row.realTotalMoney}}元</span>
                                                 </el-form-item>
                                             </el-form>
                                         </el-form-item>
@@ -157,42 +150,23 @@ export default {
     return {
       form: {},
       datetime: '',
-      tableData: [{
-        date: '3俩卤粉',
-        name: 8,
-        address: 'x1',
-        total: 8
-      }, {
-        date: '2俩卤粉加牛肉',
-        name: 12,
-        address: 'x3',
-        total: 36
-      }, {
-        date: '煎饺',
-        name: 8,
-        address: 'x2',
-        total: 16
-      }, {
-        date: '凉拌皮蛋',
-        name: 3,
-        address: 'x4',
-        total: 12
-      }],
-      boxData: [{
-        price: 1,
-        amount: 'x10',
-        total: 10
-      }],
-      deliveryData: [{
-        amount: 6
-      }],
-      sellerLevel: '3.7',
-      busy: true
+      pagination: {
+        page: 1,
+        rows: 10
+      },
+      busy: true,
+      feedbacks: []
     }
   },
   watch: {
-    feedbacksList(newValue) {
-      newValue === 0 && (this.busy = true) || (this.busy = false)
+    feedbacksList(newValue, oldValue) {
+      if (newValue.length === 0) {
+        this.busy = true
+        this.feedbacks = oldValue
+      } else {
+        this.busy = false
+        this.feedbacks = oldValue.concat(newValue)
+      }
     }
   },
   computed: {
@@ -204,7 +178,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      getFeedbacksList: 'getFeedbacksList'
+      getFeedbacksList: 'getFeedbacksList',
+      getFeedbacksPage: 'getFeedbacksPage'
     }),
     ...mapMutations({
       showLoading: 'showLoading'
@@ -239,12 +214,12 @@ export default {
       this.busy = true
       this.showLoading()
       setTimeout(() => {
-        this.getFeedbacksList(sessionStorage.getItem('userId'))
+        this.getFeedbacksPage({ ...this.pagination, merchantId: sessionStorage.getItem('merchantId') })
       }, 1000)
     }
   },
   mounted() {
-    this.getFeedbacksList(sessionStorage.getItem('userId'))
+    this.getFeedbacksPage({ ...this.pagination, merchantId: sessionStorage.getItem('merchantId') })
   }
 }
 </script>

@@ -69,7 +69,7 @@
                       <span>{{props.row.platformCommission}}</span>
                     </el-form-item>
                     <el-form-item label="本单预计收入:">
-                      <span style="color: orange;font-size: 18px;"></span>
+                      <span style="color: orange;font-size: 18px;">{{props.row.orderIncome}}</span>
                     </el-form-item>
                     <el-form-item label="本顾客实际支付:">
                       <span style="color: orange;font-size: 18px;">{{props.row.realTotalMoney}}</span>
@@ -231,6 +231,7 @@ export default {
     'form.status': {
       handler: function(newValue) {
         this.pagination.page = 1
+        this.orderReminderList.splice(0)
         this.getOrderReminderByStatus({ ...this.pagination, status: newValue })
       },
       immediate: true

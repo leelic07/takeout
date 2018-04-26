@@ -13,6 +13,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 import filters from './filters'
+import config from '@/service/config/base'
 
 import '@/icons' // icon
 // import '@/permission' // permission control
@@ -21,10 +22,7 @@ Vue.use(ElementUI, { locale })
 Vue.use(infiniteScroll)
 
 Vue.config.productionTip = false
-Vue.prototype.$_baseURL = 'https://pandax.mofasion.com/takeaway'
-// Vue.prototype.$_baseURL = 'http://47.106.143.22:8080/takeaway'
-// Vue.prototype.$_baseURL = 'http://10.10.10.21:8080'
-
+Vue.prototype.$_baseURL = config.baseURL
 Vue.prototype.$_type = sessionStorage.getItem('type')
 
 // 声明过滤器

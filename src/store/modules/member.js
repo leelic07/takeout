@@ -39,7 +39,7 @@ export default {
       state.userTotal = data.totalCount
     },
     editUser(state, editUserResult) {
-      state.userForEdit = editUserResult.data.user
+      state.userForEdit = editUserResult.data.users
     }
   }
 }
