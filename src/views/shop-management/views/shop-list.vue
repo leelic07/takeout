@@ -15,31 +15,31 @@
     <!--店铺信息列表-->
     <el-row class="order-statics">
       <el-table :data="shopList" stripe border fit style="width: 100%">
-        <el-table-column type="index" :index="1" label="序号"></el-table-column>
+        <el-table-column type="index" :index="1" label="序号"/>
         <el-table-column label="店铺名称">
           <template slot-scope="props">
             <el-button type="text" @click="showMemberDetail(props.row)">{{props.row.name}}</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="code" label="店铺编号"></el-table-column>
-        <el-table-column prop="typeName" label="店铺类型"></el-table-column>
-        <el-table-column prop="tel" label="联系电话"></el-table-column>
-        <el-table-column prop="address" label="地址"></el-table-column>
-        <el-table-column prop="monthPrice" label="本月营业额"></el-table-column>
-        <el-table-column prop="monthOrder" label="本月订单数"></el-table-column>
-        <el-table-column prop="itemCount" label="商品数量"></el-table-column>
-        <el-table-column prop="itemTypeCount" label="分类数量"></el-table-column>
-        <el-table-column prop="activityQuantity" label="评分"></el-table-column>
-        <el-table-column prop="activityCount" label="活动"></el-table-column>
+        <el-table-column prop="code" label="店铺编号"/>
+        <el-table-column prop="typeName" label="店铺类型"/>
+        <el-table-column prop="tel" label="联系电话"/>
+        <el-table-column prop="address" label="地址"/>
+        <el-table-column prop="monthPrice" label="本月营业额"/>
+        <el-table-column prop="monthOrder" label="本月订单数"/>
+        <el-table-column prop="itemCount" label="商品数量"/>
+        <el-table-column prop="itemTypeCount" label="分类数量"/>
+        <el-table-column prop="activityQuantity" label="评分"/>
+        <el-table-column prop="activityCount" label="活动"/>
         <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="showShopEdit(scope.row.id)">编辑</el-button>
+          <template slot-scope="props">
+            <el-button type="primary" size="mini" @click="showShopEdit(props.row.id)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="shopTotal" :page="pagination.page" :rows="pagination.rows"></pagination>
+    <pagination :total="shopTotal" :page="pagination.page" :rows="pagination.rows" :currentChange="currentChange"></pagination>
     <!--店铺详情信息对话框-->
     <el-dialog title="店铺详情" class="shop-detail" :visible.sync="dialogDetailVisible">
       <el-form inline :model="shopDetail" size="mini">
@@ -81,7 +81,6 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogDetailVisible = false">取 消</el-button>
         <el-button size="mini" type="primary" @click="dialogDetailVisible = false">确 定</el-button>
       </div>
     </el-dialog>
@@ -241,6 +240,9 @@ export default {
     // 确定编辑商户信息
     editShopConfirm() {
       this.editShop(this.shopForEdit)
+    },
+    currentChange(page) {
+      this.getShopList(Object.assign(this.pagination, { page }))
     }
   },
   mounted() {
