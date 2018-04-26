@@ -12,7 +12,7 @@
       </el-date-picker> -->
       <el-button type="primary" icon="el-icon-search" @click="getShopList(pagination)">搜索</el-button>
     </el-row>
-    <!--会员信息列表-->
+    <!--店铺信息列表-->
     <el-row class="order-statics">
       <el-table :data="shopList" stripe border fit style="width: 100%">
         <el-table-column type="index" :index="1" label="序号"></el-table-column>
