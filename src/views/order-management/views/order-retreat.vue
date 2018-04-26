@@ -230,16 +230,15 @@ export default {
     'form.status': {
       handler: function(newValue) {
         this.pagination.page = 1
+        this.orderRetreats.splice(0)
         this.orderRetreatList.splice(0)
         this.getOrderRetreatByStatus({ ...this.pagination, status: newValue })
       },
       immediate: true
     },
     orderRetreatList(newValue, oldValue) {
-      if (newValue.length === 0) {
-        this.busy = true
-        this.orderRetreats = oldValue
-      } else {
+      if (newValue.length === 0) this.busy = true
+      else {
         this.busy = false
         this.orderRetreats = oldValue.concat(newValue)
       }

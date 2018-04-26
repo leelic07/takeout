@@ -15,12 +15,17 @@ export default {
   },
   mutations: {
     getFeedbacksList(state, feedbacksListResult) {
-      state.feedbacksList = feedbacksListResult.data.feedbacks
+      state.feedbacksList = feedbacksListResult.data.feedbacks.data
       // state.feedbacksTotal = feedbacksListResult.data.totalCount
     },
     getFeedbacksPage(state, feedbacksPageResult) {
-      state.feedbacksList = feedbacksPageResult.data.feedbacks
-      state.feedbacksTotal = feedbacksPageResult.data.totalCount
+      const feedbacks = feedbacksPageResult.data.feedbacks
+      feedbacks.data.forEach(data => {
+        data.goodsScore = Number(data.goodsScore)
+        data.distributionScore = Number(data.distributionScore)
+      })
+      state.feedbacksList = feedbacks.data
+      // state.feedbacksTotal = feedbacksPageResult.data.totalCount
     }
   }
 }

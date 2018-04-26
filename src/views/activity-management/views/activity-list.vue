@@ -60,7 +60,7 @@
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="activityTotal" :page="pagination.page" :rows="pagination.rows"></pagination>
+    <pagination :total="activityTotal" :page="pagination.page" :rows="pagination.rows" @currentPage="currentPage"></pagination>
     <!--编辑会员信息对话框-->
     <el-dialog class="member-editor" title="编辑活动" :visible.sync="dialogFormVisible">
       <el-form :model="activityForEdit" size="mini">
@@ -254,6 +254,9 @@ export default {
     },
     searchActivity() {
       this.activityType === 1 && this.getActivityList(this.pagination) || this.getCouponList(this.pagination)
+    },
+    currentPage(page) {
+      this.getActivityList(Object.assign(this.pagination, { page }))
     }
   }
 }

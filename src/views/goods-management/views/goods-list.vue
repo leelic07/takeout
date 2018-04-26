@@ -7,7 +7,7 @@
       </el-col>
       <el-col :span="4" class="member-select">
         <el-select v-model="pagination.merchantId" placeholder="请选择店铺" v-if="type === '1'">
-          <el-option value="" label="全部店铺"></el-option>
+          <!-- <el-option :value="merchantid" label="全部店铺"></el-option> -->
           <el-option v-for="(merchant,index) in merchantList" :value="merchant.id" :label="merchant.name" :key="index"></el-option>
         </el-select>
       </el-col>
@@ -47,7 +47,7 @@
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="goodsList.length" :page="pagination.page" :rows="pagination.rows"></pagination>
+    <pagination :total="goodsList.length" :page="pagination.page" :rows="pagination.rows" :currentChange="currentChange"></pagination>
     <!--编辑商品信息对话框-->
     <el-dialog class="member-editor" title="编辑商品" :visible.sync="dialogFormVisible">
       <el-form :model="goodsForEdit" size="mini">
@@ -104,8 +104,8 @@
       <el-form ref="shopForm">
         <el-form-item label="选择下架商铺：">
           <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-          <el-checkbox-group v-model="merchantId" @change="handleCheckMerchantChange">
-            <el-checkbox v-for="(merchant,index) in merchantListByItemId" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
+          <el-checkbox-group v-model="merchantListByItemId" @change="handleCheckMerchantChange">
+            <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
       </el-form>
@@ -113,7 +113,7 @@
         <el-button size="mini" @click="dialogWithdrawVisible = false">取 消</el-button>
         <el-button size="mini" type="primary" @click="withdrawGoodsConfirmForSuper({
           itemId,
-          merchantId,
+          merchantId: merchantListByItemId,
           isPuton: 0
         })">确 定</el-button>
       </div>
@@ -123,8 +123,8 @@
       <el-form ref="shopForm">
         <el-form-item label="选择下架商铺：">
           <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-          <el-checkbox-group v-model="merchantId" @change="handleCheckMerchantChange">
-            <el-checkbox v-for="(merchant,index) in merchantListByItemId" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
+          <el-checkbox-group v-model="merchantListByItemId" @change="handleCheckMerchantChange">
+            <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
       </el-form>
@@ -132,8 +132,8 @@
         <el-button size="mini" @click="dialogGroundVisible = false">取 消</el-button>
         <el-button size="mini" type="primary" @click="groundGoodsConfirmForSuper({
           itemId,
-          merchantId,
-          isPuton: 0
+          merchantId: merchantListByItemId,
+          isPuton: 1
         })">确 定</el-button>
       </div>
     </el-dialog>
@@ -147,13 +147,12 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      orderNumber: '', // 订单号
       datetime: [], // 日期时间
       pagination: {// 分页信息
         page: 1,
         rows: 10,
         name: '',
-        c: ''
+        merchantId: Number(sessionStorage.getItem('merchantId'))
       },
       value: '', // 选择会员等级
       dialogDetailVisible: false,
@@ -300,6 +299,9 @@ export default {
     handleCheckMerchantChange(val) {
       this.checkAll = val.length === this.merchantList.length
       this.isIndeterminate = val.length > 0 && val.length < this.merchantList.length
+    },
+    currentChange(page) {
+      this.getGoodsList(Object.assign(this.pagination, { page }))
     }
   },
   mounted() {

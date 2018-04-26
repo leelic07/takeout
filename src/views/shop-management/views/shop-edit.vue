@@ -90,7 +90,7 @@
                         <el-input type="password" v-model="shopForEdit.accountPassword" auto-complete="off" placeholder="请填写配送范围"></el-input>
                     </el-form-item> -->
                     <el-form-item>
-                        <el-button type="primary" size="medium" @click="updateShopConfirm">保存</el-button>
+                        <el-button type="primary" size="medium" @click="updateShopConfirm">更新</el-button>
                     </el-form-item>
                 </el-form>
             </el-card>

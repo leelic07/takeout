@@ -228,16 +228,15 @@ export default {
     'form.status': {
       handler: function(newValue) {
         this.pagination.page = 1
+        this.orderAcceptions.splice(0)
         this.orderAcceptionList.splice(0)
         this.getOrderAcceptionByStatus({ ...this.pagination, status: newValue })
       },
       immediate: true
     },
     orderAcceptionList(newValue, oldValue) {
-      if (newValue.length === 0) {
-        this.busy = true
-        this.orderAcceptions = oldValue
-      } else {
+      if (newValue.length === 0) this.busy = true
+      else {
         this.busy = false
         this.orderAcceptions = oldValue.concat(newValue)
       }

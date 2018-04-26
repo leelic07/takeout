@@ -233,16 +233,15 @@ export default {
     'form.status': {
       handler: function(newValue) {
         this.pagination.page = 1
+        this.orderReservations.splice(0)
         this.orderReservationList.splice(0)
         this.getOrderReservationByStatus({ ...this.pagination, status: newValue })
       },
       immediate: true
     },
     orderReservationList(newValue, oldValue) {
-      if (newValue.length === 0) {
-        this.busy = true
-        this.orderReservations = oldValue
-      } else {
+      if (newValue.length === 0) this.busy = true
+      else {
         this.busy = false
         this.orderReservations = oldValue.concat(newValue)
       }

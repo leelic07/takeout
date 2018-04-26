@@ -124,12 +124,11 @@ export default {
   mutations: {
     getGoodsList(state, goodsListResult) {
       const items = goodsListResult.data.items
-      items.forEach((item, index, arr) => {
-        for (let i = index + 1; i < arr.length; i++) {
-          if (item.id === arr[i].id) arr.splice(i, 1)
-        }
-      })
-      console.log(items)
+      // items.forEach((item, index, arr) => {
+      //   for (let i = index + 1; i < arr.length; i++) {
+      //     if (item.id === arr[i].id) arr.splice(i, 1)
+      //   }
+      // })
       state.goodsList = items
     },
     editGoods(state, editGoodsResult) {

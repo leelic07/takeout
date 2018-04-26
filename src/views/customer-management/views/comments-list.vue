@@ -45,7 +45,7 @@
                     </div>
                     <el-row>
                         <el-table :data="feedbacks" style="width: 100%" :show-header="false" stripe>
-                            <el-table-column label="" prop="id">
+                            <el-table-column label="">
                                 <template slot-scope="props">
                                     <el-row class="card-content comments-box">
                                         <el-col :span="20">
@@ -125,10 +125,8 @@
                                             </el-form>
                                         </el-form-item>
                                         <el-form-item>
-                                            <template slot-scope="props">
-                                                <el-button type="danger" plain size="mini" @click="cancelOrder">取消订单并退款</el-button>
-                                                <el-button type="primary" plain size="mini" @click="printOrder">打印订单</el-button>
-                                            </template>
+                                            <el-button type="danger" plain size="mini" @click="cancelOrder">取消订单并退款</el-button>
+                                            <el-button type="primary" plain size="mini" @click="printOrder">打印订单</el-button>
                                         </el-form-item>
                                     </el-form>
                                 </template>
@@ -160,10 +158,8 @@ export default {
   },
   watch: {
     feedbacksList(newValue, oldValue) {
-      if (newValue.length === 0) {
-        this.busy = true
-        this.feedbacks = oldValue
-      } else {
+      if (newValue.length === 0) this.busy = true
+      else {
         this.busy = false
         this.feedbacks = oldValue.concat(newValue)
       }
@@ -214,6 +210,7 @@ export default {
       this.busy = true
       this.showLoading()
       setTimeout(() => {
+        this.pagination.page++
         this.getFeedbacksPage({ ...this.pagination, merchantId: sessionStorage.getItem('merchantId') })
       }, 1000)
     }

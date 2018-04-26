@@ -231,16 +231,15 @@ export default {
     'form.status': {
       handler: function(newValue) {
         this.pagination.page = 1
+        this.orderReminders.splice(0)
         this.orderReminderList.splice(0)
         this.getOrderReminderByStatus({ ...this.pagination, status: newValue })
       },
       immediate: true
     },
     orderReminderList(newValue, oldValue) {
-      if (newValue.length === 0) {
-        this.busy = true
-        this.orderReminders = oldValue
-      } else {
+      if (newValue.length === 0) this.busy = true
+      else {
         this.busy = false
         this.orderReminders = oldValue.concat(newValue)
       }

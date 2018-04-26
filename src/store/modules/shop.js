@@ -78,10 +78,18 @@ export default {
       state.merchantList = merchantsListResult.data.merchants
     },
     getMerchantsListByitemId(state, getMerchantsListResult) {
-      state.merchantListByItemId = getMerchantsListResult.data.merchants
+      const merchantsId = []
+      const merchants = getMerchantsListResult.data.merchants
+      merchants.forEach(merchant => {
+        merchantsId.push(merchant.id)
+      })
+      state.merchantListByItemId = merchantsId
     },
     updateShop(state, updateShopResult) {
       state.updateShopResult = updateShopResult
+      router.push({
+        path: '/shop/list'
+      })
     },
     getMerchantsHomePage(state, merchantHomePageResult) {
       state.merchantHomePage = merchantHomePageResult.data.merchants

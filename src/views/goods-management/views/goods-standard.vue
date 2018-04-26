@@ -26,7 +26,7 @@
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="propertiesTotal" :page="pagination.page" :rows="pagination.rows"></pagination>
+    <pagination :total="propertiesTotal" :page="pagination.page" :rows="pagination.rows" @currentChange="currentChange"></pagination>
     <!--编辑商品分类信息对话框-->
     <el-dialog class="member-editor" title="编辑商品分类" :visible.sync="dialogFormVisible">
       <el-form :model="propertyForEdit" size="mini">
@@ -143,6 +143,9 @@ export default {
       }).then(() => {
         this.deleteProperty(id)
       }).catch(err => console.log(err))
+    },
+    currentChange(page) {
+      this.getPropertiesPage(Object.assign(this.pagination, { page }))
     }
   },
   mounted() {
