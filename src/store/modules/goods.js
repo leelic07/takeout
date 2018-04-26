@@ -123,7 +123,14 @@ export default {
   },
   mutations: {
     getGoodsList(state, goodsListResult) {
-      state.goodsList = goodsListResult.data.items
+      const items = goodsListResult.data.items
+      items.forEach((item, index, arr) => {
+        for (let i = index + 1; i < arr.length; i++) {
+          if (item.id === arr[i].id) arr.splice(i, 1)
+        }
+      })
+      console.log(items)
+      state.goodsList = items
     },
     editGoods(state, editGoodsResult) {
       const goodsForEdit = editGoodsResult.data.items
@@ -132,7 +139,7 @@ export default {
         picture.url = `${baseURL}${picture.url}`
         picture.name = picture.url.substring(picture.url.lastIndexOf('/') + 1)
       })
-      goodsForEdit.merchants.ForEach(merchant => {
+      goodsForEdit.merchants.forEach(merchant => {
         merchants.push(merchant.merchatId)
       })
       goodsForEdit.merchants = merchants
