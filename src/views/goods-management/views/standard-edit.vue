@@ -12,8 +12,8 @@
               </el-form-item>
               <el-form-item v-for="(param,ind) in propertyForEdit.subPropertys" :key="ind" label="规格参数" label-width="120px">
                 <el-input v-model="param.name" auto-complete="off" placeholder="请填写规格参数"></el-input>
-                <!-- <div class="property-button add-properties add-standard" @click="addParams(index)" v-if="standardForm[index].subPropertys.length === ind + 1">+</div>
-                <div class="property-button decede-properties decede-standard" @click="decedeParams(index,ind)" v-if="standardForm[index].subPropertys.length > 1">-</div> -->
+                <div class="property-button add-properties add-standard" @click="addParams()" v-if="propertyForEdit.subPropertys.length === ind + 1">+</div>
+                <div class="property-button decede-properties decede-standard" @click="decedeParams(ind)" v-if="propertyForEdit.subPropertys.length > 1">-</div>
               </el-form-item>
               <el-row class="split-line"></el-row>
             <!-- </el-row> -->
@@ -79,11 +79,11 @@ export default {
         }]
       })
     },
-    addParams(index) {
-      this.standardForm[index].subPropertys.push({ name: '' })
+    addParams() {
+      this.propertyForEdit.subPropertys.push({ name: '' })
     },
-    decedeParams(index, ind) {
-      this.standardForm[index].subPropertys.splice(ind, 1)
+    decedeParams(index) {
+      this.propertyForEdit.subPropertys.splice(index, 1)
     },
     updateStandardConfirm() {
       this.$refs['categoryForm'].validate(valid => {

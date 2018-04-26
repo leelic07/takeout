@@ -192,7 +192,9 @@ export default {
       state.propertiesTotal = total
     },
     editProperty(state, propertyForEditResult) {
-      state.propertyForEdit = propertyForEditResult.data.propertys
+      const property = propertyForEditResult.data.propertys
+      property.subPropertys.length === 0 && (property.subPropertys.push({ name: '' }))
+      state.propertyForEdit = property
     },
     saveStandard(state, saveStandardResult) {
       state.saveStandardResult = saveStandardResult

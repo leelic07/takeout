@@ -25,7 +25,7 @@
             <el-input v-model="goods.label" auto-complete="off" placeholder="请填写商品标签"></el-input>
           </el-form-item>
           <el-form-item label="打包费" label-width="120px">
-            <el-input v-model="goods.package" auto-complete="off" placeholder="请填写打包费"></el-input>
+            <el-input v-model="goods.packingCharge" auto-complete="off" placeholder="请填写打包费"></el-input>
           </el-form-item>
           <el-form-item label="库存状态" label-width="120px" prop="stockStatus">
             <el-radio-group v-model="goods.stockStatus">

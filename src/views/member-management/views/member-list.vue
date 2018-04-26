@@ -14,7 +14,7 @@
         <el-row class="order-statics">
             <el-table :data="userList" stripe border style="width: 100%">
                 <el-table-column prop="userNo" label="会员编号"></el-table-column>
-                <el-table-column prop="loginName" label="微信昵称"></el-table-column>
+                <el-table-column prop="userName" label="微信昵称"></el-table-column>
                 <el-table-column label="性别">
                     <template slot-scope="props">
                         {{ props.row.userSex | gender}}
