@@ -24,6 +24,7 @@ Vue.use(infiniteScroll)
 Vue.config.productionTip = false
 Vue.prototype.$_baseURL = config.baseURL
 Vue.prototype.$_type = sessionStorage.getItem('type')
+Vue.prototype.$_uploadURL = '/takeaway/upload/uploadfile'
 
 // 声明过滤器
 Object.keys(filters).forEach(key => Vue.filter(key, filters[key]))

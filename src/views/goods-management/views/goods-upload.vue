@@ -24,7 +24,7 @@
           <el-form-item label="标签" label-width="120px" prop="label">
             <el-input v-model="goods.label" auto-complete="off" placeholder="请填写商品标签"></el-input>
           </el-form-item>
-          <el-form-item label="打包费" label-width="120px">
+          <el-form-item label="打包费" label-width="120px" prop="packingCharge">
             <el-input v-model="goods.packingCharge" auto-complete="off" placeholder="请填写打包费"></el-input>
           </el-form-item>
           <el-form-item label="库存状态" label-width="120px" prop="stockStatus">
@@ -43,7 +43,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="商品图片" placeholder="请填写地址" label-width="120px">
-            <el-upload class="upload-demo" :action="$_baseURL + '/upload/uploadfile'" :with-credentials="true" :on-remove="handleRemove" :on-success="handleSuccess" :file-list="fileList" list-type="picture" :limit="5" show-file-list>
+            <el-upload class="upload-demo" :action="$_baseURL + $_uploadURL" :with-credentials="true" :on-remove="handleRemove" :on-success="handleSuccess" :file-list="fileList" list-type="picture" :limit="5" show-file-list>
               <el-button size="small" type="primary">点击上传</el-button>
               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片，最多只能上传五张图片</div>
             </el-upload>
@@ -137,18 +137,9 @@ export default {
         itemType: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
         label: [{ required: true, message: '标签不能为空', trigger: 'blur' }],
         isPuton: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
-        propertys: [{ required: true, message: '商品店铺不能为空', trigger: 'blur' }]
+        propertys: [{ required: true, message: '商品店铺不能为空', trigger: 'blur' }],
+        packingCharge: [{ required: true, message: '打包费不能为空', trigger: 'blur' }]
       },
-      shopPropertyList: [{
-        id: 1,
-        name: '辣椒'
-      }, {
-        id: 2,
-        name: '冰块'
-      }, {
-        id: 3,
-        name: '甜度'
-      }],
       checkAll: false,
       isIndeterminate: true
     }

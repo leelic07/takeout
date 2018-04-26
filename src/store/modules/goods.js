@@ -139,7 +139,7 @@ export default {
         picture.name = picture.url.substring(picture.url.lastIndexOf('/') + 1)
       })
       goodsForEdit.merchants.forEach(merchant => {
-        merchants.push(merchant.merchatId)
+        merchants.push(merchant.id)
       })
       goodsForEdit.merchants = merchants
       state.goodsForEdit = editGoodsResult.data.items

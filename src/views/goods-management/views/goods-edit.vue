@@ -24,8 +24,8 @@
                     <el-form-item label="标签" label-width="120px" prop="label">
                         <el-input v-model="goodsForEdit.label" auto-complete="off" placeholder="请填写商品标签"></el-input>
                     </el-form-item>
-                    <el-form-item label="打包费" label-width="120px">
-                        <el-input v-model="goodsForEdit.package" auto-complete="off" placeholder="请填写打包费"></el-input>
+                    <el-form-item label="打包费" label-width="120px" prop="packingCharge">
+                        <el-input v-model="goodsForEdit.packingCharge" auto-complete="off" placeholder="请填写打包费"></el-input>
                     </el-form-item>
                     <el-form-item label="库存状态" label-width="120px" prop="stockStatus">
                         <el-radio-group v-model="goodsForEdit.stockStatus">
@@ -43,7 +43,7 @@
                         </el-radio-group>
                     </el-form-item> -->
                     <el-form-item label="商品图片" placeholder="请填写地址" label-width="120px">
-                        <el-upload class="upload-demo" :action="$_baseURL + '/upload/uploadfile'" :with-credentials="true" :on-remove="handleRemove" :on-success="handleSuccess" :file-list="fileList" list-type="picture" :limit="5" show-file-list>
+                        <el-upload class="upload-demo" :action="$_baseURL + $_uploadURL" :with-credentials="true" :on-remove="handleRemove" :on-success="handleSuccess" :file-list="fileList" list-type="picture" :limit="5" show-file-list>
                             <el-button size="small" type="primary">点击上传</el-button>
                             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片，最多只能上传五张图片</div>
                         </el-upload>
@@ -58,27 +58,25 @@
                         <el-button type="primary" size="small" @click="dialogFormVisible = !dialogFormVisible">添加商品属性</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" size="medium" @click="updateGoodsConfirm">保存</el-button>
+                        <el-button type="primary" size="medium" @click="updateGoodsConfirm">更新</el-button>
                     </el-form-item>
                 </el-form>
             </el-card>
             <!--添加商品属性弹出框-->
             <el-dialog class="property-dialog" title="商品属性" :visible.sync="dialogFormVisible">
                 <el-row v-for="(pro,index) in goodsForEdit.propertys" :key="index">
-                    <!-- <el-col> -->
                     <el-col :span="2">
                         <label for="">属性名</label>
                     </el-col>
                     <el-col :span="8">
-                        <el-select v-model="pro.name" placeholder="请选择属性名">
-                            <el-option v-for="(pro,index) in shopPropertyList" :value="pro.id" :label="pro.name" :key="index"></el-option>
+                        <el-select v-model="pro.id" placeholder="请选择属性名" @change="propertyChange(pro)">
+                            <el-option v-for="(pro,index) in propertyParents" :value="pro.id" :label="pro.name" :key="index"></el-option>
                         </el-select>
                     </el-col>
                     <el-col :span="3" :offset="2">
                         <div class="property-button decede-properties" @click="decedePropertyForm(index)" v-if="goodsForEdit.propertys.length > 1">-</div>
                         <div class="property-button add-properties" @click="addPropertyForm" v-if="goodsForEdit.propertys.length === index + 1">+</div>
                     </el-col>
-                    <!-- </el-col> -->
                     <el-col v-for="(ps,ind) in pro.properties" :key="ind" label="">
                         <el-col :span="3">
                             <label for="">属性值：</label>
@@ -131,7 +129,8 @@ export default {
         itemType: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
         label: [{ required: true, message: '标签不能为空', trigger: 'blur' }],
         isPuton: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
-        checkList: [{ required: true, message: '商品店铺不能为空', trigger: 'blur' }]
+        checkList: [{ required: true, message: '商品店铺不能为空', trigger: 'blur' }],
+        packingCharge: [{ required: true, message: '打包费不能为空', trigger: 'blur' }]
       },
       shopPropertyList: [{
         id: 1,
@@ -156,17 +155,19 @@ export default {
     ...mapGetters([
       'goodsTypeList',
       'merchantList',
-      'goodsForEdit'
+      'goodsForEdit',
+      'propertyParents'
     ])
   },
   methods: {
     ...mapActions({
       getGoodsTypeList: 'getGoodsTypeList',
-      saveGoods: 'saveGoods',
       getMerchantsList: 'getMerchantsList',
       uploadFile: 'uploadFile',
       editGoods: 'editGoods',
-      updateGoods: 'updateGoods'
+      updateGoods: 'updateGoods',
+      getPropertysParent: 'getPropertysParent',
+      getPropertysChildren: 'getPropertysChildren'
     }),
     handleRemove(file) {
       this.fileListTemp.forEach((f, index, arr) => {
@@ -225,12 +226,16 @@ export default {
     handleCheckMerchantChange(val) {
       this.checkAll = val.length === this.merchantList.length
       this.isIndeterminate = val.length > 0 && val.length < this.merchantList.length
+    },
+    propertyChange(property) {
+      this.getPropertysChildren(property)
     }
   },
   mounted() {
     this.getGoodsTypeList()
     this.getMerchantsList()
     this.editGoods(this.$route.params.id)
+    this.getPropertysParent()
   }
 }
 </script>
