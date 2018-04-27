@@ -38,9 +38,9 @@
                 </span>
               </router-link>
             </el-col>
-            <el-col :span="24" class="order-amount-yesterday">
+            <!-- <el-col :span="24" class="order-amount-yesterday">
               <p>昨日1单</p>
-            </el-col>
+            </el-col> -->
           </el-col>
           <el-col :span="12">
             <p>今日退款中的外卖订单
@@ -55,9 +55,9 @@
                 </span>
               </router-link>
             </el-col>
-            <el-col :span="24" class="order-amount-yesterday">
+            <!-- <el-col :span="24" class="order-amount-yesterday">
               <p>昨日2单</p>
-            </el-col>
+            </el-col> -->
           </el-col>
         </el-col>
         <el-col class="goods-body" :span="12">
@@ -73,9 +73,9 @@
                 </span>
               </router-link>
             </el-col>
-            <el-col :span="24" class="order-amount-yesterday">
+            <!-- <el-col :span="24" class="order-amount-yesterday">
               <p>昨日12单</p>
-            </el-col>
+            </el-col> -->
           </el-col>
           <el-col :span="12">
             <p class="income-today">今日订单收入
@@ -91,9 +91,9 @@
                 </span>
               </router-link>
             </el-col>
-            <el-col :span="24" class="order-amount-yesterday">
+            <!-- <el-col :span="24" class="order-amount-yesterday">
               <p class="income-today-money">昨日收入166.66元</p>
-            </el-col>
+            </el-col> -->
           </el-col>
         </el-col>
       </el-row>
