@@ -42,7 +42,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button size="mini" type="primary" @click="submitGoodsType">确 定</el-button>
+        <el-button size="mini" type="primary" @click="updateGoodsTypeConfirm">确 定</el-button>
       </div>
     </el-dialog>
   </el-row>
@@ -96,6 +96,9 @@ export default {
   watch: {
     deleteGoodsTypeResult(newValue) { // 删除成功重新加载分类数据
       newValue.code === 200 && this.getGoodsTypePage(this.pagination)
+    },
+    updateGoodsTypeResult() {
+      this.dialogFormVisible = false
     }
   },
   computed: {
@@ -146,7 +149,7 @@ export default {
       }).catch(err => console.log(err))
     },
     // 点击确定编辑分类商品执行的方法
-    submitGoodsType() {
+    updateGoodsTypeConfirm() {
       this.$refs.goodsTypeForm.validate(valid => {
         if (valid) this.updateGoodsType(this.goodsTypeForEdit)
         else console.log('update goodsTypeForEdit err')

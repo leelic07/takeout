@@ -101,7 +101,7 @@ export default {
         page: 1,
         rows: 10,
         name: '',
-        merchantId: Number(sessionStorage.getItem('merchantId'))
+        merchantId: ''
       },
       value: '', // 选择会员等级
       dialogDetailVisible: false,
@@ -123,7 +123,7 @@ export default {
       },
       fileList: [], // 图片上传的数组
       imageUrl: '', // 上传头像的图片路径
-      merchantId: [], // 选中的商品id的集合
+      merchantId: [], // 选中的商铺id的集合
       itemId: '', // 需要下架或者上架的商品id
       checkAll: false,
       isIndeterminate: true,
@@ -193,7 +193,7 @@ export default {
         }).then(() => {
           this.withdrawGoodsConfirm({
             itemId,
-            merchantId: this.merchantId.push(this.pagination.merchantId),
+            merchantId: this.pagination.merchantId,
             isPuton: 0
           })
         }).catch(err => console.log(err))
@@ -213,7 +213,7 @@ export default {
         }).then(() => {
           this.withdrawGoodsConfirm({
             itemId,
-            merchantId: this.merchantId.push(this.pagination.merchantId),
+            merchantId: this.pagination.merchantId,
             isPuton: 1
           })
         }).catch(err => console.log(err))
@@ -242,6 +242,7 @@ export default {
   mounted() {
     this.getGoodsList(this.pagination)
     this.getMerchantsList()
+    this.pagination.merchantId = Number(sessionStorage.getItem('merchantId'))
   }
 }
 </script>
