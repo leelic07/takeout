@@ -48,57 +48,6 @@
     </el-row>
     <!--分页组件-->
     <pagination :total="goodsList.length" :page="pagination.page" :rows="pagination.rows" :currentChange="currentChange"></pagination>
-    <!--编辑商品信息对话框-->
-    <el-dialog class="member-editor" title="编辑商品" :visible.sync="dialogFormVisible">
-      <el-form :model="goodsForEdit" size="mini">
-        <el-form-item label="商品名称" label-width="120px">
-          <el-input v-model="goodsForEdit.name" auto-complete="off" placeholder="请填写姓名"></el-input>
-        </el-form-item>
-        <el-form-item label="单位" label-width="120px">
-          <el-input v-model="goodsForEdit.unit" auto-complete="off" placeholder="请填写性别"></el-input>
-        </el-form-item>
-        <el-form-item label="价格" label-width="120px">
-          <el-input v-model="goodsForEdit.price" auto-complete="off" placeholder="请填写电话"></el-input>
-        </el-form-item>
-        <!-- <el-form-item label="商品分类" label-width="120px">
-          <el-select v-model="goodsForEdit.itemTypeName" placeholder="请选择会员等级">
-            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item> -->
-        <el-form-item label="标签" label-width="120px">
-          <el-input v-model="goodsForEdit.label" auto-complete="off" placeholder="请填写地址"></el-input>
-        </el-form-item>
-        <el-form-item label="库存状态" label-width="120px">
-          <el-input v-model="goodsForEdit.stockStatus" auto-complete="off" placeholder="请填写备注"></el-input>
-        </el-form-item>
-        <el-form-item label="库存量" label-width="120px">
-          <el-input v-model="goodsForEdit.stock" auto-complete="off" placeholder="请填写备注"></el-input>
-        </el-form-item>
-        <!-- <el-form-item label="商品状态" label-width="120px">
-          <el-select v-model="goodsForEdit.status" placeholder="请选择会员等级">
-            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item> -->
-        <el-form-item label="商品图片" placeholder="请填写地址" label-width="120px">
-          <!-- <el-upload :action="$_baseURL + '/upload/uploadfile'" with-credentials="true" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :limit="5" list-type="picture-card"> -->
-          <!-- <img v-if="goodsForEdit.imageUrl" :src="goodsForEdit.imageUrl" class="avatar"> -->
-          <!-- <i class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload> -->
-          <el-upload :action="$_baseURL + '/upload/uploadfile'" list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
-            <i class="el-icon-plus"></i>
-          </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="">
-          </el-dialog>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button size="mini" type="primary" @click="dialogFormVisible = false">确 定</el-button>
-      </div>
-    </el-dialog>
     <!--商品下架对话框-->
     <el-dialog class="withdraw-dialog" title="商品下架" :visible.sync="dialogWithdrawVisible">
       <el-form ref="shopForm">
@@ -233,20 +182,6 @@ export default {
       this.$router.push({
         path: `/goods/edit/${id}`
       })
-    },
-    // 会员头像上传成功执行的方法
-    handleAvatarSuccess(file) {
-      console.log(file)
-    },
-    // 会员头像上传之前执行的方法
-    beforeAvatarUpload(file) {
-      console.log(file)
-    },
-    handlePictureCardPreview() {
-
-    },
-    handleRemove() {
-
     },
     // 点击下架执行的方法
     withdrawGoods(itemId) {
