@@ -66,7 +66,11 @@ const getters = {
   feedbacksList: state => state.customer.feedbacksList,
   feedbacksTotal: state => state.customer.feedbacksTotal,
   // 加载图标
-  loading: state => state.loading.loading
+  loading: state => state.loading.loading,
+  // 经营管理
+  accessList: state => state.data.accessList,
+  businessList: state => state.data.businessList,
+  businessTotal: state => state.data.businessTotal
 }
 
 export default getters

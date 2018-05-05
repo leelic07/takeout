@@ -6,6 +6,7 @@ import activity from './modules/activity'
 import upload from './modules/upload'
 import member from './modules/member'
 import customer from './modules/customer'
+import data from './modules/data'
 
 export default {
   ...user,
@@ -15,5 +16,6 @@ export default {
   ...activity,
   ...upload,
   ...member,
-  ...customer
+  ...customer,
+  ...data
 }
