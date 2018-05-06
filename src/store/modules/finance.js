@@ -1,10 +1,12 @@
 import http from '@/service'
+import config from '@/service/config/base'
 import { parseTime } from '@/utils/index'
 
 export default {
   state: {
     financeList: [],
-    financeTotal: 0
+    financeTotal: 0,
+    filepath: ''
   },
   actions: {
     getFinanceList({ commit }, pagination) {
@@ -32,7 +34,9 @@ export default {
       state.financeTotal = financeListResult.data.totalCount
     },
     exportExcel(state, exportExcelResult) {
-      console.log(exportExcelResult)
+      const filepath = exportExcelResult.data.filepath
+      state.filepath = filepath
+      window.location.href = config.baseURL + '/takeaway' + filepath
     }
   }
 }

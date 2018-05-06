@@ -1,4 +1,5 @@
 import http from '@/service'
+import { parseTime } from '@/utils/index'
 
 export default {
   state: {
@@ -14,8 +15,8 @@ export default {
       let startTime = ''
       let endTime = ''
       if (pagination.datetime) {
-        startTime = pagination.datetime[0]
-        endTime = pagination.datetime[1]
+        startTime = parseTime(pagination.datetime[0])
+        endTime = parseTime(pagination.datetime[1])
       }
       http.getBusinessList({ ...pagination, startTime, endTime }).then(res => res.code === 200 && commit('getBusinessList', res)).catch(err => console.log(err))
     },
@@ -23,8 +24,8 @@ export default {
       let startTime = ''
       let endTime = ''
       if (pagination.datetime) {
-        startTime = pagination.datetime[0]
-        endTime = pagination.datetime[1]
+        startTime = parseTime(pagination.datetime[0])
+        endTime = parseTime(pagination.datetime[1])
       }
       http.getAccessList({ ...pagination, startTime, endTime }).then(res => res.code === 200 && commit('getAccessList', res)).catch(err => console.log(err))
     },

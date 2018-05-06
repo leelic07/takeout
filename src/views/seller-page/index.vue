@@ -164,7 +164,7 @@ export default {
       switch (type) {
         case 'orderList':
           this.$router.push({
-            path: '/order/list'
+            path: '/order/records'
           })
           break
         case 'incomeList':

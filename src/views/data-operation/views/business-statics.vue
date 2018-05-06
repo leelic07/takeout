@@ -81,7 +81,7 @@ export default {
       pagination: {// 分页信息
         page: 1,
         rows: 10,
-        datetime: []
+        datetime: ''
       },
       value: '', // 选择会员等级
       dialogDetailVisible: false,

@@ -3,10 +3,10 @@
     <!--搜索框-->
     <el-row>
       <el-col :span="5">
-        <el-input placeholder="请输入分类名称" v-model="orderNumber"></el-input>
+        <el-input placeholder="请输入分类名称" v-model="pagination.name"></el-input>
       </el-col>
       <!-- <el-col :span="5" class="member-select">
-        <el-input placeholder="请输入分类编号" v-model="orderNumber"></el-input>
+        <el-input placeholder="请输入分类编号" v-model="code"></el-input>
       </el-col> -->
       <el-button type="primary" icon="el-icon-search" @click="getGoodsTypePage(pagination)">搜索</el-button>
     </el-row>
@@ -55,14 +55,12 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      orderNumber: '', // 订单号
-      datetime: '', // 日期时间
+      code: '', // 订单号
       pagination: {// 分页信息
         page: 1,
         rows: 10,
         name: ''
       },
-      value: '', // 选择会员等级
       dialogDetailVisible: false,
       dialogFormVisible: false,
       form: {
@@ -75,7 +73,6 @@ export default {
         resource: '',
         desc: ''
       },
-      imageUrl: '', // 上传头像的图片路径
       rule: {
         code: [{ required: true, message: '分类商品编号不能为空', trigger: 'blur' }],
         name: [{ required: true, message: '分类商品类型名称不能为空', trigger: 'blur' }],
@@ -89,6 +86,7 @@ export default {
     },
     updateGoodsTypeResult() {
       this.dialogFormVisible = false
+      this.getGoodsTypePage(this.pagination)
     }
   },
   computed: {
@@ -120,14 +118,6 @@ export default {
       this.dialogFormVisible = true
       this.editGoodsType(id)
     },
-    // 会员头像上传成功执行的方法
-    handleAvatarSuccess(file) {
-      console.log(file)
-    },
-    // 会员头像上传之前执行的方法
-    beforeAvatarUpload(file) {
-      console.log(file)
-    },
     // 点击删除执行的方法
     deleteGoodsTypeConfirm(id) {
       this.$confirm('确定删除该分类吗?', '提示', {
@@ -138,7 +128,7 @@ export default {
         this.deleteGoodsType(id)
       }).catch(err => console.log(err))
     },
-    // 点击确定编辑分类商品执行的方法
+    // 点击确定编辑商品分类执行的方法
     updateGoodsTypeConfirm() {
       this.$refs.goodsTypeForm.validate(valid => {
         if (valid) this.updateGoodsType(this.goodsTypeForEdit)

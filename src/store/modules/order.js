@@ -6,6 +6,7 @@ export default {
     orderReservationList: [],
     orderRetreatList: [],
     orderRecordsList: [],
+    orderRecordsTotal: 0,
     orderReminderList: []
   },
   actions: {
@@ -72,7 +73,9 @@ export default {
       state.orderRetreatList = orders.filter(order => order.status === Number(status))
     },
     getOrderRecordsList(state, orderRecordsList) {
-      state.orderRecordsList = orderRecordsList.data.orders
+      const data = orderRecordsList.data
+      state.orderRecordsList = data.orders
+      state.orderRecordsTotal = data.totalCount
     },
     getOrderReminderByStatus(state, orderReminderList) {
       const orders = orderReminderList.data.orders

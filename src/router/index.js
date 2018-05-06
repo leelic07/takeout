@@ -271,7 +271,8 @@ export const constantRouterMap = [
       path: 'search',
       name: 'MemberSearch',
       component: () => import('@/views/member-management/views/member-search'),
-      meta: { title: '会员查询', icon: 'example' }
+      meta: { title: '会员查询', icon: 'example' },
+      hidden: true
     }]
   },
 

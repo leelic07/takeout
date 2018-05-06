@@ -72,7 +72,8 @@ export default {
     updateGoodsType({ commit }, goodsType) {
       http.updateGoodsType({
         id: goodsType.id,
-        name: goodsType.name
+        name: goodsType.name,
+        code: goodsType.code
       }).then(res => res.code === 200 && commit('updateGoodsType', res)).catch(err => console.log(err))
     },
     saveGoodsType({ commit }, goodsType) {

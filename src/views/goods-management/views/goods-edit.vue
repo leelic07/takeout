@@ -91,13 +91,13 @@
                         <el-col :span="6">
                             <el-input v-model="ps.price" auto-complete="off" placeholder="请填写价格"></el-input>
                         </el-col>
-                        <el-col :span="2" :offset="1">
+                        <el-col :span="2" :offset="2">
                             <el-checkbox v-model="ps.isOpen">启用</el-checkbox>
                         </el-col>
-                        <el-col :span="3" :offset="1">
-                            <div class="property-button decede-properties" @click="decedeProperties(index,ind)" v-if="goodsForEdit.itemPropertys[index].subPropertys.length > 1">-</div>
+                        <!-- <el-col :span="3" :offset="1"> -->
+                            <!-- <div class="property-button decede-properties" @click="decedeProperties(index,ind)" v-if="goodsForEdit.itemPropertys[index].subPropertys.length > 1">-</div> -->
                             <!-- <div class="property-button add-properties" @click="addProperties(index)" v-if="goodsForEdit.itemPropertys[index].subPropertys.length === ind + 1">+</div> -->
-                        </el-col>
+                        <!-- </el-col> -->
                     </el-col>
                 </el-row>
                 <div slot="footer" class="dialog-footer">
@@ -188,11 +188,7 @@ export default {
     addPropertyForm() {
       this.goodsForEdit.itemPropertys.push({
         name: '',
-        properties: [{
-          value: 'xxx',
-          price: '',
-          isOpen: true
-        }]
+        subPropertys: []
       })
     },
     // 减少属性名

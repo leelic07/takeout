@@ -106,7 +106,7 @@
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="orderRecordsList.length" :page="pagination.page" :rows="pagination.rows"></pagination>
+    <pagination :total="orderRecordsTotal" :page="pagination.page" :rows="pagination.rows"></pagination>
   </el-row>
 </template>
 
@@ -118,35 +118,6 @@
     data() {
       return {
         form: {},
-        tableData: [{
-          date: '3俩卤粉',
-          name: 8,
-          address: 'x1',
-          total: 8
-        }, {
-          date: '2俩卤粉加牛肉',
-          name: 12,
-          address: 'x3',
-          total: 36
-        }, {
-          date: '煎饺',
-          name: 8,
-          address: 'x2',
-          total: 16
-        }, {
-          date: '凉拌皮蛋',
-          name: 3,
-          address: 'x4',
-          total: 12
-        }],
-        boxData: [{
-          price: 1,
-          amount: 'x10',
-          total: 10
-        }],
-        deliveryData: [{
-          amount: 6
-        }],
         pagination: {
           page: 1,
           rows: 10,
@@ -157,7 +128,8 @@
     },
     computed: {
       ...mapGetters([
-        'orderRecordsList'
+        'orderRecordsList',
+        'orderRecordsTotal'
       ])
     },
     components: {

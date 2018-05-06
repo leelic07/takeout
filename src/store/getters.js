@@ -41,6 +41,7 @@ const getters = {
   orderReservationList: state => state.order.orderReservationList,
   orderRetreatList: state => state.order.orderRetreatList,
   orderRecordsList: state => state.order.orderRecordsList,
+  orderRecordsTotal: state => state.order.orderRecordsTotal,
   orderReminderList: state => state.order.orderReminderList,
   // 活动管理
   activityList: state => state.activity.activityList,
@@ -76,7 +77,8 @@ const getters = {
   salesTotal: state => state.data.salesTotal,
   // 财务管理
   financeList: state => state.finance.financeList,
-  financeTotal: state => state.finance.financeTotal
+  financeTotal: state => state.finance.financeTotal,
+  filepath: state => state.finance.filepath
 }
 
 export default getters

@@ -7,7 +7,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">订单统计</div>
-          <count-to class="card-panel-num" :startVal="0" :endVal="102400" :duration="2600"></count-to>
+          <count-to class="card-panel-num" :startVal="0" :endVal="orderRecordsTotal" :duration="2600"></count-to>
         </div>
       </div>
     </el-col>
@@ -38,12 +38,21 @@
 
 <script>
 import CountTo from 'vue-count-to'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   components: {
     CountTo
   },
+  computed: {
+    ...mapGetters([
+      'orderRecordsTotal'
+    ])
+  },
   methods: {
+    ...mapActions([
+      'getOrderRecordsList'
+    ]),
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
     }

@@ -146,7 +146,9 @@ import { mapActions, mapMutations, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      form: {},
+      form: {
+        satisfaction: '0'
+      },
       datetime: '',
       pagination: {
         page: 1,
