@@ -9,7 +9,7 @@
     </el-row>
     <!--商品分类列表-->
     <el-row class="goods-statics">
-      <el-table :data="categoryList" stripe border fit style="width: 100%" row-class-name="cell-center" header-cell-class-name="cell-center">
+      <el-table :data="salesList" stripe border fit style="width: 100%" row-class-name="cell-center" header-cell-class-name="cell-center">
         <el-table-column type="index" :index="1" label="排名"></el-table-column>
         <el-table-column prop="name" label="商品名称"></el-table-column>
         <el-table-column prop="categoryNumber" label="销量"></el-table-column>
@@ -18,12 +18,13 @@
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="categoryList.length" :page="pagination.page" :rows="pagination.rows"></pagination>
+    <pagination :total="salesTotal" :page="pagination.page" :rows="pagination.rows"></pagination>
   </el-row>
 </template>
 
 <script>
 import Pagination from '@/components/Pagination/index'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -119,7 +120,15 @@ export default {
   components: {
     Pagination
   },
+  computed: {
+    ...mapGetters([
+      'salesList'
+    ])
+  },
   methods: {
+    ...mapActions([
+      'getSalesList'
+    ]),
     // 点击详情执行的方法
     showMemberDetail(row) {
       this.dialogDetailVisible = true
@@ -151,6 +160,9 @@ export default {
         })
       }).catch(err => console.log(err))
     }
+  },
+  mounted() {
+    this.getSalesList(this.pagination)
   }
 }
 </script>

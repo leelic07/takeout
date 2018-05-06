@@ -69,8 +69,11 @@ const getters = {
   loading: state => state.loading.loading,
   // 经营管理
   accessList: state => state.data.accessList,
+  accessTotal: state => state.data.accessTotal,
   businessList: state => state.data.businessList,
-  businessTotal: state => state.data.businessTotal
+  businessTotal: state => state.data.businessTotal,
+  salesList: state => state.data.salesList,
+  salesTotal: state => state.data.salesTotal
 }
 
 export default getters
