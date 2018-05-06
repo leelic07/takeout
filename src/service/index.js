@@ -7,6 +7,7 @@ import upload from './modules/upload'
 import member from './modules/member'
 import customer from './modules/customer'
 import data from './modules/data'
+import finance from './modules/finance'
 
 export default {
   ...user,
@@ -17,5 +18,6 @@ export default {
   ...upload,
   ...member,
   ...customer,
-  ...data
+  ...data,
+  ...finance
 }

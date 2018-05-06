@@ -48,9 +48,9 @@
                             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片，最多只能上传五张图片</div>
                         </el-upload>
                     </el-form-item>
-                    <el-form-item label="商品售卖店铺" label-width="120px" prop="checkList">
+                    <el-form-item label="商品售卖店铺" label-width="120px" prop="merchants">
                         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                        <el-checkbox-group v-model="goodsForEdit.merchants" @change="handleCheckMerchantChange">
+                        <el-checkbox-group v-model="goodsForEdit.itemMerchants" @change="handleCheckMerchantChange">
                             <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
                         </el-checkbox-group>
                     </el-form-item>
@@ -64,7 +64,7 @@
             </el-card>
             <!--添加商品属性弹出框-->
             <el-dialog class="property-dialog" title="商品属性" :visible.sync="dialogFormVisible">
-                <el-row v-for="(pro,index) in goodsForEdit.propertys" :key="index">
+                <el-row v-for="(pro,index) in goodsForEdit.itemPropertys" :key="index">
                     <el-col :span="2">
                         <label for="">属性名</label>
                     </el-col>
@@ -74,16 +74,16 @@
                         </el-select>
                     </el-col>
                     <el-col :span="3" :offset="2">
-                        <div class="property-button decede-properties" @click="decedePropertyForm(index)" v-if="goodsForEdit.propertys.length > 1">-</div>
-                        <div class="property-button add-properties" @click="addPropertyForm" v-if="goodsForEdit.propertys.length === index + 1">+</div>
+                        <div class="property-button decede-properties" @click="decedePropertyForm(index)" v-if="goodsForEdit.itemPropertys.length > 1">-</div>
+                        <div class="property-button add-properties" @click="addPropertyForm" v-if="goodsForEdit.itemPropertys.length === index + 1">+</div>
                     </el-col>
-                    <el-col v-for="(ps,ind) in pro.properties" :key="ind" label="">
+                    <el-col v-for="(ps,ind) in pro.subPropertys" :key="ind" label="">
                         <el-col :span="3">
                             <label for="">属性值：</label>
                         </el-col>
                         <el-col :span="4">
-                            <!-- <el-input v-model="ps.value" auto-complete="off" placeholder="请填写属性值"></el-input> -->
-                            <span>{{ps.value}}</span>
+                            <!-- <el-input v-model="ps.name" auto-complete="off" placeholder="请填写属性值"></el-input> -->
+                            <span>{{ps.name}}</span>
                         </el-col>
                         <el-col :span="2" :offset="1">
                             <label for="">价格</label>
@@ -95,8 +95,8 @@
                             <el-checkbox v-model="ps.isOpen">启用</el-checkbox>
                         </el-col>
                         <el-col :span="3" :offset="1">
-                            <div class="property-button decede-properties" @click="decedeProperties(index,ind)" v-if="goodsForEdit.propertys[index].properties.length > 1">-</div>
-                            <div class="property-button add-properties" @click="addProperties(index)" v-if="goodsForEdit.propertys[index].properties.length === ind + 1">+</div>
+                            <div class="property-button decede-properties" @click="decedeProperties(index,ind)" v-if="goodsForEdit.itemPropertys[index].subPropertys.length > 1">-</div>
+                            <!-- <div class="property-button add-properties" @click="addProperties(index)" v-if="goodsForEdit.itemPropertys[index].subPropertys.length === ind + 1">+</div> -->
                         </el-col>
                     </el-col>
                 </el-row>
@@ -129,7 +129,7 @@ export default {
         itemType: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
         label: [{ required: true, message: '标签不能为空', trigger: 'blur' }],
         isPuton: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
-        checkList: [{ required: true, message: '商品店铺不能为空', trigger: 'blur' }],
+        merchants: [{ required: true, message: '商品店铺不能为空', trigger: 'blur' }],
         packingCharge: [{ required: true, message: '打包费不能为空', trigger: 'blur' }]
       },
       shopPropertyList: [{
@@ -148,7 +148,10 @@ export default {
   },
   watch: {
     goodsForEdit(newValue) {
-      this.fileList = newValue.pictures
+      newValue.pictures.forEach(picture => {
+        this.fileList.push(picture)
+        this.fileListTemp.push(picture)
+      })
     }
   },
   computed: {
@@ -179,11 +182,11 @@ export default {
     },
     handleSuccess(res, file, fileList) {
       this.fileListTemp.push(file)
-      this.goodsForEdit.pictures.push(res.path)
+      this.goodsForEdit.pictures.push(this.$_baseURL + res.path)
     },
     // 添加属性名
     addPropertyForm() {
-      this.goodsForEdit.propertys.push({
+      this.goodsForEdit.itemPropertys.push({
         name: '',
         properties: [{
           value: 'xxx',
@@ -194,19 +197,19 @@ export default {
     },
     // 减少属性名
     decedePropertyForm(index) {
-      this.goodsForEdit.propertys.length > 1 && this.goodsForEdit.propertys.splice(index, 1)
+      this.goodsForEdit.itemPropertys.length > 1 && this.goodsForEdit.itemPropertys.splice(index, 1)
     },
     // 添加属性值
     addProperties(index) {
-      this.goodsForEdit.propertys[index].properties.push({
-        value: 'xxx',
+      this.goodsForEdit.itemPropertys[index].subPropertys.push({
+        name: '',
         price: '',
         isOpen: true
       })
     },
     // 减少属性值
     decedeProperties(index, i) {
-      this.goodsForEdit.propertys[index].properties.length > 1 && this.goodsForEdit.propertys[index].properties.splice(i, 1)
+      this.goodsForEdit.itemPropertys[index].subPropertys.length > 1 && this.goodsForEdit.itemPropertys[index].subPropertys.splice(i, 1)
     },
     // 确定保存商品
     updateGoodsConfirm() {
@@ -218,8 +221,8 @@ export default {
     // 点击全选时执行的方法
     handleCheckAllChange(val) {
       val ? this.merchantList.forEach(merchant => {
-        this.goodsForEdit.merchants.push(merchant.id)
-      }) : this.goodsForEdit.merchants.splice(0)
+        this.goodsForEdit.itemMerchants.push(merchant.id)
+      }) : this.goodsForEdit.itemMerchants.splice(0)
       this.isIndeterminate = false
     },
     // 选择商铺时执行的方法

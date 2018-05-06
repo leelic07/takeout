@@ -1,6 +1,5 @@
 import http from '@/service'
 import router from '@/router'
-import config from '@/service/config/base'
 
 export default {
   state: {
@@ -40,7 +39,7 @@ export default {
       const merchants = []
       const pictures = []
       const propertys = []
-      goods.merchants.forEach(merchant => {
+      goods.itemMerchants.forEach(merchant => {
         merchants.push({
           merchantId: merchant,
           isPuton: goods.isPuton
@@ -51,7 +50,7 @@ export default {
           url: picture
         })
       })
-      goods.propertys.forEach(property => {
+      goods.itemPropertys.forEach(property => {
         property.subPropertys.forEach(sub => {
           sub.propertyId = sub.id
           sub.isOpen = sub.isOpen ? 1 : 0
@@ -59,9 +58,9 @@ export default {
           propertys.push(sub)
         })
       })
-      goods.merchants = merchants
+      goods.itemMerchants = merchants
       goods.pictures = pictures
-      goods.propertys = propertys
+      goods.itemPropertys = propertys
       http.saveGoods(goods).then(res => res.code === 200 && commit('saveGoods', res)).catch(err => err)
     },
     getGoodsTypePage({ commit }, pagination) {
@@ -104,6 +103,37 @@ export default {
       http.updateStandard(standard).then(res => res.code === 200 && commit('updateStandard', res)).catch(err => console.log(err))
     },
     updateGoods({ commit }, goods) {
+      const merchants = []
+      const pictures = []
+      const propertys = []
+      goods.itemMerchants.forEach(merchant => {
+        merchants.push({
+          merchantId: merchant,
+          isPuton: goods.isPuton
+        })
+      })
+      goods.pictures.forEach(picture => {
+        if (picture.url) {
+          pictures.push({
+            url: picture.url
+          })
+        } else {
+          pictures.push({
+            url: picture
+          })
+        }
+      })
+      goods.itemPropertys.forEach(property => {
+        property.subPropertys.forEach(sub => {
+          sub.propertyId = sub.id
+          sub.isOpen = sub.isOpen ? 1 : 0
+          delete sub.id
+          propertys.push(sub)
+        })
+      })
+      goods.itemMerchants = merchants
+      goods.pictures = pictures
+      goods.itemPropertys = propertys
       http.updateGoods(goods).then(res => res.code === 200 && commit('updateGoods', res)).catch(err => console.log(err))
     },
     deleteProperty({ commit }, id) {
@@ -135,14 +165,19 @@ export default {
       const goodsForEdit = editGoodsResult.data.items
       const merchants = []
       goodsForEdit.pictures.forEach(picture => {
-        picture.url = `${config.baseURL}${picture.url}`
-        picture.name = picture.url.substring(picture.url.lastIndexOf('/') + 1)
+        picture.url && (picture.name = picture.url.substring(picture.url.lastIndexOf('/') + 1))
       })
       goodsForEdit.merchants.forEach(merchant => {
         merchants.push(merchant.id)
       })
-      goodsForEdit.merchants = merchants
-      state.goodsForEdit = editGoodsResult.data.items
+      goodsForEdit.propertys.forEach(prop => {
+        prop.subPropertys.forEach(sub => {
+          sub.isOpen = sub.isOpen === '1'
+        })
+      })
+      goodsForEdit.itemMerchants = merchants
+      goodsForEdit.itemPropertys = goodsForEdit.propertys
+      state.goodsForEdit = goodsForEdit
     },
     getGoodsTypeList(state, goodsTypeResult) {
       state.goodsTypeList = goodsTypeResult.data.itemTypes

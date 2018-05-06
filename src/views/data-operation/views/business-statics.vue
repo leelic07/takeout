@@ -4,27 +4,26 @@
     <el-row>
       <el-date-picker v-model="pagination.datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
       </el-date-picker>
-      <el-button type="primary" icon="el-icon-search">搜索</el-button>
+      <el-button type="primary" icon="el-icon-search" @click="getBusinessList(pagination)">搜索</el-button>
     </el-row>
     <!--会员信息列表-->
     <el-row class="order-statics">
       <el-table :data="businessList" stripe border fit style="width: 100%">
-        <el-table-column label="时间"></el-table-column>
+        <el-table-column prop="settlTime" label="时间"></el-table-column>
         <el-table-column prop="totalPrice" label="总营业额"></el-table-column>
-        <el-table-column prop="activityNumber" label="订单数"></el-table-column>
-        <el-table-column prop="name" label="成功订单"></el-table-column>
-        <el-table-column prop="createdAt" label="退款订单"></el-table-column>
-        <el-table-column prop="endedAt" label="退款总额">
-        </el-table-column>
-        <el-table-column prop="participant" label="餐盒费"></el-table-column>
-        <el-table-column prop="discountMoney" label="配送费"></el-table-column>
-        <el-table-column prop="discountTotal" label="优惠券使用总金额"></el-table-column>
-        <el-table-column prop="discountRemain" label="满立减总金额"></el-table-column>
-        <el-table-column prop="activityQuantity" label="预设"></el-table-column>
+        <el-table-column prop="allCount" label="订单数"></el-table-column>
+        <el-table-column prop="successCount" label="成功订单"></el-table-column>
+        <el-table-column prop="refundCount" label="退款订单"></el-table-column>
+        <el-table-column prop="refundTotalMoney" label="退款总额"></el-table-column>
+        <el-table-column prop="totalPackingCharge" label="餐盒费"></el-table-column>
+        <el-table-column prop="totalDeliverMoney" label="配送费"></el-table-column>
+        <el-table-column prop="totalCouponMoney" label="优惠券使用总金额"></el-table-column>
+        <el-table-column prop="totalActivityMoney" label="满立减总金额"></el-table-column>
+        <!-- <el-table-column prop="activityQuantity" label="预设"></el-table-column> -->
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="businessTotal" :page="pagination.page" :rows="pagination.rows"></pagination>
+    <pagination :total="businessTotal" :page="pagination.page" :rows="pagination.rows" @currentPage="currentPage"></pagination>
     <!--编辑会员信息对话框-->
     <el-dialog class="member-editor" title="编辑活动" :visible.sync="dialogFormVisible">
       <el-form :model="memberMessage" size="mini">
@@ -78,63 +77,12 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      orderList: [{
-        activityCategory: '满减送',
-        activityNumber: '1234547',
-        name: '新店开张',
-        createdAt: '2018-4-1 18:18',
-        endedAt: '2018-4-1 18:18',
-        participant: 222,
-        discountMoney: 3,
-        discountQuantity: 10000,
-        discountRemain: 333,
-        activityQuantity: 234,
-        activityMoney: 333,
-        discountTotal: 10000
-      }, {
-        activityCategory: '优惠券',
-        activityNumber: '1234547',
-        name: '新店开张',
-        createdAt: '2018-4-1 18:18',
-        endedAt: '2018-4-1 18:18',
-        participant: 222,
-        discountMoney: 3,
-        discountQuantity: 10000,
-        discountRemain: 333,
-        activityQuantity: 234,
-        activityMoney: 333,
-        discountTotal: 10000
-      }, {
-        activityCategory: '满减送',
-        activityNumber: '1234547',
-        name: '新店开张',
-        createdAt: '2018-4-1 18:18',
-        endedAt: '2018-4-1 18:18',
-        participant: 222,
-        discountMoney: 3,
-        discountQuantity: 10000,
-        discountRemain: 333,
-        activityQuantity: 234,
-        activityMoney: 333,
-        discountTotal: 10000
-      }], // 订单统计列表
       orderNumber: '', // 订单号
-      datetime: [], // 日期时间
       pagination: {// 分页信息
         page: 1,
         rows: 10,
         datetime: []
       },
-      options: [{
-        value: 1,
-        label: '钻石会员'
-      }, {
-        value: '2',
-        label: '黄金会员'
-      }, {
-        value: '3',
-        label: '白银会员'
-      }],
       value: '', // 选择会员等级
       dialogDetailVisible: false,
       dialogFormVisible: false,
@@ -197,6 +145,9 @@ export default {
           message: '下架成功!'
         })
       }).catch(err => console.log(err))
+    },
+    currentPage(page) {
+      this.getBusinessList(Object.assign(this.pagination, { page }))
     }
   },
   mounted() {

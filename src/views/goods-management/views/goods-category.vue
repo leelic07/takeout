@@ -30,9 +30,9 @@
     <!--编辑商品分类信息对话框-->
     <el-dialog class="member-editor" title="编辑商品分类" :visible.sync="dialogFormVisible">
       <el-form :model="goodsTypeForEdit" ref="goodsTypeForm" :rules="rule" size="mini">
-        <!-- <el-form-item label="分类编号" label-width="120px" prop="code">
-          <el-input v-model="goodsTypeForEdit.code" auto-complete="off" placeholder="请填写商品分类编号"></el-input>
-        </el-form-item> -->
+        <el-form-item label="分类编号" label-width="120px" prop="code">
+          <el-input v-model="goodsTypeForEdit.code" auto-complete="off" placeholder="请填写分类编号"></el-input>
+        </el-form-item>
         <el-form-item label="分类名称" label-width="120px" prop="name">
           <el-input v-model="goodsTypeForEdit.name" auto-complete="off" placeholder="请填写分类名称"></el-input>
         </el-form-item>
@@ -62,16 +62,6 @@ export default {
         rows: 10,
         name: ''
       },
-      options: [{
-        value: 1,
-        label: '钻石会员'
-      }, {
-        value: '2',
-        label: '黄金会员'
-      }, {
-        value: '3',
-        label: '白银会员'
-      }],
       value: '', // 选择会员等级
       dialogDetailVisible: false,
       dialogFormVisible: false,

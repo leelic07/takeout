@@ -3,9 +3,9 @@
     <el-col class="goods-upload-box" :span="14" :offset="5">
       <el-card>
         <el-form :model="goodsType" ref="goodsTypeForm" :rules="rule" size="large">
-          <!-- <el-form-item label="分类编号" label-width="120px" prop="categoryNumber">
-                        <el-input v-model="goodsType.categoryNumber" auto-complete="off" placeholder="请填写商品编号"></el-input>
-                    </el-form-item> -->
+          <el-form-item label="分类编号" label-width="120px" prop="code">
+            <el-input v-model="goodsType.code" auto-complete="off" placeholder="请填写分类编号"></el-input>
+          </el-form-item>
           <el-form-item label="分类名称" label-width="120px" prop="name">
             <el-input v-model="goodsType.name" auto-complete="off" placeholder="请填写分类名称"></el-input>
           </el-form-item>
@@ -27,7 +27,7 @@ export default {
       goodsType: {},
       fileList2: [],
       rule: {
-        categoryNumber: [{ required: true, message: '分类编号不能为空', trigger: 'blur' }],
+        code: [{ required: true, message: '分类编号不能为空', trigger: 'blur' }],
         name: [{ required: true, message: '分类名称不能为空', trigger: 'blur' }]
       }
     }

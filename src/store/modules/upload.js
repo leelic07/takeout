@@ -1,4 +1,5 @@
 import http from '@/service'
+import config from '@/service/config/base'
 
 export default {
   state: {
@@ -13,7 +14,7 @@ export default {
   },
   mutations: {
     uploadFile(state, uploadFileResult) {
-      state.uploadFileUrl = uploadFileResult.path
+      state.uploadFileUrl = `${config.baseURL}${uploadFileResult.path}`
     }
   }
 }

@@ -73,7 +73,10 @@ const getters = {
   businessList: state => state.data.businessList,
   businessTotal: state => state.data.businessTotal,
   salesList: state => state.data.salesList,
-  salesTotal: state => state.data.salesTotal
+  salesTotal: state => state.data.salesTotal,
+  // 财务管理
+  financeList: state => state.finance.financeList,
+  financeTotal: state => state.finance.financeTotal
 }
 
 export default getters

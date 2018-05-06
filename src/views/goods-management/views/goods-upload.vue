@@ -50,7 +50,7 @@
           </el-form-item>
           <el-form-item label="商品售卖店铺" label-width="120px" prop="propertys">
             <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-            <el-checkbox-group v-model="goods.merchants" @change="handleCheckMerchantChange">
+            <el-checkbox-group v-model="goods.itemMerchants" @change="handleCheckMerchantChange">
               <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
@@ -64,7 +64,7 @@
       </el-card>
       <!--添加商品属性弹出框-->
       <el-dialog class="property-dialog" title="商品属性" :visible.sync="dialogFormVisible">
-        <el-row v-for="(pro,index) in goods.propertys" :key="index">
+        <el-row v-for="(pro,index) in goods.itemPropertys" :key="index">
           <el-col :span="2">
             <label for="">属性名</label>
           </el-col>
@@ -74,8 +74,8 @@
             </el-select>
           </el-col>
           <el-col :span="3" :offset="2">
-            <div class="property-button decede-properties" @click="decedePropertyForm(index)" v-if="goods.propertys.length > 1">-</div>
-            <div class="property-button add-properties" @click="addPropertyForm" v-if="goods.propertys.length === index + 1">+</div>
+            <div class="property-button decede-properties" @click="decedePropertyForm(index)" v-if="goods.itemPropertys.length > 1">-</div>
+            <div class="property-button add-properties" @click="addPropertyForm" v-if="goods.itemPropertys.length === index + 1">+</div>
           </el-col>
           <el-col v-for="(ps,ind) in pro.subPropertys" :key="ind" label="">
             <el-col :span="3">
@@ -95,8 +95,8 @@
               <el-checkbox v-model="ps.isOpen">启用</el-checkbox>
             </el-col>
             <!-- <el-col :span="3" :offset="1">
-              <div class="property-button decede-properties" @click="decedeProperties(index,ind)" v-if="goods.propertys[index].subPropertys.length > 1">-</div>
-              <div class="property-button add-properties" @click="addProperties(index)" v-if="goods.propertys[index].subPropertys.length === ind + 1">+</div>
+              <div class="property-button decede-properties" @click="decedeProperties(index,ind)" v-if="goods.itemPropertys[index].subPropertys.length > 1">-</div>
+              <div class="property-button add-properties" @click="addProperties(index)" v-if="goods.itemPropertys[index].subPropertys.length === ind + 1">+</div>
             </el-col> -->
           </el-col>
         </el-row>
@@ -117,8 +117,8 @@ export default {
     return {
       goods: {
         pictures: [],
-        merchants: [],
-        propertys: [{
+        itemMerchants: [],
+        itemPropertys: [{
           id: '',
           subPropertys: []
         }]
@@ -145,7 +145,7 @@ export default {
     }
   },
   watch: {
-    // 'goods.propertys': {
+    // 'goods.itemPropertys': {
     //   handler: function(newValue) {
 
     //   },
@@ -179,22 +179,22 @@ export default {
     },
     handleSuccess(res, file, fileList) {
       this.fileListTemp.push(file)
-      this.goods.pictures.push(res.path)
+      this.goods.pictures.push(this.$_baseURL + res.path)
     },
     // 添加属性名
     addPropertyForm() {
-      this.goods.propertys.push({
+      this.goods.itemPropertys.push({
         id: '',
         subPropertys: []
       })
     },
     // 减少属性名
     decedePropertyForm(index) {
-      this.goods.propertys.length > 1 && this.goods.propertys.splice(index, 1)
+      this.goods.itemPropertys.length > 1 && this.goods.itemPropertys.splice(index, 1)
     },
     // 添加属性值
     addProperties(index) {
-      this.goods.propertys[index].subPropertys.push({
+      this.goods.itemPropertys[index].subPropertys.push({
         value: '',
         price: '',
         isOpen: true
@@ -202,7 +202,7 @@ export default {
     },
     // 减少属性值
     decedeProperties(index, i) {
-      this.goods.propertys[index].subPropertys.length > 1 && this.goods.propertys[index].subPropertys.splice(i, 1)
+      this.goods.itemPropertys[index].subPropertys.length > 1 && this.goods.itemPropertys[index].subPropertys.splice(i, 1)
     },
     // 选择商品属性名
     propertyChange(property) {
@@ -217,7 +217,7 @@ export default {
     },
     resetPropertys() {
       this.dialogFormVisible = false
-      this.goods.propertys = [{
+      this.goods.itemPropertys = [{
         id: '',
         subPropertys: []
       }]
@@ -225,8 +225,8 @@ export default {
     // 点击全选时执行的方法
     handleCheckAllChange(val) {
       val ? this.merchantList.forEach(merchant => {
-        this.goods.merchants.push(merchant.id)
-      }) : this.goods.merchants.splice(0)
+        this.goods.itemMerchants.push(merchant.id)
+      }) : this.goods.itemMerchants.splice(0)
       this.isIndeterminate = false
     },
     // 选择商铺时执行的方法
