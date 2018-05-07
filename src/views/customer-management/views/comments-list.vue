@@ -70,9 +70,9 @@
                                             <el-rate v-model="props.row.distributionScore" disabled show-score text-color="#ff9900" score-template="{value}">
                                             </el-rate>
                                             <el-col :span="14">
-                                                <el-button type="text">回复</el-button>
-                                                <el-button type="text">发券</el-button>
-                                                <el-button type="text">举报</el-button>
+                                                <el-button type="text" v-if="type !== '1'">回复</el-button>
+                                                <el-button type="text" @click="sendCoupon(props.row)">发券</el-button>
+                                                <!-- <el-button type="text">举报</el-button> -->
                                             </el-col>
                                         </el-col>
                                         <span class="order-detail">订单详情</span>
@@ -125,7 +125,6 @@
                                             </el-form>
                                         </el-form-item>
                                         <el-form-item>
-                                            <el-button type="danger" plain size="mini" @click="cancelOrder">取消订单并退款</el-button>
                                             <el-button type="primary" plain size="mini" @click="printOrder">打印订单</el-button>
                                         </el-form-item>
                                     </el-form>
@@ -136,6 +135,21 @@
                 </el-card>
             </el-col>
         </el-row>
+        <!--会员送券对话框-->
+        <el-dialog class="member-editor" title="会员送券" :visible.sync="dialogFormVisible">
+            <el-form :model="userForEdit" size="mini">
+                <el-form-item label="选择优惠券" label-width="120px">
+                    <el-select v-model="userForEdit.orderStatus" placeholder="请选择会优惠券">
+                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
+                <el-button size="mini" type="primary" @click="sendCouponConfirm">确 定</el-button>
+            </div>
+        </el-dialog>
         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading" style="height:30px;"></div>
     </el-row>
 </template>
@@ -155,7 +169,19 @@ export default {
         rows: 10
       },
       busy: true,
-      feedbacks: []
+      feedbacks: [],
+      userForEdit: {},
+      options: [{
+        value: 1,
+        label: '满200送50'
+      }, {
+        value: '2',
+        label: '全场88折'
+      }, {
+        value: '3',
+        label: '第一件商品半价'
+      }],
+      dialogFormVisible: false
     }
   },
   watch: {
@@ -172,7 +198,10 @@ export default {
       'feedbacksList',
       'feedbacksTotal',
       'loading'
-    ])
+    ]),
+    type() {
+      return sessionStorage.getItem('type')
+    }
   },
   methods: {
     ...mapActions({
@@ -215,6 +244,17 @@ export default {
         this.pagination.page++
         this.getFeedbacksPage({ ...this.pagination, merchantId: sessionStorage.getItem('merchantId') })
       }, 1000)
+    },
+    sendCoupon(row) {
+      this.userForEdit = row
+      this.dialogFormVisible = true
+    },
+    sendCouponConfirm() {
+      this.dialogFormVisible = false
+      this.$message({
+        type: 'success',
+        message: '送券成功'
+      })
     }
   },
   mounted() {

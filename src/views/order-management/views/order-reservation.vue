@@ -15,7 +15,7 @@
     </el-card>
     <!--接单信息-->
     <el-row class="order-box" :gutter="20">
-      <el-col :span="14">
+      <el-col>
         <el-card class="box-card">
           <div slot="header" class="card-header clearfix" v-if="true">
             <el-col :span="20">
@@ -124,8 +124,7 @@
         </el-card>
       </el-col>
       <!--商家关注信息-->
-      <el-col :span="10" class="order-summary">
-        <!--今日订单概况-->
+      <!-- <el-col :span="10" class="order-summary">
         <el-card>
           <div slot="header" class="clearfix">
             <span>今日订单概况</span>
@@ -198,7 +197,7 @@
             </el-col>
           </el-row>
         </el-card>
-      </el-col>
+      </el-col> -->
     </el-row>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading" style="height:30px;"></div>
   </el-row>

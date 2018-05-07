@@ -169,7 +169,7 @@ export default {
           break
         case 'incomeList':
           this.$router.push({
-            path: '/income/chart'
+            path: '/data/business'
           })
           break
         case 'menuList':

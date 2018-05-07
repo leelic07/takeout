@@ -51,7 +51,7 @@
                 <el-table-column label="操作" width="140">
                     <template slot-scope="props">
                         <el-button type="success" size="mini" @click="showMemberEdit(props.row.id)">查看</el-button>
-                        <el-button type="primary" size="mini" @click="editMember(props.row)">送券</el-button>
+                        <el-button type="primary" size="mini" @click="sendCoupon(props.row)">送券</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -94,7 +94,7 @@
                 </el-col>
             </el-row>
         </el-dialog>
-        <!--编辑会员信息对话框-->
+        <!--会员送券对话框-->
         <el-dialog class="member-editor" title="会员送券" :visible.sync="dialogFormVisible">
             <el-form :model="userForEdit" size="mini">
                 <!-- <el-form-item label="姓名" label-width="120px">
@@ -158,7 +158,6 @@ export default {
         value: '3',
         label: '第一件商品半价'
       }],
-      value: '', // 选择会员等级
       dialogDetailVisible: false,
       dialogFormVisible: false,
       form: {
@@ -195,7 +194,7 @@ export default {
       this.editUser(id)
     },
     // 点击编辑执行的方法
-    editMember(row) {
+    sendCoupon(row) {
       this.dialogFormVisible = true
       this.userForEdit = row
     },
