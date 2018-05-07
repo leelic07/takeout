@@ -178,6 +178,8 @@ export default {
       })
       goodsForEdit.itemMerchants = merchants
       goodsForEdit.itemPropertys = goodsForEdit.propertys
+      goodsForEdit.price = goodsForEdit.price ? goodsForEdit.price.toString() : ''
+      goodsForEdit.packingCharge = goodsForEdit.packingCharge ? goodsForEdit.packingCharge.toString() : ''
       state.goodsForEdit = goodsForEdit
     },
     getGoodsTypeList(state, goodsTypeResult) {

@@ -158,7 +158,8 @@ export default {
     ...mapActions({
       getMerchantsList: 'getMerchantsList',
       getShopForEdit: 'getShopForEdit',
-      getMerchantsHomePage: 'getMerchantsHomePage'
+      getMerchantsHomePage: 'getMerchantsHomePage',
+      getOrderRecordsList: 'getOrderRecordsList'
     }),
     handleSetLineChartData(type) {
       switch (type) {
@@ -169,7 +170,7 @@ export default {
           break
         case 'incomeList':
           this.$router.push({
-            path: '/data/business'
+            path: '/income/chart'
           })
           break
         case 'menuList':

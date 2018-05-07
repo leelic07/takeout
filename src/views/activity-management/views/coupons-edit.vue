@@ -19,7 +19,9 @@
                         <el-input v-model="couponForEdit.name" placeholder="请输入活动名称"></el-input>
                     </el-form-item>
                     <el-form-item label="优惠券金额" label-width="100px" prop="couponMoney">
-                        <el-input v-model="couponForEdit.couponMoney" placeholder="请输入活动名称"></el-input>
+                        <el-input v-model="couponForEdit.couponMoney" placeholder="请输入优惠券金额">
+                            <template slot="append">元</template>
+                        </el-input>
                     </el-form-item>
                     <el-form-item label="活动开始时间" label-width="110px" prop="startDate">
                         <el-date-picker v-model="couponForEdit.startDate" type="date" placeholder="选择开始日期">
@@ -40,10 +42,14 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="满多少送券" label-width="100px" v-if="isEnoughSend">
-                        <el-input v-model="couponForEdit.enoughSend" placeholder="请输入满的金额(单位:元)"></el-input>
+                        <el-input v-model="couponForEdit.enoughSend" placeholder="请输入满的金额">
+                            <template slot="append">元</template>
+                        </el-input>
                     </el-form-item>
                     <el-form-item label="最低消费金额" label-width="110px" prop="spendMoney">
-                        <el-input v-model="couponForEdit.spendMoney" placeholder="请输入满的金额(单位:元)"></el-input>
+                        <el-input v-model="couponForEdit.spendMoney" placeholder="请输入满的金额">
+                            <template slot="append">元</template>
+                        </el-input>
                     </el-form-item>
                     <el-form-item label="描述">
                         <el-input type="textarea" v-model="couponForEdit.description" placeholder="请输入描述"></el-input>

@@ -21,16 +21,16 @@
             <el-button type="text" @click="showMemberDetail(props.row)">{{props.row.name}}</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="code" label="店铺编号"/>
-        <el-table-column prop="typeName" label="店铺类型"/>
-        <el-table-column prop="tel" label="联系电话"/>
-        <el-table-column prop="address" label="地址"/>
-        <el-table-column prop="monthPrice" label="本月营业额"/>
-        <el-table-column prop="monthOrder" label="本月订单数"/>
-        <el-table-column prop="itemCount" label="商品数量"/>
-        <el-table-column prop="itemTypeCount" label="分类数量"/>
-        <el-table-column prop="activityQuantity" label="评分"/>
-        <el-table-column prop="activityCount" label="活动"/>
+        <el-table-column prop="code" label="店铺编号"></el-table-column>
+        <el-table-column prop="typeName" label="店铺类型"></el-table-column>
+        <el-table-column prop="tel" label="联系电话"></el-table-column>
+        <el-table-column prop="address" label="地址"></el-table-column>
+        <el-table-column prop="monthPrice" label="本月营业额"></el-table-column>
+        <el-table-column prop="monthOrder" label="本月订单数"></el-table-column>
+        <el-table-column prop="itemCount" label="商品数量"></el-table-column>
+        <el-table-column prop="itemTypeCount" label="分类数量"></el-table-column>
+        <el-table-column prop="activityQuantity" label="评分"></el-table-column>
+        <el-table-column prop="activityCount" label="活动"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="props">
             <el-button type="primary" size="mini" @click="showShopEdit(props.row.id)">编辑</el-button>

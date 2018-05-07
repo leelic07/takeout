@@ -7,7 +7,7 @@
       </el-col>
       <el-col :span="4" class="member-select">
         <el-select v-model="pagination.merchantId" placeholder="请选择店铺" v-if="type === '1'">
-          <!-- <el-option :value="merchantid" label="全部店铺"></el-option> -->
+          <el-option value="" label="全部店铺"></el-option>
           <el-option v-for="(merchant,index) in merchantList" :value="merchant.id" :label="merchant.name" :key="index"></el-option>
         </el-select>
       </el-col>
@@ -53,7 +53,7 @@
       <el-form ref="shopForm">
         <el-form-item label="选择下架商铺：">
           <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-          <el-checkbox-group v-model="merchantListByItemId" @change="handleCheckMerchantChange">
+          <el-checkbox-group v-model="merchantIds" @change="handleCheckMerchantChange">
             <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
@@ -62,7 +62,7 @@
         <el-button size="mini" @click="dialogWithdrawVisible = false">取 消</el-button>
         <el-button size="mini" type="primary" @click="withdrawGoodsConfirmForSuper({
           itemId,
-          merchantId: merchantListByItemId,
+          merchantId: merchantIds.join(','),
           isPuton: 0
         })">确 定</el-button>
       </div>
@@ -72,7 +72,7 @@
       <el-form ref="shopForm">
         <el-form-item label="选择下架商铺：">
           <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-          <el-checkbox-group v-model="merchantListByItemId" @change="handleCheckMerchantChange">
+          <el-checkbox-group v-model="merchantIds" @change="handleCheckMerchantChange">
             <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
@@ -81,7 +81,7 @@
         <el-button size="mini" @click="dialogGroundVisible = false">取 消</el-button>
         <el-button size="mini" type="primary" @click="groundGoodsConfirmForSuper({
           itemId,
-          merchantId: merchantListByItemId,
+          merchantId: merchantIds.join(','),
           isPuton: 1
         })">确 定</el-button>
       </div>
@@ -123,7 +123,7 @@ export default {
       },
       fileList: [], // 图片上传的数组
       imageUrl: '', // 上传头像的图片路径
-      merchantId: [], // 选中的商铺id的集合
+      merchantIds: [], // 选中的商铺id的集合
       itemId: '', // 需要下架或者上架的商品id
       checkAll: false,
       isIndeterminate: true,
@@ -142,6 +142,9 @@ export default {
     groundGoodsResult() {
       this.dialogGroundVisible = false
       this.getGoodsList(this.pagination)
+    },
+    merchantListByItemId(newValue) {
+      this.merchantIds = newValue.slice(0)
     }
   },
   computed: {
@@ -156,6 +159,14 @@ export default {
     type() {
       return sessionStorage.getItem('type')
     }
+    // pagination() {
+    // return {
+    //   page: 1,
+    //   rows: 10,
+    //   name: '',
+    //   merchantId: sessionStorage['merchantId'] === 'null' ? '' : sessionStorage['merchantId']
+    // }
+    // }
   },
   components: {
     Pagination
@@ -226,8 +237,8 @@ export default {
     // 点击全选执行的方法
     handleCheckAllChange(val) {
       val ? this.merchantList.formEach(merchant => {
-        this.merchantId.push(merchant.id)
-      }) : this.merchantId.splice(0)
+        this.merchantIds.push(merchant.id)
+      }) : this.merchantIds.splice(0)
       this.isIndeterminate = false
     },
     // 选择商铺时执行的方法
@@ -242,7 +253,7 @@ export default {
   mounted() {
     this.getGoodsList(this.pagination)
     this.getMerchantsList()
-    this.pagination.merchantId = Number(sessionStorage.getItem('merchantId'))
+    this.pagination.merchantId = sessionStorage['merchantId'] === 'null' ? '' : sessionStorage['merchantId']
   }
 }
 </script>

@@ -13,7 +13,9 @@
                         <el-input v-model="goodsForEdit.unit" auto-complete="off" placeholder="请填写商品单位(如:盒)"></el-input>
                     </el-form-item>
                     <el-form-item label="价格" label-width="120px" prop="price">
-                        <el-input v-model="goodsForEdit.price" auto-complete="off" placeholder="请填写价格"></el-input>
+                        <el-input v-model="goodsForEdit.price" auto-complete="off" placeholder="请填写价格">
+                            <template slot="append">元</template>
+                        </el-input>
                     </el-form-item>
                     <el-form-item label="商品分类" label-width="120px" prop="itemType">
                         <el-select v-model="goodsForEdit.itemType" placeholder="请选择商品分类">
@@ -25,7 +27,9 @@
                         <el-input v-model="goodsForEdit.label" auto-complete="off" placeholder="请填写商品标签"></el-input>
                     </el-form-item>
                     <el-form-item label="打包费" label-width="120px" prop="packingCharge">
-                        <el-input v-model="goodsForEdit.packingCharge" auto-complete="off" placeholder="请填写打包费"></el-input>
+                        <el-input v-model="goodsForEdit.packingCharge" auto-complete="off" placeholder="请填写打包费">
+                            <template slot="append">元</template>
+                        </el-input>
                     </el-form-item>
                     <el-form-item label="库存状态" label-width="120px" prop="stockStatus">
                         <el-radio-group v-model="goodsForEdit.stockStatus">
@@ -83,13 +87,15 @@
                         </el-col>
                         <el-col :span="4">
                             <!-- <el-input v-model="ps.name" auto-complete="off" placeholder="请填写属性值"></el-input> -->
-                            <span>{{ps.name}}</span>
+                            <el-tag>{{ps.name}}</el-tag>
                         </el-col>
                         <el-col :span="2" :offset="1">
                             <label for="">价格</label>
                         </el-col>
                         <el-col :span="6">
-                            <el-input v-model="ps.price" auto-complete="off" placeholder="请填写价格"></el-input>
+                            <el-input v-model="ps.price" auto-complete="off" placeholder="请填写价格">
+                                <template slot="append">元</template>
+                            </el-input>
                         </el-col>
                         <el-col :span="2" :offset="2">
                             <el-checkbox v-model="ps.isOpen">启用</el-checkbox>
@@ -123,14 +129,20 @@ export default {
         code: [{ required: true, message: '商品编号不能为空', trigger: 'blur' }],
         name: [{ required: true, message: '商品名称不能为空', trigger: 'blur' }],
         unit: [{ required: true, message: '商品单位不能为空', trigger: 'blur' }],
-        price: [{ required: true, message: '商品价格不能为空', trigger: 'blur' }],
+        price: [
+          { required: true, message: '商品价格不能为空', trigger: 'blur' },
+          { pattern: '^\\d+(\\.\\d+)?$', message: '请输入有效数字', trigger: 'blur' }
+        ],
         stockStatus: [{ required: true, message: '库存状态不能为空', trigger: 'blur' }],
         stock: [{ required: true, message: '商品库存不能为空', trigger: 'blur' }],
         itemType: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
         label: [{ required: true, message: '标签不能为空', trigger: 'blur' }],
         isPuton: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
         merchants: [{ required: true, message: '商品店铺不能为空', trigger: 'blur' }],
-        packingCharge: [{ required: true, message: '打包费不能为空', trigger: 'blur' }]
+        packingCharge: [
+          { required: true, message: '打包费不能为空', trigger: 'blur' },
+          { pattern: '^\\d+(\\.\\d+)?$', message: '请输入有效数字', trigger: 'blur' }
+        ]
       },
       shopPropertyList: [{
         id: 1,

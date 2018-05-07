@@ -1,6 +1,5 @@
 import http from '@/service'
 import router from '@/router'
-import config from '@/service/config/base'
 
 export default {
   state: {
@@ -65,12 +64,14 @@ export default {
     getShopForEdit(state, shopForEditResult) {
       const shop = shopForEditResult.data.merchants
       shop.isOnline = shop.isOnline ? shop.isOnline.toString() : ''
+      shop.startingPrice = shop.startingPrice ? shop.startingPrice.toString() : ''
+      shop.fullFreeDistribution = shop.fullFreeDistribution ? shop.fullFreeDistribution.toString() : ''
+      shop.distributionFee = shop.distributionFee ? shop.distributionFee.toString() : ''
       shop.time = []
       shop.time.push(shop.startDate)
       shop.time.push(shop.endDate)
       shop.pictures.forEach(picture => {
-        picture.url = `${config.baseURL}${picture.url}`
-        picture.name = picture.url.substring(picture.url.lastIndexOf('/') + 1)
+        picture.url && (picture.name = picture.url.substring(picture.url.lastIndexOf('/') + 1))
       })
       state.shopForEdit = shop
     },

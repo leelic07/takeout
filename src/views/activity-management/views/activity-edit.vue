@@ -19,10 +19,14 @@
                         <el-input v-model="activityForEdit.name" placeholder="请输入活动名称"></el-input>
                     </el-form-item>
                     <el-form-item label="满" prop="fullMoney">
-                        <el-input v-model="activityForEdit.fullMoney" placeholder="请输入满的金额(单位:元)"></el-input>
+                        <el-input v-model="activityForEdit.fullMoney" placeholder="请输入满的金额">
+                          <template slot="append">元</template>
+                        </el-input>
                     </el-form-item>
                     <el-form-item label="减" prop="reduceMoney">
-                        <el-input v-model="activityForEdit.reduceMoney" placeholder="请输入减的金额(单位:元)"></el-input>
+                        <el-input v-model="activityForEdit.reduceMoney" placeholder="请输入减的金额">
+                          <template slot="append">元</template>
+                        </el-input>
                     </el-form-item>
                     <el-form-item label="活动开始时间" label-width="110px" prop="startDate">
                         <el-date-picker v-model="activityForEdit.startDate" type="date" placeholder="选择日期">

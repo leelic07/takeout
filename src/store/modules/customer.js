@@ -20,12 +20,12 @@ export default {
     },
     getFeedbacksPage(state, feedbacksPageResult) {
       const feedbacks = feedbacksPageResult.data.feedbacks
-      feedbacks.data.forEach(data => {
+      feedbacks.forEach(data => {
         data.goodsScore = Number(data.goodsScore)
         data.distributionScore = Number(data.distributionScore)
       })
-      state.feedbacksList = feedbacks.data
-      // state.feedbacksTotal = feedbacksPageResult.data.totalCount
+      state.feedbacksList = feedbacks
+      state.feedbacksTotal = feedbacksPageResult.data.totalCount
     }
   }
 }

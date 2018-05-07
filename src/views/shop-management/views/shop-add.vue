@@ -69,13 +69,19 @@
                         <el-tag>配送信息</el-tag>
                     </el-col>
                     <el-form-item label="起送价" label-width="120px" prop="startingPrice">
-                        <el-input v-model="shopInfo.startingPrice" auto-complete="off" placeholder="请填写起送价"></el-input>
+                        <el-input v-model="shopInfo.startingPrice" auto-complete="off" placeholder="请填写起送价">
+                            <template slot="append">元</template>
+                        </el-input>
                     </el-form-item>
                     <el-form-item label="满多少免配送费" label-width="120px" prop="fullFreeDistribution">
-                        <el-input v-model="shopInfo.fullFreeDistribution" auto-complete="off" placeholder="请填写满多少免配送费"></el-input>
+                        <el-input v-model="shopInfo.fullFreeDistribution" auto-complete="off" placeholder="请填写满多少免配送费">
+                            <template slot="append">元</template>
+                        </el-input>
                     </el-form-item>
                     <el-form-item label="配送费" label-width="120px" prop="distributionFee">
-                        <el-input v-model="shopInfo.distributionFee" auto-complete="off" placeholder="请填写配送费"></el-input>
+                        <el-input v-model="shopInfo.distributionFee" auto-complete="off" placeholder="请填写配送费">
+                            <template slot="append">元</template>
+                        </el-input>
                     </el-form-item>
                     <el-form-item label="配送范围" label-width="120px">
                         <el-input v-model="shopInfo.distributionScope" auto-complete="off" placeholder="请填写配送范围"></el-input>
@@ -94,45 +100,6 @@
                     </el-form-item>
                 </el-form>
             </el-card>
-            <!--添加商品属性弹出框-->
-            <el-dialog class="property-dialog" title="收货地址" :visible.sync="dialogFormVisible">
-                <el-row v-for="(pro,index) in propertyForm" :key="index">
-                    <el-col>
-                        <el-col :span="2">
-                            <label for="">属性名</label>
-                        </el-col>
-                        <el-col :span="8">
-                            <el-input v-model="pro.name" auto-complete="off" placeholder="请填写属性名"></el-input>
-                        </el-col>
-                        <el-col :span="2" :offset="2">
-                            <div class="property-button add-properties" @click="addPropertyForm">+</div>
-                            <div class="property-button decede-properties" @click="decedePropertyForm(index)" v-if="propertyForm.length > 1">-</div>
-                        </el-col>
-                    </el-col>
-                    <el-col v-for="(ps,ind) in pro.properties" :key="ind" label="">
-                        <el-col :span="2">
-                            <label for="">属性值</label>
-                        </el-col>
-                        <el-col :span="8">
-                            <el-input v-model="ps.value" auto-complete="off" placeholder="请填写属性值"></el-input>
-                        </el-col>
-                        <el-col :span="2" :offset="1">
-                            <label for="">价格</label>
-                        </el-col>
-                        <el-col :span="8">
-                            <el-input v-model="ps.price" auto-complete="off" placeholder="请填写价格"></el-input>
-                        </el-col>
-                        <el-col :span="2" :offset="1">
-                            <div class="property-button add-properties" @click="addProperties(index)">+</div>
-                            <div class="property-button decede-properties" @click="decedeProperties(index,ind)" v-if="propertyForm[index].properties.length > 1">-</div>
-                        </el-col>
-                    </el-col>
-                </el-row>
-                <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
-                    <el-button type="primary" @click="dialogFormVisible = false" size="small">确 定</el-button>
-                </div>
-            </el-dialog>
         </el-col>
     </el-row>
 </template>
@@ -169,9 +136,18 @@ export default {
         description: [{ required: true, message: '店铺介绍不能为空', trigger: 'blur' }],
         notice: [{ required: true, message: '店铺公告不能为空', trigger: 'blur' }],
         datetime: [{ required: true, message: '店铺营业时间不能为空', trigger: 'blur' }],
-        startingPrice: [{ required: true, message: '起送价不能为空', trigger: 'blur' }],
-        fullFreeDistribution: [{ required: true, message: '满多少免配送费不能为空', trigger: 'blur' }],
-        distributionFee: [{ required: true, message: '配送费不能为空', trigger: 'blur' }],
+        startingPrice: [
+          { required: true, message: '起送价不能为空', trigger: 'blur' },
+          { pattern: '^\\d+(\\.\\d+)?$', message: '请输入有效数字', trigger: 'blur' }
+        ],
+        fullFreeDistribution: [
+          { required: true, message: '满多少免配送费不能为空', trigger: 'blur' },
+          { pattern: '^\\d+(\\.\\d+)?$', message: '请输入有效数字', trigger: 'blur' }
+        ],
+        distributionFee: [
+          { required: true, message: '配送费不能为空', trigger: 'blur' },
+          { pattern: '^\\d+(\\.\\d+)?$', message: '请输入有效数字', trigger: 'blur' }
+        ],
         accountName: [{ required: true, message: '商户登录账户不能为空', trigger: 'blur' }],
         accountPassword: [{ required: true, message: '商户登录密码不能为空', trigger: 'blur' }],
         isOnline: [{ required: true, message: '店铺状态不能为空', trigger: 'blur' }],
@@ -199,9 +175,8 @@ export default {
     },
     // 上传图片成功执行的方法
     handleSuccess(res, file) {
-      console.log({ url: res.path })
       this.fileListTemp.push(file)
-      this.shopInfo.pictures.push({ url: res.path })
+      this.shopInfo.pictures.push({ url: this.$baseURL + res.path })
     },
     // 图片上传超过限制执行的方法
     handleExceed() {
@@ -209,31 +184,6 @@ export default {
         type: 'warning',
         message: '最多只能上传5张图片'
       })
-    },
-    // 添加属性名
-    addPropertyForm() {
-      this.propertyForm.push({
-        name: '',
-        properties: [{
-          value: '',
-          price: ''
-        }]
-      })
-    },
-    // 减少属性名
-    decedePropertyForm(index) {
-      this.propertyForm.length > 1 && this.propertyForm.splice(index, 1)
-    },
-    // 添加属性值
-    addProperties(index) {
-      this.propertyForm[index].properties.push({
-        value: '',
-        price: ''
-      })
-    },
-    // 减少属性值
-    decedeProperties(index, i) {
-      this.propertyForm[index].properties.length > 1 && this.propertyForm[index].properties.splice(i, 1)
     },
     // 保存新增商户信息
     saveShopConfirm() {
