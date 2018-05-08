@@ -88,9 +88,9 @@ export default {
     },
     updateShop(state, updateShopResult) {
       state.updateShopResult = updateShopResult
-      router.push({
-        path: '/shop/list'
-      })
+      // router.push({
+      //   path: '/shop/list'
+      // })
     },
     getMerchantsHomePage(state, merchantHomePageResult) {
       state.merchantHomePage = merchantHomePageResult.data.merchants

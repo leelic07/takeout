@@ -34,7 +34,7 @@ const user = {
       sessionStorage.setItem('type', users.type)
       sessionStorage.setItem('userId', users.id)
       sessionStorage.setItem('userName', users.name)
-      sessionStorage.setItem('merchantId', users.merchantId)
+      users.merchantId ? sessionStorage.setItem('merchantId', users.merchantId) : sessionStorage.setItem('merchantId', '')
       state.users = users
       router.push({
         path: '/seller/index'

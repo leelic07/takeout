@@ -150,9 +150,6 @@ export default {
     type() {
       return sessionStorage.getItem('type')
     }
-    // 'seller.merchantId'() {
-    //   return sessionStorage.getItem('merchantId')
-    // }
   },
   methods: {
     ...mapActions({
@@ -192,7 +189,8 @@ export default {
     }
   },
   mounted() {
-    this.getMerchantsHomePage(sessionStorage.getItem('merchantId'))
+    this.seller.merchantId = sessionStorage['merchantId']
+    this.getMerchantsHomePage(this.seller.merchantId)
   }
 }
 </script>

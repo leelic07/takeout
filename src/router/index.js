@@ -145,7 +145,7 @@ export const constantRouterMap = [
       path: 'records/:id',
       name: 'RecordsById',
       component: () => import('@/views/order-management/views/order-records'),
-      meta: { title: '会员历史订单', icon: 'example' },
+      meta: { title: '会员订单', icon: 'example' },
       hidden: true
     }]
   },
@@ -322,18 +322,20 @@ export const constantRouterMap = [
       path: 'list',
       name: 'ShopList',
       component: () => import('@/views/shop-management/views/shop-list'),
-      meta: { title: '店铺列表', icon: 'example' }
+      meta: { title: '店铺列表', icon: 'example' },
+      hidden: sessionStorage['type'] !== '1'
     }, {// 新增店铺
       path: 'add',
       name: 'ShopAdd',
       component: () => import('@/views/shop-management/views/shop-add'),
-      meta: { title: '新增店铺', icon: 'example' }
+      meta: { title: '新增店铺', icon: 'example' },
+      hidden: sessionStorage['type'] !== '1'
     }, {// 编辑店铺
       path: 'edit/:id',
       name: 'ShopEdit',
       component: () => import('@/views/shop-management/views/shop-edit'),
       meta: { title: '编辑店铺', icon: 'example' },
-      hidden: true
+      hidden: !sessionStorage['merchantId']
     }]
   },
 

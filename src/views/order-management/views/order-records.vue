@@ -10,7 +10,7 @@
       </el-col> -->
       <!-- <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
       </el-date-picker> -->
-      <el-button type="primary" icon="el-icon-search" @click="getOrderRecordsList(pagination)">搜索</el-button>
+      <el-button type="primary" icon="el-icon-search" @click="searchOrders">搜索</el-button>
     </el-row>
     <!--历史订单信息列表-->
     <el-row class="order-box">
@@ -137,7 +137,8 @@
     },
     methods: {
       ...mapActions({
-        getOrderRecordsList: 'getOrderRecordsList'
+        getOrderRecordsList: 'getOrderRecordsList',
+        getOrdersRecordsPage: 'getOrdersRecordsPage'
       }),
       // 点击打印订单执行的方法
       printOrder() {
@@ -151,11 +152,16 @@
             message: '打印成功'
           })
         }).catch(err => console.log(err))
+      },
+      searchOrders() {
+        if (this.pagination.userId) this.getOrdersRecordsPage(this.pagination)
+        else this.getOrderRecordsList(this.pagination)
       }
     },
     mounted() {
       this.pagination.userId = this.$route.params.id || ''
-      this.getOrderRecordsList(this.pagination)
+      if (this.pagination.userId) this.getOrdersRecordsPage(this.pagination)
+      else this.getOrderRecordsList(this.pagination)
     }
   }
 </script>

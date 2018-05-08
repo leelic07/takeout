@@ -7,5 +7,6 @@ export default {
   getOrderReservationList: pagination => service.get('/order_reserves/page', pagination).then(res => res).catch(err => err),
   getOrderRetreatList: pagination => service.get('/order_cancles/page', pagination).then(res => res).catch(err => err),
   getOrderRecordsList: pagination => service.get('/order_historys/page', pagination).then(res => res).catch(err => err),
+  getOrdersRecordsPage: pagination => service.get('/orders/page', pagination).then(res => res).catch(err => err),
   getOrderReminderByStatus: pagination => service.get('/orders/reminderPage', pagination).then(res => res).catch(err => err)
 }

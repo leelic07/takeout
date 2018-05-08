@@ -158,13 +158,24 @@ export default {
         this.fileList.push(picture)
         this.fileListTemp.push(picture)
       })
+    },
+    updateShopResult() {
+      if (!this.merchantId) {
+        this.$router.push({
+          path: '/shop/list'
+        })
+      }
     }
   },
   computed: {
     ...mapGetters([
       'shopTypeList',
-      'shopForEdit'
-    ])
+      'shopForEdit',
+      'updateShopResult'
+    ]),
+    merchantId() {
+      return sessionStorage['merchantId']
+    }
   },
   methods: {
     ...mapActions({
@@ -227,7 +238,8 @@ export default {
   },
   mounted() {
     this.getShopTypeList()
-    this.getShopForEdit(this.$route.params.id)
+    if (this.$route.params.id !== ':id') this.getShopForEdit(this.$route.params.id)
+    else this.getShopForEdit(this.merchantId)
   }
 }
 </script>

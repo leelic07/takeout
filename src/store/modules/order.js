@@ -39,6 +39,9 @@ export default {
     getOrderRecordsList({ commit }, pagination) {
       http.getOrderRecordsList(pagination).then(res => res.code === 200 && commit('getOrderRecordsList', res)).catch(err => console.log(err))
     },
+    getOrdersRecordsPage({ commit }, pagination) {
+      http.getOrdersRecordsPage(pagination).then(res => res.code === 200 && commit('getOrdersRecordsPage', res)).catch(err => console.log(err))
+    },
     getOrderReminderByStatus({ commit }, pagination) {
       const status = pagination.status
       delete pagination.status
@@ -73,6 +76,11 @@ export default {
       state.orderRetreatList = orders.filter(order => order.status === Number(status))
     },
     getOrderRecordsList(state, orderRecordsList) {
+      const data = orderRecordsList.data
+      state.orderRecordsList = data.orders
+      state.orderRecordsTotal = data.totalCount
+    },
+    getOrdersRecordsPage(state, orderRecordsList) {
       const data = orderRecordsList.data
       state.orderRecordsList = data.orders
       state.orderRecordsTotal = data.totalCount

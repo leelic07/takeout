@@ -159,14 +159,6 @@ export default {
     type() {
       return sessionStorage.getItem('type')
     }
-    // pagination() {
-    // return {
-    //   page: 1,
-    //   rows: 10,
-    //   name: '',
-    //   merchantId: sessionStorage['merchantId'] === 'null' ? '' : sessionStorage['merchantId']
-    // }
-    // }
   },
   components: {
     Pagination
