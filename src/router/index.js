@@ -6,6 +6,9 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
+const type = sessionStorage['type']
+const merchantId = sessionStorage['merchantId']
+
 /* Layout */
 import Layout from '../views/layout/Layout'
 /**
@@ -323,19 +326,19 @@ export const constantRouterMap = [
       name: 'ShopList',
       component: () => import('@/views/shop-management/views/shop-list'),
       meta: { title: '店铺列表', icon: 'example' },
-      hidden: sessionStorage['type'] !== '1'
+      hidden: type !== '1'
     }, {// 新增店铺
       path: 'add',
       name: 'ShopAdd',
       component: () => import('@/views/shop-management/views/shop-add'),
       meta: { title: '新增店铺', icon: 'example' },
-      hidden: sessionStorage['type'] !== '1'
+      hidden: type !== '1'
     }, {// 编辑店铺
       path: 'edit/:id',
       name: 'ShopEdit',
       component: () => import('@/views/shop-management/views/shop-edit'),
       meta: { title: '编辑店铺', icon: 'example' },
-      hidden: !sessionStorage['merchantId']
+      hidden: !merchantId
     }]
   },
 

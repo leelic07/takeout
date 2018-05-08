@@ -3,7 +3,7 @@ import router from '@/router'
 
 const user = {
   state: {
-    user: {},
+    users: {},
     resetResult: {},
     manager: {}
   },
@@ -36,9 +36,9 @@ const user = {
       sessionStorage.setItem('userName', users.name)
       users.merchantId ? sessionStorage.setItem('merchantId', users.merchantId) : sessionStorage.setItem('merchantId', '')
       state.users = users
-      router.push({
-        path: '/seller/index'
-      })
+      // router.replace({
+      //   path: '/seller/index'
+      // })
     },
     // 登出
     logout(state) {
