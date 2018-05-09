@@ -32,9 +32,9 @@
           </template>
         </el-table-column>
         <el-table-column prop="participant" label="活动参与人数"></el-table-column>
-        <el-table-column prop="money" label="优惠券金额"></el-table-column>
+        <!-- <el-table-column prop="money" label="优惠券金额"></el-table-column>
         <el-table-column prop="exchangeCount" label="优惠券总数"></el-table-column>
-        <el-table-column prop="discountRemain" label="优惠券余量"></el-table-column>
+        <el-table-column prop="discountRemain" label="优惠券余量"></el-table-column> -->
         <el-table-column prop="activityCount" label="活动核销数"></el-table-column>
         <el-table-column prop="activityMoney" label="活动核销金额"></el-table-column>
         <el-table-column label="操作" width="140">
@@ -45,6 +45,7 @@
         </el-table-column>
       </el-table>
     </el-row>
+    <!--优惠券列表-->
     <el-row class="order-statics" v-if="showCouponList">
       <el-table :data="couponList" stripe border fit style="width: 100%">
         <el-table-column type="index" :index="1" label="序号"></el-table-column>
@@ -61,12 +62,12 @@
             {{props.row.endDate | Date}}
           </template>
         </el-table-column>
-        <el-table-column prop="participant" label="活动参与人数"></el-table-column>
+        <!-- <el-table-column prop="participant" label="活动参与人数"></el-table-column> -->
         <el-table-column prop="money" label="优惠券金额"></el-table-column>
         <el-table-column prop="exchangeCount" label="优惠券总数"></el-table-column>
         <el-table-column prop="discountRemain" label="优惠券余量"></el-table-column>
-        <el-table-column prop="activityCount" label="活动核销数"></el-table-column>
-        <el-table-column prop="activityMoney" label="活动核销金额"></el-table-column>
+        <!-- <el-table-column prop="activityCount" label="活动核销数"></el-table-column>
+        <el-table-column prop="activityMoney" label="活动核销金额"></el-table-column> -->
         <el-table-column label="操作" width="140">
           <template slot-scope="props">
             <el-button type="primary" size="mini" @click="showEditCoupon(props.row.id)">编辑</el-button>
