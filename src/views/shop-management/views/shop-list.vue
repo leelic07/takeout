@@ -14,8 +14,8 @@
     </el-row>
     <!--店铺信息列表-->
     <el-row class="order-statics">
-      <el-table :data="shopList" stripe border fit style="width: 100%">
-        <el-table-column type="index" :index="1" label="序号"/>
+      <el-table :data="shopList" stripe border fit>
+        <!-- <el-table-column type="index" :index="1" label="序号"/> -->
         <el-table-column label="店铺名称">
           <template slot-scope="props">
             <el-button type="text" @click="showMemberDetail(props.row)">{{props.row.name}}</el-button>

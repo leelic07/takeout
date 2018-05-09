@@ -21,8 +21,16 @@
         <el-table-column prop="activityType" label="活动类型"></el-table-column>
         <el-table-column prop="code" label="活动编号"></el-table-column>
         <el-table-column prop="name" label="活动名称"></el-table-column>
-        <el-table-column prop="startDate" label="开始日期"></el-table-column>
-        <el-table-column prop="ednDate" label="活动结束日期"></el-table-column>
+        <el-table-column label="开始日期">
+          <template slot-scope="props">
+            {{props.row.startDate | Date}}
+          </template>
+        </el-table-column>
+        <el-table-column label="活动结束日期">
+          <template slot-scope="props">
+            {{props.row.endDate | Date}}
+          </template>
+        </el-table-column>
         <el-table-column prop="participant" label="活动参与人数"></el-table-column>
         <el-table-column prop="money" label="优惠券金额"></el-table-column>
         <el-table-column prop="exchangeCount" label="优惠券总数"></el-table-column>
@@ -43,8 +51,16 @@
         <el-table-column prop="activityType" label="活动类型"></el-table-column>
         <el-table-column prop="code" label="活动编号"></el-table-column>
         <el-table-column prop="name" label="活动名称"></el-table-column>
-        <el-table-column prop="startDate" label="开始日期"></el-table-column>
-        <el-table-column prop="ednDate" label="活动结束日期"></el-table-column>
+        <el-table-column label="开始日期">
+          <template slot-scope="props">
+            {{props.row.startDate | Date}}
+          </template>
+        </el-table-column>
+        <el-table-column label="活动结束日期">
+          <template slot-scope="props">
+            {{props.row.endDate | Date}}
+          </template>
+        </el-table-column>
         <el-table-column prop="participant" label="活动参与人数"></el-table-column>
         <el-table-column prop="money" label="优惠券金额"></el-table-column>
         <el-table-column prop="exchangeCount" label="优惠券总数"></el-table-column>

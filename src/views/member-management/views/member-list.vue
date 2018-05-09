@@ -108,7 +108,7 @@
                 </el-form-item> -->
                 <el-form-item label="选择优惠券" label-width="120px">
                     <el-select v-model="userForEdit.orderStatus" placeholder="请选择会优惠券">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                        <el-option v-for="item in backCouponList" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -177,7 +177,8 @@ export default {
     ...mapGetters([
       'userList',
       'userTotal',
-      'userForEdit'
+      'userForEdit',
+      'backCouponList'
     ])
   },
   components: {
@@ -186,17 +187,19 @@ export default {
   methods: {
     ...mapActions({
       getUsersPage: 'getUsersPage',
-      editUser: 'editUser'
+      editUser: 'editUser',
+      getBackCouponList: 'getBackCouponList'
     }),
     // 点击详情执行的方法
     showMemberEdit(id) {
       this.dialogDetailVisible = true
       this.editUser(id)
     },
-    // 点击编辑执行的方法
+    // 点击送券执行的方法
     sendCoupon(row) {
       this.dialogFormVisible = true
-      this.userForEdit = row
+      //   this.userForEdit = row
+      this.getBackCouponList()
     },
     // 会员头像上传成功执行的方法
     handleAvatarSuccess(file) {

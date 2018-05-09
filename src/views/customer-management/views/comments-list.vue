@@ -140,7 +140,7 @@
             <el-form :model="userForEdit" size="mini">
                 <el-form-item label="选择优惠券" label-width="120px">
                     <el-select v-model="userForEdit.orderStatus" placeholder="请选择会优惠券">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                        <el-option v-for="item in backCouponList" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -197,16 +197,21 @@ export default {
     ...mapGetters([
       'feedbacksList',
       'feedbacksTotal',
-      'loading'
+      'loading',
+      'backCouponList'
     ]),
     type() {
       return sessionStorage.getItem('type')
+    },
+    merchantId() {
+      return sessionStorage.getItem('merchantId')
     }
   },
   methods: {
     ...mapActions({
       getFeedbacksList: 'getFeedbacksList',
-      getFeedbacksPage: 'getFeedbacksPage'
+      getFeedbacksPage: 'getFeedbacksPage',
+      getBackCouponList: 'getBackCouponList'
     }),
     ...mapMutations({
       showLoading: 'showLoading'
@@ -242,12 +247,13 @@ export default {
       this.showLoading()
       setTimeout(() => {
         this.pagination.page++
-        this.getFeedbacksPage({ ...this.pagination, merchantId: sessionStorage.getItem('merchantId') })
+        this.getFeedbacksPage({ ...this.pagination, merchantId: this.merchantId })
       }, 1000)
     },
     sendCoupon(row) {
       this.userForEdit = row
       this.dialogFormVisible = true
+      this.getBackCouponList()
     },
     sendCouponConfirm() {
       this.dialogFormVisible = false
@@ -258,7 +264,7 @@ export default {
     }
   },
   mounted() {
-    this.getFeedbacksPage({ ...this.pagination, merchantId: sessionStorage.getItem('merchantId') })
+    this.getFeedbacksPage({ ...this.pagination, merchantId: this.merchantId })
   }
 }
 </script>

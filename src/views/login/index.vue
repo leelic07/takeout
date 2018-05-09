@@ -64,12 +64,6 @@ export default {
       pwdType: 'password'
     }
   },
-  watch: {
-    users(newValue) {
-      newValue.type && this.$router.push({ path: '/seller/index' })
-      console.log(this.$router)
-    }
-  },
   computed: {
     ...mapGetters({
       users: 'users'

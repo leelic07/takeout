@@ -12,5 +12,6 @@ export default {
   saveCoupon: coupon => service.post('/coupons/save', coupon).then(res => res).catch(err => err),
   getMerchantsList: () => service.get('/merchants/list').then(res => res).catch(err => err),
   deleteActivity: id => service.post('/activitys/delete', id).then(res => res).catch(err => err),
-  deleteCoupon: id => service.post('/coupons/delete', id).then(res => res).catch(err => err)
+  deleteCoupon: id => service.post('/coupons/delete', id).then(res => res).catch(err => err),
+  getBackCouponList: () => service.get('/coupons/backList').then(res => res).catch(err => err)
 }
