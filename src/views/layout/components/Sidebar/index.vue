@@ -13,16 +13,27 @@ import ScrollBar from '@/components/ScrollBar'
 
 export default {
   components: { SidebarItem, ScrollBar },
+  data() {
+    return {
+      routes: []
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar'
     ]),
-    routes() {
-      return this.$router.options.routes
-    },
+    // routes() {
+    //   return this.$router.options.routes
+    // },
+    // type() {
+    //   return sessionStorage['type']
+    // },
     isCollapse() {
       return !this.sidebar.opened
     }
+  },
+  created() {
+    if (sessionStorage['type']) this.routes = this.$router.options.routes
   }
 }
 </script>
