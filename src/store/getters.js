@@ -6,6 +6,7 @@ const getters = {
   roles: state => state.user.roles,
   manager: state => state.user.manager,
   users: state => state.user.users,
+  type: state => state.user.type,
   // 商户管理
   shopList: state => state.shop.shopList,
   shopTotal: state => state.shop.shopTotal,
@@ -58,6 +59,7 @@ const getters = {
   updateCouponResult: state => state.activity.updateCouponResult,
   deleteActivityResult: state => state.activity.deleteActivityResult,
   deleteCouponResult: state => state.activity.deleteCouponResult,
+  backCouponList: state => state.activity.backCouponList,
   // 上传文件
   uploadFileUrl: state => state.upload.uploadFileUrl,
   // 会员管理

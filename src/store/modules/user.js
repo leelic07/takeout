@@ -5,7 +5,8 @@ const user = {
   state: {
     users: {},
     resetResult: {},
-    manager: {}
+    manager: {},
+    type: ''
   },
   actions: {
     // 登录
@@ -35,10 +36,12 @@ const user = {
       sessionStorage.setItem('userId', users.id)
       sessionStorage.setItem('userName', users.name)
       users.merchantId ? sessionStorage.setItem('merchantId', users.merchantId) : sessionStorage.setItem('merchantId', '')
+      localStorage.setItem('type', users.type)
       state.users = users
-      // router.replace({
-      //   path: '/seller/index'
-      // })
+      state.type = users.type
+      router.replace({
+        path: '/seller/index'
+      })
     },
     // 登出
     logout(state) {

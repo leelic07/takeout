@@ -16,7 +16,8 @@ export default {
     saveCouponResult: {},
     updateCouponResult: {},
     deleteActivityResult: {},
-    deleteCouponResult: {}
+    deleteCouponResult: {},
+    backCouponList: []
   },
   actions: {
     getActivityList({ commit }, pagination) {
@@ -85,6 +86,9 @@ export default {
     },
     deleteCoupon({ commit }, id) {
       http.deleteCoupon({ id }).then(res => res.code === 200 && commit('deleteCoupon', res)).catch(err => console.log(err))
+    },
+    getBackCouponList({ commit }) {
+      http.getBackCouponList().then(res => res.code === 200 && commit('getBackCouponList', res)).catch(err => console.log(err))
     }
   },
   mutations: {
@@ -142,6 +146,9 @@ export default {
     },
     deleteCoupon(state, deleteCouponResult) {
       state.deleteCouponResult = deleteCouponResult
+    },
+    getBackCouponList(state, backCouponListResult) {
+      state.backCouponList = backCouponListResult.data.coupons
     }
   }
 }
