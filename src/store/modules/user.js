@@ -38,9 +38,10 @@ const user = {
       users.merchantId ? sessionStorage.setItem('merchantId', users.merchantId) : sessionStorage.setItem('merchantId', '')
       localStorage.setItem('type', users.type)
       state.users = users
-      state.type = users.type
-      router.replace({
-        path: '/seller/index'
+      state.type = localStorage.getItem('type') || sessionStorage.getItem('type')
+      router.push({
+        path: '/seller/index',
+        force: true
       })
     },
     // 登出
