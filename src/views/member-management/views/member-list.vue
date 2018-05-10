@@ -97,33 +97,12 @@
         <!--会员送券对话框-->
         <el-dialog class="member-editor" title="会员送券" :visible.sync="dialogFormVisible">
             <el-form :model="userForEdit" size="mini">
-                <!-- <el-form-item label="姓名" label-width="120px">
-                    <el-input v-model="userForEdit.name" auto-complete="off" placeholder="请填写姓名"></el-input>
-                </el-form-item>
-                <el-form-item label="性别" label-width="120px">
-                    <el-input v-model="userForEdit.gender" auto-complete="off" placeholder="请填写性别"></el-input>
-                </el-form-item>
-                <el-form-item label="电话" label-width="120px">
-                    <el-input v-model="userForEdit.phone" auto-complete="off" placeholder="请填写电话"></el-input>
-                </el-form-item> -->
                 <el-form-item label="选择优惠券" label-width="120px">
                     <el-select v-model="userForEdit.orderStatus" placeholder="请选择会优惠券">
                         <el-option v-for="item in backCouponList" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <!-- <el-form-item label="地址" label-width="120px">
-                    <el-input type="textarea" v-model="userForEdit.address" auto-complete="off" placeholder="请填写地址"></el-input>
-                </el-form-item>
-                <el-form-item label="备注" label-width="120px">
-                    <el-input type="textarea" v-model="userForEdit.remarks" auto-complete="off" placeholder="请填写备注"></el-input>
-                </el-form-item>
-                <el-form-item label="头像" placeholder="请填写地址" label-width="120px">
-                    <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                        <img v-if="userForEdit.imageUrl" :src="userForEdit.imageUrl" class="avatar">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-                </el-form-item> -->
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
@@ -200,14 +179,6 @@ export default {
       this.dialogFormVisible = true
       //   this.userForEdit = row
       this.getBackCouponList()
-    },
-    // 会员头像上传成功执行的方法
-    handleAvatarSuccess(file) {
-      console.log(file)
-    },
-    // 会员头像上传之前执行的方法
-    beforeAvatarUpload(file) {
-      console.log(file)
     },
     // 点击删除执行的方法
     deleteMember(id) {
