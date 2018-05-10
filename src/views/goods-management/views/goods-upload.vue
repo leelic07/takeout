@@ -224,10 +224,10 @@ export default {
     },
     resetPropertys() {
       this.dialogFormVisible = false
-      this.goods.itemPropertys = [{
-        id: '',
-        subPropertys: []
-      }]
+      // this.goods.itemPropertys = [{
+      //   id: '',
+      //   subPropertys: []
+      // }]
     },
     // 点击全选时执行的方法
     handleCheckAllChange(val) {

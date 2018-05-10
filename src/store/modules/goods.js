@@ -177,7 +177,7 @@ export default {
         })
       })
       goodsForEdit.itemMerchants = merchants
-      goodsForEdit.itemPropertys = goodsForEdit.propertys
+      goodsForEdit.itemPropertys = goodsForEdit.propertys.length ? goodsForEdit.propertys : [{ subPropertys: [] }]
       goodsForEdit.price = goodsForEdit.price ? goodsForEdit.price.toString() : ''
       goodsForEdit.packingCharge = goodsForEdit.packingCharge ? goodsForEdit.packingCharge.toString() : ''
       state.goodsForEdit = goodsForEdit
