@@ -52,7 +52,7 @@
                             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片，最多只能上传五张图片</div>
                         </el-upload>
                     </el-form-item>
-                    <el-form-item label="商品售卖店铺" label-width="120px" prop="merchants">
+                    <el-form-item v-if="type === '1'" label="商品售卖店铺" label-width="120px" prop="merchants">
                         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
                         <el-checkbox-group v-model="goodsForEdit.itemMerchants" @change="handleCheckMerchantChange">
                             <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
@@ -172,7 +172,10 @@ export default {
       'merchantList',
       'goodsForEdit',
       'propertyParents'
-    ])
+    ]),
+    type() {
+      return sessionStorage.getItem('type')
+    }
   },
   methods: {
     ...mapActions({

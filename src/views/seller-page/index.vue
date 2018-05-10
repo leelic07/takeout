@@ -135,6 +135,7 @@ export default {
     // },
     type: {
       handler: function(newValue) {
+        this.seller.merchantId = sessionStorage['merchantId']
         if (newValue === '1') this.getMerchantsList()
         else this.getShopForEdit(this.seller.merchantId)
       },
@@ -167,7 +168,7 @@ export default {
           break
         case 'incomeList':
           this.$router.push({
-            path: '/income/chart'
+            path: '/data/business'
           })
           break
         case 'menuList':
@@ -189,7 +190,6 @@ export default {
     }
   },
   mounted() {
-    this.seller.merchantId = sessionStorage['merchantId']
     this.getMerchantsHomePage(this.seller.merchantId)
   }
 }
