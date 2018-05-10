@@ -211,7 +211,7 @@ export const constantRouterMap = [
     name: 'Activity',
     redirect: '/activity/list',
     meta: { title: '活动管理', icon: 'example' },
-    hidden: type !== '1',
+    hidden: false,
     children: [{// 活动列表
       path: 'list',
       component: () => import('@/views/activity-management/views/activity-list'),
@@ -328,13 +328,13 @@ export const constantRouterMap = [
       name: 'ShopList',
       component: () => import('@/views/shop-management/views/shop-list'),
       meta: { title: '店铺列表', icon: 'example' },
-      hidden: type !== '1'
+      hidden: false
     }, {// 新增店铺
       path: 'add',
       name: 'ShopAdd',
       component: () => import('@/views/shop-management/views/shop-add'),
       meta: { title: '新增店铺', icon: 'example' },
-      hidden: type !== '1'
+      hidden: false
     }, {// 编辑店铺
       path: 'edit/:id',
       name: 'ShopEdit',

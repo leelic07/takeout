@@ -10,61 +10,68 @@
 import { mapGetters } from 'vuex'
 import SidebarItem from './SidebarItem'
 import ScrollBar from '@/components/ScrollBar'
-import { constantRouterMap } from '@/router'
 
 export default {
   components: { SidebarItem, ScrollBar },
-  data() {
-    return {
-      routes: []
-    }
-  },
-  watch: {
-    routes: {
-      handler: function(newValue) {
-        this.routes = newValue
-      },
-      deep: true,
-      immediate: true
-    }
-    // type: {
-    //   handler: function(newValue) {
-    //     this.routes = this.$router.options.routes
-    //   },
-    //   immediate: true
-    // }
-    // routes: {
-    //   handler: function(to, from) {
-    //     // console.log('routes', to)
-    //     this.router = to
-    //   },
-    //   deep: true
-    // }
-    // $router: {
-    //   handler: function(to) {
-    //     console.log(to.options.routes)
-    //     this.routes = to.options.routes
-    //   },
-    //   immediate: true
-    // }
-  },
   computed: {
     ...mapGetters([
-      'sidebar',
-      'type'
+      'sidebar'
     ]),
     isCollapse() {
       return !this.sidebar.opened
+    },
+    routes() {
+      return this.$router.options.routes
+    },
+    type() {
+      return sessionStorage['type']
     }
-    // routes() {
-    //   return constantRouterMap
-    // }
-    // type() {
-    //   return sessionStorage['type']
-    // }
+  },
+  methods: {
+    initRoutes(routes, type) {
+      if (type !== '1') {
+        routes.forEach((route, index, arr) => {
+          switch (route.name) {
+            case 'Activity':
+              route.hidden = true
+              break
+            case 'ShopManagement':
+              route.children.forEach(shop => {
+                if (shop.name === 'ShopList' || shop.name === 'ShopAdd') shop.hidden = true
+                else shop.hidden = false
+              })
+              break
+            case 'Goods':
+              route.children.forEach(goods => {
+                if (goods.name === 'GoodsUpload') goods.hidden = true
+              })
+              break
+          }
+        })
+      } else {
+        routes.forEach((route, index, arr) => {
+          switch (route.name) {
+            case 'Activity':
+              route.hidden = false
+              break
+            case 'ShopManagement':
+              route.children.forEach(shop => {
+                if (shop.name === 'ShopList' || shop.name === 'ShopAdd') shop.hidden = false
+                else shop.hidden = true
+              })
+              break
+            case 'Goods':
+              route.children.forEach(goods => {
+                if (goods.name === 'GoodsUpload') goods.hidden = false
+              })
+              break
+          }
+        })
+      }
+    }
   },
   mounted() {
-    this.routes = constantRouterMap
+    this.initRoutes(this.routes, this.type)
   }
 }
 </script>

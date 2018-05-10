@@ -86,15 +86,6 @@
                     <el-form-item label="配送范围" label-width="120px">
                         <el-input v-model="shopForEdit.distributionScope" auto-complete="off" placeholder="请填写配送范围"></el-input>
                     </el-form-item>
-                    <!-- <el-col class="shop-message">
-                        <el-tag>登录信息</el-tag>
-                    </el-col>
-                    <el-form-item label="商户登录账户" label-width="120px" prop="accountName">
-                        <el-input v-model="shopForEdit.accountName" auto-complete="off" placeholder="请填写配送范围"></el-input>
-                    </el-form-item>
-                    <el-form-item label="商户登录密码" label-width="120px" prop="accountPassword">
-                        <el-input type="password" v-model="shopForEdit.accountPassword" auto-complete="off" placeholder="请填写配送范围"></el-input>
-                    </el-form-item> -->
                     <el-form-item>
                         <el-button type="primary" size="medium" @click="updateShopConfirm">更新</el-button>
                     </el-form-item>
