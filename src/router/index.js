@@ -6,7 +6,7 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-// const type = sessionStorage.getItem('type')
+const type = localStorage.getItem('type')
 const merchantId = sessionStorage.getItem('merchantId')
 
 /* Layout */
@@ -168,7 +168,8 @@ export const constantRouterMap = [
       path: 'upload',
       name: 'GoodsUpload',
       component: () => import('@/views/goods-management/views/goods-upload'),
-      meta: { title: '商品上传', icon: 'example' }
+      meta: { title: '商品上传', icon: 'example' },
+      hidden: type !== '1'
     }, {// 商品分类
       path: 'category',
       name: 'Category',
@@ -210,6 +211,7 @@ export const constantRouterMap = [
     name: 'Activity',
     redirect: '/activity/list',
     meta: { title: '活动管理', icon: 'example' },
+    hidden: type !== '1',
     children: [{// 活动列表
       path: 'list',
       component: () => import('@/views/activity-management/views/activity-list'),
@@ -326,13 +328,13 @@ export const constantRouterMap = [
       name: 'ShopList',
       component: () => import('@/views/shop-management/views/shop-list'),
       meta: { title: '店铺列表', icon: 'example' },
-      hidden: localStorage.getItem('type') !== '1'
+      hidden: type !== '1'
     }, {// 新增店铺
       path: 'add',
       name: 'ShopAdd',
       component: () => import('@/views/shop-management/views/shop-add'),
       meta: { title: '新增店铺', icon: 'example' },
-      hidden: localStorage.getItem('type') !== '1'
+      hidden: type !== '1'
     }, {// 编辑店铺
       path: 'edit/:id',
       name: 'ShopEdit',

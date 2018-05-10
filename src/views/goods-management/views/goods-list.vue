@@ -39,7 +39,7 @@
         <el-table-column prop="status" label="商品状态"></el-table-column>
         <el-table-column label="操作" width="140">
           <template slot-scope="props">
-            <el-button type="primary" size="mini" @click="showGoodsEdit(props.row.id)">编辑</el-button>
+            <el-button type="primary" size="mini" @click="showGoodsEdit(props.row.id)" v-if="type === '1'">编辑</el-button>
             <el-button type="danger" size="mini" @click="withdrawGoods(props.row.id)" v-if="props.row.isPuton === '1'">下架</el-button>
             <el-button type="success" size="mini" @click="groundGoods(props.row.id)" v-else>上架</el-button>
           </template>
@@ -158,6 +158,9 @@ export default {
     ]),
     type() {
       return sessionStorage.getItem('type')
+    },
+    merchantId() {
+      return sessionStorage.getItem('merchantId')
     }
   },
   components: {
@@ -180,8 +183,6 @@ export default {
     },
     // 点击编辑执行的方法
     showGoodsEdit(id) {
-      // this.dialogFormVisible = true
-      // this.editGoods(id)
       this.$router.push({
         path: `/goods/edit/${id}`
       })
@@ -243,9 +244,9 @@ export default {
     }
   },
   mounted() {
+    this.pagination.merchantId = this.merchantId
     this.getGoodsList(this.pagination)
     this.getMerchantsList()
-    this.pagination.merchantId = sessionStorage['merchantId'] === 'null' ? '' : sessionStorage['merchantId']
   }
 }
 </script>
