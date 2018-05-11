@@ -51,7 +51,7 @@
                 <el-table-column label="操作" width="140">
                     <template slot-scope="props">
                         <el-button type="success" size="mini" @click="showMemberEdit(props.row.id)">查看</el-button>
-                        <el-button type="primary" size="mini" @click="sendCoupon(props.row)">送券</el-button>
+                        <el-button type="primary" size="mini" @click="sendCoupon(props.row.id)">送券</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -96,9 +96,9 @@
         </el-dialog>
         <!--会员送券对话框-->
         <el-dialog class="member-editor" title="会员送券" :visible.sync="dialogFormVisible">
-            <el-form :model="userForEdit" size="mini">
-                <el-form-item label="选择优惠券" label-width="120px">
-                    <el-select v-model="userForEdit.orderStatus" placeholder="请选择会优惠券">
+            <el-form :model="userForEdit" size="mini" :rules="rule" ref="couponFrom">
+                <el-form-item label="选择优惠券" label-width="120px" prop="couponId">
+                    <el-select v-model="userForEdit.couponId" placeholder="请选择会优惠券">
                         <el-option v-for="item in backCouponList" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
@@ -127,16 +127,6 @@ export default {
         phone: '',
         name: ''
       },
-      options: [{
-        value: 1,
-        label: '满200送50'
-      }, {
-        value: '2',
-        label: '全场88折'
-      }, {
-        value: '3',
-        label: '第一件商品半价'
-      }],
       dialogDetailVisible: false,
       dialogFormVisible: false,
       form: {
@@ -149,7 +139,15 @@ export default {
         resource: '',
         desc: ''
       },
+      rule: {
+        couponId: [{ required: true, message: '请选择优惠券', trigger: 'blur' }]
+      },
       imageUrl: '' // 上传头像的图片路径
+    }
+  },
+  watch: {
+    sendCouponResult() {
+      this.dialogFormVisible = false
     }
   },
   computed: {
@@ -157,7 +155,8 @@ export default {
       'userList',
       'userTotal',
       'userForEdit',
-      'backCouponList'
+      'backCouponList',
+      'sendCouponResult'
     ])
   },
   components: {
@@ -167,7 +166,8 @@ export default {
     ...mapActions({
       getUsersPage: 'getUsersPage',
       editUser: 'editUser',
-      getBackCouponList: 'getBackCouponList'
+      getBackCouponList: 'getBackCouponList',
+      sendCouponToUser: 'sendCouponToUser'
     }),
     // 点击详情执行的方法
     showMemberEdit(id) {
@@ -175,9 +175,9 @@ export default {
       this.editUser(id)
     },
     // 点击送券执行的方法
-    sendCoupon(row) {
+    sendCoupon(id) {
       this.dialogFormVisible = true
-      //   this.userForEdit = row
+      this.editUser(id)
       this.getBackCouponList()
     },
     // 点击删除执行的方法
@@ -199,10 +199,9 @@ export default {
       })
     },
     sendCouponConfirm() {
-      this.dialogFormVisible = false
-      this.$message({
-        type: 'success',
-        message: '送券成功'
+      this.$refs.couponFrom.validate(valid => {
+        if (valid) this.sendCouponToUser(this.userForEdit)
+        else console.log('sendCoupon err')
       })
     }
   },

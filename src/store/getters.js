@@ -66,6 +66,7 @@ const getters = {
   userList: state => state.member.userList,
   userTotal: state => state.member.userTotal,
   userForEdit: state => state.member.userForEdit,
+  sendCouponResult: state => state.member.sendCouponResult,
   // 售后管理
   feedbacksList: state => state.customer.feedbacksList,
   feedbacksTotal: state => state.customer.feedbacksTotal,

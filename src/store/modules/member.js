@@ -4,7 +4,8 @@ export default {
   state: {
     userList: [],
     userTotal: 0,
-    userForEdit: {}
+    userForEdit: {},
+    sendCouponResult: {}
   },
   actions: {
     getUsersPage({ commit }, pagination) {
@@ -12,6 +13,9 @@ export default {
     },
     editUser({ commit }, id) {
       http.editUser({ id }).then(res => res.code === 200 && commit('editUser', res)).catch(err => console.log(err))
+    },
+    sendCouponToUser({ commit }, user) {
+      http.sendCouponToUser(user).then(res => res.code === 200 && commit('sendCouponToUser', res)).catch(err => console.log(err))
     }
   },
   mutations: {
@@ -40,6 +44,9 @@ export default {
     },
     editUser(state, editUserResult) {
       state.userForEdit = editUserResult.data.users
+    },
+    sendCouponToUser(state, sendCouponResult) {
+      state.sendCouponResult = sendCouponResult
     }
   }
 }
