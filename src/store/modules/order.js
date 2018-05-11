@@ -7,7 +7,8 @@ export default {
     orderRetreatList: [],
     orderRecordsList: [],
     orderRecordsTotal: 0,
-    orderReminderList: []
+    orderReminderList: [],
+    retreatResult: {}
   },
   actions: {
     // 获取接单信息
@@ -46,6 +47,9 @@ export default {
       const status = pagination.status
       delete pagination.status
       http.getOrderReminderByStatus(pagination).then(res => res.code === 200 && commit('getOrderReminderByStatus', { ...res, status })).catch(err => console.log(err))
+    },
+    retreatOrder({ commit }, refundOrder) {
+      http.retreatOrder(refundOrder).then(res => res.code === 200 && commit('retreatOrder', res)).catch(err => err)
     }
   },
   mutations: {
@@ -73,7 +77,7 @@ export default {
     getOrderRetreatByStatus(state, orderRetreatList) {
       const orders = orderRetreatList.data.orders
       const status = orderRetreatList.status
-      state.orderRetreatList = orders.filter(order => order.status === Number(status))
+      state.orderRetreatList = orders.filter(order => order.orders.isRefund === Number(status))
     },
     getOrderRecordsList(state, orderRecordsList) {
       const data = orderRecordsList.data
@@ -89,6 +93,10 @@ export default {
       const orders = orderReminderList.data.orders
       const status = orderReminderList.status
       state.orderReminderList = orders.filter(order => order.status === Number(status))
+    },
+    retreatOrder(state, retreatResult) {
+      debugger
+      state.retreatResult = retreatResult
     }
   }
 }

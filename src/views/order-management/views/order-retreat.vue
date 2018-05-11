@@ -6,8 +6,8 @@
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="处理状态">
             <el-radio-group v-model="form.status">
-              <el-radio label="0">未取消</el-radio>
-              <el-radio label="1">已取消</el-radio>
+              <el-radio label="0">未退单</el-radio>
+              <el-radio label="1">已退单</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -27,12 +27,12 @@
           </div>
           <el-row>
             <el-table :data="orderRetreats" style="width: 100%" :show-header="false" stripe>
-               <el-table-column type="expand">
+              <el-table-column type="expand">
                 <template slot-scope="props">
                   <el-form :model="props.row" label-position="right" class="demo-table-expand">
                     <!--备注-->
                     <el-form-item label="备注:">
-                      <span>{{ props.row.remark }}</span>
+                      <span>{{ props.row.orders.remark }}</span>
                     </el-form-item>
                     <!--商品信息-->
                     <el-form-item label="商品信息:">
@@ -54,31 +54,29 @@
                       </el-table>
                     </el-form-item>
                     <el-form-item label="配送费:">
-                      <span>{{props.row.deliverMoney}}</span>
+                      <span>{{props.row.orders.deliverMoney}}</span>
                     </el-form-item>
                     <el-form-item label="小计:">
-                      <span>{{props.row.totalPrice}}</span>
+                      <span>{{props.row.orders.totalPrice}}</span>
                     </el-form-item>
                     <el-form-item label="活动减免:">
-                      <span>{{props.row.activityMoney}}</span>
+                      <span>{{props.row.orders.activityMoney}}</span>
                     </el-form-item>
                     <el-form-item label="优惠券:">
-                      <span>{{props.row.couponMoney}}</span>
+                      <span>{{props.row.orders.couponMoney}}</span>
                     </el-form-item>
                     <el-form-item label="平台佣金:">
-                      <span>{{props.row.platformCommission}}</span>
+                      <span>{{props.row.orders.platformCommission}}</span>
                     </el-form-item>
                     <el-form-item label="本单预计收入:">
                       <span style="color: orange;font-size: 18px;"></span>
                     </el-form-item>
                     <el-form-item label="本顾客实际支付:">
-                      <span style="color: orange;font-size: 18px;">{{props.row.realTotalMoney}}</span>
+                      <span style="color: orange;font-size: 18px;">{{props.row.orders.realTotalMoney}}</span>
                     </el-form-item>
                     <el-form-item>
-                      <!-- <template slot-scope="props"> -->
-                      <el-button type="danger" plain size="mini" @click="cancelOrder">取消订单并退款</el-button>
+                      <el-button type="danger" plain size="mini" @click="cancelOrder(props.row)" v-if="props.row.orders.isRefund === 0">取消订单并退款</el-button>
                       <el-button type="primary" plain size="mini" @click="printOrder">打印订单</el-button>
-                      <!-- </template> -->
                     </el-form-item>
                   </el-form>
                 </template>
@@ -87,24 +85,24 @@
                 <template slot-scope="props">
                   <el-row class="card-content">
                     <el-col :span="20">
-                      <h3>{{props.row.name}}</h3>
+                      <h3>{{props.row.orders.name}}</h3>
                     </el-col>
                     <el-col :span="20">
                       <label>订单号:</label>
-                      <span>{{props.row.orderNo}}</span>
+                      <span>{{props.row.orders.orderNo}}</span>
                     </el-col>
                     <el-col :span="20">
                       <label>下单时间:</label>
-                      <span>{{props.row.createdAt | Date}}</span>
+                      <span>{{props.row.orders.createdAt | Date}}</span>
                     </el-col>
                     <span type="text">待发配送</span>
                     <el-col>
                       <label for="">电话:</label>
-                      <span>{{props.row.userPhone}}</span>
+                      <span>{{props.row.orders.userPhone}}</span>
                     </el-col>
                     <el-col :span="18">
                       <label for="">地址:</label>
-                      <span>{{props.row.userAddress}}</span>
+                      <span>{{props.row.orders.userAddress}}</span>
                     </el-col>
                   </el-row>
                 </template>
@@ -112,7 +110,7 @@
               <el-table-column label="" prop="name" width="95">
                 <template slot-scope="socpe">
                   <el-row class="card-content">
-                    <el-button size="mini" type="primary" plain>发起配送</el-button>
+                    <el-button v-show="false" size="mini" type="primary" plain>发起配送</el-button>
                   </el-row>
                 </template>
               </el-table-column>
@@ -196,6 +194,18 @@
         </el-card>
       </el-col> -->
     </el-row>
+    <!--订单退款对话框-->
+    <el-dialog class="member-editor" title="订单退款" :visible.sync="dialogFormVisible">
+      <el-form :model="refundForm" size="mini" :rules="rule" ref="refundForm">
+        <el-form-item label="请输入退款金额" label-width="120px" prop="totalPrice">
+          <el-input v-model="refundForm.totalPrice" placeholder="请选填写退款金额"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
+        <el-button size="mini" type="primary" @click="retreatOrderConfirm">确 定</el-button>
+      </div>
+    </el-dialog>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading" style="height:30px;"></div>
   </el-row>
 </template>
@@ -205,24 +215,33 @@ import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   data() {
+    const IsSupremePayment = (rule, value, callback) => {
+      if (this.totalPrice < value) callback(new Error('退款金额不能大于实际支付金额'))
+      else callback()
+    }
     return {
       form: {
         status: '0'
       },
-      boxData: [{
-        price: 1,
-        amount: 'x10',
-        total: 10
-      }],
-      deliveryData: [{
-        amount: 6
-      }],
       pagination: {
         page: 1,
         rows: 10
       },
       orderRetreats: [],
-      busy: true
+      busy: true,
+      refundForm: {
+        totalPrice: '',
+        orderId: '',
+        size: '',
+        name: ''
+      },
+      rule: {
+        totalPrice: [
+          { required: true, message: '请输入退款金额', trigger: 'blur' },
+          { validator: IsSupremePayment, message: '退款金额不能大于顾客实际付款' }
+        ]
+      },
+      dialogFormVisible: false
     }
   },
   watch: {
@@ -252,23 +271,33 @@ export default {
   methods: {
     ...mapActions({
       getOrderRetreatList: 'getOrderRetreatList',
-      getOrderRetreatByStatus: 'getOrderRetreatByStatus'
+      getOrderRetreatByStatus: 'getOrderRetreatByStatus',
+      retreatOrder: 'retreatOrder'
     }),
     ...mapMutations({
       showLoading: 'showLoading'
     }),
     // 点击打印订单执行的方法
-    cancelOrder() {
-      this.$confirm('确定取消订单？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '取消订单成功'
-        }).catch(err => console.log(err))
-      })
+    cancelOrder(refundOrder) {
+      // this.$confirm('确定取消订单？', '提示', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   type: 'warning'
+      // }).then(() => {
+      //   this.$message({
+      //     type: 'success',
+      //     message: '取消订单成功'
+      //   }).catch(err => console.log(err))
+      // })
+      this.dialogFormVisible = true
+      this.totalPrice = refundOrder.orders.totalPrice
+      this.refundForm = {
+        orderId: refundOrder.orders.id,
+        totalPrice: '',
+        size: refundOrder.orderItem.itemNums,
+        name: refundOrder.name
+      }
+      debugger
     },
     // 点击部分退款时执行的方法
     partCancelOrder() {
@@ -293,6 +322,12 @@ export default {
     },
     printOrder() {
       console.log('printOrder')
+    },
+    retreatOrderConfirm() {
+      this.$refs.refundForm.validate(valid => {
+        if (valid) this.retreatOrder(this.refundForm)
+        else console.log('err retreat')
+      })
     }
   }
 }

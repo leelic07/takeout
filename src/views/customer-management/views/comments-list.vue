@@ -71,7 +71,7 @@
                                             </el-rate>
                                             <el-col :span="14">
                                                 <el-button type="text" v-if="type !== '1'">回复</el-button>
-                                                <el-button type="text" @click="sendCoupon(props.row)">发券</el-button>
+                                                <el-button type="text" @click="sendCoupon(props.row.userId)">发券</el-button>
                                                 <!-- <el-button type="text">举报</el-button> -->
                                             </el-col>
                                         </el-col>
@@ -137,9 +137,9 @@
         </el-row>
         <!--会员送券对话框-->
         <el-dialog class="member-editor" title="会员送券" :visible.sync="dialogFormVisible">
-            <el-form :model="userForEdit" size="mini">
-                <el-form-item label="选择优惠券" label-width="120px">
-                    <el-select v-model="userForEdit.orderStatus" placeholder="请选择会优惠券">
+            <el-form :model="userForEdit" size="mini" :rules="rule" ref="couponForm">
+                <el-form-item label="选择优惠券" label-width="120px" prop="couponId">
+                    <el-select v-model="userForEdit.couponId" placeholder="请选择会优惠券">
                         <el-option v-for="item in backCouponList" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
@@ -170,18 +170,11 @@ export default {
       },
       busy: true,
       feedbacks: [],
-      userForEdit: {},
-      options: [{
-        value: 1,
-        label: '满200送50'
-      }, {
-        value: '2',
-        label: '全场88折'
-      }, {
-        value: '3',
-        label: '第一件商品半价'
-      }],
-      dialogFormVisible: false
+      //   userForEdit: {},
+      dialogFormVisible: false,
+      rule: {
+        couponId: [{ required: true, message: '请选择优惠券', trigger: 'blur' }]
+      }
     }
   },
   watch: {
@@ -191,6 +184,9 @@ export default {
         this.busy = false
         this.feedbacks = oldValue.concat(newValue)
       }
+    },
+    sendCouponResult() {
+      this.dialogFormVisible = false
     }
   },
   computed: {
@@ -198,7 +194,9 @@ export default {
       'feedbacksList',
       'feedbacksTotal',
       'loading',
-      'backCouponList'
+      'backCouponList',
+      'userForEdit',
+      'sendCouponResult'
     ]),
     type() {
       return sessionStorage.getItem('type')
@@ -211,7 +209,8 @@ export default {
     ...mapActions({
       getFeedbacksList: 'getFeedbacksList',
       getFeedbacksPage: 'getFeedbacksPage',
-      getBackCouponList: 'getBackCouponList'
+      getBackCouponList: 'getBackCouponList',
+      editUser: 'editUser'
     }),
     ...mapMutations({
       showLoading: 'showLoading'
@@ -250,16 +249,15 @@ export default {
         this.getFeedbacksPage({ ...this.pagination, merchantId: this.merchantId })
       }, 1000)
     },
-    sendCoupon(row) {
-      this.userForEdit = row
+    sendCoupon(id) {
       this.dialogFormVisible = true
+      this.editUser(id)
       this.getBackCouponList()
     },
     sendCouponConfirm() {
-      this.dialogFormVisible = false
-      this.$message({
-        type: 'success',
-        message: '送券成功'
+      this.$refs.couponForm.validate(valid => {
+        if (valid) this.sendCouponToUser(this.userForEdit)
+        else console.log('sendCoupon err')
       })
     }
   },

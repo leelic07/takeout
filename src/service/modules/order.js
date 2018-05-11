@@ -8,5 +8,6 @@ export default {
   getOrderRetreatList: pagination => service.get('/order_cancles/page', pagination).then(res => res).catch(err => err),
   getOrderRecordsList: pagination => service.get('/order_historys/page', pagination).then(res => res).catch(err => err),
   getOrdersRecordsPage: pagination => service.get('/orders/page', pagination).then(res => res).catch(err => err),
-  getOrderReminderByStatus: pagination => service.get('/orders/reminderPage', pagination).then(res => res).catch(err => err)
+  getOrderReminderByStatus: pagination => service.get('/orders/reminderPage', pagination).then(res => res).catch(err => err),
+  retreatOrder: order => service.post('/order_cancles/save', order).then(res => res).catch(err => err)
 }
