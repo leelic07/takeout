@@ -118,92 +118,19 @@
           </el-row>
         </el-card>
       </el-col>
-      <!--商家关注信息-->
-      <!-- <el-col :span="10" class="order-summary">
-        <el-card>
-          <div slot="header" class="clearfix">
-            <span>今日订单概况</span>
-          </div>
-          <el-row class="card-content">
-            <el-col>
-              <label for="">已接订单:</label>
-              <b>1</b>
-              <span>笔</span>
-            </el-col>
-            <el-col>
-              <label for="">今日营业总额:</label>
-              <b>115</b>
-              <span>元</span>
-            </el-col>
-          </el-row>
-        </el-card>
-        <el-card>
-          <div slot="header" class="clearfix">
-            <span>需关注订单</span>
-          </div>
-          <el-row>
-            <el-col :span="24">
-              <el-col :span="12">
-                <label for="">紧急预订单：</label>
-                <span>
-                  <b>0</b>笔</span>
-              </el-col>
-              <el-col :span="12">
-                <a href="#">查看订单
-                  <i class="el-icon-arrow-right"></i>
-                </a>
-              </el-col>
-            </el-col>
-            <el-col :span="24">
-              <el-col :span="12">
-                <label for="">被取消配送：</label>
-                <span>
-                  <b>0</b>笔</span>
-              </el-col>
-              <el-col :span="12">
-                <a href="#">查看订单
-                  <i class="el-icon-arrow-right"></i>
-                </a>
-              </el-col>
-            </el-col>
-            <el-col :span="24">
-              <el-col :span="12">
-                <label for="">待发配送：</label>
-                <span>
-                  <b>0</b>笔</span>
-              </el-col>
-              <el-col :span="12">
-                <a href="#">查看订单
-                  <i class="el-icon-arrow-right"></i>
-                </a>
-              </el-col>
-            </el-col>
-            <el-col :span="24">
-              <el-col :span="12">
-                <label for="">未处理退款：</label>
-                <span>
-                  <b>0</b>笔</span>
-              </el-col>
-              <el-col :span="12">
-                <a href="#">查看订单
-                  <i class="el-icon-arrow-right"></i>
-                </a>
-              </el-col>
-            </el-col>
-          </el-row>
-        </el-card>
-      </el-col> -->
     </el-row>
     <!--订单退款对话框-->
     <el-dialog class="member-editor" title="订单退款" :visible.sync="dialogFormVisible">
-      <el-form :model="refundForm" size="mini" :rules="rule" ref="refundForm">
+      <el-form :model="refundForm" size="small" :rules="rule" ref="refundForm">
         <el-form-item label="请输入退款金额" label-width="120px" prop="totalPrice">
-          <el-input v-model="refundForm.totalPrice" placeholder="请选填写退款金额"></el-input>
+          <el-input v-model="refundForm.totalPrice" placeholder="请选填写退款金额">
+            <template slot="append">元</template>
+          </el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button size="mini" type="primary" @click="retreatOrderConfirm">确 定</el-button>
+        <el-button size="small" @click="dialogFormVisible = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="retreatOrderConfirm">确 定</el-button>
       </div>
     </el-dialog>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading" style="height:30px;"></div>

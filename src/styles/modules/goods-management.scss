@@ -11,6 +11,11 @@
     }
     .el-row.order-statics {
       margin-top: 30px;
+      .el-table {
+        img {
+          width: 100%
+        }
+      }
     }
     .el-row.goods-statics {
       margin-top: 30px;

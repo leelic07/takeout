@@ -23,7 +23,7 @@
         <el-table-column type="index" :index="1" label="序号"></el-table-column>
         <el-table-column label="商品图片">
           <template slot-scope="props">
-            <img src="" alt="">
+            <img :src="props.row.pictures[0].url" alt="">
           </template>
         </el-table-column>
         <el-table-column prop="name" label="商品名称"></el-table-column>

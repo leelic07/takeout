@@ -137,7 +137,7 @@
         </el-row>
         <!--会员送券对话框-->
         <el-dialog class="member-editor" title="会员送券" :visible.sync="dialogFormVisible">
-            <el-form :model="userForEdit" size="mini" :rules="rule" ref="couponForm">
+            <el-form :model="userForEdit" size="small" :rules="rule" ref="couponForm">
                 <el-form-item label="选择优惠券" label-width="120px" prop="couponId">
                     <el-select v-model="userForEdit.couponId" placeholder="请选择会优惠券">
                         <el-option v-for="item in backCouponList" :key="item.value" :label="item.label" :value="item.value">
@@ -146,8 +146,8 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
-                <el-button size="mini" type="primary" @click="sendCouponConfirm">确 定</el-button>
+                <el-button size="small" @click="dialogFormVisible = false">取 消</el-button>
+                <el-button size="small" type="primary" @click="sendCouponConfirm">确 定</el-button>
             </div>
         </el-dialog>
         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading" style="height:30px;"></div>
@@ -266,3 +266,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+    .order-acception-container {
+        & /deep/ .el-dialog {
+            width: 40%
+        }
+    }
+</style>
+
