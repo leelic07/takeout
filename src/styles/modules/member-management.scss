@@ -18,6 +18,11 @@
         img {
             width: 100%;
         }
+        .el-row {
+          >.el-col {
+            margin-bottom: 20px
+          }
+        }
         .el-col-14 {
             .el-col {
                 margin-bottom: 15px;

@@ -224,7 +224,6 @@ export default {
         size: refundOrder.orderItem.itemNums,
         name: refundOrder.name
       }
-      debugger
     },
     // 点击部分退款时执行的方法
     partCancelOrder() {

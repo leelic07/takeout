@@ -95,7 +95,6 @@ export default {
       state.orderReminderList = orders.filter(order => order.status === Number(status))
     },
     retreatOrder(state, retreatResult) {
-      debugger
       state.retreatResult = retreatResult
     }
   }

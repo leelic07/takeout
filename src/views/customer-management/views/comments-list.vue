@@ -140,7 +140,7 @@
             <el-form :model="userForEdit" size="small" :rules="rule" ref="couponForm">
                 <el-form-item label="选择优惠券" label-width="120px" prop="couponId">
                     <el-select v-model="userForEdit.couponId" placeholder="请选择会优惠券">
-                        <el-option v-for="item in backCouponList" :key="item.value" :label="item.label" :value="item.value">
+                        <el-option v-for="item in backCouponList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -210,7 +210,8 @@ export default {
       getFeedbacksList: 'getFeedbacksList',
       getFeedbacksPage: 'getFeedbacksPage',
       getBackCouponList: 'getBackCouponList',
-      editUser: 'editUser'
+      editUser: 'editUser',
+      sendCouponToUser: 'sendCouponToUser'
     }),
     ...mapMutations({
       showLoading: 'showLoading'

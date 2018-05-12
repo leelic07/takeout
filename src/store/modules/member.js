@@ -15,7 +15,11 @@ export default {
       http.editUser({ id }).then(res => res.code === 200 && commit('editUser', res)).catch(err => console.log(err))
     },
     sendCouponToUser({ commit }, user) {
-      http.sendCouponToUser(user).then(res => res.code === 200 && commit('sendCouponToUser', res)).catch(err => console.log(err))
+      const userInfo = {
+        couponId: user.couponId,
+        userId: user.id
+      }
+      http.sendCouponToUser(userInfo).then(res => res.code === 200 && commit('sendCouponToUser', res)).catch(err => console.log(err))
     }
   },
   mutations: {

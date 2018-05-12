@@ -61,35 +61,43 @@
         <!--查看会员详情信息-->
         <el-dialog class="member-detail" title="会员详情" :visible.sync="dialogDetailVisible">
             <el-row :gutter="10">
-                <el-col :span="10">
+                <!-- <el-col :span="10">
                     <img src="../../../assets/demo_images/000247589.jpg" alt="">
-                </el-col>
-                <el-col :span="14">
+                </el-col> -->
+                <el-col>
                     <el-col :span="11">
-                        <label for="">姓名：</label>
-                        <span>{{userForEdit.loginName}}</span>
+                        <label for="">姓名：
+                            <span>{{userForEdit.loginName}}</span>
+                        </label>
                     </el-col>
                     <el-col :span="11">
-                        <label for="">性别：</label>
-                        <span>{{userForEdit.userSex | gender}}</span>
+                        <label for="">性别：
+                            <span>{{userForEdit.userSex | gender}}</span>
+                        </label>
                     </el-col>
                 </el-col>
-                <el-col :span="14">
-                    <el-col>
-                        <label for="">电话：</label>
-                        <span>{{userForEdit.userPhone}}</span>
+                <el-col>
+                    <el-col :span="11">
+                        <label for="">电话：
+                            <span>{{userForEdit.userPhone}}</span>
+                        </label>
                     </el-col>
-                    <el-col>
-                        <label for="">地址：</label>
-                        <span>{{userForEdit.userAddress}}</span>
+                    <el-col :span="11">
+                        <label for="">地址：
+                            <span>{{userForEdit.userAddress}}</span>
+                        </label>
                     </el-col>
-                    <el-col>
-                        <label for="">注册时间：</label>
-                        <span>{{userForEdit.createdAt | Date}}</span>
+                </el-col>
+                <el-col>
+                    <el-col :span="11">
+                        <label for="">注册时间：
+                            <span>{{userForEdit.createdAt | Date}}</span>
+                        </label>
                     </el-col>
-                    <el-col>
-                        <label for="">备注：</label>
-                        <span>{{userForEdit.remark}}</span>
+                    <el-col :span="11">
+                        <label for="">备注：
+                            <span>{{userForEdit.remark}}</span>
+                        </label>
                     </el-col>
                 </el-col>
             </el-row>
@@ -99,7 +107,7 @@
             <el-form :model="userForEdit" size="small" :rules="rule" ref="couponFrom">
                 <el-form-item label="选择优惠券" label-width="120px" prop="couponId">
                     <el-select v-model="userForEdit.couponId" placeholder="请选择会优惠券">
-                        <el-option v-for="item in backCouponList" :key="item.value" :label="item.label" :value="item.value">
+                        <el-option v-for="item in backCouponList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
                 </el-form-item>
