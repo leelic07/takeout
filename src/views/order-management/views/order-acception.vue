@@ -69,14 +69,14 @@
                       <span>{{props.row.platformCommission}}</span>
                     </el-form-item>
                     <el-form-item label="本单预计收入:">
-                      <span style="color: orange;font-size: 18px;">{{props.row.orderIncome}}</span>
+                      <span style="color: orange;font-size: 18px;">￥{{props.row.orderIncome}}</span>
                     </el-form-item>
                     <el-form-item label="本顾客实际支付:">
-                      <span style="color: orange;font-size: 18px;">{{props.row.realTotalMoney}}</span>
+                      <span style="color: orange;font-size: 18px;">￥{{props.row.realTotalMoney}}</span>
                     </el-form-item>
                     <el-form-item>
-                      <el-button type="danger" plain size="mini" @click="cancelOrder">取消订单并退款</el-button>
-                      <el-button type="primary" plain size="mini" @click="printOrder">打印订单</el-button>
+                      <el-button type="danger" plain size="mini" @click="cancelOrder(props.row)">取消订单并退款</el-button>
+                      <el-button type="primary" plain size="mini" @click="printOrder(props.row)">打印订单</el-button>
                     </el-form-item>
                   </el-form>
                 </template>
@@ -194,6 +194,20 @@
         </el-card>
       </el-col> -->
     </el-row>
+    <!--订单退款对话框-->
+    <el-dialog class="member-editor" title="订单退款" :visible.sync="dialogFormVisible">
+      <el-form :model="refundForm" size="small" :rules="rule" ref="refundForm">
+        <el-form-item label="请输入退款金额" label-width="120px" prop="totalPrice">
+          <el-input v-model="refundForm.totalPrice" placeholder="请选填写退款金额">
+            <template slot="append">元</template>
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="dialogFormVisible = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="retreatOrderConfirm">确 定</el-button>
+      </div>
+    </el-dialog>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading" style="height:30px;"></div>
   </el-row>
 </template>
@@ -203,23 +217,33 @@ import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   data() {
+    const IsSupremePayment = (rule, value, callback) => {
+      if (this.totalPrice < value) callback(new Error('退款金额不能大于实际支付金额'))
+      else callback()
+    }
     return {
       form: {
         status: '0'
       },
-      boxData: [{
-        price: 1,
-        amount: 'x10',
-        total: 10
-      }],
-      deliveryData: [{
-        amount: 6
-      }],
+      rule: {
+        totalPrice: [
+          { required: true, message: '请输入退款金额', trigger: 'blur' },
+          { validator: IsSupremePayment, message: '退款金额不能大于顾客实际付款' }
+        ]
+      },
       pagination: {
         page: 1,
         rows: 10
       },
+      refundForm: {
+        totalPrice: '',
+        orderId: '',
+        size: '',
+        name: ''
+      },
       busy: true,
+      dialogFormVisible: false,
+      totalPrice: '',
       orderAcceptions: []
     }
   },
@@ -239,46 +263,50 @@ export default {
         this.busy = false
         this.orderAcceptions = oldValue.concat(newValue)
       }
+    },
+    retreatResult() {
+      this.dialogFormVisible = false
+      this.getOrderAcceptionByStatus({ ...this.pagination, ...this.form })
     }
   },
   computed: {
     ...mapGetters([
       'orderAcceptionList',
-      'loading'
+      'loading',
+      'retreatResult'
     ])
   },
   methods: {
     ...mapActions({
       getOrderAcceptionList: 'getOrderAcceptionList',
-      getOrderAcceptionByStatus: 'getOrderAcceptionByStatus'
+      getOrderAcceptionByStatus: 'getOrderAcceptionByStatus',
+      retreatOrder: 'retreatOrder'
     }),
     ...mapMutations({
-      showLoading: 'showLoading'
+      showLoading: 'showLoading',
+      printOrder: 'printOrder'
     }),
     // 点击打印订单执行的方法
-    printOrder() {
-      this.$confirm('确定打印订单？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '打印订单成功'
-        }).catch(err => console.log(err))
-      })
+    cancelOrder(refundOrder) {
+      this.dialogFormVisible = true
+      this.totalPrice = refundOrder.totalPrice
+      let totalNums = 0
+      if (refundOrder.orderItems.length) {
+        refundOrder.orderItems.forEach(item => {
+          totalNums += item.itemNums
+        })
+      } else totalNums = refundOrder.orderItems.itemNums
+      this.refundForm = {
+        orderId: refundOrder.id,
+        totalPrice: '',
+        size: totalNums,
+        name: refundOrder.userName
+      }
     },
-    // 点击打印订单执行的方法
-    cancelOrder() {
-      this.$confirm('确定取消订单？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '取消订单成功'
-        }).catch(err => console.log(err))
+    retreatOrderConfirm() {
+      this.$refs.refundForm.validate(valid => {
+        if (valid) this.retreatOrder(this.refundForm)
+        else console.log('err retreat')
       })
     },
     loadMore() {

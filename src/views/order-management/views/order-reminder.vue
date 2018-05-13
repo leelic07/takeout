@@ -43,7 +43,7 @@
                         </el-table-column>
                         <el-table-column label="数量">
                           <template slot-scope="prop">
-                            {{`x ${prop.row.itemNums}`}}
+                            X{{prop.row.itemNums}}}
                           </template>
                         </el-table-column>
                         <el-table-column label="总价">
@@ -75,10 +75,8 @@
                       <span style="color: orange;font-size: 18px;">{{props.row.realTotalMoney}}</span>
                     </el-form-item>
                     <el-form-item>
-                      <!-- <template slot-scope="props"> -->
-                      <el-button type="danger" plain size="mini" @click="cancelOrder">取消订单并退款</el-button>
-                      <el-button type="primary" plain size="mini" @click="printOrder">打印订单</el-button>
-                      <!-- </template> -->
+                      <el-button type="danger" plain size="mini" @click="cancelOrder(props.row)">取消订单并退款</el-button>
+                      <el-button type="primary" plain size="mini" @click="printOrder(props.row)">打印订单</el-button>
                     </el-form-item>
                   </el-form>
                 </template>
@@ -196,6 +194,20 @@
         </el-card>
       </el-col> -->
     </el-row>
+    <!--订单退款对话框-->
+    <el-dialog class="member-editor" title="订单退款" :visible.sync="dialogFormVisible">
+      <el-form :model="refundForm" size="small" :rules="rule" ref="refundForm">
+        <el-form-item label="请输入退款金额" label-width="120px" prop="totalPrice">
+          <el-input v-model="refundForm.totalPrice" placeholder="请选填写退款金额">
+            <template slot="append">元</template>
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="dialogFormVisible = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="retreatOrderConfirm">确 定</el-button>
+      </div>
+    </el-dialog>
     <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading" style="height:30px;"></div>
   </el-row>
 </template>
@@ -205,25 +217,35 @@ import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   data() {
+    const IsSupremePayment = (rule, value, callback) => {
+      if (this.totalPrice < value) callback(new Error('退款金额不能大于实际支付金额'))
+      else callback()
+    }
     return {
       form: {
         status: '0'
+      },
+      rule: {
+        totalPrice: [
+          { required: true, message: '请输入退款金额', trigger: 'blur' },
+          { validator: IsSupremePayment, message: '退款金额不能大于顾客实际付款' }
+        ]
       },
       pagination: {
         page: 1,
         rows: 10
       },
-      boxData: [{
-        price: 1,
-        amount: 'x10',
-        total: 10
-      }],
-      deliveryData: [{
-        amount: 6
-      }],
       reminder: false,
       busy: true,
-      orderReminders: []
+      orderReminders: [],
+      dialogFormVisible: false,
+      totalPrice: '',
+      refundForm: {
+        totalPrice: '',
+        orderId: '',
+        size: '',
+        name: ''
+      }
     }
   },
   watch: {
@@ -252,10 +274,12 @@ export default {
   },
   methods: {
     ...mapActions({
-      getOrderReminderByStatus: 'getOrderReminderByStatus'
+      getOrderReminderByStatus: 'getOrderReminderByStatus',
+      retreatOrder: 'retreatOrder'
     }),
     ...mapMutations({
-      showLoading: 'showLoading'
+      showLoading: 'showLoading',
+      printOrder: 'printOrder'
     }),
     // 点击催单执行的方法
     remindOrder() {
@@ -272,6 +296,29 @@ export default {
         this.pagination.page++
         this.getOrderReminderByStatus({ ...this.pagination, ...this.form })
       }, 1000)
+    },
+    // 点击打印订单执行的方法
+    cancelOrder(refundOrder) {
+      this.dialogFormVisible = true
+      this.totalPrice = refundOrder.totalPrice
+      let totalNums = 0
+      if (refundOrder.orderItems.length) {
+        refundOrder.orderItems.forEach(item => {
+          totalNums += item.itemNums
+        })
+      } else totalNums = refundOrder.orderItems.itemNums
+      this.refundForm = {
+        orderId: refundOrder.id,
+        totalPrice: '',
+        size: totalNums,
+        name: refundOrder.userName
+      }
+    },
+    retreatOrderConfirm() {
+      this.$refs.refundForm.validate(valid => {
+        if (valid) this.retreatOrder(this.refundForm)
+        else console.log('err retreat')
+      })
     }
   }
 }

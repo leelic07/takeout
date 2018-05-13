@@ -226,7 +226,7 @@ export default {
         this.$message({
           type: 'success',
           message: '打印订单成功'
-        }).catch(err => console.log(err))
+        })
       })
     },
     // 点击打印订单执行的方法
@@ -239,7 +239,7 @@ export default {
         this.$message({
           type: 'success',
           message: '取消订单成功'
-        }).catch(err => console.log(err))
+        })
       })
     },
     loadMore() {

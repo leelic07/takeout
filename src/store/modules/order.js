@@ -1,4 +1,5 @@
 import http from '@/service'
+import router from '@/router'
 
 export default {
   state: {
@@ -8,7 +9,8 @@ export default {
     orderRecordsList: [],
     orderRecordsTotal: 0,
     orderReminderList: [],
-    retreatResult: {}
+    retreatResult: {},
+    orderForPrint: {}
   },
   actions: {
     // 获取接单信息
@@ -96,6 +98,12 @@ export default {
     },
     retreatOrder(state, retreatResult) {
       state.retreatResult = retreatResult
+    },
+    printOrder(state, orderForPrint) {
+      state.orderForPrint = orderForPrint
+      router.push({
+        path: '/system/setup'
+      })
     }
   }
 }

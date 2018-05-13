@@ -150,6 +150,12 @@ export default {
       form: {
         status: '0'
       },
+      rule: {
+        totalPrice: [
+          { required: true, message: '请输入退款金额', trigger: 'blur' },
+          { validator: IsSupremePayment, message: '退款金额不能大于顾客实际付款' }
+        ]
+      },
       pagination: {
         page: 1,
         rows: 10
@@ -161,12 +167,6 @@ export default {
         orderId: '',
         size: '',
         name: ''
-      },
-      rule: {
-        totalPrice: [
-          { required: true, message: '请输入退款金额', trigger: 'blur' },
-          { validator: IsSupremePayment, message: '退款金额不能大于顾客实际付款' }
-        ]
       },
       dialogFormVisible: false
     }
@@ -187,12 +187,16 @@ export default {
         this.busy = false
         this.orderRetreats = oldValue.concat(newValue)
       }
+    },
+    retreatResult() {
+      this.dialogFormVisible = false
     }
   },
   computed: {
     ...mapGetters([
       'orderRetreatList',
-      'loading'
+      'loading',
+      'retreatResult'
     ])
   },
   methods: {
@@ -202,27 +206,24 @@ export default {
       retreatOrder: 'retreatOrder'
     }),
     ...mapMutations({
-      showLoading: 'showLoading'
+      showLoading: 'showLoading',
+      printOrder: 'printOrder'
     }),
     // 点击打印订单执行的方法
     cancelOrder(refundOrder) {
-      // this.$confirm('确定取消订单？', '提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(() => {
-      //   this.$message({
-      //     type: 'success',
-      //     message: '取消订单成功'
-      //   }).catch(err => console.log(err))
-      // })
       this.dialogFormVisible = true
       this.totalPrice = refundOrder.orders.totalPrice
+      let totalNums = 0
+      if (refundOrder.orderItems.length) {
+        refundOrder.orderItems.forEach(item => {
+          totalNums += item.itemNums
+        })
+      } else totalNums = refundOrder.orderItems.itemNums
       this.refundForm = {
         orderId: refundOrder.orders.id,
         totalPrice: '',
-        size: refundOrder.orderItem.itemNums,
-        name: refundOrder.name
+        size: totalNums,
+        name: refundOrder.userName
       }
     },
     // 点击部分退款时执行的方法
@@ -245,9 +246,6 @@ export default {
         this.pagination.page++
         this.getOrderRetreatByStatus({ ...this.pagination, ...this.form })
       }, 1000)
-    },
-    printOrder() {
-      console.log('printOrder')
     },
     retreatOrderConfirm() {
       this.$refs.refundForm.validate(valid => {

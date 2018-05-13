@@ -1,0 +1,82 @@
+.system-setup {
+    padding: 32px;
+    .el-card {
+        .el-card__body {
+            // padding: 25px 25px 0 25px;
+            .el-form {
+                .el-form-item {
+                    font-weight: bold;
+                    &:not(:nth-child(2)) {
+                        margin-bottom: 15px;
+                    }
+                    &:nth-child(2) {
+                        h1 {
+                            text-align: center;
+                        }
+                    }
+                    &:nth-child(3) {
+                        p {
+                            text-align: center;
+                        }
+                    }
+                    &:nth-child(4) {
+                        border: 3px dashed;
+                        border-left: 0;
+                        border-right: 0;
+                    }
+                    &:nth-child(6) {
+                        border-bottom: 3px dashed;
+                        .el-col {
+                            border-top: 3.5px dashed;
+                            position: relative;
+                            margin-bottom: 15px;
+                            span {
+                                position: absolute;
+                                top: -20px;
+                                left: 45%;
+                                height: 25px;
+                                background: $white;
+                            }
+                        }
+                        table {
+                            text-align: center;
+                            width: 100%;
+                            font-size: 16px;
+                        }
+                    }
+                    &:nth-child(7) {
+                        border-bottom: 3px dashed;
+                        label {
+                            display: block;
+                            font-size: 16px;
+                        }
+                    }
+                    &:nth-child(8) {
+                        h1 {
+                            &:first-child {
+                                float:left;
+                            }
+                            &:nth-child(2) {
+                                float: right;
+                            }
+                        }
+                    }
+                    &:last-child {
+                        .el-button {
+                            float:right;
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+            // .el-col {
+            //     &.print-button {
+            //         .el-button {
+            //             float: right;
+            //             margin-bottom: 25px;
+            //         }
+            //     }
+            // }
+        }
+    }
+}

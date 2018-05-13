@@ -15,7 +15,7 @@
     <!--店铺信息列表-->
     <el-row class="order-statics">
       <el-table :data="shopList" stripe border fit>
-        <!-- <el-table-column type="index" :index="1" label="序号"/> -->
+        <el-table-column type="index" :index="1" label="序号"/>
         <el-table-column label="店铺名称">
           <template slot-scope="props">
             <el-button type="text" @click="showMemberDetail(props.row)">{{props.row.name}}</el-button>
@@ -23,8 +23,8 @@
         </el-table-column>
         <el-table-column prop="code" label="店铺编号"></el-table-column>
         <el-table-column prop="typeName" label="店铺类型"></el-table-column>
-        <el-table-column prop="tel" label="联系电话"></el-table-column>
-        <el-table-column prop="address" label="地址"></el-table-column>
+        <el-table-column prop="tel" label="联系电话" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="address" label="地址" show-overflow-tooltip></el-table-column>
         <el-table-column prop="monthPrice" label="本月营业额"></el-table-column>
         <el-table-column prop="monthOrder" label="本月订单数"></el-table-column>
         <el-table-column prop="itemCount" label="商品数量"></el-table-column>

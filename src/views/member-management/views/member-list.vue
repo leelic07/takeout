@@ -21,10 +21,10 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="birthday" label="生日"></el-table-column>
-                <el-table-column prop="userPhone" label="手机号码"></el-table-column>
+                <el-table-column prop="userPhone" label="手机号码" show-overflow-tooltip></el-table-column>
                 <el-table-column label="地址">
                     <template slot-scope="props">
-                        <el-popover placement="bottom" title="地址" width="200" trigger="click" :content="props.row.address">
+                        <el-popover placement="bottom" title="地址" width="200" trigger="hover" :content="props.row.address">
                             <el-button slot="reference" type="text">查看</el-button>
                         </el-popover>
                     </template>

@@ -10,6 +10,7 @@
 @import './modules/goods-management.scss';
 @import './modules/goods-upload.scss';
 @import './modules/activity-add.scss';
+@import './modules/system-setup.scss';
 
 body {
   -moz-osx-font-smoothing: grayscale;
@@ -75,6 +76,4 @@ h1, h2, h3 {
   padding: 20px;
 }
 
-.el-form-item {
-  margin-bottom: 8px;
-}
+
