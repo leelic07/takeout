@@ -33,8 +33,8 @@
                     </el-form-item>
                     <el-form-item label="库存状态" label-width="120px" prop="stockStatus">
                         <el-radio-group v-model="goodsForEdit.stockStatus">
-                            <el-radio :label="0">有限</el-radio>
-                            <el-radio :label="1">无限</el-radio>
+                            <el-radio label="0">有限</el-radio>
+                            <el-radio label="1">无限</el-radio>
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="库存量" label-width="120px" prop="stock">

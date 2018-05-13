@@ -23,10 +23,14 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="店铺经度" label-width="120px" prop="lat">
-                        <el-input v-model="shopForEdit.lat" auto-complete="off" placeholder="请填写店铺经度"></el-input>
+                        <el-input v-model="shopForEdit.lat" auto-complete="off" placeholder="请填写店铺经度">
+                          <template slot="append">度</template>
+                        </el-input>
                     </el-form-item>
                     <el-form-item label="店铺维度" label-width="120px" prop="lng">
-                        <el-input v-model="shopForEdit.lng" auto-complete="off" placeholder="请填写店铺维度"></el-input>
+                        <el-input v-model="shopForEdit.lng" auto-complete="off" placeholder="请填写店铺维度">
+                          <template slot="append">度</template>
+                        </el-input>
                     </el-form-item>
                     <el-form-item label="联系电话" label-width="120px" prop="tel">
                         <el-input v-model="shopForEdit.tel" auto-complete="off" placeholder="请填写联系电话"></el-input>

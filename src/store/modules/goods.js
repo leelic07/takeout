@@ -183,7 +183,11 @@ export default {
       state.goodsForEdit = goodsForEdit
     },
     getGoodsTypeList(state, goodsTypeResult) {
-      state.goodsTypeList = goodsTypeResult.data.itemTypes
+      const goodsTypeList = goodsTypeResult.data.itemTypes
+      goodsTypeList.forEach(type => {
+        type.id = type.id.toString()
+      })
+      state.goodsTypeList = goodsTypeList
     },
     saveGoods(state, saveGoodsResult) {
       state.saveGoodsResult = saveGoodsResult
