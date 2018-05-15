@@ -135,6 +135,8 @@ export default {
       goods.itemMerchants = merchants
       goods.pictures = pictures
       goods.itemPropertys = propertys
+      delete goods.createdAt
+      delete goods.updatedAt
       http.updateGoods(goods).then(res => res.code === 200 && commit('updateGoods', res)).catch(err => console.log(err))
     },
     deleteProperty({ commit }, id) {

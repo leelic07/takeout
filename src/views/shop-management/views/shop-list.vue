@@ -16,7 +16,7 @@
     <el-row class="order-statics">
       <el-table :data="shopList" stripe border fit>
         <el-table-column type="index" :index="1" label="序号"/>
-        <el-table-column label="店铺名称">
+        <el-table-column label="店铺名称" show-overflow-tooltip>
           <template slot-scope="props">
             <el-button type="text" @click="showMemberDetail(props.row)">{{props.row.name}}</el-button>
           </template>

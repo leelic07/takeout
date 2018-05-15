@@ -13,14 +13,14 @@
         <!--会员信息列表-->
         <el-row class="order-statics">
             <el-table :data="userList" stripe border style="width: 100%">
-                <el-table-column prop="userNo" label="会员编号"></el-table-column>
+                <el-table-column prop="userNo" label="会员编号" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="userName" label="微信昵称"></el-table-column>
                 <el-table-column label="性别">
                     <template slot-scope="props">
                         {{ props.row.userSex | gender}}
                     </template>
                 </el-table-column>
-                <el-table-column prop="birthday" label="生日"></el-table-column>
+                <el-table-column prop="birthday" label="生日" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="userPhone" label="手机号码" show-overflow-tooltip></el-table-column>
                 <el-table-column label="地址">
                     <template slot-scope="props">
@@ -30,7 +30,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="userScore" label="积分"></el-table-column>
-                <el-table-column label="注册时间">
+                <el-table-column label="注册时间" show-overflow-tooltip>
                     <template slot-scope="props">
                         {{props.row.createdAt | Date}}
                     </template>

@@ -28,10 +28,9 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "src/styles/mixin.scss";
+$bgGray: #fcfcfc;
 .app-wrapper {
   @include clearfix;
-  position: relative;
-  height: 100%;
-  width: 100%;
+  @include absolute;
 }
 </style>

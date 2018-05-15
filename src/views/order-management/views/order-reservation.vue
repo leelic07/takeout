@@ -6,8 +6,8 @@
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="处理状态">
             <el-radio-group v-model="form.status">
-              <el-radio label="0">未预定</el-radio>
-              <el-radio label="1">已预定</el-radio>
+              <el-radio label="0">未处理</el-radio>
+              <el-radio label="1">已处理</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -77,8 +77,8 @@
                       </el-form>
                     </el-form-item>
                     <el-form-item>
-                      <el-button type="danger" plain size="mini" @click="cancelOrder(props.row)">取消订单并退款</el-button>
-                      <el-button type="danger" plain size="mini" @click="partCancelOrder(props.row)">部分退款</el-button>
+                      <!-- <el-button type="danger" plain size="mini" @click="cancelOrder(props.row)">取消订单并退款</el-button>
+                      <el-button type="danger" plain size="mini" @click="partCancelOrder(props.row)">部分退款</el-button> -->
                       <el-button type="primary" plain size="mini" @click="printOrder(props.row)">打印订单</el-button>
                     </el-form-item>
                   </el-form>

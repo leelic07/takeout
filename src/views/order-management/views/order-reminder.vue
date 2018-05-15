@@ -75,7 +75,7 @@
                       <span style="color: orange;font-size: 18px;">{{props.row.realTotalMoney}}</span>
                     </el-form-item>
                     <el-form-item>
-                      <el-button type="danger" plain size="mini" @click="cancelOrder(props.row)">取消订单并退款</el-button>
+                      <!-- <el-button type="danger" plain size="mini" @click="cancelOrder(props.row)">取消订单并退款</el-button> -->
                       <el-button type="primary" plain size="mini" @click="printOrder(props.row)">打印订单</el-button>
                     </el-form-item>
                   </el-form>

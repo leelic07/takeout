@@ -195,3 +195,5 @@ export const remove = (url, data = {}) =>
  */
 export const all = (urls = []) =>
   axios.all(urls.map(url => instance.get(getUrl(url)))).then(axios.spread((...res) => res.map(res => res.data))).catch(err => err)
+
+export const ajax = instance

@@ -26,13 +26,13 @@
             <img :src="props.row.pictures[0].url" alt="">
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="商品名称"></el-table-column>
-        <el-table-column prop="code" label="编号"></el-table-column>
+        <el-table-column prop="name" label="商品名称" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="code" label="编号" show-overflow-tooltip></el-table-column>
         <el-table-column prop="unit" label="商品单位"></el-table-column>
         <el-table-column prop="price" label="价格"></el-table-column>
         <el-table-column prop="itemTypeName" label="商品分类">
         </el-table-column>
-        <el-table-column prop="label" label="标签"></el-table-column>
+        <el-table-column prop="label" label="标签" show-overflow-tooltip></el-table-column>
         <el-table-column prop="salesVolume" label="销售量"></el-table-column>
         <el-table-column prop="stockStatus" label="库存状态"></el-table-column>
         <el-table-column prop="stock" label="库存量"></el-table-column>

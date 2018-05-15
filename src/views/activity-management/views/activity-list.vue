@@ -18,15 +18,15 @@
     <el-row class="order-statics" v-if="showActivityList">
       <el-table :data="activityList" stripe border fit style="width: 100%">
         <el-table-column type="index" :index="1" label="序号"></el-table-column>
-        <el-table-column prop="activityType" label="活动类型"></el-table-column>
+        <el-table-column prop="activityType" label="活动类型" show-overflow-tooltip></el-table-column>
         <el-table-column prop="code" label="活动编号"></el-table-column>
-        <el-table-column prop="name" label="活动名称"></el-table-column>
-        <el-table-column label="开始日期">
+        <el-table-column prop="name" label="活动名称" show-overflow-tooltip></el-table-column>
+        <el-table-column label="开始日期" show-overflow-tooltip>
           <template slot-scope="props">
             {{props.row.startDate | Date}}
           </template>
         </el-table-column>
-        <el-table-column label="活动结束日期">
+        <el-table-column label="活动结束日期" show-overflow-tooltip>
           <template slot-scope="props">
             {{props.row.endDate | Date}}
           </template>
@@ -49,15 +49,15 @@
     <el-row class="order-statics" v-if="showCouponList">
       <el-table :data="couponList" stripe border fit style="width: 100%">
         <el-table-column type="index" :index="1" label="序号"></el-table-column>
-        <el-table-column prop="activityType" label="活动类型"></el-table-column>
+        <el-table-column prop="activityType" label="活动类型" show-overflow-tooltip></el-table-column>
         <el-table-column prop="code" label="活动编号"></el-table-column>
-        <el-table-column prop="name" label="活动名称"></el-table-column>
-        <el-table-column label="开始日期">
+        <el-table-column prop="name" label="活动名称" show-overflow-tooltip></el-table-column>
+        <el-table-column label="开始日期" show-overflow-tooltip>
           <template slot-scope="props">
             {{props.row.startDate | Date}}
           </template>
         </el-table-column>
-        <el-table-column label="活动结束日期">
+        <el-table-column label="活动结束日期" show-overflow-tooltip>
           <template slot-scope="props">
             {{props.row.endDate | Date}}
           </template>

@@ -69,6 +69,7 @@ const getters = {
   userTotal: state => state.member.userTotal,
   userForEdit: state => state.member.userForEdit,
   sendCouponResult: state => state.member.sendCouponResult,
+  linkWebsocketResult: state => state.member.linkWebsocketResult,
   // 售后管理
   feedbacksList: state => state.customer.feedbacksList,
   feedbacksTotal: state => state.customer.feedbacksTotal,
