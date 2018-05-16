@@ -378,6 +378,26 @@ export const constantRouterMap = [
     }]
   },
 
+  {// 老板管理
+    path: '/boss',
+    name: 'Boss',
+    redirect: '/boss/message',
+    component: () => import('@/views/boss-management/index'),
+    meta: { title: '老板店铺信息', icon: 'example' },
+    hidden: true,
+    children: [{
+      path: 'message',
+      name: 'BossMessage',
+      meta: { title: '老板店铺信息', icon: 'example' },
+      component: () => import('@/views/boss-management/views/message')
+    }, {
+      path: 'records',
+      name: 'BossRecords',
+      meta: { title: '店铺历史信息', icon: 'example' },
+      component: () => import('@/views/boss-management/views/records')
+    }]
+  },
+
   { path: '*', redirect: '/404', hidden: true }
 ]
 
