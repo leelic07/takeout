@@ -69,6 +69,7 @@ const getters = {
   userTotal: state => state.member.userTotal,
   userForEdit: state => state.member.userForEdit,
   sendCouponResult: state => state.member.sendCouponResult,
+  linkWebsocketResult: state => state.member.linkWebsocketResult,
   // 售后管理
   feedbacksList: state => state.customer.feedbacksList,
   feedbacksTotal: state => state.customer.feedbacksTotal,
@@ -84,7 +85,10 @@ const getters = {
   // 财务管理
   financeList: state => state.finance.financeList,
   financeTotal: state => state.finance.financeTotal,
-  filepath: state => state.finance.filepath
+  filepath: state => state.finance.filepath,
+  // 系统管理
+  userRanksResult: state => state.system.userRanksResult,
+  deliveryTimeResult: state => state.system.deliveryTimeResult
 }
 
 export default getters

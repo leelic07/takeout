@@ -8,6 +8,7 @@ import member from './modules/member'
 import customer from './modules/customer'
 import data from './modules/data'
 import finance from './modules/finance'
+import system from './modules/system'
 
 export default {
   ...user,
@@ -19,5 +20,6 @@ export default {
   ...member,
   ...customer,
   ...data,
-  ...finance
+  ...finance,
+  ...system
 }

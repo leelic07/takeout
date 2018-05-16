@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     initRoutes(routes, type) {
-      if (type !== '1') {
+      if (type !== '1') { // 非超级管理员
         routes.forEach((route, index, arr) => {
           switch (route.name) {
             case 'Activity':
@@ -46,9 +46,14 @@ export default {
                 if (goods.name === 'GoodsUpload') goods.hidden = true
               })
               break
+            case 'SystemSetUp':
+              route.children.forEach(system => {
+                if (system.name === 'SystemBanner' || system.name === 'DeliveryTime' || system.name === 'MemberLevel') system.hidden = true
+              })
+              break
           }
         })
-      } else {
+      } else { // 超级管理员
         routes.forEach((route, index, arr) => {
           switch (route.name) {
             case 'Activity':
@@ -63,6 +68,11 @@ export default {
             case 'Goods':
               route.children.forEach(goods => {
                 if (goods.name === 'GoodsUpload') goods.hidden = false
+              })
+              break
+            case 'SystemSetUp':
+              route.children.forEach(system => {
+                if (system.name === 'SystemBanner' || system.name === 'DeliveryTime' || system.name === 'MemberLevel') system.hidden = false
               })
               break
           }

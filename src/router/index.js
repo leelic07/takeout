@@ -360,6 +360,44 @@ export const constantRouterMap = [
       name: 'SystemSetup',
       component: () => import('@/views/system-setup/views/system-setup'),
       meta: { title: '系统设置', icon: 'example' }
+    }, {// 上传小程序轮播图
+      path: 'banner',
+      name: 'SystemBanner',
+      component: () => import('@/views/system-setup/views/system-banner'),
+      meta: { title: '小程序轮播图', icon: 'example' },
+      hidden: false
+    }, {// 设置配送时间
+      path: 'delivery-time',
+      name: 'DeliveryTime',
+      component: () => import('@/views/system-setup/views/system-delivery'),
+      meta: { title: '设置配送时间', icon: 'example' },
+      hidden: false
+    }, {// 设置会员等级
+      path: 'member-level',
+      name: 'MemberLevel',
+      component: () => import('@/views/system-setup/views/system-level'),
+      meta: { title: '设置会员等级', icon: 'example' },
+      hidden: false
+    }]
+  },
+
+  {// 老板管理
+    path: '/boss',
+    name: 'Boss',
+    redirect: '/boss/message',
+    component: () => import('@/views/boss-management/index'),
+    meta: { title: '老板店铺信息', icon: 'example' },
+    hidden: true,
+    children: [{
+      path: 'message',
+      name: 'BossMessage',
+      meta: { title: '老板店铺信息', icon: 'example' },
+      component: () => import('@/views/boss-management/views/message')
+    }, {
+      path: 'records',
+      name: 'BossRecords',
+      meta: { title: '店铺历史信息', icon: 'example' },
+      component: () => import('@/views/boss-management/views/records')
     }]
   },
 

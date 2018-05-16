@@ -4,9 +4,9 @@ export default {
   // 请求方式
   // method: 'get',
   // 基础url前缀
-  baseURL: 'http://169.254.254.42:8080',
-  // baseURL: 'https://pandax.mofasion.com',
-  // baseURL: 'http://10.10.10.21:8080',
+  // baseURL: 'http://localhost:8080/takeaway',
+  baseURL: 'https://pandax.mofasion.com',
+  // baseURL: 'http://10.10.10.10:8080',
   // baseURL: 'http://47.106.143.22:8080',
   // 请求发送之前对出参进行处理
   // transformRequest: [data => data],

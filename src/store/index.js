@@ -12,6 +12,7 @@ import customer from './modules/customer'
 import loading from './modules/loading'
 import data from './modules/data'
 import finance from './modules/finance'
+import system from './modules/system'
 import getters from './getters'
 
 Vue.use(Vuex)
@@ -29,7 +30,8 @@ const store = new Vuex.Store({
     customer,
     loading,
     data,
-    finance
+    finance,
+    system
   },
   getters
 })

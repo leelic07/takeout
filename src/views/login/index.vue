@@ -64,14 +64,28 @@ export default {
       pwdType: 'password'
     }
   },
+  watch: {
+    users() {
+      console.log('users change')
+      this.linkWebsocket()
+      this.$router.push({
+        path: '/seller/index'
+      })
+    },
+    linkWebsocketResult(newValue) {
+      console.log(newValue)
+    }
+  },
   computed: {
     ...mapGetters({
-      users: 'users'
+      users: 'users',
+      linkWebsocketResult: 'linkWebsocketResult'
     })
   },
   methods: {
     ...mapActions({
-      login: 'login'
+      login: 'login',
+      linkWebsocket: 'linkWebsocket'
     }),
     showPwd() {
       if (this.pwdType === 'password') {
