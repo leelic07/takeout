@@ -9,7 +9,7 @@
                         </el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" size="medium" @click="saveShopConfirm">保存</el-button>
+                        <el-button type="primary" size="medium" @click="saveDeliveryTime">保存</el-button>
                     </el-form-item>
                 </el-form>
             </el-card>
@@ -51,31 +51,10 @@ export default {
   },
   methods: {
     ...mapActions({
-      saveShop: 'saveShop',
-      getShopTypeList: 'getShopTypeList'
+      updateDeliveryTime: 'updateDeliveryTime'
     }),
-    handleRemove(file) {
-      this.fileListTemp.forEach((f, index, arr) => {
-        if (f.url === file.url) {
-          this.deliveryForm.pictures.splice(index, 1)
-          arr.splice(index, 1)
-        }
-      })
-    },
-    // 上传图片成功执行的方法
-    handleSuccess(res, file) {
-      this.fileListTemp.push(file)
-      this.deliveryForm.pictures.push({ url: this.$baseURL + res.path })
-    },
-    // 图片上传超过限制执行的方法
-    handleExceed() {
-      this.$message({
-        type: 'warning',
-        message: '最多只能上传5张图片'
-      })
-    },
     // 保存新增商户信息
-    saveShopConfirm() {
+    saveDeliveryTime() {
       this.$refs.deliveryForm.validate(valid => {
         if (valid) {
           this.$message({
