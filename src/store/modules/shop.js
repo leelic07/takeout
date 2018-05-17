@@ -1,5 +1,6 @@
 import http from '@/service'
 import router from '@/router'
+const type = sessionStorage['type']
 
 export default {
   state: {
@@ -39,6 +40,10 @@ export default {
       http.getMerchantsListByitemId({ itemId: id }).then(res => res.code === 200 && commit('getMerchantsListByitemId', res)).catch(err => console.log(err))
     },
     updateShop({ commit }, shopInfo) {
+      if (shopInfo.time) {
+        shopInfo.startDate = shopInfo.time[0]
+        shopInfo.endDate = shopInfo.time[1]
+      }
       http.updateShop(shopInfo).then(res => res.code === 200 && commit('updateShop', res)).catch(err => console.log(err))
     },
     getMerchantsHomePage({ commit }, merchantId) {
@@ -88,9 +93,11 @@ export default {
     },
     updateShop(state, updateShopResult) {
       state.updateShopResult = updateShopResult
-      // router.push({
-      //   path: '/shop/list'
-      // })
+      if (type === '1') {
+        router.push({
+          path: '/shop/list'
+        })
+      }
     },
     getMerchantsHomePage(state, merchantHomePageResult) {
       state.merchantHomePage = merchantHomePageResult.data.merchants

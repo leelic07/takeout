@@ -37,7 +37,7 @@
                         <el-date-picker v-model="activityForm.endDate" type="date" placeholder="选择日期">
                         </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="活动参与店铺" label-width="100px">
+                    <el-form-item label="活动参与店铺" label-width="110px" prop="merchants">
                         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange(checkAll,'acitivity')">全选</el-checkbox>
                         <el-checkbox-group v-model="activityForm.merchants" @change="handleCheckMerchantChange">
                             <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
@@ -67,7 +67,13 @@
                     <el-form-item label="活动结束时间" label-width="110px" prop="endDate">
                         <el-date-picker v-model="discountForm.endDate" placeholder="选择结束日期"></el-date-picker>
                     </el-form-item>
-                    <el-form-item label="活动参与店铺" label-width="100px">
+                    <el-form-item label="优惠券图片" label-width="120px" prop="pictures">
+                        <el-upload class="upload-demo" :action="$_baseURL + $_uploadURL" :with-credentials="true" :on-remove="handleRemove" :on-success="handleSuccess" :file-list="fileList" list-type="picture" show-file-list>
+                            <el-button size="small" type="primary">点击上传</el-button>
+                            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片</div>
+                        </el-upload>
+                    </el-form-item>
+                    <el-form-item label="活动参与店铺" label-width="110px" prop="merchants">
                         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange(checkAll,'discount')">全选</el-checkbox>
                         <el-checkbox-group v-model="discountForm.merchants" @change="handleCheckMerchantChange">
                             <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
@@ -110,18 +116,22 @@ export default {
         type: '1'
       },
       discountForm: {
-        merchants: []
+        merchants: [],
+        pictures: []
       },
       activityForm: {
         merchants: []
       },
+      fileList: [],
+      fileListTemp: [],
       labelPosition: 'left',
       activityRules: {
         name: [{ required: true, message: '活动名称不能为空', trigger: 'blur' }],
         fullMoney: [{ required: true, message: '满金额不能为空', trigger: 'blur' }],
         reduceMoney: [{ required: true, message: '减金额不能为空', trigger: 'blur' }],
         startDate: [{ required: true, message: '活动开始时间不能为空', trigger: 'blur' }],
-        endDate: [{ required: true, message: '活动结束时间不能为空', trigger: 'blur' }]
+        endDate: [{ required: true, message: '活动结束时间不能为空', trigger: 'blur' }],
+        merchants: [{ required: true, message: '参与店铺不能为空', trigger: 'blur' }]
       },
       discountRules: {
         name: [{ required: true, message: '优惠券名称不能为空', trigger: 'blur' }],
@@ -129,7 +139,9 @@ export default {
         spendMoney: [{ required: true, message: '最低消费金额不能为空', trigger: 'blur' }],
         couponSendType: [{ required: true, message: '优惠券类型不能为空', trigger: 'blur' }],
         startDate: [{ required: true, message: '优惠券开始时间不能为空', trigger: 'blur' }],
-        endDate: [{ required: true, message: '优惠券结束时间不能为空', trigger: 'blur' }]
+        endDate: [{ required: true, message: '优惠券结束时间不能为空', trigger: 'blur' }],
+        merchants: [{ required: true, message: '参与店铺不能为空', trigger: 'blur' }],
+        pictures: [{ required: true, message: '优惠券图片不能为空', trigger: 'blur' }]
       },
       isEnoughSend: false,
       isIndeterminate: true,
@@ -187,6 +199,18 @@ export default {
     handleCheckMerchantChange(val) {
       this.checkAll = val.length === this.merchantList.length
       this.isIndeterminate = val.length > 0 && val.length < this.merchantList.length
+    },
+    handleRemove(file) {
+      this.fileListTemp.forEach((f, index, arr) => {
+        if (f.url === file.url) {
+          this.discountForm.pictures.splice(index, 1)
+          arr.splice(index, 1)
+        }
+      })
+    },
+    handleSuccess(res, file, fileList) {
+      this.fileListTemp.push(file)
+      this.discountForm.pictures.push(this.$_baseURL + res.path)
     }
   },
   mounted() {

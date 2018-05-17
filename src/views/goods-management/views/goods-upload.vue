@@ -46,7 +46,7 @@
               <el-radio label="0">下架</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="商品图片" placeholder="请填写地址" label-width="120px">
+          <el-form-item label="商品图片" label-width="120px">
             <el-upload class="upload-demo" :action="$_baseURL + $_uploadURL" :with-credentials="true" :on-remove="handleRemove" :on-success="handleSuccess" :file-list="fileList" list-type="picture" :limit="5" show-file-list>
               <el-button size="small" type="primary">点击上传</el-button>
               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片，最多只能上传五张图片</div>
