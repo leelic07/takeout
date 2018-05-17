@@ -2,11 +2,17 @@
     <el-row class="goods-upload-container">
         <el-col class="goods-upload-box" :span="14" :offset="5">
             <el-card>
-                <el-form :model="bannerForm" ref="bannerForm" :rules="rule" size="large">
+                <el-form label-position="right" :model="bannerForm" ref="bannerForm" :rules="rule" size="large">
+                    <el-form-item label="活动名称" label-width="120px" prop="name">
+                        <el-input v-model="bannerForm.name" placeholder="请输入轮播名称"></el-input>
+                    </el-form-item>
+                    <el-form-item label="跳转地址" label-width="120px" prop="url">
+                        <el-input v-model="bannerForm.url" placeholder="请输入轮播跳转地址"></el-input>
+                    </el-form-item>
                     <el-form-item label="小程序轮播图" label-width="120px" prop="pictures">
                         <el-upload class="upload-demo" :action="$_baseURL + $_uploadURL" :with-credentials="true" :on-remove="handleRemove" :on-success="handleSuccess" :on-exceed="handleExceed" :file-list="fileList" list-type="picture" :limit="5" show-file-list>
                             <el-button size="small" type="primary">点击上传</el-button>
-                            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片，最多只能上传五张图片</div>
+                            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片</div>
                         </el-upload>
                     </el-form-item>
                     <el-form-item>
@@ -39,6 +45,8 @@ export default {
       }],
       formLabelWidth: '80px',
       rule: {
+        name: [{ required: true, message: '活动名称不能为空', trigger: 'blur' }],
+        url: [{ required: true, message: '活动地址不能为空', trigger: 'blur' }],
         pictures: [{ required: true, message: '图片不能为空', trigger: 'blur' }]
       }
     }

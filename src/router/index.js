@@ -363,9 +363,21 @@ export const constantRouterMap = [
     }, {// 上传小程序轮播图
       path: 'banner',
       name: 'SystemBanner',
-      component: () => import('@/views/system-setup/views/system-banner'),
-      meta: { title: '小程序轮播图', icon: 'example' },
+      component: () => import('@/views/system-setup/views/system-banner/banner-list'),
+      meta: { title: '轮播图管理', icon: 'example' },
       hidden: false
+    }, {
+      path: 'add-banner',
+      name: 'BannerAdd',
+      component: () => import('@/views/system-setup/views/system-banner/banner-add'),
+      meta: { title: '新增轮播图', icon: 'example' },
+      hidden: true
+    }, {
+      path: 'edit-banner/:id',
+      name: 'BannerEdit',
+      component: () => import('@/views/system-setup/views/system-banner/banner-edit'),
+      meta: { title: '编辑轮播图', icon: 'example' },
+      hidden: true
     }, {// 设置配送时间
       path: 'delivery-time',
       name: 'DeliveryTime',

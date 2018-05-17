@@ -1,10 +1,15 @@
 <template>
     <el-row class="goods-upload-container">
-        <el-col class="goods-upload-box" :span="14" :offset="5">
+        <el-col class="goods-upload-box" :span="13" :offset="5">
             <el-card>
                 <el-form :model="deliveryForm" ref="deliveryForm" :rules="rule" size="large">
-                    <el-form-item label="配送时间" label-width="120px" prop="deliveryTime">
-                        <el-input v-model="deliveryForm.deliveryTime" placeholder="请填写配送时间">
+                    <el-form-item label="当前配送时间" label-width="120px" prop="deliveryTime">
+                      <el-input v-model="deliveryForm.deliveryTime" :disabled="true">
+                        <tempalte slot="append">分钟</tempalte>
+                      </el-input>
+                    </el-form-item>
+                    <el-form-item label="配送时间" label-width="120px" prop="newDeliveryTime">
+                        <el-input v-model="deliveryForm.newDeliveryTime" placeholder="请填写配送时间">
                             <template slot="append">分钟</template>
                         </el-input>
                     </el-form-item>
@@ -24,11 +29,16 @@ export default {
   data() {
     return {
       deliveryForm: {
-        deliveryTime: ''
+        deliveryTime: '',
+        newDeliveryTime: ''
       },
       formLabelWidth: '80px',
       rule: {
         deliveryTime: [
+          { required: true, message: '配送时间不能为空', trigger: 'blur' },
+          { pattern: '^\\d+(\\.\\d+)?$', message: '请输入有效数字', trigger: 'blur' }
+        ],
+        newDeliveryTime: [
           { required: true, message: '配送时间不能为空', trigger: 'blur' },
           { pattern: '^\\d+(\\.\\d+)?$', message: '请输入有效数字', trigger: 'blur' }
         ]

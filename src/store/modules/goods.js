@@ -4,6 +4,7 @@ import router from '@/router'
 export default {
   state: {
     goodsList: [],
+    goodsTotal: 0,
     goodsForEdit: {},
     goodsTypeList: [],
     saveGoodsResult: {},
@@ -156,13 +157,14 @@ export default {
   },
   mutations: {
     getGoodsList(state, goodsListResult) {
-      const items = goodsListResult.data.items
+      const data = goodsListResult.data
       // items.forEach((item, index, arr) => {
       //   for (let i = index + 1; i < arr.length; i++) {
       //     if (item.id === arr[i].id) arr.splice(i, 1)
       //   }
       // })
-      state.goodsList = items
+      state.goodsList = data.items
+      state.goodsTotal = data.totalCount
     },
     editGoods(state, editGoodsResult) {
       const goodsForEdit = editGoodsResult.data.items

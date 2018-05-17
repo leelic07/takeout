@@ -2,44 +2,25 @@
   <el-row class="goods-management-container">
     <!--搜索框-->
     <el-row>
-      <el-col :span="5">
-        <el-input placeholder="请输入商品名称" v-model="pagination.name"></el-input>
+      <el-col :span="3" :offset="21">
+        <el-button type="primary" icon="el-icon-circle-plus-outline" size="medium" @click="addBanner">添加轮播图</el-button>
       </el-col>
-      <el-col :span="4" class="member-select">
-        <el-select v-model="pagination.merchantId" placeholder="请选择店铺" v-if="type === '1'">
-          <el-option value="" label="全部店铺"></el-option>
-          <el-option v-for="(merchant,index) in merchantList" :value="merchant.id" :label="merchant.name" :key="index"></el-option>
-        </el-select>
-      </el-col>
-      <!-- <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
-      </el-date-picker> -->
-      <!-- <el-col :span="1"> -->
-      <el-button type="primary" icon="el-icon-search" @click="getGoodsList(pagination)">搜索</el-button>
-      <!-- </el-col> -->
     </el-row>
-    <!--会员信息列表-->
+    <!--轮播图信息列表-->
     <el-row class="order-statics">
       <el-table :data="goodsList" stripe border fit style="width: 100%">
         <el-table-column type="index" :index="1" label="序号"></el-table-column>
-        <el-table-column label="商品图片">
+        <el-table-column prop="name" label="活动名称" show-overflow-tooltip></el-table-column>
+        <el-table-column label="图片">
           <template slot-scope="props">
             <img :src="props.row.pictures[0].url" alt="">
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="商品名称" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="code" label="编号" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="unit" label="商品单位"></el-table-column>
-        <el-table-column prop="price" label="价格"></el-table-column>
-        <el-table-column prop="itemTypeName" label="商品分类">
-        </el-table-column>
-        <el-table-column prop="label" label="标签" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="salesVolume" label="销售量"></el-table-column>
-        <el-table-column prop="stockStatus" label="库存状态"></el-table-column>
-        <el-table-column prop="stock" label="库存量"></el-table-column>
-        <el-table-column prop="status" label="商品状态"></el-table-column>
+        <el-table-column prop="code" label="上传时间" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="unit" label="跳转url"></el-table-column>
         <el-table-column label="操作" width="140">
           <template slot-scope="props">
-            <el-button type="primary" size="mini" @click="showGoodsEdit(props.row.id)" v-if="type === '1'">编辑</el-button>
+            <el-button type="primary" size="mini" @click="showBannerEdit(props.row.id)" v-if="type === '1'">编辑</el-button>
             <el-button type="danger" size="mini" @click="withdrawGoods(props.row.id)" v-if="props.row.isPuton === '1'">下架</el-button>
             <el-button type="success" size="mini" @click="groundGoods(props.row.id)" v-else>上架</el-button>
           </template>
@@ -47,7 +28,7 @@
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="goodsTotal" :page="pagination.page" :rows="pagination.rows" :currentChange="currentChange"></pagination>
+    <pagination :total="advertisementsTotal" :page="pagination.page" :rows="pagination.rows" :currentChange="currentChange"></pagination>
     <!--商品下架对话框-->
     <el-dialog class="withdraw-dialog" title="商品下架" :visible.sync="dialogWithdrawVisible">
       <el-form ref="shopForm">
@@ -99,9 +80,7 @@ export default {
       datetime: [], // 日期时间
       pagination: {// 分页信息
         page: 1,
-        rows: 10,
-        name: '',
-        merchantId: ''
+        rows: 10
       },
       value: '', // 选择会员等级
       dialogDetailVisible: false,
@@ -150,12 +129,13 @@ export default {
   computed: {
     ...mapGetters([
       'goodsList',
-      'goodsTotal',
       'goodsForEdit',
       'merchantList',
       'merchantListByItemId',
       'withdrawGoodsResult',
-      'groundGoodsResult'
+      'groundGoodsResult',
+      'advertisements',
+      'advertisementsTotal'
     ]),
     type() {
       return sessionStorage.getItem('type')
@@ -175,7 +155,8 @@ export default {
       getMerchantsListByitemId: 'getMerchantsListByitemId',
       withdrawGoodsConfirm: 'withdrawGoodsConfirm',
       withdrawGoodsConfirmForSuper: 'withdrawGoodsConfirmForSuper',
-      groundGoodsConfirmForSuper: 'groundGoodsConfirmForSuper'
+      groundGoodsConfirmForSuper: 'groundGoodsConfirmForSuper',
+      getAdvertisements: 'getAdvertisements'
     }),
     // 点击详情执行的方法
     showMemberDetail(row) {
@@ -183,9 +164,9 @@ export default {
       this.memberMessage = row
     },
     // 点击编辑执行的方法
-    showGoodsEdit(id) {
+    showBannerEdit(id) {
       this.$router.push({
-        path: `/goods/edit/${id}`
+        path: `/system/edit-banner/${id}`
       })
     },
     // 点击下架执行的方法
@@ -241,13 +222,16 @@ export default {
       this.isIndeterminate = val.length > 0 && val.length < this.merchantList.length
     },
     currentChange(page) {
-      this.getGoodsList(Object.assign(this.pagination, { page }))
+      this.getAdvertisements(Object.assign(this.pagination, { page }))
+    },
+    addBanner() {
+      this.$router.push({
+        path: '/system/add-banner'
+      })
     }
   },
   mounted() {
-    this.pagination.merchantId = this.merchantId
-    this.getGoodsList(this.pagination)
-    this.getMerchantsList()
+    this.getAdvertisements(this.pagination)
   }
 }
 </script>

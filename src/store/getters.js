@@ -19,6 +19,7 @@ const getters = {
   merchantHomePage: state => state.shop.merchantHomePage,
   // 商品管理
   goodsList: state => state.goods.goodsList,
+  goodsTotal: state => state.goods.goodsTotal,
   goodsForEdit: state => state.goods.goodsForEdit,
   goodsTypeList: state => state.goods.goodsTypeList,
   goodsTypePage: state => state.goods.goodsTypePage,
@@ -88,7 +89,9 @@ const getters = {
   filepath: state => state.finance.filepath,
   // 系统管理
   userRanksResult: state => state.system.userRanksResult,
-  deliveryTimeResult: state => state.system.deliveryTimeResult
+  deliveryTimeResult: state => state.system.deliveryTimeResult,
+  advertisements: state => state.system.advertisements,
+  advertisementsTotal: state => state.system.advertisementsTotal
 }
 
 export default getters
