@@ -3,13 +3,13 @@
         <el-col class="goods-upload-box" :span="13" :offset="5">
             <el-card>
                 <el-form :model="deliveryForm" ref="deliveryForm" :rules="rule" size="large">
-                    <el-form-item label="当前配送时间" label-width="120px" prop="deliveryTime">
-                      <el-input v-model="deliveryForm.deliveryTime" :disabled="true">
-                        <tempalte slot="append">分钟</tempalte>
+                    <el-form-item label="当前配送时间" label-width="120px" prop="oldDeliveryTime">
+                      <el-input v-model="deliveryForm.oldDeliveryTime" :disabled="true">
+                        <template slot="append">分钟</template>
                       </el-input>
                     </el-form-item>
-                    <el-form-item label="配送时间" label-width="120px" prop="newDeliveryTime">
-                        <el-input v-model="deliveryForm.newDeliveryTime" placeholder="请填写配送时间">
+                    <el-form-item label="配送时间" label-width="120px" prop="deliveryTime">
+                        <el-input v-model="deliveryForm.deliveryTime" placeholder="请填写配送时间">
                             <template slot="append">分钟</template>
                         </el-input>
                     </el-form-item>
@@ -29,16 +29,16 @@ export default {
   data() {
     return {
       deliveryForm: {
-        deliveryTime: '',
-        newDeliveryTime: ''
+        oldDeliveryTime: '',
+        deliveryTime: ''
       },
       formLabelWidth: '80px',
       rule: {
-        deliveryTime: [
+        oldDeliveryTime: [
           { required: true, message: '配送时间不能为空', trigger: 'blur' },
           { pattern: '^\\d+(\\.\\d+)?$', message: '请输入有效数字', trigger: 'blur' }
         ],
-        newDeliveryTime: [
+        deliveryTime: [
           { required: true, message: '配送时间不能为空', trigger: 'blur' },
           { pattern: '^\\d+(\\.\\d+)?$', message: '请输入有效数字', trigger: 'blur' }
         ]
@@ -47,19 +47,31 @@ export default {
   },
   watch: {
     deliveryTimeResult() {
-      this.deliveryForm = {
-        deliveryTime: ''
-      }
+      this.deliveryForm.oldDeliveryTime = this.deliveryForm.deliveryTime
+      this.deliveryForm.deliveryTime = ''
+    },
+    merchantList(newValue) {
+      let merchant = {}
+      if (newValue.length) {
+        merchant = newValue.find(merchant => merchant.deliveryTime)
+        merchant && (this.deliveryForm.oldDeliveryTime = merchant.deliveryTime)
+      } else this.deliveryForm.oldDeliveryTime = ''
     }
   },
   computed: {
     ...mapGetters([
-      'deliveryTimeResult'
-    ])
+      'deliveryTimeResult',
+      'shopForEdit',
+      'merchantList'
+    ]),
+    merchantId() {
+      return sessionStorage['merchantId']
+    }
   },
   methods: {
     ...mapActions({
-      updateDeliveryTime: 'updateDeliveryTime'
+      updateDeliveryTime: 'updateDeliveryTime',
+      getMerchantsList: 'getMerchantsList'
     }),
     // 保存新增商户信息
     saveDeliveryTime() {
@@ -70,7 +82,7 @@ export default {
     }
   },
   mounted() {
-    this.getShopTypeList()
+    this.getMerchantsList()
   }
 }
 </script>

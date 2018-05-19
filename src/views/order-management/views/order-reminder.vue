@@ -20,10 +20,10 @@
           <div slot="header" class="card-header clearfix" v-if="true">
             <el-col :span="20">
               <label>预定今日</label> |
-              <label>14:00</label>
+              <!-- <label>14:00</label> -->
               <span>送达</span>
             </el-col>
-            <span type="text">待发配送</span>
+            <!-- <span type="text">待发配送</span> -->
           </div>
           <el-row>
             <el-table :data="orderReminders" style="width: 100%" :show-header="false" stripe>
@@ -108,9 +108,9 @@
                 </template>
               </el-table-column>
               <el-table-column label="" prop="name" width="95">
-                <template slot-scope="socpe">
+                <template slot-scope="props">
                   <el-row class="card-content">
-                    <el-button size="mini" type="primary" plain>发起配送</el-button>
+                    <el-button size="mini" type="primary" plain @click="distributionConfirm(props.row.id)">发起配送</el-button>
                   </el-row>
                 </template>
               </el-table-column>
@@ -262,7 +262,7 @@ export default {
       if (newValue.length === 0) this.busy = true
       else {
         this.busy = false
-        this.orderReminders = oldValue.concat(newValue)
+        this.orderReminders = this.orderReminders.concat(newValue)
       }
     }
   },
@@ -319,6 +319,8 @@ export default {
         if (valid) this.retreatOrder(this.refundForm)
         else console.log('err retreat')
       })
+    },
+    distributionConfirm(id) {
     }
   }
 }

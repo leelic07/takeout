@@ -30,37 +30,38 @@ const user = {
     linkWebsocket({ commit }) {
       // http.linkWebsocket().then(res => res.code === 200 && commit('linkWebsocket')).catch(err => console.log(err))
       // var host = window.location.host
-      console.log('websocket')
-      var host = '47.106.143.22:8080'
+      const merchantId = sessionStorage['merchantId']
+      let socket = ''
+      var host = 'pandax.mofasion.com'
       // var host = 'pandax.mofasion.com'
-      var url = 'wss://' + host + '/takeaway/websocket'
-      const socket = new WebSocket(url)
-      console.log('socket', socket)
-      //    socket = new WebSocket("ws://localhost:8081/ywgk/websocket");
-      // 打开事件
-      socket.onopen = function() {
-        console.log('Socket 已打开')
+      var url = `wss://${host}/ws/${sessionStorage['merchantId']}`
+      if (merchantId) {
+        socket = new WebSocket(url)
+        //    socket = new WebSocket("ws://localhost:8081/ywgk/websocket");
+        // 打开事件
+        socket.onopen = function() {
+          console.log('Socket 已打开')
         // socket.send("这是来自客户端的消息" + location.href + new Date());
-      }
-      // 获得消息事件
-      socket.onmessage = function(msg) {
-        console.log(msg.data)
+        }
+        // 获得消息事件
+        socket.onmessage = function(msg) {
+          console.log(msg.data)
         // 发现消息进入    调后台获取
         // document.getElementById('response').innerHTML = msg.data
         //  $("#response").html(msg.data);
-      }
-      // 关闭事件
-      socket.onclose = function() {
-        console.log('Socket已关闭')
-      }
-      // 发生了错误事件
-      socket.onerror = function() {
-        alert('Socket发生了错误')
-      }
-
+        }
+        // 关闭事件
+        socket.onclose = function() {
+          console.log('Socket已关闭')
+        }
+        // 发生了错误事件
+        socket.onerror = function() {
+          alert('Socket发生了错误')
+        }
       /*           $(window).unload(function(){
                 socket.close();
               });   */
+      }
     }
   },
   mutations: {

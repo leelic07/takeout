@@ -1,15 +1,17 @@
 <template>
     <div class="cell-box">
         <mt-cell title="今日您店的运营信息如下："></mt-cell>
-        <mt-cell title="营业额" :value="shopMessage.totalPrice"></mt-cell>
-        <mt-cell title="订单数" :value="shopMessage.orderCount"></mt-cell>
-        <mt-cell title="最大订单" :value="shopMessage.maxOrder"></mt-cell>
-        <mt-cell title="最小订单" :value="shopMessage.minOrder"></mt-cell>
-        <mt-cell title="用户点击量" :value="shopMessage.userClick"></mt-cell>
+        <mt-cell title="营业额" :value="report.totalPrice"></mt-cell>
+        <mt-cell title="订单数" :value="report.successCount"></mt-cell>
+        <mt-cell title="最大订单" :value="report.maxMoney"></mt-cell>
+        <mt-cell title="最小订单" :value="report.minMoney"></mt-cell>
+        <mt-cell title="用户点击量" :value="report.accessTimes"></mt-cell>
     </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+import { parseTime } from '@/utils'
 export default {
   data() {
     return {
@@ -21,6 +23,34 @@ export default {
         userClick: 312
       }
     }
+  },
+  computed: {
+    ...mapGetters([
+      'report'
+    ]),
+    year() {
+      return new Date().getFullYear()
+    },
+    month() {
+      return new Date().getMonth() + 1
+    },
+    date() {
+      return new Date().getDate()
+    },
+    merchantId() {
+      // return localStorage['bossMerchantId']
+      return 10
+    }
+  },
+  methods: {
+    ...mapActions({
+      getBossMessag: 'getBossMessag'
+    })
+  },
+  mounted() {
+    let date = new Date(2018, 4, 1)
+    date = parseTime(date).substring(0, parseTime(date).indexOf(' '))
+    this.getBossMessag({ merchantId: this.merchantId, reportTime: date })
   }
 }
 </script>

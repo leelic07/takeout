@@ -9,6 +9,7 @@ import customer from './modules/customer'
 import data from './modules/data'
 import finance from './modules/finance'
 import system from './modules/system'
+import boss from './modules/boss'
 
 export default {
   ...user,
@@ -21,5 +22,6 @@ export default {
   ...customer,
   ...data,
   ...finance,
-  ...system
+  ...system,
+  ...boss
 }

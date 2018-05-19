@@ -30,6 +30,12 @@
                     <el-form-item label="活动结束时间" label-width="110px" prop="endDate">
                         <el-date-picker v-model="couponForEdit.endDate" placeholder="选择结束日期"></el-date-picker>
                     </el-form-item>
+                    <el-form-item label="优惠券图片" label-width="120px" prop="pictures">
+                        <el-upload class="upload-demo" :action="$_baseURL + $_uploadURL" :with-credentials="true" :file-list="couponForEdit.pictures" list-type="picture" show-file-list>
+                            <el-button size="small" type="primary">点击上传</el-button>
+                            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片</div>
+                        </el-upload>
+                    </el-form-item>
                     <el-form-item label="活动参与店铺" label-width="100px">
                         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange(checkAll)">全选</el-checkbox>
                         <el-checkbox-group v-model="couponForEdit.merchants" @change="handleCheckMerchantChange">
@@ -41,8 +47,8 @@
                             <el-option v-for="(type,index) in couponSendTypes" :key="index" :value="type.id" :label="type.name"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="满多少送券" label-width="100px" v-if="isEnoughSend">
-                        <el-input v-model="couponForEdit.enoughSend" placeholder="请输入满的金额">
+                    <el-form-item label="满多少送券" label-width="100px" v-if="isEnoughSend" prop="fullMoney">
+                        <el-input v-model="couponForEdit.fullMoney" placeholder="请输入满的金额">
                             <template slot="append">元</template>
                         </el-input>
                     </el-form-item>
@@ -79,7 +85,8 @@ export default {
         spendMoney: [{ required: true, message: '最低消费金额不能为空', trigger: 'blur' }],
         couponSendType: [{ required: true, message: '优惠券类型不能为空', trigger: 'blur' }],
         startDate: [{ required: true, message: '优惠券开始时间不能为空', trigger: 'blur' }],
-        endDate: [{ required: true, message: '优惠券结束时间不能为空', trigger: 'blur' }]
+        endDate: [{ required: true, message: '优惠券结束时间不能为空', trigger: 'blur' }],
+        fullMoney: [{ required: true, message: '满多少送券不能为空', trigger: 'blur' }]
       },
       isEnoughSend: false,
       isIndeterminate: true,

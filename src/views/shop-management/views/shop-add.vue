@@ -77,7 +77,7 @@
                             <template slot="append">元</template>
                         </el-input>
                     </el-form-item>
-                    <el-form-item label="满多少免配送费" label-width="120px" prop="fullFreeDistribution">
+                    <el-form-item label="满多少免配送费" label-width="120px">
                         <el-input v-model="shopInfo.fullFreeDistribution" auto-complete="off" placeholder="请填写满多少免配送费">
                             <template slot="append">元</template>
                         </el-input>
@@ -88,7 +88,9 @@
                         </el-input>
                     </el-form-item>
                     <el-form-item label="配送范围" label-width="120px">
-                        <el-input v-model="shopInfo.distributionScope" auto-complete="off" placeholder="请填写配送范围"></el-input>
+                        <el-input v-model="shopInfo.distributionScope" auto-complete="off" placeholder="请填写配送范围">
+                            <template slot="append">公里</template>
+                        </el-input>
                     </el-form-item>
                     <el-col class="shop-message">
                         <el-tag>登录信息</el-tag>
@@ -180,7 +182,7 @@ export default {
     // 上传图片成功执行的方法
     handleSuccess(res, file) {
       this.fileListTemp.push(file)
-      this.shopInfo.pictures.push({ url: this.$baseURL + res.path })
+      this.shopInfo.pictures.push({ url: this.$_baseURL + res.path })
     },
     // 图片上传超过限制执行的方法
     handleExceed() {

@@ -91,7 +91,15 @@ const getters = {
   userRanksResult: state => state.system.userRanksResult,
   deliveryTimeResult: state => state.system.deliveryTimeResult,
   advertisements: state => state.system.advertisements,
-  advertisementsTotal: state => state.system.advertisementsTotal
+  advertisementsTotal: state => state.system.advertisementsTotal,
+  adForEdit: state => state.system.adForEdit,
+  saveAdResult: state => state.system.saveAdResult,
+  updateAdResult: state => state.system.updateAdResult,
+  withdrawBannerResult: state => state.system.withdrawBannerResult,
+  userRanks: state => state.system.userRanks,
+  updateRanksResult: state => state.system.updateRanksResult,
+  // 老板管理
+  report: state => state.boss.report
 }
 
 export default getters

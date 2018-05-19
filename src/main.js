@@ -13,6 +13,7 @@ import router from './router'
 import store from './store'
 import filters from './filters'
 import config from '@/service/config/base'
+import { agency } from '@/service/base/service'
 
 import '@/icons' // icon
 // import '@/permission' // permission control
@@ -24,8 +25,7 @@ Vue.use(infiniteScroll)
 Vue.config.productionTip = false
 Vue.prototype.$_baseURL = config.baseURL
 Vue.prototype.$_type = sessionStorage.getItem('type')
-Vue.prototype.$_uploadURL = '/takeaway/upload/uploadfile'
-// Vue.prototype.$_uploadURL = '/upload/uploadfile'
+Vue.prototype.$_uploadURL = `${agency}/upload/uploadfile`
 
 // 声明过滤器
 Object.keys(filters).forEach(key => Vue.filter(key, filters[key]))

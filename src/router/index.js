@@ -410,6 +410,11 @@ export const constantRouterMap = [
       name: 'BossRecords',
       meta: { title: '店铺历史信息', icon: 'example' },
       component: () => import('@/views/boss-management/views/records')
+    }, {
+      path: 'login',
+      name: 'BossLogin',
+      meta: { title: '老板登录界面', icon: 'example' },
+      component: () => import('@/views/boss-management/views/login')
     }]
   },
 

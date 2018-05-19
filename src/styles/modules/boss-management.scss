@@ -1,4 +1,9 @@
 .boss-container {
+    .mint-header {
+        .mint-button {
+            font-size: 12px;
+        }
+    }
     .cell-box {
         margin-top: 40px;
         .btn-box {
@@ -6,6 +11,13 @@
             .mint-button {
                 margin-left: 2%;
             }
+        }
+    }
+    .boss-login-container {
+        margin-top: 40px;
+        .mint-button {
+            width: 100%;
+            margin-top: 20px;
         }
     }
 }

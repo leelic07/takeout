@@ -24,7 +24,7 @@ export default {
     saveShop({ commit }, shopInfo) {
       shopInfo.startDate = shopInfo.time[0] || ''
       shopInfo.endDate = shopInfo.time[1] || ''
-      delete shopInfo.time
+      // delete shopInfo.time
       http.saveShop(shopInfo).then(res => res.code === 200 && commit('saveShop', res)).catch(err => console.log(err))
     },
     getShopTypeList({ commit }) {
@@ -73,8 +73,8 @@ export default {
       shop.fullFreeDistribution = shop.fullFreeDistribution ? shop.fullFreeDistribution.toString() : ''
       shop.distributionFee = shop.distributionFee ? shop.distributionFee.toString() : ''
       shop.time = []
-      shop.time.push(shop.startDate)
-      shop.time.push(shop.endDate)
+      shop.time.push(new Date(shop.startDate))
+      shop.time.push(new Date(shop.endDate))
       shop.pictures.forEach(picture => {
         picture.url && (picture.name = picture.url.substring(picture.url.lastIndexOf('/') + 1))
       })

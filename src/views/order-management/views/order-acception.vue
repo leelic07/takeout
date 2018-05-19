@@ -20,10 +20,10 @@
           <div slot="header" class="card-header clearfix" v-if="true">
             <el-col :span="20">
               <label>预定今日</label> |
-              <label>14:00</label>
+              <!-- <label>14:00</label> -->
               <span>送达</span>
             </el-col>
-            <span type="text">待发配送</span>
+            <!-- <span type="text">待发配送</span> -->
           </div>
           <el-row>
             <el-table :data="orderAcceptions" style="width: 100%" :show-header="false" stripe>
@@ -261,7 +261,7 @@ export default {
       if (newValue.length === 0) this.busy = true
       else {
         this.busy = false
-        this.orderAcceptions = oldValue.concat(newValue)
+        this.orderAcceptions = this.orderAcceptions.concat(newValue)
       }
     },
     retreatResult() {

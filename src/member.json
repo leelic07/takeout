@@ -1,0 +1,22 @@
+[
+    {
+        "endScore": 1000,
+        "name": "青铜",
+        "startScore": 0
+    },
+    {
+        "endScore": 2000,
+        "name": "白银",
+        "startScore": 1001
+    },
+    {
+        "endScore": 3000,
+        "name": "黄金",
+        "startScore": 2001
+    },
+    {
+        "endScore": 4000,
+        "name": "钻石",
+        "startScore": 3001
+    }
+]

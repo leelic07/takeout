@@ -23,27 +23,17 @@
         </el-button>
       </el-form-item>
       <div class="tips">
-        <!-- <span style="margin-right:20px;">username: admin</span>
-        <span> password: admin</span> -->
       </div>
     </el-form>
   </div>
 </template>
 
 <script>
-// import { isvalidUsername } from '@/utils/validate'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'login',
   data() {
-    // const validateUsername = (rule, value, callback) => {
-    //   if (!isvalidUsername(value)) {
-    //     callback(new Error('请输入正确的用户名'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
     const validatePass = (rule, value, callback) => {
       if (value.length < 5) {
         callback(new Error('密码不能小于5位'))
@@ -66,7 +56,6 @@ export default {
   },
   watch: {
     users() {
-      console.log('users change')
       this.linkWebsocket()
       this.$router.push({
         path: '/seller/index'

@@ -186,7 +186,7 @@ export default {
       if (newValue.length === 0) this.busy = true
       else {
         this.busy = false
-        this.orderRetreats = oldValue.concat(newValue)
+        this.orderRetreats = this.orderRetreats.concat(newValue)
       }
     },
     retreatResult() {

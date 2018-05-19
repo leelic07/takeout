@@ -18,7 +18,6 @@
     <el-row class="order-statics" v-if="showActivityList">
       <el-table :data="activityList" stripe border fit style="width: 100%">
         <el-table-column type="index" :index="1" label="序号"></el-table-column>
-        <el-table-column prop="activityType" label="活动类型" show-overflow-tooltip></el-table-column>
         <el-table-column prop="code" label="活动编号"></el-table-column>
         <el-table-column prop="name" label="活动名称" show-overflow-tooltip></el-table-column>
         <el-table-column label="开始日期" show-overflow-tooltip>
@@ -32,9 +31,6 @@
           </template>
         </el-table-column>
         <el-table-column prop="participant" label="活动参与人数"></el-table-column>
-        <!-- <el-table-column prop="money" label="优惠券金额"></el-table-column>
-        <el-table-column prop="exchangeCount" label="优惠券总数"></el-table-column>
-        <el-table-column prop="discountRemain" label="优惠券余量"></el-table-column> -->
         <el-table-column prop="activityCount" label="活动核销数"></el-table-column>
         <el-table-column prop="activityMoney" label="活动核销金额"></el-table-column>
         <el-table-column label="操作" width="140">
@@ -62,12 +58,9 @@
             {{props.row.endDate | Date}}
           </template>
         </el-table-column>
-        <!-- <el-table-column prop="participant" label="活动参与人数"></el-table-column> -->
         <el-table-column prop="money" label="优惠券金额"></el-table-column>
         <el-table-column prop="exchangeCount" label="优惠券总数"></el-table-column>
         <el-table-column prop="discountRemain" label="优惠券余量"></el-table-column>
-        <!-- <el-table-column prop="activityCount" label="活动核销数"></el-table-column>
-        <el-table-column prop="activityMoney" label="活动核销金额"></el-table-column> -->
         <el-table-column label="操作" width="140">
           <template slot-scope="props">
             <el-button type="primary" size="mini" @click="showEditCoupon(props.row.id)">编辑</el-button>
@@ -98,24 +91,6 @@
           <el-date-picker v-model="activityForEdit.endDate" type="date" placeholder="选择日期">
           </el-date-picker>
         </el-form-item>
-        <!-- <el-form-item label="活动参与人数" label-width="120px">
-          <el-input v-model="activityForEdit.participant" auto-complete="off" placeholder="请填写备注"></el-input>
-        </el-form-item>
-        <el-form-item label="优惠券金额" label-width="120px">
-          <el-input v-model="activityForEdit.money" auto-complete="off" placeholder="请填写备注"></el-input>
-        </el-form-item>
-        <el-form-item label="优惠券总数" label-width="120px">
-          <el-input v-model="activityForEdit.exchangeCount" auto-complete="off" placeholder="请填写备注"></el-input>
-        </el-form-item>
-        <el-form-item label="优惠券余量" label-width="120px">
-          <el-input v-model="activityForEdit.discountRemain" auto-complete="off" placeholder="请填写备注"></el-input>
-        </el-form-item>
-        <el-form-item label="活动核销数" label-width="120px">
-          <el-input v-model="activityForEdit.activityCount" auto-complete="off" placeholder="请填写备注"></el-input>
-        </el-form-item>
-        <el-form-item label="活动核销金额" label-width="120px">
-          <el-input v-model="activityForEdit.activityMoney" auto-complete="off" placeholder="请填写备注"></el-input>
-        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
@@ -132,24 +107,12 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      orderNumber: '', // 订单号
       datetime: [], // 日期时间
       pagination: {// 分页信息
         page: 1,
         rows: 10,
         name: ''
       },
-      options: [{
-        value: 1,
-        label: '钻石会员'
-      }, {
-        value: '2',
-        label: '黄金会员'
-      }, {
-        value: '3',
-        label: '白银会员'
-      }],
-      value: '', // 选择会员等级
       dialogDetailVisible: false,
       dialogFormVisible: false,
       form: {
@@ -162,7 +125,6 @@ export default {
         resource: '',
         desc: ''
       },
-      imageUrl: '', // 上传头像的图片路径
       activityTypeList: [{
         id: 1,
         name: '满减活动'
@@ -236,14 +198,6 @@ export default {
     showMemberDetail(row) {
       this.dialogDetailVisible = true
       this.activityForEdit = row
-    },
-    // 会员头像上传成功执行的方法
-    handleAvatarSuccess(file) {
-      console.log(file)
-    },
-    // 会员头像上传之前执行的方法
-    beforeAvatarUpload(file) {
-      console.log(file)
     },
     // 点击删除执行的方法
     deleteActivityConfirm(id) {

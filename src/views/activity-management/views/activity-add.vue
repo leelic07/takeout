@@ -84,8 +84,8 @@
                             <el-option v-for="(type,index) in couponSendTypes" :key="index" :value="type.id" :label="type.name"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="满多少送券" label-width="100px" v-if="isEnoughSend">
-                        <el-input v-model="discountForm.enoughSend" placeholder="请输入满的金额">
+                    <el-form-item label="满多少送券" label-width="100px" v-if="isEnoughSend" prop="fullMoney">
+                        <el-input v-model="discountForm.fullMoney" placeholder="请输入满的金额">
                             <template slot="append">元</template>
                         </el-input>
                     </el-form-item>
@@ -141,7 +141,8 @@ export default {
         startDate: [{ required: true, message: '优惠券开始时间不能为空', trigger: 'blur' }],
         endDate: [{ required: true, message: '优惠券结束时间不能为空', trigger: 'blur' }],
         merchants: [{ required: true, message: '参与店铺不能为空', trigger: 'blur' }],
-        pictures: [{ required: true, message: '优惠券图片不能为空', trigger: 'blur' }]
+        pictures: [{ required: true, message: '优惠券图片不能为空', trigger: 'blur' }],
+        fullMoney: [{ required: true, message: '满多少送券不能为空', trigger: 'blur' }]
       },
       isEnoughSend: false,
       isIndeterminate: true,
@@ -210,7 +211,7 @@ export default {
     },
     handleSuccess(res, file, fileList) {
       this.fileListTemp.push(file)
-      this.discountForm.pictures.push(this.$_baseURL + res.path)
+      this.discountForm.pictures.push({ url: this.$_baseURL + res.path })
     }
   },
   mounted() {

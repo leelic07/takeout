@@ -52,7 +52,7 @@
               <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片，最多只能上传五张图片</div>
             </el-upload>
           </el-form-item>
-          <el-form-item label="商品售卖店铺" label-width="120px" prop="propertys">
+          <el-form-item label="商品售卖店铺" label-width="120px" prop="itemMerchants">
             <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
             <el-checkbox-group v-model="goods.itemMerchants" @change="handleCheckMerchantChange">
               <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
@@ -124,6 +124,7 @@ export default {
       goods: {
         pictures: [],
         itemMerchants: [],
+        itemType: '',
         itemPropertys: [{
           id: '',
           subPropertys: []
@@ -146,7 +147,7 @@ export default {
         itemType: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
         label: [{ required: true, message: '标签不能为空', trigger: 'blur' }],
         isPuton: [{ required: true, message: '商品状态不能为空', trigger: 'blur' }],
-        propertys: [{ required: true, message: '商品店铺不能为空', trigger: 'blur' }],
+        itemMerchants: [{ required: true, message: '商品店铺不能为空', trigger: 'blur' }],
         packingCharge: [
           { required: true, message: '打包费不能为空', trigger: 'blur' },
           { pattern: '^\\d+(\\.\\d+)?$', message: '请输入有效数字', trigger: 'blur' }

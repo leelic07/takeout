@@ -43,6 +43,8 @@ export default {
         })
       })
       activity.merchants = merchants
+      delete activity.createdAt
+      delete activity.updatedAt
       http.updateActivity(activity).then(res => res.code === 200 && commit('updateActivity', res)).catch(err => console.log(err))
     },
     updateCoupon({ commit }, coupon) {
@@ -53,7 +55,14 @@ export default {
           type: 1
         })
       })
+      coupon.pictures.forEach(picture => {
+        delete picture.createdAt
+      })
       coupon.merchants = merchants
+      coupon.startDate = new Date(coupon.startDate)
+      coupon.endDate = new Date(coupon.endDate)
+      delete coupon.createdAt
+      delete coupon.updatedAt
       http.updateCoupon(coupon).then(res => res.code === 200 && commit('updateCoupon', res)).catch(err => console.log(err))
     },
     getCouponTypeList({ commit }) {
@@ -67,6 +76,8 @@ export default {
           type: 0
         })
       })
+      activitys.startDate = new Date(activitys.startDate)
+      activitys.endDate = new Date(activitys.endDate)
       activitys.merchants = merchants
       http.saveActivity(activitys).then(res => res.code === 200 && commit('saveActivity', res)).catch(err => console.log(err))
     },
@@ -117,7 +128,11 @@ export default {
       couponForEdit.merchants.forEach(merchant => {
         merchants.push(merchant.merchantId)
       })
+      couponForEdit.pictures.forEach(picture => {
+        picture.name = picture.url.substring(picture.url.lastIndexOf('/') + 1)
+      })
       couponForEdit.merchants = merchants
+      couponForEdit.couponSendType = Number(couponForEdit.couponSendType) || ''
       state.couponForEdit = couponForEdit
     },
     updateActivity(state, updateActivityResult) {

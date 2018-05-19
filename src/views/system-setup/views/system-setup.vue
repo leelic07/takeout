@@ -10,7 +10,7 @@
             <h1>#{{orderForPrint.orderNo}}紫竹林外卖</h1>
           </el-form-item>
           <el-form-item>
-            <p>*{{orderForPrint.merchantId}}*</p>
+            <p>*{{orderForPrint.merchantName}}*</p>
           </el-form-item>
           <el-form-item label="下单时间：">
             {{orderForPrint.createdAt | Date}}
@@ -67,7 +67,7 @@
 
 <script>
 import Print from 'print-js'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -88,16 +88,28 @@ export default {
     }
   },
   watch: {
-    orderForPrint(newValue) {
-      console.log(newValue)
+    orderForPrint: {
+      handler: function(newValue) {
+        this.getShopForEdit(newValue.merchantId)
+      }
+    },
+    shopForEdit: {
+      handler: function(newValue) {
+        this.orderForPrint.merchantName = newValue.name
+      },
+      immediate: true
     }
   },
   computed: {
     ...mapGetters([
-      'orderForPrint'
+      'orderForPrint',
+      'shopForEdit'
     ])
   },
   methods: {
+    ...mapActions({
+      getShopForEdit: 'getShopForEdit'
+    }),
     printReceipt() {
       Print({
         printable: 'printJS-form',
@@ -107,5 +119,8 @@ export default {
       })
     }
   }
+  // mounted() {
+  //   this.getShopForEdit(this.orderForPrint.merchantId)
+  // }
 }
 </script>

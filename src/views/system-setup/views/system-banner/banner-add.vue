@@ -4,13 +4,13 @@
             <el-card>
                 <el-form label-position="right" :model="bannerForm" ref="bannerForm" :rules="rule" size="large">
                     <el-form-item label="活动名称" label-width="120px" prop="name">
-                        <el-input v-model="bannerForm.name" placeholder="请输入轮播名称"></el-input>
+                        <el-input v-model="bannerForm.name" placeholder="请输入广告名称"></el-input>
                     </el-form-item>
                     <el-form-item label="跳转地址" label-width="120px" prop="url">
-                        <el-input v-model="bannerForm.url" placeholder="请输入轮播跳转地址"></el-input>
+                        <el-input v-model="bannerForm.url" placeholder="请输入广告跳转地址"></el-input>
                     </el-form-item>
-                    <el-form-item label="小程序轮播图" label-width="120px" prop="pictures">
-                        <el-upload class="upload-demo" :action="$_baseURL + $_uploadURL" :with-credentials="true" :on-remove="handleRemove" :on-success="handleSuccess" :on-exceed="handleExceed" :file-list="fileList" list-type="picture" :limit="5" show-file-list>
+                    <el-form-item label="小程序轮播图" label-width="120px" prop="imageUrl">
+                        <el-upload class="upload-demo" :action="$_baseURL + $_uploadURL" :with-credentials="true" :on-remove="handleRemove" :on-success="handleSuccess" :on-exceed="handleExceed" :file-list="bannerForm.fileList" list-type="picture" :limit="1" show-file-list>
                             <el-button size="small" type="primary">点击上传</el-button>
                             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片</div>
                         </el-upload>
@@ -29,72 +29,57 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data() {
+    const validateImage = (rule, value, callback) => {
+      if (value === '') callback(new Error('广告图片不能为空'))
+      else callback()
+    }
     return {
       bannerForm: {
-        pictures: []
-      },
-      fileList: [],
-      fileListTemp: [],
-      dialogFormVisible: false,
-      propertyForm: [{
+        imageUrl: '',
         name: '',
-        properties: [{
-          value: '',
-          price: ''
-        }]
-      }],
+        url: '',
+        fileList: []
+      },
+      dialogFormVisible: false,
       formLabelWidth: '80px',
       rule: {
         name: [{ required: true, message: '活动名称不能为空', trigger: 'blur' }],
         url: [{ required: true, message: '活动地址不能为空', trigger: 'blur' }],
-        pictures: [{ required: true, message: '图片不能为空', trigger: 'blur' }]
+        imageUrl: [{ validator: validateImage, trigger: 'blur' }]
       }
     }
   },
   computed: {
     ...mapGetters([
-      'shopTypeList'
+      'saveAdResult'
     ])
   },
   methods: {
     ...mapActions({
-      saveShop: 'saveShop',
-      getShopTypeList: 'getShopTypeList'
+      saveAdvertisement: 'saveAdvertisement'
     }),
     handleRemove(file) {
-      this.fileListTemp.forEach((f, index, arr) => {
-        if (f.url === file.url) {
-          this.bannerForm.pictures.splice(index, 1)
-          arr.splice(index, 1)
-        }
-      })
+      this.bannerForm.imageUrl = ''
     },
     // 上传图片成功执行的方法
     handleSuccess(res, file) {
-      this.fileListTemp.push(file)
-      this.bannerForm.pictures.push({ url: this.$baseURL + res.path })
+      this.bannerForm.imageUrl = this.$_baseURL + res.path
     },
     // 图片上传超过限制执行的方法
     handleExceed() {
       this.$message({
         type: 'warning',
-        message: '最多只能上传5张图片'
+        message: '最多只能上传1张图片'
       })
     },
     // 保存新增商户信息
     saveShopConfirm() {
       this.$refs.bannerForm.validate(valid => {
         if (valid) {
-          this.$message({
-            type: 'success',
-            message: '添加图片成功'
-          })
-        } else console.log('bannerForm err')
+          this.saveAdvertisement(this.bannerForm)
+        } else console.log('save bannerForm err')
       })
     }
-  },
-  mounted() {
-    this.getShopTypeList()
   }
 }
 </script>

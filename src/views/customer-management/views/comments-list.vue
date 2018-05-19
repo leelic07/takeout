@@ -12,11 +12,11 @@
                         </el-radio-group>
                     </el-form-item> -->
                     <el-form-item label="满意程度">
-                        <el-radio-group v-model="form.satisfaction">
-                            <el-radio label="0">全部</el-radio>
-                            <el-radio label="1">好评</el-radio>
-                            <el-radio label="2">中评</el-radio>
-                            <el-radio label="3">差评</el-radio>
+                        <el-radio-group v-model="form.evaluate">
+                            <el-radio :label="0">全部</el-radio>
+                            <el-radio :label="3">好评</el-radio>
+                            <el-radio :label="2">中评</el-radio>
+                            <el-radio :label="1">差评</el-radio>
                         </el-radio-group>
                     </el-form-item>
                     <!-- <el-form-item label="有无内容">
@@ -150,7 +150,7 @@
                 <el-button size="small" type="primary" @click="sendCouponConfirm">确 定</el-button>
             </div>
         </el-dialog>
-        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading" style="height:30px;"></div>
+        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading"></div>
     </el-row>
 </template>
 
@@ -161,16 +161,15 @@ export default {
   data() {
     return {
       form: {
-        satisfaction: '0'
+        evaluate: 0
       },
       datetime: '',
       pagination: {
         page: 1,
-        rows: 10
+        rows: 5
       },
       busy: true,
       feedbacks: [],
-      //   userForEdit: {},
       dialogFormVisible: false,
       rule: {
         couponId: [{ required: true, message: '请选择优惠券', trigger: 'blur' }]
@@ -182,11 +181,16 @@ export default {
       if (newValue.length === 0) this.busy = true
       else {
         this.busy = false
-        this.feedbacks = oldValue.concat(newValue)
+        this.feedbacks = this.feedbacks.concat(newValue)
       }
     },
     sendCouponResult() {
       this.dialogFormVisible = false
+    },
+    'form.evaluate'(newValue) {
+      this.feedbacks = []
+      this.pagination.page = 1
+      this.getFeedbacksByEvaluate({ ...this.pagination, merchantId: this.merchantId, ...this.form })
     }
   },
   computed: {
@@ -211,7 +215,8 @@ export default {
       getFeedbacksPage: 'getFeedbacksPage',
       getBackCouponList: 'getBackCouponList',
       editUser: 'editUser',
-      sendCouponToUser: 'sendCouponToUser'
+      sendCouponToUser: 'sendCouponToUser',
+      getFeedbacksByEvaluate: 'getFeedbacksByEvaluate'
     }),
     ...mapMutations({
       showLoading: 'showLoading'
@@ -269,10 +274,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .order-acception-container {
-        & /deep/ .el-dialog {
-            width: 40%
-        }
-    }
+.order-acception-container {
+  & /deep/ .el-dialog {
+    width: 40%;
+  }
+}
 </style>
 
