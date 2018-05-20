@@ -63,6 +63,8 @@ export default {
       coupon.endDate = new Date(coupon.endDate)
       delete coupon.createdAt
       delete coupon.updatedAt
+      delete coupon.sendStartTime
+      delete coupon.sendEndTime
       http.updateCoupon(coupon).then(res => res.code === 200 && commit('updateCoupon', res)).catch(err => console.log(err))
     },
     getCouponTypeList({ commit }) {
@@ -153,7 +155,7 @@ export default {
     saveCoupon(state, saveCouponResult) {
       state.saveCouponResult = saveCouponResult
       router.push({
-        path: '/activity/list'
+        path: '/activity/coupon-list'
       })
     },
     deleteActivity(state, deleteActivityResult) {

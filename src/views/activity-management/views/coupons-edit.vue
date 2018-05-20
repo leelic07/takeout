@@ -31,7 +31,7 @@
                         <el-date-picker v-model="couponForEdit.endDate" placeholder="选择结束日期"></el-date-picker>
                     </el-form-item>
                     <el-form-item label="优惠券图片" label-width="120px" prop="pictures">
-                        <el-upload class="upload-demo" :action="$_baseURL + $_uploadURL" :with-credentials="true" :file-list="couponForEdit.pictures" list-type="picture" show-file-list>
+                        <el-upload class="upload-demo" :action="$_baseURL + $_uploadURL" :with-credentials="true" :on-remove="handleRemove" :on-success="handleSuccess" :file-list="fileList" list-type="picture" show-file-list>
                             <el-button size="small" type="primary">点击上传</el-button>
                             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片</div>
                         </el-upload>
@@ -86,8 +86,11 @@ export default {
         couponSendType: [{ required: true, message: '优惠券类型不能为空', trigger: 'blur' }],
         startDate: [{ required: true, message: '优惠券开始时间不能为空', trigger: 'blur' }],
         endDate: [{ required: true, message: '优惠券结束时间不能为空', trigger: 'blur' }],
+        pictures: [{ required: true, message: '优惠券图片不能为空', trigger: 'blur' }],
         fullMoney: [{ required: true, message: '满多少送券不能为空', trigger: 'blur' }]
       },
+      fileList: [],
+      fileListTemp: [],
       isEnoughSend: false,
       isIndeterminate: true,
       checkAll: false
@@ -99,7 +102,13 @@ export default {
     },
     updateCouponResult() {
       this.$router.push({
-        path: '/activity/list'
+        path: '/activity/coupon-list'
+      })
+    },
+    couponForEdit(newValue) {
+      newValue.pictures.forEach(picture => {
+        this.fileList.push(picture)
+        this.fileListTemp.push(picture)
       })
     }
   },
@@ -136,6 +145,18 @@ export default {
     handleCheckMerchantChange(val) {
       this.checkAll = val.length === this.merchantList.length
       this.isIndeterminate = val.length > 0 && val.length < this.merchantList.length
+    },
+    handleRemove(file) {
+      this.fileListTemp.forEach((f, index, arr) => {
+        if (f.url === file.url) {
+          this.couponForEdit.pictures.splice(index, 1)
+          arr.splice(index, 1)
+        }
+      })
+    },
+    handleSuccess(res, file, fileList) {
+      this.fileListTemp.push(file)
+      this.couponForEdit.pictures.push({ url: this.$_baseURL + res.path })
     }
   },
   mounted() {

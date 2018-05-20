@@ -77,7 +77,7 @@
                             <template slot="append">元</template>
                         </el-input>
                     </el-form-item>
-                    <el-form-item label="满多少免配送费" label-width="120px" prop="fullFreeDistribution">
+                    <el-form-item label="满多少免配送费" label-width="120px">
                         <el-input v-model="shopForEdit.fullFreeDistribution" auto-complete="off" placeholder="请填写满多少免配送费">
                             <template slot="append">元</template>
                         </el-input>
@@ -88,7 +88,9 @@
                         </el-input>
                     </el-form-item>
                     <el-form-item label="配送范围" label-width="120px">
-                        <el-input v-model="shopForEdit.distributionScope" auto-complete="off" placeholder="请填写配送范围"></el-input>
+                        <el-input v-model="shopForEdit.distributionScope" auto-complete="off" placeholder="请填写配送范围">
+                          <template slot="append">公里</template>
+                        </el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" size="medium" @click="updateShopConfirm">更新</el-button>

@@ -1,28 +1,28 @@
 <template>
   <el-row class="panel-group" :gutter="40">
-    <el-col :span="8" class="card-panel-col">
+    <el-col :span="12" class="card-panel-col">
       <div class='card-panel' @click="handleSetLineChartData('orderList')">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="shoppingCard" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">订单统计</div>
-          <count-to class="card-panel-num" :startVal="0" :endVal="orderRecordsTotal" :duration="2600"></count-to>
+          <count-to class="card-panel-num" :startVal="0" :endVal="merchantHomePage.monthOrder" :duration="2600"></count-to>
         </div>
       </div>
     </el-col>
-    <el-col :span="8" class="card-panel-col">
+    <el-col :span="12" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('incomeList')">
         <div class="card-panel-icon-wrapper icon-message">
           <svg-icon icon-class="money" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">收入统计</div>
-          <count-to class="card-panel-num" :startVal="0" :endVal="81212" :duration="3000"></count-to>
+          <count-to class="card-panel-num" :startVal="0" :endVal="merchantHomePage.monthPrice" :duration="2600"></count-to>
         </div>
       </div>
     </el-col>
-    <el-col :span="8" class="card-panel-col">
+    <!-- <el-col :span="8" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('menuList')">
         <div class="card-panel-icon-wrapper icon-money">
           <svg-icon icon-class="excel" class-name="card-panel-icon" />
@@ -32,7 +32,7 @@
           <count-to class="card-panel-num" :startVal="0" :endVal="81212" :duration="3000"></count-to>
         </div>
       </div>
-    </el-col>
+    </el-col> -->
   </el-row>
 </template>
 
@@ -41,6 +41,12 @@ import CountTo from 'vue-count-to'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
+  props: {
+    merchantHomePage: {
+      type: Object,
+      default: {}
+    }
+  },
   components: {
     CountTo
   },

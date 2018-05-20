@@ -217,6 +217,11 @@ export const constantRouterMap = [
       component: () => import('@/views/activity-management/views/activity-list'),
       name: 'ActivityList',
       meta: { title: '活动列表', icon: 'example' }
+    }, {
+      path: 'coupon-list',
+      component: () => import('@/views/activity-management/views/coupon-list'),
+      name: 'CouponList',
+      meta: { title: '优惠券列表', icon: 'example' }
     }, {// 新增活动
       path: 'add',
       component: () => import('@/views/activity-management/views/activity-add'),

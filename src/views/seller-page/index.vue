@@ -100,7 +100,7 @@
     </el-card>
     <!--统计信息-->
     <el-col :span="24">
-      <panel-group @handleSetLineChartData="handleSetLineChartData"></panel-group>
+      <panel-group :merchantHomePage="merchantHomePage" @handleSetLineChartData="handleSetLineChartData"></panel-group>
     </el-col>
   </el-row>
 </template>
