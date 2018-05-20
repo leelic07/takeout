@@ -6,9 +6,6 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-const type = localStorage.getItem('type')
-const merchantId = sessionStorage.getItem('merchantId')
-
 /* Layout */
 import Layout from '../views/layout/Layout'
 /**
@@ -38,28 +35,6 @@ export const constantRouterMap = [
       component: () => import('@/views/login/index')
     }]
   },
-
-  // {
-  //   path: '/example',
-  //   component: Layout,
-  //   redirect: '/example/table',
-  //   name: 'Example',
-  //   meta: { title: 'Example', icon: 'example' },
-  //   children: [
-  //     {
-  //       path: 'table',
-  //       name: 'Table',
-  //       component: () => import('@/views/table/index'),
-  //       meta: { title: 'Table', icon: 'table' }
-  //     },
-  //     {
-  //       path: 'tree',
-  //       name: 'Tree',
-  //       component: () => import('@/views/tree/index'),
-  //       meta: { title: 'Tree', icon: 'tree' }
-  //     }
-  //   ]
-  // },
 
   {// 商家首页
     path: '/seller',
@@ -169,7 +144,7 @@ export const constantRouterMap = [
       name: 'GoodsUpload',
       component: () => import('@/views/goods-management/views/goods-upload'),
       meta: { title: '商品上传', icon: 'example' },
-      hidden: type !== '1'
+      hidden: false
     }, {// 商品分类
       path: 'category',
       name: 'Category',
@@ -345,7 +320,7 @@ export const constantRouterMap = [
       name: 'ShopEdit',
       component: () => import('@/views/shop-management/views/shop-edit'),
       meta: { title: '编辑店铺', icon: 'example' },
-      hidden: !merchantId
+      hidden: false
     }]
   },
 
