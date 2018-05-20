@@ -24,9 +24,18 @@ export default {
       }
     }
   },
+  watch: {
+    'boss.merchantId': {
+      handler: function() {
+        this.getBossMerchant(this.merchantId)
+      },
+      immediate: true
+    }
+  },
   computed: {
     ...mapGetters([
-      'report'
+      'report',
+      'boss'
     ]),
     merchantId() {
       return localStorage['bossMerchantId']
@@ -34,7 +43,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      getBossMessag: 'getBossMessag'
+      getBossMessag: 'getBossMessag',
+      getBossMerchant: 'getBossMerchant'
     })
   },
   mounted() {

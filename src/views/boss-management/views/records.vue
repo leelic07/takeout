@@ -26,6 +26,14 @@ export default {
       dateList: []
     }
   },
+  watch: {
+    'boss.merchantId': {
+      handler: function() {
+        this.getBossMerchant(this.merchantId)
+      },
+      immediate: true
+    }
+  },
   computed: {
     year() {
       return new Date().getFullYear()
@@ -40,12 +48,14 @@ export default {
       return localStorage['bossMerchantId']
     },
     ...mapGetters([
-      'report'
+      'report',
+      'boss'
     ])
   },
   methods: {
     ...mapActions({
-      getBossMessag: 'getBossMessag'
+      getBossMessag: 'getBossMessag',
+      getBossMerchant: 'getBossMerchant'
     }),
     getMessageConfirm(reportTime) {
       this.getBossMessag({
