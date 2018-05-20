@@ -100,7 +100,9 @@ const getters = {
   userRanks: state => state.system.userRanks,
   updateRanksResult: state => state.system.updateRanksResult,
   // 老板管理
-  report: state => state.boss.report
+  boss: state => state.boss.boss,
+  report: state => state.boss.report,
+  bossMerchant: state => state.boss.bossMerchant
 }
 
 export default getters

@@ -6,7 +6,8 @@ const toast = (message = '', position = 'middle', duration = 2000) => Toast({ me
 export default {
   state: {
     boss: {},
-    report: {}
+    report: {},
+    bossMerchant: {}
   },
   actions: {
     bossLogin({ commit }, boss) {
@@ -17,6 +18,9 @@ export default {
     },
     getBossMessag({ commit }, message) {
       http.getBossMessag(message).then(res => res.code === 200 && commit('getBossMessag', res)).catch(err => console.log(err))
+    },
+    getBossMerchant({ commit }, id) {
+      http.getBossMerchant({ id }).then(res => res.code === 200 && commit('getBossMerchant', res)).catch(err => console.log(err))
     }
   },
   mutations: {
@@ -40,6 +44,9 @@ export default {
     },
     getBossMessag(state, res) {
       state.report = res.data.report || {}
+    },
+    getBossMerchant(state, res) {
+      state.bossMerchant = res.data.merchants
     }
   }
 }

@@ -1,7 +1,8 @@
 <template>
     <div class="boss-container">
-        <mt-header fixed title="新华店，你好">
+        <mt-header fixed :title="bossMerchant.name">
           <mt-button slot="right" @click="logout">退出</mt-button>
+          <mt-butto @click="localStorage['bossMerchantId'] = 10">切换</mt-butto>
         </mt-header>
         <transition name="fade" mode="out-in">
             <router-view></router-view>
@@ -22,8 +23,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import { MessageBox, Toast } from 'mint-ui'
+import { mapActions, mapGetters } from 'vuex'
+import { MessageBox } from 'mint-ui'
 
 export default {
   data() {
@@ -32,28 +33,29 @@ export default {
     }
   },
   watch: {
-    $router: {
-      handler: function(to, from) {
-        if (!name) {
-          Toast({
-            message: '未登录，请先登录',
-            position: 'middle',
-            duration: 2000
-          })
-          this.$router.push({ path: '/boss/login' })
-        }
+    'boss.merchantId': {
+      handler: function(newValue) {
+        this.merchantId && this.getBossMerchant(this.merchantId)
       },
       immediate: true
     }
   },
   computed: {
+    ...mapGetters([
+      'bossMerchant',
+      'boss'
+    ]),
     name() {
       return localStorage['name']
+    },
+    merchantId() {
+      return localStorage['bossMerchantId']
     }
   },
   methods: {
     ...mapActions({
-      bossLogout: 'bossLogout'
+      bossLogout: 'bossLogout',
+      getBossMerchant: 'getBossMerchant'
     }),
     showMessage() {
       this.$router.push({

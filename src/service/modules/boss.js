@@ -107,5 +107,6 @@ instance.interceptors.response.use(
 export default {
   bossLogin: boss => instance.post('/login', boss).then(res => res).catch(err => err),
   bossLogout: () => instance.get('/logout').then(res => res).catch(err => err),
-  getBossMessag: message => instance.get('/data_report/bossPage', { params: message }).then(res => res).catch(err => err)
+  getBossMessag: message => instance.get('/data_report/bossPage', { params: message }).then(res => res).catch(err => err),
+  getBossMerchant: id => instance.get('/merchants/edit', { params: id }).then(res => res).catch(err => err)
 }

@@ -28,18 +28,8 @@ export default {
     ...mapGetters([
       'report'
     ]),
-    year() {
-      return new Date().getFullYear()
-    },
-    month() {
-      return new Date().getMonth() + 1
-    },
-    date() {
-      return new Date().getDate()
-    },
     merchantId() {
-      // return localStorage['bossMerchantId']
-      return 10
+      return localStorage['bossMerchantId']
     }
   },
   methods: {
@@ -48,7 +38,7 @@ export default {
     })
   },
   mounted() {
-    let date = new Date(2018, 4, 1)
+    let date = new Date()
     date = parseTime(date).substring(0, parseTime(date).indexOf(' '))
     this.getBossMessag({ merchantId: this.merchantId, reportTime: date })
   }

@@ -28,17 +28,16 @@ export default {
   },
   computed: {
     year() {
-      return new Date(2018, 5, 1).getFullYear()
+      return new Date().getFullYear()
     },
     month() {
-      return new Date(2018, 5, 1).getMonth()
+      return new Date().getMonth()
     },
     date() {
-      return new Date(2018, 5, 1).getDate()
+      return new Date().getDate()
     },
     merchantId() {
-      // return localStorage['bossMerchantId']
-      return 10
+      return localStorage['bossMerchantId']
     },
     ...mapGetters([
       'report'
