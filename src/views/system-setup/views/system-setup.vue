@@ -10,7 +10,7 @@
             <h1>#{{orderForPrint.orderNo}}紫竹林外卖</h1>
           </el-form-item>
           <el-form-item>
-            <p>*{{orderForPrint.merchantName}}*</p>
+            <p>*{{merchantName}}*</p>
           </el-form-item>
           <el-form-item label="下单时间：">
             {{orderForPrint.createdAt | Date}}
@@ -72,32 +72,12 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      orderItems: [{
-        name: '番茄炒蛋',
-        price: 10,
-        itemNums: 1
-      }, {
-        name: '鱼香肉丝',
-        price: 15,
-        itemNums: 1
-      }, {
-        name: '米饭',
-        price: 1,
-        itemNums: 4
-      }]
+      merchantName: ''
     }
   },
   watch: {
-    orderForPrint: {
-      handler: function(newValue) {
-        this.getShopForEdit(newValue.merchantId)
-      }
-    },
-    shopForEdit: {
-      handler: function(newValue) {
-        this.orderForPrint.merchantName = newValue.name
-      },
-      immediate: true
+    shopForEdit(newValue) {
+      this.merchantName = newValue.name
     }
   },
   computed: {
@@ -118,9 +98,9 @@ export default {
         targetStyles: ['*']
       })
     }
+  },
+  mounted() {
+    this.orderForPrint.merchantId && this.getShopForEdit(this.orderForPrint.merchantId)
   }
-  // mounted() {
-  //   this.getShopForEdit(this.orderForPrint.merchantId)
-  // }
 }
 </script>

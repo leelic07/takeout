@@ -269,13 +269,15 @@ export default {
   computed: {
     ...mapGetters([
       'orderReminderList',
-      'loading'
+      'loading',
+      'distributionResult'
     ])
   },
   methods: {
     ...mapActions({
       getOrderReminderByStatus: 'getOrderReminderByStatus',
-      retreatOrder: 'retreatOrder'
+      retreatOrder: 'retreatOrder',
+      distributionOrder: 'distributionOrder'
     }),
     ...mapMutations({
       showLoading: 'showLoading',
@@ -321,6 +323,11 @@ export default {
       })
     },
     distributionConfirm(id) {
+      this.$confirm('确定发起配送?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        this.distributionOrder(id)
+      }).catch(err => console.log(err))
     }
   }
 }

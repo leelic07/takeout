@@ -23,39 +23,6 @@ export default {
   data() {
     return {
       records: 1,
-      businessRecords: [{
-        id: 1,
-        date: '5.16',
-        totalPrice: 2000,
-        orderCount: 157,
-        maxOrder: 15,
-        minOrder: 5,
-        userClick: 312
-      }, {
-        id: 2,
-        date: '5.17',
-        totalPrice: 1000,
-        orderCount: 130,
-        maxOrder: 75,
-        minOrder: 7,
-        userClick: 722
-      }, {
-        id: 3,
-        date: '5.18',
-        totalPrice: 4240,
-        orderCount: 150,
-        maxOrder: 88,
-        minOrder: 8,
-        userClick: 562
-      }, {
-        id: 4,
-        date: '5.19',
-        totalPrice: 5020,
-        orderCount: 150,
-        maxOrder: 55,
-        minOrder: 8,
-        userClick: 712
-      }],
       dateList: []
     }
   },

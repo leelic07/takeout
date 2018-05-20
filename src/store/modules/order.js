@@ -10,7 +10,8 @@ export default {
     orderRecordsTotal: 0,
     orderReminderList: [],
     retreatResult: {},
-    orderForPrint: {}
+    orderForPrint: {},
+    distributionResult: {}
   },
   actions: {
     // 获取接单信息
@@ -52,6 +53,9 @@ export default {
     },
     retreatOrder({ commit }, refundOrder) {
       http.retreatOrder(refundOrder).then(res => res.code === 200 && commit('retreatOrder', res)).catch(err => err)
+    },
+    distributionOrder({ commit }, id) {
+      http.distributionOrder({ id }).then(res => res.code === 200 && commit('distributionOrder', res)).catch(err => err)
     }
   },
   mutations: {
@@ -104,6 +108,9 @@ export default {
       router.push({
         path: '/system/setup'
       })
+    },
+    distributionOrder(state, res) {
+      state.distributionResult = res
     }
   }
 }

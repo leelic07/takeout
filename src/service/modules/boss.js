@@ -2,33 +2,36 @@ import axios from 'axios'
 import config from '../config/base'
 import { agency } from '../base/service'
 import { Toast } from 'mint-ui'
-// import router from '@/router'
+import router from '@/router'
 const instance = axios.create(config)
-const name = localStorage['name']
-const passwordHash = localStorage['passwordHash']
 
 instance.interceptors.request.use(
   config => {
-    if (config.url !== '/login' && !name) {
+    const name = localStorage['name']
+    const passwordHash = localStorage['passwordHash']
+    config.url = `${agency}${config.url}`
+    if (config.url !== `${agency}/login` && !name) {
       Toast({
         message: '未登录',
         position: 'middle',
         duration: 2000
       })
-      instance.post('/login', { name, passwordHash })
-        .then(res => {
-          if (res.code === 200) {
-            localStorage.setItem('bossMerchantId', res.data.users.merchantId)
-            localStorage.setItem('bossType', res.data.users.type)
-            Toast({
-              message: '登录成功',
-              position: 'middle',
-              duration: 2000
-            })
-          }
-        }).catch(err => console.log(err))
+      if (name && passwordHash) {
+        instance.post('/login', { name, passwordHash })
+          .then(res => {
+            if (res.code === 200) {
+              localStorage.setItem('bossMerchantId', res.data.users.merchantId)
+              localStorage.setItem('bossType', res.data.users.type)
+              Toast({
+                message: '登录成功',
+                position: 'middle',
+                duration: 2000
+              })
+            }
+          }).catch(err => console.log(err))
+      } else router.push({ path: '/boss/login' })
     }
-    config.url = `${agency}${config.url}`
+
     return config
   },
   error => Promise.reject(error)
@@ -36,6 +39,8 @@ instance.interceptors.request.use(
 // http response 拦截器
 instance.interceptors.response.use(
   response => {
+    const name = localStorage['name']
+    const passwordHash = localStorage['passwordHash']
     const code = response.data.code
     const config = response.config
     switch (code) {
