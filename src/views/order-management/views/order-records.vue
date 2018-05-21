@@ -1,10 +1,14 @@
 <template>
   <el-row class="order-records-container">
     <!--搜索框-->
-    <el-row>
+    <el-row :gutter="25">
       <el-col :span="5">
         <el-input placeholder="请输入订单号" v-model="pagination.orderNo"></el-input>
       </el-col>
+      <el-select v-if="type === '1'" v-model="pagination.merchantId" placeholder="请选择店铺" @change="merchantChange">
+        <el-option value="" label="全部店铺"></el-option>
+        <el-option v-for="(merchant,index) in merchantList" :key="index" :value="merchant.id" :label="merchant.name"></el-option>
+      </el-select>
       <!-- <el-col :span="5" class="records-select">
         <el-input placeholder="请输入姓名" v-model="orderNumber"></el-input>
       </el-col> -->
@@ -58,9 +62,9 @@
                   <el-form-item label="平台佣金:">
                     <span>{{props.row.platformCommission}}</span>
                   </el-form-item>
-                  <el-form-item label="本单预计收入:">
+                  <!-- <el-form-item label="本单预计收入:">
                     <span style="color: orange;font-size: 18px;">￥?</span>
-                  </el-form-item>
+                  </el-form-item> -->
                   <el-form-item label="本顾客实际支付:">
                     <span style="color: orange;font-size: 18px;">￥{{props.row.realTotalMoney? props.row.realTotalMoney: 0}}</span>
                   </el-form-item>
@@ -110,15 +114,23 @@
           page: 1,
           rows: 10,
           orderNo: '',
-          userId: ''
+          userId: '',
+          merchantId: ''
         }
       }
     },
     computed: {
       ...mapGetters([
         'orderRecordsList',
-        'orderRecordsTotal'
-      ])
+        'orderRecordsTotal',
+        'merchantList'
+      ]),
+      merchantId() {
+        return Number(sessionStorage['merchantId'])
+      },
+      type() {
+        return sessionStorage['type']
+      }
     },
     components: {
       Pagination
@@ -126,20 +138,31 @@
     methods: {
       ...mapActions({
         getOrderRecordsList: 'getOrderRecordsList',
-        getOrdersRecordsPage: 'getOrdersRecordsPage'
+        getOrdersRecordsPage: 'getOrdersRecordsPage',
+        getMerchantsList: 'getMerchantsList'
       }),
       ...mapMutations({
         printOrder: 'printOrder'
       }),
       searchOrders() {
         if (this.pagination.userId) this.getOrdersRecordsPage(this.pagination)
+        else {
+          if (this.pagination.userId) this.getOrdersRecordsPage(this.pagination)
+          else this.getOrderRecordsList(this.pagination)
+        }
+      },
+      merchantChange() {
+        this.pagination.page = 1
+        if (this.pagination.userId) this.getOrdersRecordsPage(this.pagination)
         else this.getOrderRecordsList(this.pagination)
       }
     },
     mounted() {
+      this.merchantId && (this.pagination.merchantId = this.merchantId)
       this.pagination.userId = this.$route.params.id || ''
       if (this.pagination.userId) this.getOrdersRecordsPage(this.pagination)
       else this.getOrderRecordsList(this.pagination)
+      this.getMerchantsList()
     }
   }
 </script>

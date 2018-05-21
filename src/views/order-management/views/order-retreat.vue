@@ -4,6 +4,12 @@
     <el-card class="box-card">
       <el-col :span="22" :offset="2">
         <el-form ref="form" :model="form" label-width="80px">
+          <el-form-item label="选择店铺" v-if="type === '1'">
+            <el-select v-model="pagination.merchantId" placeholder="请选择店铺" size="small" @change="merchantChange">
+              <el-option value="" label="全部店铺"></el-option>
+              <el-option v-for="(merchant,index) in merchantList" :key="index" :value="merchant.id" :label="merchant.name"></el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="处理状态">
             <el-radio-group v-model="form.status">
               <el-radio label="0">未退单</el-radio>
@@ -23,7 +29,7 @@
               <label>14:00</label>
               <span>送达</span>
             </el-col>
-            <span type="text">待发配送</span>
+            <!-- <span type="text">待发配送</span> -->
           </div>
           <el-row>
             <el-table :data="orderRetreats" style="width: 100%" :show-header="false" stripe>
@@ -68,9 +74,9 @@
                     <el-form-item label="平台佣金:">
                       <span>{{props.row.orders.platformCommission}}</span>
                     </el-form-item>
-                    <el-form-item label="本单预计收入:">
+                    <!-- <el-form-item label="本单预计收入:">
                       <span style="color: orange;font-size: 18px;"></span>
-                    </el-form-item>
+                    </el-form-item> -->
                     <el-form-item label="本顾客实际支付:">
                       <span style="color: orange;font-size: 18px;">{{props.row.orders.realTotalMoney}}</span>
                     </el-form-item>
@@ -159,7 +165,8 @@ export default {
       },
       pagination: {
         page: 1,
-        rows: 10
+        rows: 10,
+        merchantId: ''
       },
       orderRetreats: [],
       busy: true,
@@ -197,14 +204,22 @@ export default {
     ...mapGetters([
       'orderRetreatList',
       'loading',
-      'retreatResult'
-    ])
+      'retreatResult',
+      'merchantList'
+    ]),
+    merchantId() {
+      return Number(sessionStorage['merchantId'])
+    },
+    type() {
+      return sessionStorage['type']
+    }
   },
   methods: {
     ...mapActions({
       getOrderRetreatList: 'getOrderRetreatList',
       getOrderRetreatByStatus: 'getOrderRetreatByStatus',
-      retreatOrder: 'retreatOrder'
+      retreatOrder: 'retreatOrder',
+      getMerchantsList: 'getMerchantsList'
     }),
     ...mapMutations({
       showLoading: 'showLoading',
@@ -267,7 +282,16 @@ export default {
         if (valid) this.retreatOrder(this.refundForm)
         else console.log('err retreat')
       })
+    },
+    merchantChange() {
+      this.orderRetreats.splice(0)
+      this.pagination.page = 1
+      this.getOrderRetreatByStatus({ ...this.pagination, ...this.form })
     }
+  },
+  mounted() {
+    this.merchantId && (this.pagination.merchantId = this.merchantId)
+    this.getMerchantsList()
   }
 }
 </script>

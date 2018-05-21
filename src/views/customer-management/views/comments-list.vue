@@ -11,6 +11,12 @@
                             <el-radio label="已回复"></el-radio>
                         </el-radio-group>
                     </el-form-item> -->
+                    <el-form-item label="选择店铺" v-if="type === '1'">
+                        <el-select v-model="pagination.merchantId" placeholder="请选择店铺" size="small" @change="merchantChange">
+                            <el-option value="" label="全部店铺"></el-option>
+                            <el-option v-for="(merchant,index) in merchantList" :key="index" :value="merchant.id" :label="merchant.name"></el-option>
+                        </el-select>
+                    </el-form-item>
                     <el-form-item label="满意程度">
                         <el-radio-group v-model="form.evaluate">
                             <el-radio :label="0">全部</el-radio>
@@ -41,7 +47,7 @@
                             <label>符合条件的评价:</label>
                             <span>{{feedbacksTotal}}条</span>
                         </el-col>
-                        <span type="text">待发配送</span>
+                        <!-- <span type="text">待发配送</span> -->
                     </div>
                     <el-row>
                         <el-table :data="feedbacks" style="width: 100%" :show-header="false" stripe>
@@ -116,16 +122,16 @@
                                                 <el-form-item label="平台佣金:">
                                                     <span>{{props.row.platformCommission}}</span>
                                                 </el-form-item>
-                                                <el-form-item label="本单预计收入:">
+                                                <!-- <el-form-item label="本单预计收入:">
                                                     <span style="color: orange;font-size: 18px;">{{props.row.orderIncome}}元</span>
-                                                </el-form-item>
+                                                </el-form-item> -->
                                                 <el-form-item label="本顾客实际支付:">
                                                     <span style="color: orange;font-size: 18px;">{{props.row.realTotalMoney}}元</span>
                                                 </el-form-item>
                                             </el-form>
                                         </el-form-item>
                                         <el-form-item>
-                                            <el-button type="primary" plain size="mini" @click="printOrder">打印订单</el-button>
+                                            <el-button type="primary" plain size="mini" @click="printOrder(props.row)">打印订单</el-button>
                                         </el-form-item>
                                     </el-form>
                                 </template>
@@ -166,7 +172,8 @@ export default {
       datetime: '',
       pagination: {
         page: 1,
-        rows: 5
+        rows: 5,
+        merchantId: ''
       },
       busy: true,
       feedbacks: [],
@@ -200,13 +207,14 @@ export default {
       'loading',
       'backCouponList',
       'userForEdit',
-      'sendCouponResult'
+      'sendCouponResult',
+      'merchantList'
     ]),
     type() {
       return sessionStorage.getItem('type')
     },
     merchantId() {
-      return sessionStorage.getItem('merchantId')
+      return Number(sessionStorage.getItem('merchantId'))
     }
   },
   methods: {
@@ -216,24 +224,13 @@ export default {
       getBackCouponList: 'getBackCouponList',
       editUser: 'editUser',
       sendCouponToUser: 'sendCouponToUser',
-      getFeedbacksByEvaluate: 'getFeedbacksByEvaluate'
+      getFeedbacksByEvaluate: 'getFeedbacksByEvaluate',
+      getMerchantsList: 'getMerchantsList'
     }),
     ...mapMutations({
-      showLoading: 'showLoading'
+      showLoading: 'showLoading',
+      printOrder: 'printOrder'
     }),
-    // 点击打印订单执行的方法
-    printOrder() {
-      this.$confirm('确定打印订单？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '打印订单成功'
-        })
-      })
-    },
     // 点击打印订单执行的方法
     cancelOrder() {
       this.$confirm('确定取消订单？', '提示', {
@@ -252,7 +249,7 @@ export default {
       this.showLoading()
       setTimeout(() => {
         this.pagination.page++
-        this.getFeedbacksPage({ ...this.pagination, merchantId: this.merchantId })
+        this.getFeedbacksPage(this.pagination)
       }, 1000)
     },
     sendCoupon(id) {
@@ -265,10 +262,17 @@ export default {
         if (valid) this.sendCouponToUser(this.userForEdit)
         else console.log('sendCoupon err')
       })
+    },
+    merchantChange() {
+      this.feedbacks.splice(0)
+      this.pagination.page = 1
+      this.getFeedbacksPage(this.pagination)
     }
   },
   mounted() {
-    this.getFeedbacksPage({ ...this.pagination, merchantId: this.merchantId })
+    this.merchantId && (this.pagination.merchantId = this.merchantId)
+    this.getFeedbacksPage(this.pagination)
+    this.getMerchantsList()
   }
 }
 </script>

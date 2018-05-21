@@ -13,10 +13,6 @@
                         <el-input v-model="shopForEdit.name" auto-complete="off" placeholder="请填写店铺名称"></el-input>
                     </el-form-item>
                     <el-form-item label="店铺类型" label-width="120px" prop="typeId">
-                        <!-- <el-radio-group v-model="shopForEdit.typeId">
-                            <el-radio label="1">普通</el-radio>
-                            <el-radio label="2">超级</el-radio>
-                        </el-radio-group> -->
                         <el-select v-model="shopForEdit.typeId" placeholder="请选择店铺类型">
                             <el-option v-for="item in shopTypeList" :key="item.id" :label="item.name" :value="item.id">
                             </el-option>
@@ -26,11 +22,13 @@
                         <el-input v-model="shopForEdit.lat" auto-complete="off" placeholder="请填写店铺经度">
                           <template slot="append">度</template>
                         </el-input>
+                        <span class="latitude">例如：112.62</span>
                     </el-form-item>
-                    <el-form-item label="店铺维度" label-width="120px" prop="lng">
+                    <el-form-item label="店铺纬度" label-width="120px" prop="lng">
                         <el-input v-model="shopForEdit.lng" auto-complete="off" placeholder="请填写店铺维度">
                           <template slot="append">度</template>
                         </el-input>
+                        <span class="latitude">例如：26.90</span>
                     </el-form-item>
                     <el-form-item label="联系电话" label-width="120px" prop="tel">
                         <el-input v-model="shopForEdit.tel" auto-complete="off" placeholder="请填写联系电话"></el-input>

@@ -12,6 +12,12 @@
           .el-form-item {
             padding:0 20% 0 5%;
             margin-bottom: 30px;
+            span.latitude {
+              position: absolute;
+              top: 0;
+              right: -25%;
+              color: #909399;
+            }
             &:last-child {
               .el-button {
                 float: right;

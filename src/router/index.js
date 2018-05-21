@@ -98,17 +98,20 @@ export const constantRouterMap = [
       path: 'acception',
       name: 'Acception',
       component: () => import('@/views/order-management/views/order-acception'),
-      meta: { title: '接单', icon: 'example' }
+      meta: { title: '接单', icon: 'example' },
+      hidden: false
     }, {// 预定单
       path: 'reservation',
       name: 'Reservation',
       component: () => import('@/views/order-management/views/order-reservation'),
-      meta: { title: '预订单', icon: 'example' }
+      meta: { title: '预订单', icon: 'example' },
+      hidden: false
     }, {// 催单
       path: 'reminder',
       name: 'Reminder',
       component: () => import('@/views/order-management/views/order-reminder'),
-      meta: { title: '催单', icon: 'example' }
+      meta: { title: '催单', icon: 'example' },
+      hidden: false
     }, {// 退单
       path: 'retreat',
       name: 'Retreat',
@@ -149,22 +152,26 @@ export const constantRouterMap = [
       path: 'category',
       name: 'Category',
       component: () => import('@/views/goods-management/views/goods-category'),
-      meta: { title: '商品分类', icon: 'example' }
+      meta: { title: '商品分类', icon: 'example' },
+      hidden: false
     }, {// 新增分类
       path: 'category/add',
       name: 'Add',
       component: () => import('@/views/goods-management/views/category-add'),
-      meta: { title: '新增分类', icon: 'example' }
+      meta: { title: '新增分类', icon: 'example' },
+      hidden: false
     }, {// 规格列表
       path: 'standard',
       name: 'Standard',
       component: () => import('@/views/goods-management/views/goods-standard'),
-      meta: { title: '规格列表', icon: 'example' }
+      meta: { title: '规格列表', icon: 'example' },
+      hidden: false
     }, {// 新增规格
       path: 'standard/add',
       name: 'StandardAdd',
       component: () => import('@/views/goods-management/views/standard-add'),
-      meta: { title: '新增规格', icon: 'example' }
+      meta: { title: '新增规格', icon: 'example' },
+      hidden: false
     }, {// 编辑商品
       path: 'edit/:id',
       name: 'GoodsEdit',

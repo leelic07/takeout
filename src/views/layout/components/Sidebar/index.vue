@@ -29,63 +29,45 @@ export default {
   },
   methods: {
     initRoutes(routes, type) {
-      if (type !== '1') { // 非超级管理员
-        routes.forEach((route, index, arr) => {
-          switch (route.name) {
-            case 'Activity':
-              route.hidden = true
-              break
-            case 'ShopManagement':
-              route.children.forEach(shop => {
-                if (shop.name === 'ShopList' || shop.name === 'ShopAdd') shop.hidden = true
-                else shop.hidden = false
-              })
-              break
-            case 'Goods':
-              route.children.forEach(goods => {
-                if (goods.name === 'GoodsUpload' ||
+      routes.forEach((route, index, arr) => {
+        switch (route.name) {
+          case 'Activity':
+            type !== '1' ? route.hidden = true : route.hidden = false
+            break
+          case 'ShopManagement':
+            route.children.forEach(shop => {
+              if (shop.name === 'ShopList' || shop.name === 'ShopAdd') type !== '1' ? shop.hidden = true : shop.hidden = false
+              else type !== '1' ? shop.hidden = false : shop.hidden = true
+            })
+            break
+          case 'Goods':
+            route.children.forEach(goods => {
+              if (goods.name === 'GoodsUpload' ||
                 goods.name === 'Category' ||
                 goods.name === 'Add' ||
                 goods.name === 'Standard' ||
                 goods.name === 'StandardAdd' ||
-                goods.name === 'StandardEdit') goods.hidden = true
-              })
-              break
-            case 'SystemSetUp':
-              route.children.forEach(system => {
-                if (system.name === 'SystemBanner' || system.name === 'DeliveryTime' || system.name === 'MemberLevel') system.hidden = true
-              })
-              break
-          }
-        })
-      } else { // 超级管理员
-        routes.forEach((route, index, arr) => {
-          switch (route.name) {
-            case 'Activity':
-              route.hidden = false
-              break
-            case 'ShopManagement':
-              route.children.forEach(shop => {
-                if (shop.name === 'ShopList' || shop.name === 'ShopAdd') shop.hidden = false
-                else shop.hidden = true
-              })
-              break
-            case 'Goods':
-              route.children.forEach(goods => {
-                if (goods.name === 'GoodsUpload') goods.hidden = false
-              })
-              break
-            case 'SystemSetUp':
-              route.children.forEach(system => {
-                if (system.name === 'SystemBanner' || system.name === 'DeliveryTime' || system.name === 'MemberLevel') system.hidden = false
-              })
-              break
-          }
-        })
-      }
+                goods.name === 'StandardEdit') type !== '1' ? goods.hidden = true : goods.hidden = false
+            })
+            break
+          case 'SystemSetUp':
+            route.children.forEach(system => {
+              if (system.name === 'SystemBanner' ||
+                system.name === 'DeliveryTime' ||
+                system.name === 'MemberLevel') type !== '1' ? system.hidden = true : system.hidden = false
+            })
+            break
+          case 'Order':
+            route.children.forEach(order => {
+              if (order.name === 'Acception' ||
+              order.name === 'Reservation' ||
+              order.name === 'Reminder') type !== '1' ? order.hidden = false : order.hidden = true
+            })
+        }
+      })
     }
   },
-  mounted() {
+  created() {
     this.initRoutes(this.routes, this.type)
   }
 }

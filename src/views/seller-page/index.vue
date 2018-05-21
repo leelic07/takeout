@@ -117,8 +117,6 @@ export default {
       list1: [],
       list2: [],
       seller: {
-        title: '意甜蛋糕(友阿店)',
-        rate: 3.7,
         merchantId: ''
       }
     }

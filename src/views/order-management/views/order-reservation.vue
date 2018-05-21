@@ -68,9 +68,9 @@
                         <el-form-item label="平台佣金:">
                           <span>{{props.row.platformCommission}}</span>
                         </el-form-item>
-                        <el-form-item label="本单预计收入:">
+                        <!-- <el-form-item label="本单预计收入:">
                           <span style="color: orange;font-size: 18px;">{{props.row.orderIncome}}</span>
-                        </el-form-item>
+                        </el-form-item> -->
                         <el-form-item label="本顾客实际支付:">
                           <span style="color: orange;font-size: 18px;">{{props.row.realTotalMoney}}</span>
                         </el-form-item>
