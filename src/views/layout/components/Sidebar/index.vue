@@ -43,7 +43,12 @@ export default {
               break
             case 'Goods':
               route.children.forEach(goods => {
-                if (goods.name === 'GoodsUpload') goods.hidden = true
+                if (goods.name === 'GoodsUpload' ||
+                goods.name === 'Category' ||
+                goods.name === 'Add' ||
+                goods.name === 'Standard' ||
+                goods.name === 'StandardAdd' ||
+                goods.name === 'StandardEdit') goods.hidden = true
               })
               break
             case 'SystemSetUp':
