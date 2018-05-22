@@ -10,6 +10,7 @@
 
 <script>
 import { Navbar, Sidebar, AppMain } from '@/views/layout/components'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'layout',
@@ -18,10 +19,24 @@ export default {
     Sidebar,
     AppMain
   },
+  watch: {
+    orderMessage(newValue) {
+      console.log(newValue)
+      this.$notify({
+        title: '订单提醒',
+        message: '您有一笔新的订单',
+        type: 'success',
+        duration: 0
+      })
+    }
+  },
   computed: {
     sidebar() {
       return this.$store.state.app.sidebar
-    }
+    },
+    ...mapGetters([
+      'orderMessage'
+    ])
   }
 }
 </script>

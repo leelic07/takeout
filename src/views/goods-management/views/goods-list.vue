@@ -68,7 +68,7 @@
       </div>
     </el-dialog>
     <!--商品上架对话框-->
-    <el-dialog class="withdraw-dialog" title="商品下架" :visible.sync="dialogGroundVisible">
+    <el-dialog class="withdraw-dialog" title="商品上架" :visible.sync="dialogGroundVisible">
       <el-form ref="shopForm">
         <el-form-item label="选择下架商铺：">
           <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
@@ -230,7 +230,7 @@ export default {
     },
     // 点击全选执行的方法
     handleCheckAllChange(val) {
-      val ? this.merchantList.formEach(merchant => {
+      val ? this.merchantList.forEach(merchant => {
         this.merchantIds.push(merchant.id)
       }) : this.merchantIds.splice(0)
       this.isIndeterminate = false

@@ -68,7 +68,7 @@ export default {
     },
     getShopForEdit(state, shopForEditResult) {
       const shop = shopForEditResult.data.merchants
-      shop.isOnline = shop.isOnline ? shop.isOnline.toString() : ''
+      shop.isOnline = shop.isOnline.toString()
       shop.startingPrice = shop.startingPrice ? shop.startingPrice.toString() : ''
       shop.fullFreeDistribution = shop.fullFreeDistribution ? shop.fullFreeDistribution.toString() : ''
       shop.distributionFee = shop.distributionFee ? shop.distributionFee.toString() : ''

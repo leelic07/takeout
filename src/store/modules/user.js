@@ -1,12 +1,14 @@
 import http from '@/service'
 import router from '@/router'
+import { Message } from 'element-ui'
 
 const user = {
   state: {
     users: {},
     resetResult: {},
     manager: {},
-    type: ''
+    type: '',
+    orderMessage: {}
   },
   actions: {
     // 登录
@@ -45,18 +47,26 @@ const user = {
         }
         // 获得消息事件
         socket.onmessage = function(msg) {
-          console.log(msg.data)
+          debugger
+          commit('linkWebsocket', msg)
         // 发现消息进入    调后台获取
         // document.getElementById('response').innerHTML = msg.data
         //  $("#response").html(msg.data);
         }
         // 关闭事件
         socket.onclose = function() {
-          console.log('Socket已关闭')
+          Message({
+            type: 'warning',
+            message: 'websocket已经关闭',
+            showClose: true
+          })
         }
         // 发生了错误事件
         socket.onerror = function() {
-          alert('Socket发生了错误')
+          Message.error({
+            message: 'websocket发生错误',
+            showClose: true
+          })
         }
       /*           $(window).unload(function(){
                 socket.close();
@@ -93,6 +103,9 @@ const user = {
       managers.merchants = managers.merchants || []
       managers.type = managers.type.toString()
       state.manager = managers
+    },
+    linkWebsocket(state, msg) {
+      state.orderMessage = msg
     }
   }
 }

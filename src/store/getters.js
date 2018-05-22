@@ -7,6 +7,7 @@ const getters = {
   manager: state => state.user.manager,
   users: state => state.user.users,
   type: state => state.user.type,
+  orderMessage: state => state.user.orderMessage,
   // 商户管理
   shopList: state => state.shop.shopList,
   shopTotal: state => state.shop.shopTotal,

@@ -31,6 +31,11 @@
         <el-table-column prop="itemTypeCount" label="分类数量"></el-table-column>
         <el-table-column prop="activityQuantity" label="评分"></el-table-column>
         <el-table-column prop="activityCount" label="活动"></el-table-column>
+        <!-- <el-table-column label="状态">
+          <template slot-scope="props">
+            <el-tag :type="props.row.isOnline ? 'primary' : 'error'">{{props.row.isOnline ? '上架' : '下架'}}</el-tag>
+          </template>
+        </el-table-column> -->
         <el-table-column label="操作">
           <template slot-scope="props">
             <el-button type="primary" size="mini" @click="showShopEdit(props.row.id)">编辑</el-button>
