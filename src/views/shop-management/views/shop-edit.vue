@@ -155,7 +155,7 @@ export default {
       })
     },
     updateShopResult() {
-      if (!this.merchantId) {
+      if (this.type === '1') {
         this.$router.push({
           path: '/shop/list'
         })
@@ -170,6 +170,9 @@ export default {
     ]),
     merchantId() {
       return sessionStorage['merchantId']
+    },
+    type() {
+      return sessionStorage['type']
     }
   },
   methods: {

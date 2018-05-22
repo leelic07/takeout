@@ -37,7 +37,7 @@
               <el-radio label="1">无限</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="库存量" label-width="120px" prop="stock">
+          <el-form-item label="库存量" label-width="120px" prop="stock" v-if="goods.stockStatus !== '1'">
             <el-input v-model="goods.stock" auto-complete="off" placeholder="请填写库存量"></el-input>
           </el-form-item>
           <el-form-item label="商品状态" label-width="120px" prop="isPuton">

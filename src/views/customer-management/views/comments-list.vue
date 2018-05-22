@@ -197,7 +197,7 @@ export default {
     'form.evaluate'(newValue) {
       this.feedbacks = []
       this.pagination.page = 1
-      this.getFeedbacksByEvaluate({ ...this.pagination, merchantId: this.merchantId, ...this.form })
+      this.getFeedbacksByEvaluate({ ...this.pagination, ...this.form })
     }
   },
   computed: {
@@ -271,7 +271,7 @@ export default {
   },
   mounted() {
     this.merchantId && (this.pagination.merchantId = this.merchantId)
-    this.getFeedbacksPage(this.pagination)
+    this.getFeedbacksByEvaluate({ ...this.pagination, ...this.form })
     this.getMerchantsList()
   }
 }
