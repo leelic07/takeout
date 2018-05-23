@@ -105,7 +105,12 @@ export default {
       state.retreatResult = retreatResult
     },
     printOrder(state, orderForPrint) {
-      state.orderForPrint = orderForPrint
+      let order = ''
+      if (orderForPrint.orders) {
+        orderForPrint.orders.orderItems = orderForPrint.orderItems
+        order = orderForPrint.orders
+      } else order = orderForPrint
+      state.orderForPrint = order
       router.push({
         path: '/system/setup'
       })

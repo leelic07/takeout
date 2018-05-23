@@ -53,6 +53,7 @@ const user = {
             message: 'websocket已经关闭',
             showClose: true
           })
+          socket = new WebSocket(url)
         }
         // 发生了错误事件
         socket.onerror = function() {
@@ -60,6 +61,7 @@ const user = {
             message: 'websocket发生错误',
             showClose: true
           })
+          socket = new WebSocket(url)
         }
       }
     }
