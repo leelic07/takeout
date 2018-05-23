@@ -47,10 +47,8 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="商品图片" label-width="120px">
-            <el-upload class="upload-demo" :action="$_baseURL + $_uploadURL" :with-credentials="true" :on-remove="handleRemove" :on-success="handleSuccess" :file-list="fileList" list-type="picture" :limit="5" show-file-list>
-              <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片，最多只能上传五张图片</div>
-            </el-upload>
+            <upload-img :pictures="goods.pictures" :limit="limit" @handleRemove="handleRemove" @handleSuccess="handleSuccess">
+            </upload-img>
           </el-form-item>
           <el-form-item label="商品售卖店铺" label-width="120px" prop="itemMerchants">
             <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
@@ -107,7 +105,6 @@
           </el-col>
         </el-row>
         <div slot="footer" class="dialog-footer">
-          <el-button size="small" @click="resetPropertys">取 消</el-button>
           <el-button type="primary" @click="dialogFormVisible = false" size="small">确 定</el-button>
         </div>
       </el-dialog>
@@ -130,8 +127,7 @@ export default {
           subPropertys: []
         }]
       },
-      fileList: [],
-      fileListTemp: [],
+      limit: 5,
       dialogFormVisible: false,
       formLabelWidth: '80px',
       rule: {
@@ -177,17 +173,11 @@ export default {
       getPropertysParent: 'getPropertysParent',
       getPropertysChildren: 'getPropertysChildren'
     }),
-    handleRemove(file) {
-      this.fileListTemp.forEach((f, index, arr) => {
-        if (f.url === file.url) {
-          this.goods.pictures.splice(index, 1)
-          arr.splice(index, 1)
-        }
-      })
+    handleRemove(index) {
+      this.goods.pictures.splice(index, 1)
     },
-    handleSuccess(res, file, fileList) {
-      this.fileListTemp.push(file)
-      this.goods.pictures.push(this.$_baseURL + res.path)
+    handleSuccess(url) {
+      this.goods.pictures.push(url)
     },
     // 添加属性名
     addPropertyForm() {
@@ -222,13 +212,6 @@ export default {
         if (valid) this.saveGoods(this.goods)
         else console.log('err saveGoods')
       })
-    },
-    resetPropertys() {
-      this.dialogFormVisible = false
-      // this.goods.itemPropertys = [{
-      //   id: '',
-      //   subPropertys: []
-      // }]
     },
     // 点击全选时执行的方法
     handleCheckAllChange(val) {

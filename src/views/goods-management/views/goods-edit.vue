@@ -40,17 +40,9 @@
                     <el-form-item label="库存量" label-width="120px" prop="stock">
                         <el-input v-model="goodsForEdit.stock" auto-complete="off" placeholder="请填写库存量"></el-input>
                     </el-form-item>
-                    <!-- <el-form-item label="商品状态" label-width="120px" prop="isPuton">
-                        <el-radio-group v-model="goodsForEdit.isPuton">
-                            <el-radio label="1">在售</el-radio>
-                            <el-radio label="0">下架</el-radio>
-                        </el-radio-group>
-                    </el-form-item> -->
                     <el-form-item label="商品图片" placeholder="请填写地址" label-width="120px">
-                        <el-upload class="upload-demo" :action="$_baseURL + $_uploadURL" :with-credentials="true" :on-remove="handleRemove" :on-success="handleSuccess" :file-list="fileList" list-type="picture" :limit="5" show-file-list>
-                            <el-button size="small" type="primary">点击上传</el-button>
-                            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片，最多只能上传五张图片</div>
-                        </el-upload>
+                        <upload-img :pictures="goodsForEdit.pictures" :limit="limit" @handleRemove="handleRemove" @handleSuccess="handleSuccess">
+                        </upload-img>
                     </el-form-item>
                     <el-form-item label="商品售卖店铺" label-width="120px" prop="merchants">
                         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
@@ -101,13 +93,12 @@
                             <el-checkbox v-model="ps.isOpen">启用</el-checkbox>
                         </el-col>
                         <!-- <el-col :span="3" :offset="1"> -->
-                            <!-- <div class="property-button decede-properties" @click="decedeProperties(index,ind)" v-if="goodsForEdit.itemPropertys[index].subPropertys.length > 1">-</div> -->
-                            <!-- <div class="property-button add-properties" @click="addProperties(index)" v-if="goodsForEdit.itemPropertys[index].subPropertys.length === ind + 1">+</div> -->
+                        <!-- <div class="property-button decede-properties" @click="decedeProperties(index,ind)" v-if="goodsForEdit.itemPropertys[index].subPropertys.length > 1">-</div> -->
+                        <!-- <div class="property-button add-properties" @click="addProperties(index)" v-if="goodsForEdit.itemPropertys[index].subPropertys.length === ind + 1">+</div> -->
                         <!-- </el-col> -->
                     </el-col>
                 </el-row>
                 <div slot="footer" class="dialog-footer">
-                    <el-button @click="cancelPropertys" size="small">取 消</el-button>
                     <el-button type="primary" @click="dialogFormVisible = false" size="small">确 定</el-button>
                 </div>
             </el-dialog>
@@ -121,8 +112,7 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      fileList: [],
-      fileListTemp: [],
+      limit: 5,
       dialogFormVisible: false,
       formLabelWidth: '80px',
       rule: {
@@ -144,26 +134,8 @@ export default {
           { pattern: '^\\d+(\\.\\d+)?$', message: '请输入有效数字', trigger: 'blur' }
         ]
       },
-      shopPropertyList: [{
-        id: 1,
-        name: '辣椒'
-      }, {
-        id: 2,
-        name: '冰块'
-      }, {
-        id: 3,
-        name: '甜度'
-      }],
       checkAll: false,
       isIndeterminate: true
-    }
-  },
-  watch: {
-    goodsForEdit(newValue) {
-      newValue.pictures.forEach(picture => {
-        this.fileList.push(picture)
-        this.fileListTemp.push(picture)
-      })
     }
   },
   computed: {
@@ -187,17 +159,11 @@ export default {
       getPropertysParent: 'getPropertysParent',
       getPropertysChildren: 'getPropertysChildren'
     }),
-    handleRemove(file) {
-      this.fileListTemp.forEach((f, index, arr) => {
-        if (f.url === file.url) {
-          this.goodsForEdit.pictures.splice(index, 1)
-          arr.splice(index, 1)
-        }
-      })
+    handleRemove(index) {
+      this.goodsForEdit.pictures.splice(index, 1)
     },
-    handleSuccess(res, file, fileList) {
-      this.fileListTemp.push(file)
-      this.goodsForEdit.pictures.push(this.$_baseURL + res.path)
+    handleSuccess(url) {
+      this.goodsForEdit.pictures.push(url)
     },
     // 添加属性名
     addPropertyForm() {
@@ -243,10 +209,6 @@ export default {
     },
     propertyChange(property) {
       this.getPropertysChildren(property)
-    },
-    cancelPropertys() {
-      this.dialogFormVisible = false
-    //   this.goodsForEdit.itemPropertys = [{ subPropertys: [] }]
     }
   },
   mounted() {

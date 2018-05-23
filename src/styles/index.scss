@@ -76,3 +76,10 @@ h1, h2, h3 {
 .app-container {
   padding: 20px;
 }
+
+#pagination {
+  padding: 20px 0 20px 0;
+  .el-pagination {
+    float: right;
+  }
+}

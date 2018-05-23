@@ -12,6 +12,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 import filters from './filters'
+import components from '@/components'
 import config from '@/service/config/base'
 import { agency } from '@/service/base/service'
 
@@ -29,6 +30,8 @@ Vue.prototype.$_uploadURL = `${agency}/upload/uploadfile`
 
 // 声明过滤器
 Object.keys(filters).forEach(key => Vue.filter(key, filters[key]))
+// 声明公共组件
+Object.keys(components).forEach(key => Vue.component(key, components[key]))
 
 new Vue({
   el: '#app',

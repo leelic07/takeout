@@ -46,10 +46,8 @@
                         <el-input v-model="shopInfo.description" auto-complete="off" placeholder="请填写店铺介绍"></el-input>
                     </el-form-item>
                     <el-form-item label="店铺图片" placeholder="请填写地址" label-width="120px">
-                        <el-upload class="upload-demo" :action="$_baseURL + $_uploadURL" :with-credentials="true" :on-remove="handleRemove" :on-success="handleSuccess" :on-exceed="handleExceed" :file-list="fileList" list-type="picture" :limit="5" show-file-list>
-                            <el-button size="small" type="primary">点击上传</el-button>
-                            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片，最多只能上传五张图片</div>
-                        </el-upload>
+                        <upload-img :pictures="shopInfo.pictures" :limit="limit" @handleRemove="handleRemove" @handleSuccess="handleSuccess">
+                        </upload-img>
                     </el-form-item>
                     <el-col class="shop-message">
                         <el-tag>营业信息</el-tag>
@@ -116,8 +114,7 @@ export default {
       shopInfo: {
         pictures: []
       },
-      fileList: [],
-      fileListTemp: [],
+      limit: 5,
       dialogFormVisible: false,
       propertyForm: [{
         name: '',
@@ -169,25 +166,11 @@ export default {
       saveShop: 'saveShop',
       getShopTypeList: 'getShopTypeList'
     }),
-    handleRemove(file) {
-      this.fileListTemp.forEach((f, index, arr) => {
-        if (f.url === file.url) {
-          this.shopInfo.pictures.splice(index, 1)
-          arr.splice(index, 1)
-        }
-      })
+    handleRemove(index) {
+      this.shopInfo.pictures.splice(index, 1)
     },
-    // 上传图片成功执行的方法
-    handleSuccess(res, file) {
-      this.fileListTemp.push(file)
-      this.shopInfo.pictures.push({ url: this.$_baseURL + res.path })
-    },
-    // 图片上传超过限制执行的方法
-    handleExceed() {
-      this.$message({
-        type: 'warning',
-        message: '最多只能上传5张图片'
-      })
+    handleSuccess(url) {
+      this.shopInfo.pictures.push(url)
     },
     // 保存新增商户信息
     saveShopConfirm() {

@@ -37,12 +37,3 @@ export default {
   }
 }
 </script>
-
-<style ref="stylesheet/scss" lang="scss">
-#pagination {
-  padding: 20px 0 20px 0;
-  & /deep/ .el-pagination {
-    float: right;
-  }
-}
-</style>
