@@ -68,10 +68,12 @@
                         <el-date-picker v-model="discountForm.endDate" placeholder="选择结束日期"></el-date-picker>
                     </el-form-item>
                     <el-form-item label="优惠券图片" label-width="120px" prop="pictures">
-                        <el-upload class="upload-demo" :action="$_baseURL + $_uploadURL" :with-credentials="true" :on-remove="handleRemove" :on-success="handleSuccess" :file-list="fileList" list-type="picture" show-file-list>
+                        <!-- <el-upload class="upload-demo" :action="$_baseURL + $_uploadURL" :with-credentials="true" :on-remove="handleRemove" :on-success="handleSuccess" :file-list="fileList" list-type="picture" show-file-list>
                             <el-button size="small" type="primary">点击上传</el-button>
                             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片</div>
-                        </el-upload>
+                        </el-upload> -->
+                        <upload-img :pictures="discountForm.pictures" :limit="limit" @handleRemove="handleRemove" @handleSuccess="handleSuccess">
+                        </upload-img>
                     </el-form-item>
                     <el-form-item label="活动参与店铺" label-width="110px" prop="merchants">
                         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange(checkAll,'discount')">全选</el-checkbox>
@@ -124,6 +126,7 @@ export default {
       },
       fileList: [],
       fileListTemp: [],
+      limit: 0,
       labelPosition: 'left',
       activityRules: {
         name: [{ required: true, message: '活动名称不能为空', trigger: 'blur' }],
@@ -201,17 +204,14 @@ export default {
       this.checkAll = val.length === this.merchantList.length
       this.isIndeterminate = val.length > 0 && val.length < this.merchantList.length
     },
-    handleRemove(file) {
-      this.fileListTemp.forEach((f, index, arr) => {
-        if (f.url === file.url) {
-          this.discountForm.pictures.splice(index, 1)
-          arr.splice(index, 1)
-        }
-      })
+    handleRemove(index) {
+      this.discountForm.pictures.splice(index, 1)
     },
-    handleSuccess(res, file, fileList) {
-      this.fileListTemp.push(file)
-      this.discountForm.pictures.push({ url: this.$_baseURL + res.path })
+    handleSuccess(url) {
+      this.discountForm.pictures.push({
+        name: url.substring(url.lastIndexOf('/' + 1)),
+        url: url
+      })
     }
   },
   mounted() {

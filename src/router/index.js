@@ -178,7 +178,7 @@ export const constantRouterMap = [
       component: () => import('@/views/goods-management/views/goods-edit'),
       meta: { title: '编辑商品', icon: 'example' },
       hidden: true
-    }, {
+    }, {// 编辑规格
       path: 'standard/edit/:id',
       name: 'StandardEdit',
       component: () => import('@/views/goods-management/views/standard-edit'),

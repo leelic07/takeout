@@ -1,7 +1,7 @@
 <template>
   <el-row class="order-acception-container">
     <!--切换接单内容-->
-    <el-card class="box-card">
+    <!-- <el-card class="box-card">
       <el-col :span="22" :offset="2">
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="处理状态">
@@ -12,7 +12,7 @@
           </el-form-item>
         </el-form>
       </el-col>
-    </el-card>
+    </el-card> -->
     <!--接单信息-->
     <el-row class="order-box" :gutter="20">
       <el-col>

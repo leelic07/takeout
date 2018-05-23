@@ -76,6 +76,7 @@ const getters = {
   // 售后管理
   feedbacksList: state => state.customer.feedbacksList,
   feedbacksTotal: state => state.customer.feedbacksTotal,
+  replyResult: state => state.customer.replyResult,
   // 加载图标
   loading: state => state.loading.loading,
   // 经营管理

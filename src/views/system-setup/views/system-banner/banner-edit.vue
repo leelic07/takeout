@@ -43,11 +43,6 @@ export default {
       }
     }
   },
-  watch: {
-    adForEdit(newValue) {
-      this.adForEdit.pictures = [newValue.imageUrl]
-    }
-  },
   computed: {
     ...mapGetters([
       'adForEdit',
@@ -66,7 +61,6 @@ export default {
     handleSuccess(url) {
       this.adForEdit.pictures.push(url)
       this.adForEdit.imageUrl = url
-      console.log('picture', this.adForEdit.pictures)
     },
     // 保存新增商户信息
     updateBannerConfirm() {

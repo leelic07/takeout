@@ -23,7 +23,7 @@
                 <el-table-column prop="birthday" label="生日" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="userPhone" label="手机号码" show-overflow-tooltip></el-table-column>
                 <el-table-column label="地址">
-                    <template slot-scope="props">
+                    <template slot-scope="props" show-overflow-tooltip>
                         <el-popover placement="bottom" title="地址" width="200" trigger="hover" :content="props.row.address">
                             <el-button slot="reference" type="text">查看</el-button>
                         </el-popover>
@@ -127,8 +127,6 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      orderNumber: '', // 订单号
-      datetime: [], // 日期时间
       pagination: {// 分页信息
         page: 1,
         rows: 10,
@@ -137,20 +135,9 @@ export default {
       },
       dialogDetailVisible: false,
       dialogFormVisible: false,
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      },
       rule: {
         couponId: [{ required: true, message: '请选择优惠券', trigger: 'blur' }]
-      },
-      imageUrl: '' // 上传头像的图片路径
+      }
     }
   },
   watch: {

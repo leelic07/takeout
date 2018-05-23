@@ -22,12 +22,6 @@ export default {
   watch: {
     orderMessage(newValue) {
       console.log(newValue)
-      this.$notify({
-        title: '订单提醒',
-        message: '您有一笔新的订单',
-        type: 'success',
-        duration: 0
-      })
     }
   },
   computed: {

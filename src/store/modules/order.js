@@ -75,7 +75,7 @@ export default {
     getOrderAcceptionByStatus(state, orderAcceptionList) {
       const orders = orderAcceptionList.data.orders
       const status = orderAcceptionList.status
-      state.orderAcceptionList = orders.filter(order => order.status === Number(status))
+      state.orderAcceptionList = orders.filter(order => order.status === status)
     },
     getOrderRetreatList(state, orderRetreatList) {
       state.orderRetreatList = orderRetreatList.data.orders
@@ -97,8 +97,9 @@ export default {
     },
     getOrderReminderByStatus(state, orderReminderList) {
       const orders = orderReminderList.data.orders
-      const status = orderReminderList.status
-      state.orderReminderList = orders.filter(order => order.status === Number(status))
+      // const status = orderReminderList.status
+      // state.orderReminderList = orders.filter(order => order.status === Number(status))
+      state.orderReminderList = orders
     },
     retreatOrder(state, retreatResult) {
       state.retreatResult = retreatResult

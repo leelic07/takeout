@@ -25,7 +25,7 @@ export default {
     },
     pictures: {
       type: Array,
-      default: []
+      default: () => []
     }
   },
   data() {
@@ -144,13 +144,11 @@ export default {
     // 上传文件方法
     UpladFile(fileObj) {
       const that = this
-      console.log('fileSize', fileObj.size)
       if (fileObj.size / 1024 > 200) { // 大于1M，进行压缩上传
         this.photoCompress(fileObj, {
           quality: 0.2
         }, function(base64Codes) {
           const bl = that.convertBase64UrlToBlob(base64Codes)
-          console.log('blSize', bl.size)
           //   form.append('file', bl, 'file_' + Date.parse(new Date()) + '.jpg') // 文件对象
           that.uploadFile(bl)
         })
