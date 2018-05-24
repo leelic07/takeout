@@ -6,8 +6,8 @@
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="处理状态">
             <el-radio-group v-model="form.status">
-              <el-radio label="0">新订单</el-radio>
-              <el-radio label="1">已处理</el-radio>
+              <el-radio label="2">新订单</el-radio>
+              <el-radio label="3">已处理</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -110,7 +110,7 @@
               <el-table-column label="" prop="name" width="95">
                 <template slot-scope="props">
                   <el-row class="card-content">
-                    <el-button size="mini" type="primary" plain>发起配送</el-button>
+                    <el-button size="mini" type="primary" plain @click="distributionConfirm(props.row.id)">发起配送</el-button>
                   </el-row>
                 </template>
               </el-table-column>
@@ -118,81 +118,6 @@
           </el-row>
         </el-card>
       </el-col>
-      <!--商家关注信息-->
-      <!-- <el-col :span="10" class="order-summary">
-        <el-card>
-          <div slot="header" class="clearfix">
-            <span>今日订单概况</span>
-          </div>
-          <el-row class="card-content">
-            <el-col>
-              <label for="">已接订单:</label>
-              <b>1</b>
-              <span>笔</span>
-            </el-col>
-            <el-col>
-              <label for="">今日营业总额:</label>
-              <b>115</b>
-              <span>元</span>
-            </el-col>
-          </el-row>
-        </el-card>
-        <el-card>
-          <div slot="header" class="clearfix">
-            <span>需关注订单</span>
-          </div>
-          <el-row>
-            <el-col :span="24">
-              <el-col :span="12">
-                <label for="">紧急预订单：</label>
-                <span>
-                  <b>0</b>笔</span>
-              </el-col>
-              <el-col :span="12">
-                <a href="#">查看订单
-                  <i class="el-icon-arrow-right"></i>
-                </a>
-              </el-col>
-            </el-col>
-            <el-col :span="24">
-              <el-col :span="12">
-                <label for="">被取消配送：</label>
-                <span>
-                  <b>0</b>笔</span>
-              </el-col>
-              <el-col :span="12">
-                <a href="#">查看订单
-                  <i class="el-icon-arrow-right"></i>
-                </a>
-              </el-col>
-            </el-col>
-            <el-col :span="24">
-              <el-col :span="12">
-                <label for="">待发配送：</label>
-                <span>
-                  <b>0</b>笔</span>
-              </el-col>
-              <el-col :span="12">
-                <a href="#">查看订单
-                  <i class="el-icon-arrow-right"></i>
-                </a>
-              </el-col>
-            </el-col>
-            <el-col :span="24">
-              <el-col :span="12">
-                <label for="">未处理退款：</label>
-                <span>
-                  <b>0</b>笔</span>
-              </el-col>
-              <el-col :span="12">
-                <a href="#">查看订单
-                  <i class="el-icon-arrow-right"></i>
-                </a>
-              </el-col>
-            </el-col>
-          </el-row>
-        </el-card>
-      </el-col> -->
     </el-row>
     <!--订单退款对话框-->
     <el-dialog class="member-editor" title="订单退款" :visible.sync="dialogFormVisible">
@@ -223,7 +148,7 @@ export default {
     }
     return {
       form: {
-        status: '0'
+        status: '2'
       },
       rule: {
         totalPrice: [
@@ -273,14 +198,16 @@ export default {
     ...mapGetters([
       'orderAcceptionList',
       'loading',
-      'retreatResult'
+      'retreatResult',
+      'distributionResult'
     ])
   },
   methods: {
     ...mapActions({
       getOrderAcceptionList: 'getOrderAcceptionList',
       getOrderAcceptionByStatus: 'getOrderAcceptionByStatus',
-      retreatOrder: 'retreatOrder'
+      retreatOrder: 'retreatOrder',
+      distributionOrder: 'distributionOrder'
     }),
     ...mapMutations({
       showLoading: 'showLoading',
@@ -316,6 +243,13 @@ export default {
         this.pagination.page++
         this.getOrderAcceptionByStatus({ ...this.pagination, ...this.form })
       }, 1000)
+    },
+    distributionConfirm(id) {
+      this.$confirm('确定发起配送?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        this.distributionOrder(id)
+      }).catch(err => console.log(err))
     }
   }
 }

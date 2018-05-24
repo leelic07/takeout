@@ -1,6 +1,6 @@
 import http from '@/service'
 import router from '@/router'
-import { Message } from 'element-ui'
+import { Message, Notification } from 'element-ui'
 
 const user = {
   state: {
@@ -30,16 +30,12 @@ const user = {
       http.getUserById({ id }).then(res => res.code === 200 && commit('getUserById', res)).catch(err => console.log(err))
     },
     linkWebsocket({ commit }) {
-      // http.linkWebsocket().then(res => res.code === 200 && commit('linkWebsocket')).catch(err => console.log(err))
-      // var host = window.location.host
       const merchantId = sessionStorage['merchantId']
       let socket = ''
       var host = 'pandax.mofasion.com'
-      // var host = 'pandax.mofasion.com'
       var url = `wss://${host}/ws/${sessionStorage['merchantId']}`
       if (merchantId) {
         socket = new WebSocket(url)
-        //    socket = new WebSocket("ws://localhost:8081/ywgk/websocket");
         // 打开事件
         socket.onopen = function() {
           console.log('Socket 已打开')
@@ -47,11 +43,8 @@ const user = {
         }
         // 获得消息事件
         socket.onmessage = function(msg) {
-          debugger
           commit('linkWebsocket', msg)
         // 发现消息进入    调后台获取
-        // document.getElementById('response').innerHTML = msg.data
-        //  $("#response").html(msg.data);
         }
         // 关闭事件
         socket.onclose = function() {
@@ -60,6 +53,7 @@ const user = {
             message: 'websocket已经关闭',
             showClose: true
           })
+          socket = new WebSocket(url)
         }
         // 发生了错误事件
         socket.onerror = function() {
@@ -67,10 +61,8 @@ const user = {
             message: 'websocket发生错误',
             showClose: true
           })
+          socket = new WebSocket(url)
         }
-      /*           $(window).unload(function(){
-                socket.close();
-              });   */
       }
     }
   },
@@ -105,7 +97,24 @@ const user = {
       state.manager = managers
     },
     linkWebsocket(state, msg) {
-      state.orderMessage = msg
+      const data = JSON.parse(msg.data)
+      console.log(data, msg)
+      if (data.msg !== '连接成功') {
+        if (data.type === 1) {
+          Notification.success({
+            title: '订单提醒',
+            message: '您有一笔新的订单',
+            duration: 0
+          })
+        } else {
+          Notification.warning({
+            title: '退单提醒',
+            message: '您有一笔新的退单',
+            duration: 0
+          })
+        }
+      }
+      state.orderMessage = data
     }
   }
 }

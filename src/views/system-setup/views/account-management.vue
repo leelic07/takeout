@@ -7,19 +7,16 @@
             <el-tag>基本信息</el-tag>
           </el-col>
           <el-form-item label="用户名：" label-width="120px">
-            <!-- <el-input v-model="manager.name" auto-complete="off" placeholder="请填写用户名"></el-input> -->
             <span>{{manager.name}}</span>
           </el-form-item>
           <el-form-item label="用户手机号码：" label-width="120px">
-            <!-- <el-input v-model="manager.merchants.tel" auto-complete="off" placeholder="请填写用户手机号码"></el-input> -->
             <span>{{manager.merchants ? manager.merchants.tel : ''}}</span>
           </el-form-item>
           <el-form-item label="店铺：" label-width="120px">
-            <!-- <el-input v-model="manager.merchants.name" auto-complete="off" placeholder="请填写店铺名称"></el-input> -->
             <span>{{manager.merchants ? manager.merchants.name : ''}}</span>
           </el-form-item>
           <el-form-item label="登录时间：" label-width="120px">
-            <!-- <el-input v-model="manager.unit" auto-complete="off" placeholder="请填写登录时间"></el-input> -->
+            <span>{{manager.lastTime | Date}}</span>
           </el-form-item>
           <el-form-item label="类型：" label-width="120px">
             <el-radio-group v-model="manager.type">

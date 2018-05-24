@@ -48,26 +48,10 @@ export default {
         page: 1,
         rows: 10
       },
-      value: '', // 选择会员等级
       dialogDetailVisible: false,
       dialogFormVisible: false,
       dialogWithdrawVisible: false,
       dialogGroundVisible: false,
-      memberMessage: {
-        imageUrl: ''
-      }, // 会员详情信息
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      },
-      fileList: [], // 图片上传的数组
-      imageUrl: '', // 上传头像的图片路径
       merchantIds: [], // 选中的商铺id的集合
       itemId: '', // 需要下架或者上架的商品id
       checkAll: false,

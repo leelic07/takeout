@@ -67,6 +67,8 @@ export default {
     },
     editBanner(state, res) {
       const data = res.data
+      const adForEdit = data.advertisements
+      adForEdit.pictures = [adForEdit.imageUrl]
       state.adForEdit = data.advertisements
     },
     saveAdvertisement(state, res) {

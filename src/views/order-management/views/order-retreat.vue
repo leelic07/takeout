@@ -83,7 +83,7 @@
                     <el-form-item>
                       <el-button type="danger" plain size="mini" @click="cancelOrder(props.row)" v-if="props.row.orders.isRefund === 0">取消订单并退款</el-button>
                       <el-button type="danger" plain size="mini" @click="partCancelOrder(props.row)">部分退款</el-button>
-                      <el-button type="primary" plain size="mini" @click="printOrder">打印订单</el-button>
+                      <el-button type="primary" plain size="mini" @click="printOrder(props.row.orders)">打印订单</el-button>
                     </el-form-item>
                   </el-form>
                 </template>
@@ -169,12 +169,12 @@ export default {
         merchantId: ''
       },
       orderRetreats: [],
+      totalPrice: '',
       busy: true,
       refundForm: {
         totalPrice: '',
         orderId: '',
-        size: '',
-        name: ''
+        refundNo: ''
       },
       dialogFormVisible: false
     }
@@ -225,42 +225,25 @@ export default {
       showLoading: 'showLoading',
       printOrder: 'printOrder'
     }),
-    // 点击打印订单执行的方法
     cancelOrder(refundOrder) {
       this.$confirm('确定取消订单并且退款？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        let totalNums = 0
-        if (refundOrder.orderItems.length) {
-          refundOrder.orderItems.forEach(item => {
-            totalNums += item.itemNums
-          })
-        } else totalNums = refundOrder.orderItems.itemNums
         this.retreatOrder({
-          orderId: refundOrder.id,
-          size: totalNums,
-          totalPrice: refundOrder.totalPrice,
-          name: refundOrder.userName
+          orderId: refundOrder.orderId,
+          refundNo: refundOrder.refundNo,
+          totalPrice: refundOrder.orders.realTotalMoney
         })
       }).catch(err => console.log(err))
     },
     // 点击部分退款时执行的方法
     partCancelOrder(refundOrder) {
       this.dialogFormVisible = true
-      this.totalPrice = refundOrder.orders.totalPrice
-      let totalNums = 0
-      if (refundOrder.orderItems.length) {
-        refundOrder.orderItems.forEach(item => {
-          totalNums += item.itemNums
-        })
-      } else totalNums = refundOrder.orderItems.itemNums
+      this.totalPrice = refundOrder.orders.realTotalMoney
       this.refundForm = {
-        orderId: refundOrder.orders.id,
-        totalPrice: '',
-        size: totalNums,
-        name: refundOrder.name
+        orderId: refundOrder.orderId,
+        refundNo: refundOrder.refundNo,
+        totalPrice: ''
       }
     },
     partCancelOrderConfirm() {

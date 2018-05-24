@@ -33,7 +33,7 @@
                         {{props.row.endDate | Date}}
                     </template>
                 </el-table-column>
-                <el-table-column prop="money" label="优惠券金额"></el-table-column>
+                <el-table-column prop="couponMoney" label="优惠券金额"></el-table-column>
                 <el-table-column prop="exchangeCount" label="优惠券总数"></el-table-column>
                 <el-table-column prop="discountRemain" label="优惠券余量"></el-table-column>
                 <el-table-column label="操作" width="140">

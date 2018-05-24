@@ -55,7 +55,7 @@
                                 <template slot-scope="props">
                                     <el-row class="card-content comments-box">
                                         <el-col :span="20">
-                                            <label>{{props.row.userName}}</label>
+                                            <label>{{props.row.users ? props.row.users.userName : '匿名'}}</label>
                                             <span>{{props.row.createdAt | Date}}</span>
                                         </el-col>
                                         <el-col :span="20">
@@ -76,7 +76,7 @@
                                             <el-rate v-model="props.row.distributionScore" disabled show-score text-color="#ff9900" score-template="{value}">
                                             </el-rate>
                                             <el-col :span="14">
-                                                <el-button type="text" v-if="type !== '1'">回复</el-button>
+                                                <el-button type="text" v-if="type !== '1'" @click="showReply(props.row.id)">回复</el-button>
                                                 <el-button type="text" @click="sendCoupon(props.row.userId)">发券</el-button>
                                                 <!-- <el-button type="text">举报</el-button> -->
                                             </el-col>
@@ -87,51 +87,51 @@
                             </el-table-column>
                             <el-table-column type="expand">
                                 <template slot-scope="props">
-                                    <el-form label-position="right" class="demo-table-expand">
+                                    <el-form :data="props.row.orders" label-position="right" class="demo-table-expand">
                                         <!--备注-->
                                         <el-form-item label="备注:">
-                                            <span>{{ props.row.remark }}</span>
+                                            <span>{{ props.row.orders.remark }}</span>
                                         </el-form-item>
                                         <!--商品信息-->
                                         <el-form-item label="商品信息:">
-                                            <el-table :data="props.row.orderItems" style="width: 100%" :show-header="false">
-                                                <el-table-column prop="date" label="商品">
+                                            <el-table :data="props.row.orders.orderItems" style="width: 100%" :show-header="false">
+                                                <el-table-column prop="itemName" label="商品">
                                                 </el-table-column>
-                                                <el-table-column prop="name" label="单价">
+                                                <el-table-column prop="price" label="单价">
                                                 </el-table-column>
-                                                <el-table-column prop="address" label="数量">
+                                                <el-table-column prop="itemNums" label="数量">
                                                 </el-table-column>
-                                                <el-table-column prop="total" label="总价">
+                                                <el-table-column prop="totalPrice" label="总价">
                                                 </el-table-column>
                                             </el-table>
                                         </el-form-item>
                                         <el-form-item>
                                             <el-form>
                                                 <el-form-item label="配送费:">
-                                                    <span>{{props.row.deliverMoney}}</span>
+                                                    <span>{{props.row.orders.deliverMoney}}</span>
                                                 </el-form-item>
                                                 <el-form-item label="小计:">
-                                                    <span>{{props.row.totalMoney}}</span>
+                                                    <span>{{props.row.orders.totalPrice}}</span>
                                                 </el-form-item>
                                                 <el-form-item label="活动减免:">
-                                                    <span>{{props.row.activityMoney}}</span>
+                                                    <span>{{props.row.orders.activityMoney}}</span>
                                                 </el-form-item>
                                                 <el-form-item label="优惠券:">
-                                                    <span>{{props.row.targetName}}</span>
+                                                    <span>{{props.row.orders.coupons}}</span>
                                                 </el-form-item>
-                                                <el-form-item label="平台佣金:">
+                                                <!-- <el-form-item label="平台佣金:">
                                                     <span>{{props.row.platformCommission}}</span>
-                                                </el-form-item>
+                                                </el-form-item> -->
                                                 <!-- <el-form-item label="本单预计收入:">
                                                     <span style="color: orange;font-size: 18px;">{{props.row.orderIncome}}元</span>
                                                 </el-form-item> -->
                                                 <el-form-item label="本顾客实际支付:">
-                                                    <span style="color: orange;font-size: 18px;">{{props.row.realTotalMoney}}元</span>
+                                                    <span style="color: orange;font-size: 18px;">{{props.row.orders.realTotalMoney}}元</span>
                                                 </el-form-item>
                                             </el-form>
                                         </el-form-item>
                                         <el-form-item>
-                                            <el-button type="primary" plain size="mini" @click="printOrder(props.row)">打印订单</el-button>
+                                            <el-button type="primary" plain size="mini" @click="printOrder(props.row.orders)">打印订单</el-button>
                                         </el-form-item>
                                     </el-form>
                                 </template>
@@ -156,6 +156,18 @@
                 <el-button size="small" type="primary" @click="sendCouponConfirm">确 定</el-button>
             </div>
         </el-dialog>
+        <!--回复会员评价-->
+        <el-dialog class="member-editor" title="回复评价" :visible.sync="dialogReplyVisible">
+            <el-form :model="replyForm" size="small" :rules="replyRule" ref="replyForm">
+                <el-form-item label="回复内容" label-width="120px" prop="content">
+                    <el-input type="textarea" v-model="replyForm.content" placeholder="请填写回复内容" :autosize="{minRows:5, maxRows:25}"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="small" @click="dialogReplyVisible = false">取 消</el-button>
+                <el-button size="small" type="primary" @click="replyFeedbacksConfirm">确 定</el-button>
+            </div>
+        </el-dialog>
         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading"></div>
     </el-row>
 </template>
@@ -177,9 +189,17 @@ export default {
       },
       busy: true,
       feedbacks: [],
+      replyForm: {
+        content: '',
+        pid: ''
+      },
       dialogFormVisible: false,
+      dialogReplyVisible: false,
       rule: {
         couponId: [{ required: true, message: '请选择优惠券', trigger: 'blur' }]
+      },
+      replyRule: {
+        content: [{ required: true, message: '请填写回复内容', trigger: 'blur' }]
       }
     }
   },
@@ -195,9 +215,15 @@ export default {
       this.dialogFormVisible = false
     },
     'form.evaluate'(newValue) {
-      this.feedbacks = []
+      this.feedbacks.splice(0)
       this.pagination.page = 1
       this.getFeedbacksByEvaluate({ ...this.pagination, ...this.form })
+    },
+    replyResult() {
+      this.feedbacks.splice(0)
+      this.pagination.page = 1
+      this.getFeedbacksByEvaluate({ ...this.pagination, ...this.form })
+      this.dialogReplyVisible = false
     }
   },
   computed: {
@@ -208,7 +234,8 @@ export default {
       'backCouponList',
       'userForEdit',
       'sendCouponResult',
-      'merchantList'
+      'merchantList',
+      'replyResult'
     ]),
     type() {
       return sessionStorage.getItem('type')
@@ -225,7 +252,8 @@ export default {
       editUser: 'editUser',
       sendCouponToUser: 'sendCouponToUser',
       getFeedbacksByEvaluate: 'getFeedbacksByEvaluate',
-      getMerchantsList: 'getMerchantsList'
+      getMerchantsList: 'getMerchantsList',
+      replyFeedbacks: 'replyFeedbacks'
     }),
     ...mapMutations({
       showLoading: 'showLoading',
@@ -267,6 +295,16 @@ export default {
       this.feedbacks.splice(0)
       this.pagination.page = 1
       this.getFeedbacksPage(this.pagination)
+    },
+    showReply(pid) {
+      this.dialogReplyVisible = true
+      this.replyForm.pid = pid
+    },
+    replyFeedbacksConfirm() {
+      this.$refs.replyForm.validate(valid => {
+        if (valid) this.replyFeedbacks(this.replyForm)
+        else console.log('reply err')
+      })
     }
   },
   mounted() {

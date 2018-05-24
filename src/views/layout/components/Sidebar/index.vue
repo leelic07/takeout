@@ -46,8 +46,7 @@ export default {
                 goods.name === 'Category' ||
                 goods.name === 'Add' ||
                 goods.name === 'Standard' ||
-                goods.name === 'StandardAdd' ||
-                goods.name === 'StandardEdit') type !== '1' ? goods.hidden = true : goods.hidden = false
+                goods.name === 'StandardAdd') type !== '1' ? goods.hidden = true : goods.hidden = false
             })
             break
           case 'SystemSetUp':
