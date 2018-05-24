@@ -116,13 +116,6 @@ export default {
       },
       limit: 5,
       dialogFormVisible: false,
-      propertyForm: [{
-        name: '',
-        properties: [{
-          value: '',
-          price: ''
-        }]
-      }],
       formLabelWidth: '80px',
       rule: {
         code: [{ required: true, message: '商户编号不能为空', trigger: 'blur' }],
