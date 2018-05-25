@@ -45,7 +45,7 @@
             </el-table>
         </el-row>
         <!--分页组件-->
-        <pagination :total="activityTotal" :page="pagination.page" :rows="pagination.rows" @currentPage="currentPage"></pagination>
+        <pagination :total="activityTotal" :page="pagination.page" :rows="pagination.rows" @currentChange="currentChange"></pagination>
     </el-row>
 </template>
 
@@ -112,7 +112,7 @@ export default {
     searchActivity() {
       this.getCouponList(this.pagination)
     },
-    currentPage(page) {
+    currentChange(page) {
       this.getCouponList(Object.assign(this.pagination, { page }))
     }
   },

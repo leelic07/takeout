@@ -9,7 +9,7 @@
       <el-date-picker v-model="pagination.datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
       </el-date-picker>
       <el-button type="primary" icon="el-icon-search" @click="getFinanceList(pagination)">搜索</el-button>
-      <el-button type="primary" @click="exportExcel(pagination.datetime)">导出excel</el-button>
+      <el-button type="primary" icon="el-icon-download" @click="exportExcel(pagination.datetime)">导出excel</el-button>
     </el-row>
     <!--会员信息列表-->
     <el-row class="order-statics">
@@ -20,14 +20,14 @@
         <el-table-column prop="couponMoney" label="优惠券金额"></el-table-column>
         <el-table-column prop="activityMoney" label="满减送金额"></el-table-column>
         <el-table-column prop="realTotalMoney" label="实际支付金额"></el-table-column>
-        <el-table-column prop="platFormServiceFee" label="平台服务费"></el-table-column>
+        <!-- <el-table-column prop="platFormServiceFee" label="平台服务费"></el-table-column> -->
         <el-table-column prop="realIncome" label="实际收入"></el-table-column>
         <el-table-column prop="wxProcedures" label="微信手续费"></el-table-column>
         <el-table-column prop="settleMoney" label="结算金额"></el-table-column>
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="financeTotal" :page="pagination.page" :rows="pagination.rows" @currentPage="currentPage"></pagination>
+    <pagination :total="financeTotal" :page="pagination.page" :rows="pagination.rows" @currentChange="currentChange"></pagination>
   </el-row>
 </template>
 
@@ -85,7 +85,7 @@ export default {
       this.dialogFormVisible = true
       this.memberMessage = row
     },
-    currentPage(page) {
+    currentChange(page) {
       this.getFinanceList(Object.assign(this.pagination, { page }))
     },
     merchantChange() {

@@ -120,8 +120,6 @@ export const get = (url, params = {}) =>
  */
 export const post = (url, data = {}, config = {}) =>
   instance.post(getUrl(url), data, config).then(res => res.data).catch(err => err)
-  // instance.post(getUrl(url), qs.stringify(data), config).then(res => res.data).catch(err => err)
-// instance.post(url, qs.stringify(data), config).then(res => res.data).catch(err => err)
 /**
  * 封装post文件请求
  * @param url
@@ -129,7 +127,6 @@ export const post = (url, data = {}, config = {}) =>
  * @returns {Promise}
  */
 export const postFile = (url, data = {}) => {
-  // data.toString() !== {}.toString() && data.append('jail_id', sessionStorage['jail_id'])
   return instance.post(agency + url, data, {
     headers: {
       'Content-Type': 'multipart/form-data'
@@ -143,7 +140,6 @@ export const postFile = (url, data = {}) => {
  * @returns {Promise}
  */
 export const patchFile = (url, data = {}) => {
-  // data.toString() !== {}.toString() && data.append('jail_id', sessionStorage['jail_id'])
   return instance.patch(agency + url, data, {
     headers: {
       'Content-Type': 'multipart/form-data'
@@ -159,7 +155,6 @@ export const patchFile = (url, data = {}) => {
  */
 export const patch = (url, data = {}, config = {}) =>
   instance.patch(getUrl(url), qs.stringify(data), config).then(res => res.data).catch(err => err)
-// instance.patch(url, qs.stringify(data), config).then(res => res.data).catch(err => err)
 /**
  * 封装put请求
  * @param url

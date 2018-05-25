@@ -81,8 +81,8 @@
                       <span style="color: orange;font-size: 18px;">{{props.row.orders.realTotalMoney}}</span>
                     </el-form-item>
                     <el-form-item>
-                      <el-button type="danger" plain size="mini" @click="cancelOrder(props.row)" v-if="props.row.orders.isRefund === 0">取消订单并退款</el-button>
-                      <el-button type="danger" plain size="mini" @click="partCancelOrder(props.row)">部分退款</el-button>
+                      <el-button type="danger" plain size="mini" @click="cancelOrder(props.row)" v-if="props.row.orders.isRefund === 0 && type !== '1'">取消订单并退款</el-button>
+                      <el-button type="danger" plain size="mini" @click="partCancelOrder(props.row)" v-if="props.row.orders.isRefund === 0 && type !== '1'">部分退款</el-button>
                       <el-button type="primary" plain size="mini" @click="printOrder(props.row.orders)">打印订单</el-button>
                     </el-form-item>
                   </el-form>
@@ -102,7 +102,6 @@
                       <label>下单时间:</label>
                       <span>{{props.row.orders.createdAt | Date}}</span>
                     </el-col>
-                    <span type="text">待发配送</span>
                     <el-col>
                       <label for="">电话:</label>
                       <span>{{props.row.orders.userPhone}}</span>
@@ -111,13 +110,6 @@
                       <label for="">地址:</label>
                       <span>{{props.row.orders.userAddress}}</span>
                     </el-col>
-                  </el-row>
-                </template>
-              </el-table-column>
-              <el-table-column label="" prop="name" width="95">
-                <template slot-scope="socpe">
-                  <el-row class="card-content">
-                    <el-button v-show="false" size="mini" type="primary" plain>发起配送</el-button>
                   </el-row>
                 </template>
               </el-table-column>
@@ -197,6 +189,9 @@ export default {
       }
     },
     retreatResult() {
+      this.orderRetreats.splice(0)
+      this.pagination.page = 1
+      this.getOrderRetreatByStatus({ ...this.pagination, ...this.form })
       this.dialogFormVisible = false
     }
   },

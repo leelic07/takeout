@@ -1,6 +1,8 @@
 import http from '@/service'
 import router from '@/router'
 import { Message, Notification } from 'element-ui'
+const audios = document.createElement('audio')
+audios.src = '../../../static/audio/takeaway.mp3'// 订单语音播放
 
 const user = {
   state: {
@@ -98,20 +100,33 @@ const user = {
     },
     linkWebsocket(state, msg) {
       const data = JSON.parse(msg.data)
-      console.log(data, msg)
       if (data.msg !== '连接成功') {
-        if (data.type === 1) {
-          Notification.success({
-            title: '订单提醒',
-            message: '您有一笔新的订单',
-            duration: 0
-          })
-        } else {
-          Notification.warning({
-            title: '退单提醒',
-            message: '您有一笔新的退单',
-            duration: 0
-          })
+        switch (data.type) {
+          case 1:
+            Notification.success({
+              title: '订单提醒',
+              message: `您有一笔新的订单 <a href='#/order/acception'>查看>></a>`,
+              duration: 0,
+              dangerouslyUseHTMLString: true
+            })
+            audios.play()
+            break
+          case 2:
+            Notification.warning({
+              title: '退单提醒',
+              message: `您有一笔新的退单 <a href='#/order/retreat'>查看>></a>`,
+              duration: 0,
+              dangerouslyUseHTMLString: true
+            })
+            break
+          case 3:
+            Notification.warning({
+              title: '催单提醒',
+              message: `您有一笔新的催单 <a href='#/order/reminder'>查看>></a>`,
+              duration: 0,
+              dangerouslyUseHTMLString: true
+            })
+            break
         }
       }
       state.orderMessage = data

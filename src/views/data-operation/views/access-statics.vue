@@ -19,7 +19,7 @@
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="accessTotal" :page="pagination.page" :rows="pagination.rows"></pagination>
+    <pagination :total="accessTotal" :page="pagination.page" :rows="pagination.rows" @currentChange="currentChange"></pagination>
   </el-row>
 </template>
 
@@ -64,6 +64,9 @@ export default {
     merchantChange() {
       this.pagination.page = 1
       this.getAccessList(this.pagination)
+    },
+    currentChange(page) {
+      this.getAccessList(Object.assign(this.pagination, { page }))
     }
   },
   mounted() {

@@ -31,7 +31,7 @@
               <i class="el-icon-circle-check el-icon--right"></i>
             </p>
             <el-col :span="24" class="order-amount-today">
-              <router-link to="/order/reservation">
+              <router-link :to="type === '1' ? '' : '/order/reservation'">
                 <h1>{{merchantHomePage.pendingOrder || 0}}</h1>
                 <span>单
                   <i class="el-icon-arrow-right el-icon--right"></i>
@@ -66,7 +66,7 @@
               <i class="el-icon-circle-check el-icon--right"></i>
             </p>
             <el-col :span="24" class="order-amount-today">
-              <router-link to="/order/acception">
+              <router-link :to="type === '1' ? '' : '/order/acception'">
                 <h1>{{merchantHomePage.dayOrder || 0}}</h1>
                 <span>单
                   <i class="el-icon-arrow-right el-icon--right"></i>
@@ -127,10 +127,6 @@ export default {
     DndList
   },
   watch: {
-    // 'seller.merchantId'(newValue) {
-    //   newValue = newValue || 1
-    //   this.getShopForEdit(newValue)
-    // },
     type: {
       handler: function(newValue) {
         this.seller.merchantId = sessionStorage['merchantId']

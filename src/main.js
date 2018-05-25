@@ -7,7 +7,7 @@ import 'mint-ui/lib/style.css'
 import infiniteScroll from 'vue-infinite-scroll'
 import 'babel-polyfill'
 import '@/styles/index.scss' // global css
-
+import '@/assets/iconfonts/iconfont.css'
 import App from './App'
 import router from './router'
 import store from './store'

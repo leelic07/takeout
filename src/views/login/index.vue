@@ -60,15 +60,11 @@ export default {
       this.$router.push({
         path: '/seller/index'
       })
-    },
-    linkWebsocketResult(newValue) {
-      console.log(newValue)
     }
   },
   computed: {
     ...mapGetters({
-      users: 'users',
-      linkWebsocketResult: 'linkWebsocketResult'
+      users: 'users'
     })
   },
   methods: {

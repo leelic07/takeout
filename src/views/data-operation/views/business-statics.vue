@@ -27,7 +27,7 @@
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="businessTotal" :page="pagination.page" :rows="pagination.rows" @currentPage="currentPage"></pagination>
+    <pagination :total="businessTotal" :page="pagination.page" :rows="pagination.rows" @currentChange="currentChange"></pagination>
   </el-row>
 </template>
 
@@ -70,7 +70,7 @@ export default {
       'getBusinessList',
       'getMerchantsList'
     ]),
-    currentPage(page) {
+    currentChange(page) {
       this.getBusinessList(Object.assign(this.pagination, { page }))
     },
     merchantChange() {

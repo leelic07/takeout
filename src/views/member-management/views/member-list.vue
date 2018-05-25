@@ -57,7 +57,7 @@
             </el-table>
         </el-row>
         <!--分页组件-->
-        <pagination :total="userTotal" :page="pagination.page" :rows="pagination.rows"></pagination>
+        <pagination :total="userTotal" :page="pagination.page" :rows="pagination.rows" @currentChange="currentChange"></pagination>
         <!--查看会员详情信息-->
         <el-dialog class="member-detail" title="会员详情" :visible.sync="dialogDetailVisible">
             <el-row :gutter="10">
@@ -198,6 +198,9 @@ export default {
         if (valid) this.sendCouponToUser(this.userForEdit)
         else console.log('sendCoupon err')
       })
+    },
+    currentChange(page) {
+      this.getUsersPage(Object.assign(this.pagination, { page }))
     }
   },
   mounted() {

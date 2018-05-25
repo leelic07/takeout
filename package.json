@@ -22,6 +22,7 @@
     "print-js": "^1.0.40",
     "vue": "2.5.10",
     "vue-router": "3.0.1",
+    "vue-websocket": "^0.2.2",
     "vuex": "3.0.1"
   },
   "devDependencies": {

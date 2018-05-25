@@ -22,7 +22,7 @@
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="salesTotal" :page="pagination.page" :rows="pagination.rows" @currentPage="currentPage"></pagination>
+    <pagination :total="salesTotal" :page="pagination.page" :rows="pagination.rows" @currentChange="currentChange"></pagination>
   </el-row>
 </template>
 
@@ -64,7 +64,7 @@ export default {
       'getSalesList',
       'getMerchantsList'
     ]),
-    currentPage(page) {
+    currentChange(page) {
       this.getSalesList(Object.assign(this.pagination, { page }))
     },
     merchantChange() {

@@ -95,7 +95,7 @@
                       <label>下单时间:</label>
                       <span>{{props.row.createdAt}}</span>
                     </el-col>
-                    <span type="text">待发配送</span>
+                    <span type="text" v-if="props.row.status === '2'">待发配送</span>
                     <el-col>
                       <label for="">电话:</label>
                       <span>{{props.row.userPhone}}</span>
@@ -110,7 +110,7 @@
               <el-table-column label="" prop="name" width="95">
                 <template slot-scope="props">
                   <el-row class="card-content">
-                    <el-button size="mini" type="primary" plain @click="distributionConfirm(props.row.id)">发起配送</el-button>
+                    <el-button size="mini" type="primary" plain @click="distributionConfirm(props.row.id)" v-if="props.row.status === '2'">发起配送</el-button>
                   </el-row>
                 </template>
               </el-table-column>

@@ -19,6 +19,9 @@
                   <template slot="append">分</template>
                 </el-input>
               </el-form-item>
+              <el-form-item label="会员图标" label-width="120px">
+                <i :class="`iconfont icon-canpinhuihuiyuanv${index+1}-copy`" style="font-size:25px"></i>
+              </el-form-item>
               <el-row class="split-line"></el-row>
               <el-form-item label="" v-if="index === userRanks.length - 1">
                 <el-button type="primary" size="medium" @click="updateLevelConfirm">更新</el-button>
