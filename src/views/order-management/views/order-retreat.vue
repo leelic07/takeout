@@ -26,7 +26,7 @@
           <div slot="header" class="card-header clearfix" v-if="true">
             <el-col :span="20">
               <label>预定今日</label> |
-              <label>14:00</label>
+              <!-- <label>14:00</label> -->
               <span>送达</span>
             </el-col>
             <!-- <span type="text">待发配送</span> -->
