@@ -34,6 +34,9 @@
                     <el-form-item label="备注:">
                       <span>{{ props.row.remark }}</span>
                     </el-form-item>
+                    <el-form-item label="用餐人数:">
+                      <span style="float:left">{{props.row.meals || 1}}</span>
+                    </el-form-item>
                     <!--商品信息-->
                     <el-form-item label="商品信息:">
                       <el-table :data="props.row.orderItems" style="width: 100%" :show-header="false">
@@ -43,7 +46,7 @@
                         </el-table-column>
                         <el-table-column label="数量">
                           <template slot-scope="prop">
-                            X{{prop.row.itemNums}}}
+                            X{{prop.row.itemNums}}
                           </template>
                         </el-table-column>
                         <el-table-column label="总价">
@@ -93,7 +96,7 @@
                     </el-col>
                     <el-col :span="20">
                       <label>下单时间:</label>
-                      <span>{{props.row.createdAt}}</span>
+                      <span>{{props.row.createdAt | Date}}</span>
                     </el-col>
                     <span type="text">待发配送</span>
                     <el-col>

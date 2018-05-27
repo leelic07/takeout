@@ -75,7 +75,9 @@ export default {
     getOrderAcceptionByStatus(state, orderAcceptionList) {
       const orders = orderAcceptionList.data.orders
       const status = orderAcceptionList.status
-      state.orderAcceptionList = orders.filter(order => order.status === status)
+      if (status === '2') {
+        state.orderAcceptionList = orders.filter(order => order.status === status)
+      } else if (status === '3') state.orderAcceptionList = orders.filter(order => order.status !== '2')
     },
     getOrderRetreatList(state, orderRetreatList) {
       state.orderRetreatList = orderRetreatList.data.orders
