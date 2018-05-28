@@ -2,10 +2,7 @@
   <el-row class="goods-management-container">
     <!--搜索框-->
     <el-row>
-      <el-select v-if="type === '1'" v-model="pagination.merchantId" placeholder="请选择店铺" @change="merchantChange">
-        <el-option value="" label="全部店铺"></el-option>
-        <el-option v-for="(merchant,index) in merchantList" :key="index" :value="merchant.id" :label="merchant.name"></el-option>
-      </el-select>
+      <merchants-select :pagination="pagination" @merchantChange="merchantChange"></merchants-select>
       <el-date-picker v-model="pagination.datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
       </el-date-picker>
       <el-button type="primary" icon="el-icon-search" @click="getBusinessList(pagination)">搜索</el-button>
@@ -32,7 +29,6 @@
 </template>
 
 <script>
-import Pagination from '@/components/Pagination/index'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -49,14 +45,10 @@ export default {
       dialogFormVisible: false
     }
   },
-  components: {
-    Pagination
-  },
   computed: {
     ...mapGetters([
       'businessList',
-      'businessTotal',
-      'merchantList'
+      'businessTotal'
     ]),
     merchantId() {
       return Number(sessionStorage['merchantId'])
@@ -67,13 +59,13 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getBusinessList',
-      'getMerchantsList'
+      'getBusinessList'
     ]),
     currentChange(page) {
       this.getBusinessList(Object.assign(this.pagination, { page }))
     },
-    merchantChange() {
+    merchantChange(merchantId) {
+      this.pagination.merchantId = merchantId
       this.pagination.page = 1
       this.getBusinessList(this.pagination)
     }
@@ -81,7 +73,6 @@ export default {
   mounted() {
     this.merchantId && (this.pagination.merchantId = this.merchantId)
     this.getBusinessList(this.pagination)
-    this.getMerchantsList()
   }
 }
 </script>

@@ -5,10 +5,7 @@
       <el-col :span="5">
         <el-input placeholder="请输入订单号" v-model="pagination.orderNo"></el-input>
       </el-col>
-      <el-select v-if="type === '1'" v-model="pagination.merchantId" placeholder="请选择店铺" @change="merchantChange">
-        <el-option value="" label="全部店铺"></el-option>
-        <el-option v-for="(merchant,index) in merchantList" :key="index" :value="merchant.id" :label="merchant.name"></el-option>
-      </el-select>
+      <merchants-select :pagination="pagination" @merchantChange="merchantChange"></merchants-select>
       <!-- <el-col :span="5" class="records-select">
         <el-input placeholder="请输入姓名" v-model="orderNumber"></el-input>
       </el-col> -->
@@ -27,7 +24,9 @@
                 <el-table :data="props.row.orderItems" style="width: 100%" :show-header="false">
                   <el-table-column prop="itemName" label="商品">
                   </el-table-column>
-                  <el-table-column prop="itemPrice" label="单价">
+                  <el-table-column label="单价">
+                    <template slot-scope="props"></template>
+                    ￥{{props.row.itemPrice}}
                   </el-table-column>
                   <el-table-column label="数量">
                     <template slot-scope="prop">
@@ -47,20 +46,26 @@
                   <el-form-item label="备注:">
                     <span>{{props.row.remark}}</span>
                   </el-form-item>
+                  <el-form-item label="用餐人数:">
+                    <span>{{props.row.meals || 1}}人</span>
+                  </el-form-item>
+                  <el-form-item label="餐盒费:">
+                      <span>￥{{props.row.packingCharge}}</span>
+                    </el-form-item>
                   <el-form-item label="配送费:">
-                    <span>{{props.row.deliverMoney}}</span>
+                    <span>￥{{props.row.deliverMoney}}</span>
                   </el-form-item>
                   <el-form-item label="小计:">
-                    <span>{{props.row.totalPrice}}</span>
+                    <span>￥{{props.row.totalPrice}}</span>
                   </el-form-item>
                   <el-form-item label="活动减免:">
-                    <span>{{props.row.activityMoney}}</span>
+                    <span>￥{{props.row.activityMoney}}</span>
                   </el-form-item>
                   <el-form-item label="优惠券:">
-                    <span>{{props.row.couponMoney}}</span>
+                    <span>￥{{props.row.couponMoney}}</span>
                   </el-form-item>
                   <el-form-item label="平台佣金:">
-                    <span>{{props.row.platformCommission}}</span>
+                    <span>￥{{props.row.platformCommission}}</span>
                   </el-form-item>
                   <!-- <el-form-item label="本单预计收入:">
                     <span style="color: orange;font-size: 18px;">￥?</span>
@@ -73,20 +78,23 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column label="订单号" prop="orderNo">
+        <el-table-column label="订单号" prop="orderNo" show-overflow-tooltip>
         </el-table-column>
         <el-table-column label="姓名" prop="userName">
         </el-table-column>
-        <el-table-column label="电话" prop="userPhone">
+        <el-table-column label="电话" prop="userPhone" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column label="地址" prop="uesrAddress">
+        <el-table-column label="地址" prop="userAddress" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column label="下单时间">
+        <el-table-column label="下单时间" show-overflow-tooltip>
           <template slot-scope="props">
             {{props.row.createdAt | Date}}
           </template>
         </el-table-column>
-        <el-table-column label="订单状态" prop="status">
+        <el-table-column label="订单状态">
+          <template slot-scope="props">
+            {{props.row.status | orderStatus}}
+          </template>
         </el-table-column>
         <el-table-column label="顾客实际支付" prop="realTotalMoney">
         </el-table-column>
@@ -98,12 +106,11 @@
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="orderRecordsTotal" :page="pagination.page" :rows="pagination.rows"></pagination>
+    <pagination :total="orderRecordsTotal" :page="pagination.page" :rows="pagination.rows" @currentChange="currentChange"></pagination>
   </el-row>
 </template>
 
 <script>
-  import Pagination from '@/components/Pagination'
   import { mapActions, mapMutations, mapGetters } from 'vuex'
 
   export default {
@@ -122,8 +129,7 @@
     computed: {
       ...mapGetters([
         'orderRecordsList',
-        'orderRecordsTotal',
-        'merchantList'
+        'orderRecordsTotal'
       ]),
       merchantId() {
         return Number(sessionStorage['merchantId'])
@@ -132,37 +138,39 @@
         return sessionStorage['type']
       }
     },
-    components: {
-      Pagination
-    },
     methods: {
       ...mapActions({
         getOrderRecordsList: 'getOrderRecordsList',
-        getOrdersRecordsPage: 'getOrdersRecordsPage',
-        getMerchantsList: 'getMerchantsList'
+        getOrdersRecordsPage: 'getOrdersRecordsPage'
       }),
       ...mapMutations({
         printOrder: 'printOrder'
       }),
       searchOrders() {
-        if (this.pagination.userId) this.getOrdersRecordsPage(this.pagination)
-        else {
-          if (this.pagination.userId) this.getOrdersRecordsPage(this.pagination)
-          else this.getOrderRecordsList(this.pagination)
-        }
+        this.pagination.userId
+          ? this.getOrdersRecordsPage(this.pagination)
+          : this.getOrderRecordsList(this.pagination)
       },
-      merchantChange() {
+      merchantChange(merchantId) {
         this.pagination.page = 1
-        if (this.pagination.userId) this.getOrdersRecordsPage(this.pagination)
-        else this.getOrderRecordsList(this.pagination)
+        this.pagination.merchantId = merchantId
+        this.pagination.userId
+          ? this.getOrdersRecordsPage(this.pagination)
+          : this.getOrderRecordsList(this.pagination)
+      },
+      currentChange(page) {
+        this.pagination.page = page
+        this.pagination.userId
+          ? this.getOrdersRecordsPage(this.pagination)
+          : this.getOrderRecordsList(this.pagination)
       }
     },
     mounted() {
       this.merchantId && (this.pagination.merchantId = this.merchantId)
       this.pagination.userId = this.$route.params.id || ''
-      if (this.pagination.userId) this.getOrdersRecordsPage(this.pagination)
-      else this.getOrderRecordsList(this.pagination)
-      this.getMerchantsList()
+      this.pagination.userId
+        ? this.getOrdersRecordsPage(this.pagination)
+        : this.getOrderRecordsList(this.pagination)
     }
   }
 </script>

@@ -6,10 +6,7 @@
         <el-input placeholder="请输入商品名称" v-model="pagination.name"></el-input>
       </el-col>
       <el-col :span="4" class="member-select">
-        <el-select v-model="pagination.merchantId" placeholder="请选择店铺" v-if="type === '1'">
-          <el-option value="" label="全部店铺"></el-option>
-          <el-option v-for="(merchant,index) in merchantList" :value="merchant.id" :label="merchant.name" :key="index"></el-option>
-        </el-select>
+        <merchants-select :pagination="pagination" @merchantChange="merchantChange"></merchants-select>
       </el-col>
       <!-- <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
       </el-date-picker> -->
@@ -34,9 +31,17 @@
         </el-table-column>
         <el-table-column prop="label" label="标签" show-overflow-tooltip></el-table-column>
         <el-table-column prop="salesVolume" label="销售量"></el-table-column>
-        <el-table-column prop="stockStatus" label="库存状态"></el-table-column>
+        <el-table-column label="库存状态">
+          <template slot-scope="props">
+            {{props.row.stockStatus | stockStatus}}
+          </template>
+        </el-table-column>
         <el-table-column prop="stock" label="库存量"></el-table-column>
-        <el-table-column prop="status" label="商品状态"></el-table-column>
+        <el-table-column label="商品状态">
+          <template slot-scope="props">
+            {{props.row.isPuton | goodsPuton}}
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="140">
           <template slot-scope="props">
             <el-button type="primary" size="mini" @click="showGoodsEdit(props.row.id)" v-if="type === '1'">编辑</el-button>
@@ -47,7 +52,7 @@
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="goodsTotal" :page="pagination.page" :rows="pagination.rows" :currentChange="currentChange"></pagination>
+    <pagination :total="goodsTotal" :page="pagination.page" :rows="pagination.rows" @currentChange="currentChange"></pagination>
     <!--商品下架对话框-->
     <el-dialog class="withdraw-dialog" title="商品下架" :visible.sync="dialogWithdrawVisible">
       <el-form ref="shopForm">
@@ -90,7 +95,6 @@
 </template>
 
 <script>
-import Pagination from '@/components/Pagination/index'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -132,9 +136,6 @@ export default {
     }
   },
   watch: {
-    'pagination.merchantId'() {
-      this.getGoodsList(this.pagination)
-    },
     withdrawGoodsResult() {
       this.dialogWithdrawVisible = false
       this.getGoodsList(this.pagination)
@@ -163,9 +164,6 @@ export default {
     merchantId() {
       return sessionStorage.getItem('merchantId')
     }
-  },
-  components: {
-    Pagination
   },
   methods: {
     ...mapActions({
@@ -242,6 +240,9 @@ export default {
     },
     currentChange(page) {
       this.getGoodsList(Object.assign(this.pagination, { page }))
+    },
+    merchantChange(merchantId) {
+      this.getGoodsList(Object.assign(this.pagination, { merchantId }))
     }
   },
   mounted() {

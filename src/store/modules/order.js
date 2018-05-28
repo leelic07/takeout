@@ -70,14 +70,16 @@ export default {
     getOrderReservationByStatus(state, orderReservationList) {
       const orders = orderReservationList.data.orders
       const status = orderReservationList.status
-      state.orderReservationList = orders.filter(order => order.status === Number(status))
+      if (status === 2) {
+        state.orderReservationList = orders.filter(order => order.status === status)
+      } else state.orderReservationList = orders.filter(order => order.status !== 2)
     },
     getOrderAcceptionByStatus(state, orderAcceptionList) {
       const orders = orderAcceptionList.data.orders
       const status = orderAcceptionList.status
       if (status === '2') {
         state.orderAcceptionList = orders.filter(order => order.status === status)
-      } else if (status === '3') state.orderAcceptionList = orders.filter(order => order.status !== '2')
+      } else state.orderAcceptionList = orders.filter(order => order.status !== '2' && order.status !== '8')
     },
     getOrderRetreatList(state, orderRetreatList) {
       state.orderRetreatList = orderRetreatList.data.orders
@@ -85,7 +87,7 @@ export default {
     getOrderRetreatByStatus(state, orderRetreatList) {
       const orders = orderRetreatList.data.orders
       const status = orderRetreatList.status
-      state.orderRetreatList = orders.filter(order => order.orders.isRefund === Number(status))
+      state.orderRetreatList = orders.filter(order => order.orders.isRefund === status)
     },
     getOrderRecordsList(state, orderRecordsList) {
       const data = orderRecordsList.data
@@ -99,9 +101,10 @@ export default {
     },
     getOrderReminderByStatus(state, orderReminderList) {
       const orders = orderReminderList.data.orders
-      // const status = orderReminderList.status
-      // state.orderReminderList = orders.filter(order => order.status === Number(status))
-      state.orderReminderList = orders
+      const status = orderReminderList.status
+      if (status === 2) {
+        state.orderReminderList = orders.filter(order => order.status === status)
+      } else state.orderReminderList = orders.filter(order => order.status !== 2)
     },
     retreatOrder(state, retreatResult) {
       state.retreatResult = retreatResult

@@ -6,7 +6,7 @@ export default {
   // 基础url前缀
   // baseURL: 'http://10.10.10.10:8080',
   baseURL: 'https://pandax.mofasion.com',
-  // baseURL: 'http://192.168.0.116:8080',
+  // baseURL: 'http://192.168.0.101:8080',
   // baseURL: 'http://47.106.143.22:8080',
   // 请求发送之前对出参进行处理
   // transformRequest: [data => data],

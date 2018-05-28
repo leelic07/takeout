@@ -39,7 +39,7 @@ export default {
     getFeedbacksByEvaluate(state, res) {
       const evaluate = res.evaluate
       const data = res.data
-      evaluate && (data.feedbacks = data.feedbacks.filter(feed => feed.evaluate === evaluate))
+      evaluate !== '0' && (data.feedbacks = data.feedbacks.filter(feed => feed.evaluate === evaluate))
       data.feedbacks.forEach(data => {
         data.goodsScore = Number(data.goodsScore)
         data.distributionScore = Number(data.distributionScore)

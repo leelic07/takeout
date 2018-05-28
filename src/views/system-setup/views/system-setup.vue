@@ -17,6 +17,7 @@
           </el-form-item>
           <el-form-item>
             <h2>备注：{{orderForPrint.remark}}</h2>
+            <h2>用餐人数：{{orderForPrint.meals || 1}}</h2>
           </el-form-item>
           <el-form-item>
             <el-col>
@@ -33,6 +34,11 @@
                 <td>X{{order.itemNums}}</td>
                 <td>{{order.itemPrice * order.itemNums}}</td>
               </tr>
+              <!-- <tr>
+                <td>餐盒费</td>
+                <td>X1</td>
+                <td>{{orderForPrint.packingCharge}}</td>
+              </tr> -->
             </table>
           </el-form-item>
           <el-form-item>
@@ -47,7 +53,7 @@
           </el-form-item>
           <el-form-item>
             <h1>总计：</h1>
-            <h1>￥{{orderForPrint.totalPrice}}</h1>
+            <h1>￥{{orderForPrint.realTotalMoney}}</h1>
           </el-form-item>
           <el-form-item>
             <template slot-scope="props">

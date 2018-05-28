@@ -19,10 +19,10 @@
                     </el-form-item>
                     <el-form-item label="满意程度">
                         <el-radio-group v-model="form.evaluate">
-                            <el-radio :label="0">全部</el-radio>
-                            <el-radio :label="3">好评</el-radio>
-                            <el-radio :label="2">中评</el-radio>
-                            <el-radio :label="1">差评</el-radio>
+                            <el-radio label="0">全部</el-radio>
+                            <el-radio label="3">好评</el-radio>
+                            <el-radio label="2">中评</el-radio>
+                            <el-radio label="1">差评</el-radio>
                         </el-radio-group>
                     </el-form-item>
                     <!-- <el-form-item label="有无内容">
@@ -72,7 +72,7 @@
                                             </el-rate>
                                         </el-col>
                                         <el-col :span="20" class="seller-box">
-                                            <label>商家</label>
+                                            <label>配送</label>
                                             <el-rate v-model="props.row.distributionScore" disabled show-score text-color="#ff9900" score-template="{value}">
                                             </el-rate>
                                             <el-col :span="14">
@@ -97,27 +97,36 @@
                                             <el-table :data="props.row.orders.orderItems" style="width: 100%" :show-header="false">
                                                 <el-table-column prop="itemName" label="商品">
                                                 </el-table-column>
-                                                <el-table-column prop="price" label="单价">
+                                                <el-table-column label="单价">
+                                                    <template slot-scope="props">
+                                                        ￥{{props.row.itemPrice}}
+                                                    </template>
                                                 </el-table-column>
                                                 <el-table-column prop="itemNums" label="数量">
                                                 </el-table-column>
-                                                <el-table-column prop="totalPrice" label="总价">
+                                                <el-table-column label="总价">
+                                                    <template slot-scope="props">
+                                                        ￥{{props.row.totalPrice}}
+                                                    </template>
                                                 </el-table-column>
                                             </el-table>
                                         </el-form-item>
                                         <el-form-item>
                                             <el-form>
+                                                <el-form-item label="餐盒费:">
+                                                    <span>￥{{props.row.orders.packingCharge}}</span>
+                                                </el-form-item>
                                                 <el-form-item label="配送费:">
-                                                    <span>{{props.row.orders.deliverMoney}}</span>
+                                                    <span>￥{{props.row.orders.deliverMoney}}</span>
                                                 </el-form-item>
                                                 <el-form-item label="小计:">
-                                                    <span>{{props.row.orders.totalPrice}}</span>
+                                                    <span>￥{{props.row.orders.totalPrice}}</span>
                                                 </el-form-item>
                                                 <el-form-item label="活动减免:">
-                                                    <span>{{props.row.orders.activityMoney}}</span>
+                                                    <span>￥{{props.row.orders.activityMoney}}</span>
                                                 </el-form-item>
                                                 <el-form-item label="优惠券:">
-                                                    <span>{{props.row.orders.coupons}}</span>
+                                                    <span>￥{{props.row.orders.coupons}}</span>
                                                 </el-form-item>
                                                 <!-- <el-form-item label="平台佣金:">
                                                     <span>{{props.row.platformCommission}}</span>
@@ -126,7 +135,7 @@
                                                     <span style="color: orange;font-size: 18px;">{{props.row.orderIncome}}元</span>
                                                 </el-form-item> -->
                                                 <el-form-item label="本顾客实际支付:">
-                                                    <span style="color: orange;font-size: 18px;">{{props.row.orders.realTotalMoney}}元</span>
+                                                    <span style="color: orange;font-size: 18px;">￥{{props.row.orders.realTotalMoney}}</span>
                                                 </el-form-item>
                                             </el-form>
                                         </el-form-item>
@@ -179,7 +188,7 @@ export default {
   data() {
     return {
       form: {
-        evaluate: 0
+        evaluate: '0'
       },
       datetime: '',
       pagination: {
@@ -277,7 +286,7 @@ export default {
       this.showLoading()
       setTimeout(() => {
         this.pagination.page++
-        this.getFeedbacksPage(this.pagination)
+        this.getFeedbacksByEvaluate({ ...this.pagination, ...this.form })
       }, 1000)
     },
     sendCoupon(id) {
@@ -294,7 +303,7 @@ export default {
     merchantChange() {
       this.feedbacks.splice(0)
       this.pagination.page = 1
-      this.getFeedbacksPage(this.pagination)
+      this.getFeedbacksByEvaluate({ ...this.pagination, ...this.form })
     },
     showReply(pid) {
       this.dialogReplyVisible = true

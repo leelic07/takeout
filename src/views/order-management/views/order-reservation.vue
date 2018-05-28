@@ -6,8 +6,8 @@
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="处理状态">
             <el-radio-group v-model="form.status">
-              <el-radio label="0">未处理</el-radio>
-              <el-radio label="1">已处理</el-radio>
+              <el-radio :label="2">未处理</el-radio>
+              <el-radio :label="3">已处理</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -35,13 +35,17 @@
                       <span>{{ props.row.remark }}</span>
                     </el-form-item>
                     <el-form-item label="用餐人数:">
-                      <span style="float:left">{{props.row.meals || 1}}</span>
+                      <span style="float:left">{{props.row.meals || 1}}人</span>
                     </el-form-item>
                     <!--商品信息-->
                     <el-form-item label="商品信息:">
                       <el-table :data="props.row.orderItems" style="width: 100%" :show-header="false">
                         <el-table-column prop="itemName" label="商品"></el-table-column>
-                        <el-table-column prop="itemPrice" label="单价"></el-table-column>
+                        <el-table-column prop="itemPrice" label="单价">
+                          <template slot-scope="props">
+                            ￥{{props.row.itemPrice}}
+                          </template>
+                        </el-table-column>
                         <el-table-column label="数量">
                           <template slot-scope="prop">
                             {{`x ${prop.row.itemNums}`}}
@@ -49,33 +53,36 @@
                         </el-table-column>
                         <el-table-column label="总价">
                           <template slot-scope="prop">
-                            {{prop.row.itemPrice * prop.row.itemNums}}
+                            ￥{{prop.row.itemPrice * prop.row.itemNums}}
                           </template>
                         </el-table-column>
                       </el-table>
                     </el-form-item>
                     <el-form-item>
                       <el-form>
+                        <el-form-item label="餐盒费:">
+                          <span>￥{{props.row.packingCharge}}</span>
+                        </el-form-item>
                         <el-form-item label="配送费:">
-                          <span>{{props.row.deliverMoney}}</span>
+                          <span>￥{{props.row.deliverMoney}}</span>
                         </el-form-item>
                         <el-form-item label="小计:">
-                          <span>{{props.row.totalPrice}}</span>
+                          <span>￥{{props.row.totalPrice}}</span>
                         </el-form-item>
                         <el-form-item label="活动减免:">
-                          <span>{{props.row.activityName}}</span>
+                          <span>￥{{props.row.activityMoney}}</span>
                         </el-form-item>
                         <el-form-item label="优惠券:">
-                          <span>{{props.row.targetName}}</span>
+                          <span>￥{{props.row.couponMoney}}</span>
                         </el-form-item>
                         <el-form-item label="平台佣金:">
-                          <span>{{props.row.platformCommission}}</span>
+                          <span>￥{{props.row.platformCommission}}</span>
                         </el-form-item>
                         <!-- <el-form-item label="本单预计收入:">
                           <span style="color: orange;font-size: 18px;">{{props.row.orderIncome}}</span>
                         </el-form-item> -->
                         <el-form-item label="本顾客实际支付:">
-                          <span style="color: orange;font-size: 18px;">{{props.row.realTotalMoney}}</span>
+                          <span style="color: orange;font-size: 18px;">￥{{props.row.realTotalMoney}}</span>
                         </el-form-item>
                       </el-form>
                     </el-form-item>
@@ -229,7 +236,7 @@ export default {
     }
     return {
       form: {
-        status: '0'
+        status: 2
       },
       rule: {
         totalPrice: [

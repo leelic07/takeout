@@ -1,7 +1,9 @@
-import UploadImg from './UploadImg/index'
-import Pagination from './Pagination/index'
+import UploadImg from './UploadImg'
+import Pagination from './Pagination'
+import MerchantsSelect from './MerchantsSelect'
 
 export default {
   UploadImg,
-  Pagination
+  Pagination,
+  MerchantsSelect
 }

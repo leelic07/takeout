@@ -35,14 +35,17 @@
                       <span>{{ props.row.remark }}</span>
                     </el-form-item>
                     <el-form-item label="用餐人数:">
-                      <span style="float:left">{{props.row.meals || 1}}</span>
+                      <span style="float:left">{{props.row.meals || 1}}人</span>
                     </el-form-item>
                     <!--商品信息-->
                     <el-form-item label="商品信息:">
                       <el-table :data="props.row.orderItems" style="width: 100%" :show-header="false">
                         <el-table-column prop="itemName" label="商品">
                         </el-table-column>
-                        <el-table-column prop="itemPrice" label="单价">
+                        <el-table-column label="单价">
+                          <template slot-scope="prop">
+                            ￥{{prop.row.itemPrice}}
+                          </template>
                         </el-table-column>
                         <el-table-column label="数量">
                           <template slot-scope="prop">
@@ -51,25 +54,28 @@
                         </el-table-column>
                         <el-table-column label="总价">
                           <template slot-scope="prop">
-                            {{prop.row.itemPrice * prop.row.itemNums}}
+                            ￥{{prop.row.itemPrice * prop.row.itemNums}}
                           </template>
                         </el-table-column>
                       </el-table>
                     </el-form-item>
+                    <el-form-item label="餐盒费:">
+                      <span>￥{{props.row.packingCharge}}</span>
+                    </el-form-item>
                     <el-form-item label="配送费:">
-                      <span>{{props.row.deliverMoney}}</span>
+                      <span>￥{{props.row.deliverMoney}}</span>
                     </el-form-item>
                     <el-form-item label="小计:">
-                      <span>{{props.row.totalPrice}}</span>
+                      <span>￥{{props.row.totalPrice}}</span>
                     </el-form-item>
                     <el-form-item label="活动减免:">
-                      <span>{{props.row.activityMoney}}</span>
+                      <span>￥{{props.row.activityMoney}}</span>
                     </el-form-item>
                     <el-form-item label="优惠券:">
-                      <span>{{props.row.targetName}}</span>
+                      <span>￥{{props.row.couponMoney}}</span>
                     </el-form-item>
                     <el-form-item label="平台佣金:">
-                      <span>{{props.row.platformCommission}}</span>
+                      <span>￥{{props.row.platformCommission}}</span>
                     </el-form-item>
                     <!-- <el-form-item label="本单预计收入:">
                       <span style="color: orange;font-size: 18px;">￥{{props.row.orderIncome}}</span>
@@ -87,6 +93,10 @@
               <el-table-column label="">
                 <template slot-scope="props">
                   <el-row class="card-content">
+                    <el-col :span="3" style="float:right" v-if="props.row.status === '7' || props.row.status === 7">
+                      <el-alert title="已退款" type="error" description="" show-icon :closable="false">
+                      </el-alert>
+                    </el-col>
                     <el-col :span="20">
                       <h3>{{props.row.userName}}</h3>
                     </el-col>
@@ -194,6 +204,11 @@ export default {
     },
     retreatResult() {
       this.dialogFormVisible = false
+      this.getOrderAcceptionByStatus({ ...this.pagination, ...this.form })
+    },
+    distributionResult() {
+      this.orderAcceptions.splice(0)
+      this.pagination.page = 1
       this.getOrderAcceptionByStatus({ ...this.pagination, ...this.form })
     }
   },

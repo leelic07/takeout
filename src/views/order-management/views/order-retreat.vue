@@ -5,15 +5,12 @@
       <el-col :span="22" :offset="2">
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="选择店铺" v-if="type === '1'">
-            <el-select v-model="pagination.merchantId" placeholder="请选择店铺" size="small" @change="merchantChange">
-              <el-option value="" label="全部店铺"></el-option>
-              <el-option v-for="(merchant,index) in merchantList" :key="index" :value="merchant.id" :label="merchant.name"></el-option>
-            </el-select>
+            <merchants-select :pagination="pagination" @merchantChange="merchantChange"></merchants-select>
           </el-form-item>
           <el-form-item label="处理状态">
             <el-radio-group v-model="form.status">
-              <el-radio label="0">未退单</el-radio>
-              <el-radio label="1">已退单</el-radio>
+              <el-radio :label="0">未退单</el-radio>
+              <el-radio :label="1">已退单</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -41,14 +38,17 @@
                       <span>{{ props.row.orders.remark }}</span>
                     </el-form-item>
                     <el-form-item label="用餐人数:">
-                      <span style="float:left">{{props.row.orders.meals || 1}}</span>
+                      <span style="float:left">{{props.row.orders.meals || 1}}人</span>
                     </el-form-item>
                     <!--商品信息-->
                     <el-form-item label="商品信息:">
                       <el-table :data="props.row.orderItems" style="width: 100%" :show-header="false">
                         <el-table-column prop="itemName" label="商品">
                         </el-table-column>
-                        <el-table-column prop="itemPrice" label="单价">
+                        <el-table-column label="单价">
+                          <template slot-scope="prop">
+                            ￥{{prop.row.itemPrice}}
+                          </template>
                         </el-table-column>
                         <el-table-column label="数量">
                           <template slot-scope="prop">
@@ -57,31 +57,37 @@
                         </el-table-column>
                         <el-table-column label="总价">
                           <template slot-scope="prop">
-                            {{prop.row.itemPrice * prop.row.itemNums}}
+                            ￥{{prop.row.itemPrice * prop.row.itemNums}}
                           </template>
                         </el-table-column>
                       </el-table>
                     </el-form-item>
+                    <el-form-item label="餐盒费:">
+                      <span>￥{{props.row.orders.packingCharge}}</span>
+                    </el-form-item>
                     <el-form-item label="配送费:">
-                      <span>{{props.row.orders.deliverMoney}}</span>
+                      <span>￥{{props.row.orders.deliverMoney}}</span>
                     </el-form-item>
                     <el-form-item label="小计:">
-                      <span>{{props.row.orders.totalPrice}}</span>
+                      <span>￥{{props.row.orders.totalPrice}}</span>
                     </el-form-item>
                     <el-form-item label="活动减免:">
-                      <span>{{props.row.orders.activityMoney}}</span>
+                      <span>￥{{props.row.orders.activityMoney}}</span>
                     </el-form-item>
                     <el-form-item label="优惠券:">
-                      <span>{{props.row.orders.couponMoney}}</span>
+                      <span>￥{{props.row.orders.couponMoney}}</span>
                     </el-form-item>
                     <el-form-item label="平台佣金:">
-                      <span>{{props.row.orders.platformCommission}}</span>
+                      <span>￥{{props.row.orders.platformCommission}}</span>
                     </el-form-item>
                     <!-- <el-form-item label="本单预计收入:">
                       <span style="color: orange;font-size: 18px;"></span>
                     </el-form-item> -->
                     <el-form-item label="本顾客实际支付:">
-                      <span style="color: orange;font-size: 18px;">{{props.row.orders.realTotalMoney}}</span>
+                      <span style="color: orange;font-size: 18px;">￥{{props.row.orders.realTotalMoney}}</span>
+                    </el-form-item>
+                    <el-form-item label="退款金额:">
+                      <span style="color: orange;font-size: 18px;">￥{{props.row.orders.refundMoney}}</span>
                     </el-form-item>
                     <el-form-item>
                       <el-button type="danger" plain size="mini" @click="cancelOrder(props.row)" v-if="props.row.orders.isRefund === 0 && type !== '1'">取消订单并退款</el-button>
@@ -150,7 +156,7 @@ export default {
     }
     return {
       form: {
-        status: '0'
+        status: 0
       },
       rule: {
         totalPrice: [
@@ -202,8 +208,7 @@ export default {
     ...mapGetters([
       'orderRetreatList',
       'loading',
-      'retreatResult',
-      'merchantList'
+      'retreatResult'
     ]),
     merchantId() {
       return Number(sessionStorage['merchantId'])
@@ -216,8 +221,7 @@ export default {
     ...mapActions({
       getOrderRetreatList: 'getOrderRetreatList',
       getOrderRetreatByStatus: 'getOrderRetreatByStatus',
-      retreatOrder: 'retreatOrder',
-      getMerchantsList: 'getMerchantsList'
+      retreatOrder: 'retreatOrder'
     }),
     ...mapMutations({
       showLoading: 'showLoading',
@@ -264,15 +268,15 @@ export default {
         else console.log('err retreat')
       })
     },
-    merchantChange() {
+    merchantChange(merchantId) {
       this.orderRetreats.splice(0)
       this.pagination.page = 1
+      this.pagination.merchantId = merchantId
       this.getOrderRetreatByStatus({ ...this.pagination, ...this.form })
     }
   },
   mounted() {
     this.merchantId && (this.pagination.merchantId = this.merchantId)
-    this.getMerchantsList()
   }
 }
 </script>
