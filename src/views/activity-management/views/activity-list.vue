@@ -28,9 +28,9 @@
             {{props.row.endDate | Date}}
           </template>
         </el-table-column>
-        <el-table-column prop="participant" label="活动参与人数"></el-table-column>
-        <el-table-column prop="activityCount" label="活动核销数"></el-table-column>
-        <el-table-column prop="activityMoney" label="活动核销金额"></el-table-column>
+        <!-- <el-table-column prop="participant" label="活动参与人数"></el-table-column> -->
+        <el-table-column prop="totalCount" label="活动核销数"></el-table-column>
+        <el-table-column prop="totalPrice" label="活动核销金额"></el-table-column>
         <el-table-column label="操作" width="140">
           <template slot-scope="props">
             <el-button type="primary" size="mini" @click="showEditActivity(props.row.id)">编辑</el-button>

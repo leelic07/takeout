@@ -40,7 +40,10 @@
                     <!--商品信息-->
                     <el-form-item label="商品信息:">
                       <el-table :data="props.row.orderItems" style="width: 100%" :show-header="false">
-                        <el-table-column prop="itemName" label="商品">
+                        <el-table-column label="商品">
+                          <template slot-scope="prop">
+                            {{prop.row.itemName}}
+                          </template>
                         </el-table-column>
                         <el-table-column label="单价">
                           <template slot-scope="prop">

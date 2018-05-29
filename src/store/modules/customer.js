@@ -1,4 +1,15 @@
 import http from '@/service'
+const mergeProperty = (array) => {
+  array.forEach(arr => {
+    arr.orderItems.forEach(item => {
+      item.orderItemPropertys.forEach((property, index, arr) => {
+        if (arr.length === 1) item.itemName += `(${property.propertyName})`
+        else item.itemName += index !== arr.length - 1 ? `(${property.propertyName}+` : `${property.propertyName})`
+        item.itemPrice += property.price
+      })
+    })
+  })
+}
 
 export default {
   state: {
@@ -44,6 +55,7 @@ export default {
         data.goodsScore = Number(data.goodsScore)
         data.distributionScore = Number(data.distributionScore)
       })
+      mergeProperty(data.feedbacks.orders)
       state.feedbacksList = data.feedbacks
       state.feedbacksTotal = data.totalCount
     },
