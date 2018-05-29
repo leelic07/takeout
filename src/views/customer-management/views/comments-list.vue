@@ -128,9 +128,9 @@
                                                 <el-form-item label="优惠券:">
                                                     <span>￥{{props.row.orders.coupons}}</span>
                                                 </el-form-item>
-                                                <!-- <el-form-item label="平台佣金:">
-                                                    <span>{{props.row.platformCommission}}</span>
-                                                </el-form-item> -->
+                                                <el-form-item label="平台佣金:">
+                                                    <span>￥{{props.row.platformCommission}}</span>
+                                                </el-form-item>
                                                 <!-- <el-form-item label="本单预计收入:">
                                                     <span style="color: orange;font-size: 18px;">{{props.row.orderIncome}}元</span>
                                                 </el-form-item> -->
@@ -226,12 +226,12 @@ export default {
     'form.evaluate'(newValue) {
       this.feedbacks.splice(0)
       this.pagination.page = 1
-      this.getFeedbacksByEvaluate({ ...this.pagination, ...this.form })
+      this.getFeedbacksPage({ ...this.pagination, ...this.form })
     },
     replyResult() {
       this.feedbacks.splice(0)
       this.pagination.page = 1
-      this.getFeedbacksByEvaluate({ ...this.pagination, ...this.form })
+      this.getFeedbacksPage({ ...this.pagination, ...this.form })
       this.dialogReplyVisible = false
     }
   },
@@ -260,7 +260,6 @@ export default {
       getBackCouponList: 'getBackCouponList',
       editUser: 'editUser',
       sendCouponToUser: 'sendCouponToUser',
-      getFeedbacksByEvaluate: 'getFeedbacksByEvaluate',
       getMerchantsList: 'getMerchantsList',
       replyFeedbacks: 'replyFeedbacks'
     }),
@@ -286,7 +285,7 @@ export default {
       this.showLoading()
       setTimeout(() => {
         this.pagination.page++
-        this.getFeedbacksByEvaluate({ ...this.pagination, ...this.form })
+        this.getFeedbacksPage({ ...this.pagination, ...this.form })
       }, 1000)
     },
     sendCoupon(id) {
@@ -303,7 +302,7 @@ export default {
     merchantChange() {
       this.feedbacks.splice(0)
       this.pagination.page = 1
-      this.getFeedbacksByEvaluate({ ...this.pagination, ...this.form })
+      this.getFeedbacksPage({ ...this.pagination, ...this.form })
     },
     showReply(pid) {
       this.dialogReplyVisible = true
@@ -318,7 +317,7 @@ export default {
   },
   mounted() {
     this.merchantId && (this.pagination.merchantId = this.merchantId)
-    this.getFeedbacksByEvaluate({ ...this.pagination, ...this.form })
+    this.getFeedbacksPage({ ...this.pagination, ...this.form })
     this.getMerchantsList()
   }
 }

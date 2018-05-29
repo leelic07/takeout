@@ -44,6 +44,7 @@ export default {
         data.goodsScore = Number(data.goodsScore)
         data.distributionScore = Number(data.distributionScore)
       })
+      mergeProperty(feedbacks.orders)
       state.feedbacksList = feedbacks
       state.feedbacksTotal = feedbacksPageResult.data.totalCount
     },

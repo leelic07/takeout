@@ -16,7 +16,7 @@
     <el-row class="order-statics">
       <el-table :data="activityList" stripe border fit style="width: 100%">
         <el-table-column type="index" :index="1" label="序号"></el-table-column>
-        <el-table-column prop="code" label="活动编号"></el-table-column>
+        <el-table-column prop="activityNo" label="活动编号"></el-table-column>
         <el-table-column prop="name" label="活动名称" show-overflow-tooltip></el-table-column>
         <el-table-column label="开始日期" show-overflow-tooltip>
           <template slot-scope="props">
