@@ -87,7 +87,7 @@
                       <span style="color: orange;font-size: 18px;">￥{{props.row.orders.realTotalMoney}}</span>
                     </el-form-item>
                     <el-form-item label="退款金额:">
-                      <span style="color: orange;font-size: 18px;">￥{{props.row.orders.refundMoney}}</span>
+                      <span style="color: orange;font-size: 18px;">￥{{props.row.orders.refundMoney || 0}}</span>
                     </el-form-item>
                     <el-form-item>
                       <el-button type="danger" plain size="mini" @click="cancelOrder(props.row)" v-if="props.row.orders.isRefund === 0 && type !== '1'">取消订单并退款</el-button>
