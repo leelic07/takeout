@@ -21,7 +21,7 @@
                         {{props.row.couponSendType | couponSendTypes}}
                     </template>
                 </el-table-column>
-                <el-table-column prop="code" label="活动编号"></el-table-column>
+                <!-- <el-table-column prop="activityNo" label="活动编号"></el-table-column> -->
                 <el-table-column prop="name" label="活动名称" show-overflow-tooltip></el-table-column>
                 <el-table-column label="开始日期" show-overflow-tooltip>
                     <template slot-scope="props">
@@ -34,8 +34,8 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="couponMoney" label="优惠券金额"></el-table-column>
-                <el-table-column prop="exchangeCount" label="优惠券总数"></el-table-column>
-                <el-table-column prop="discountRemain" label="优惠券余量"></el-table-column>
+                <!-- <el-table-column prop="exchangeCount" label="优惠券总数"></el-table-column> -->
+                <!-- <el-table-column prop="discountRemain" label="优惠券余量"></el-table-column> -->
                 <el-table-column label="操作" width="140">
                     <template slot-scope="props">
                         <el-button type="primary" size="mini" @click="showEditCoupon(props.row.id)">编辑</el-button>

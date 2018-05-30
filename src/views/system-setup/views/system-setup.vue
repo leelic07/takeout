@@ -34,25 +34,32 @@
                 <td>X{{order.itemNums}}</td>
                 <td>{{order.itemPrice * order.itemNums}}</td>
               </tr>
-              <!-- <tr>
-                <td>餐盒费</td>
-                <td>X1</td>
-                <td>{{orderForPrint.packingCharge}}</td>
-              </tr> -->
             </table>
           </el-form-item>
           <el-form-item>
-            <label for="">
+            <label for="deliver">
               配送费：
-              <span>{{orderForPrint.deliverMoney}}元</span>
+              <span id="deliver">{{orderForPrint.deliverMoney || 0}}元</span>
             </label>
-            <label for="">
+            <label for="packing">
               餐盒费：
-              <span>{{orderForPrint.packingCharge}}元</span>
+              <span id="packing">{{orderForPrint.packingCharge || 0}}元</span>
+            </label>
+            <label for="coupon">
+              优惠券减：
+              <span id="coupon">{{orderForPrint.couponMoney || 0}}元</span>
+            </label>
+            <label for="activity">
+              活动减：
+              <span id="activity">{{orderForPrint.activityMoney || 0}}元</span>
             </label>
           </el-form-item>
           <el-form-item>
             <h1>总计：</h1>
+            <h1>￥{{orderForPrint.totalPrice}}</h1>
+          </el-form-item>
+          <el-form-item>
+            <h1>实际支付：</h1>
             <h1>￥{{orderForPrint.realTotalMoney}}</h1>
           </el-form-item>
           <el-form-item>

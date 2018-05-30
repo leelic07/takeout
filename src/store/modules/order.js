@@ -1,5 +1,16 @@
 import http from '@/service'
 import router from '@/router'
+const mergeProperty = (array) => {
+  array.forEach(arr => {
+    arr.orderItems.forEach(item => {
+      item.orderItemPropertys.forEach((property, index, arr) => {
+        if (arr.length === 1) item.itemName += `(${property.propertyName})`
+        else item.itemName += index !== arr.length - 1 ? `(${property.propertyName}+` : `${property.propertyName})`
+        item.itemPrice += property.price
+      })
+    })
+  })
+}
 
 export default {
   state: {
@@ -73,6 +84,7 @@ export default {
       if (status === 2) {
         state.orderReservationList = orders.filter(order => order.status === status)
       } else state.orderReservationList = orders.filter(order => order.status !== 2)
+      mergeProperty(state.orderReservationList)
     },
     getOrderAcceptionByStatus(state, orderAcceptionList) {
       const orders = orderAcceptionList.data.orders
@@ -80,6 +92,7 @@ export default {
       if (status === '2') {
         state.orderAcceptionList = orders.filter(order => order.status === status)
       } else state.orderAcceptionList = orders.filter(order => order.status !== '2' && order.status !== '8')
+      mergeProperty(state.orderAcceptionList)
     },
     getOrderRetreatList(state, orderRetreatList) {
       state.orderRetreatList = orderRetreatList.data.orders
@@ -88,16 +101,19 @@ export default {
       const orders = orderRetreatList.data.orders
       const status = orderRetreatList.status
       state.orderRetreatList = orders.filter(order => order.orders.isRefund === status)
+      mergeProperty(state.orderRetreatList)
     },
     getOrderRecordsList(state, orderRecordsList) {
       const data = orderRecordsList.data
       state.orderRecordsList = data.orders
       state.orderRecordsTotal = data.totalCount
+      mergeProperty(state.orderRecordsList)
     },
     getOrdersRecordsPage(state, orderRecordsList) {
       const data = orderRecordsList.data
       state.orderRecordsList = data.orders
       state.orderRecordsTotal = data.totalCount
+      mergeProperty(state.orderRecordsList)
     },
     getOrderReminderByStatus(state, orderReminderList) {
       const orders = orderReminderList.data.orders
@@ -105,6 +121,7 @@ export default {
       if (status === 2) {
         state.orderReminderList = orders.filter(order => order.status === status)
       } else state.orderReminderList = orders.filter(order => order.status !== 2)
+      mergeProperty(state.orderReminderList)
     },
     retreatOrder(state, retreatResult) {
       state.retreatResult = retreatResult
