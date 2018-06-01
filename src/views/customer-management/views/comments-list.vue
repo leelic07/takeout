@@ -4,13 +4,6 @@
         <el-card class="box-card">
             <el-col :span="22" :offset="2">
                 <el-form ref="form" :model="form" label-width="80px" style="padding-bottom:15px">
-                    <!-- <el-form-item label="评价管理">
-                        <el-radio-group v-model="form.resrveStatus">
-                            <el-radio label="全部"></el-radio>
-                            <el-radio label="未回复"></el-radio>
-                            <el-radio label="已回复"></el-radio>
-                        </el-radio-group>
-                    </el-form-item> -->
                     <el-form-item label="选择店铺" v-if="type === '1'">
                         <el-select v-model="pagination.merchantId" placeholder="请选择店铺" size="small" @change="merchantChange">
                             <el-option value="" label="全部店铺"></el-option>
@@ -19,22 +12,12 @@
                     </el-form-item>
                     <el-form-item label="满意程度">
                         <el-radio-group v-model="form.evaluate">
-                            <el-radio label="0">全部</el-radio>
+                            <el-radio label="">全部</el-radio>
                             <el-radio label="3">好评</el-radio>
                             <el-radio label="2">中评</el-radio>
                             <el-radio label="1">差评</el-radio>
                         </el-radio-group>
                     </el-form-item>
-                    <!-- <el-form-item label="有无内容">
-                        <el-radio-group v-model="form.resrveStatus">
-                            <el-radio label="全部"></el-radio>
-                            <el-radio label="有内容"></el-radio>
-                        </el-radio-group>
-                    </el-form-item> -->
-                    <!-- <el-form-item label="选择日期">
-                        <el-date-picker v-model="datetime" type="daterange" range-separator="——" start-placeholder="开始日期" end-placeholder="结束日期">
-                        </el-date-picker>
-                    </el-form-item> -->
                 </el-form>
             </el-col>
         </el-card>
@@ -188,7 +171,7 @@ export default {
   data() {
     return {
       form: {
-        evaluate: '0'
+        evaluate: ''
       },
       datetime: '',
       pagination: {

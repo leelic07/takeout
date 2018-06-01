@@ -1,15 +1,15 @@
 import http from '@/service'
-const mergeProperty = (array) => {
-  array.forEach(arr => {
-    arr.orderItems.forEach(item => {
-      item.orderItemPropertys.forEach((property, index, arr) => {
-        if (arr.length === 1) item.itemName += `(${property.propertyName})`
-        else item.itemName += index !== arr.length - 1 ? `(${property.propertyName}+` : `${property.propertyName})`
-        item.itemPrice += property.price
-      })
-    })
-  })
-}
+// const mergeProperty = (feedbacks) => {
+//   feedbacks.forEach(feedback => {
+//     feedback.orders.orderItems.forEach(item => {
+//       item.orderItemPropertys.forEach((property, index, arr) => {
+//         if (arr.length === 1) item.itemName += `(${property.propertyName})`
+//         else item.itemName += index !== arr.length - 1 ? `(${property.propertyName}+` : `${property.propertyName})`
+//         item.itemPrice += property.price
+//       })
+//     })
+//   })
+// }
 
 export default {
   state: {
@@ -38,15 +38,15 @@ export default {
       state.feedbacksList = feedbacksListResult.data.feedbacks.data
       // state.feedbacksTotal = feedbacksListResult.data.totalCount
     },
-    getFeedbacksPage(state, feedbacksPageResult) {
-      const feedbacks = feedbacksPageResult.data.feedbacks
+    getFeedbacksPage(state, res) {
+      const feedbacks = res.data.feedbacks
       feedbacks.forEach(data => {
         data.goodsScore = Number(data.goodsScore)
         data.distributionScore = Number(data.distributionScore)
       })
-      mergeProperty(feedbacks.orders)
+      // mergeProperty(feedbacks)
       state.feedbacksList = feedbacks
-      state.feedbacksTotal = feedbacksPageResult.data.totalCount
+      state.feedbacksTotal = res.data.totalCount
     },
     getFeedbacksByEvaluate(state, res) {
       const evaluate = res.evaluate
@@ -56,7 +56,7 @@ export default {
         data.goodsScore = Number(data.goodsScore)
         data.distributionScore = Number(data.distributionScore)
       })
-      mergeProperty(data.feedbacks.orders)
+      // mergeProperty(data.feedbacks)
       state.feedbacksList = data.feedbacks
       state.feedbacksTotal = data.totalCount
     },

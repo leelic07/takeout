@@ -43,7 +43,7 @@ export default {
       router.push({ path: '/boss/login' })
     },
     getBossMessag(state, res) {
-      state.report = res.data.report || {}
+      state.report = res.data.report
     },
     getBossMerchant(state, res) {
       state.bossMerchant = res.data.merchants
