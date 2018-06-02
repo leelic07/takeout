@@ -64,8 +64,9 @@
               color: $black;
             }
             .order-detail {
-              float: right;
-              margin-top: -50px;
+              position: absolute;
+              top: 45%;
+              right: 0;
               color: $blue;
             }
             .seller-box {

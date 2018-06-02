@@ -2,12 +2,24 @@
     <el-row class="order-acception-container">
         <!--切换接单内容-->
         <el-card class="box-card">
-            <el-col :span="22" :offset="2">
-                <el-form ref="form" :model="form" label-width="80px" style="padding-bottom:15px">
-                    <el-form-item label="选择店铺" v-if="type === '1'">
-                        <el-select v-model="pagination.merchantId" placeholder="请选择店铺" size="small" @change="merchantChange">
-                            <el-option value="" label="全部店铺"></el-option>
-                            <el-option v-for="(merchant,index) in merchantList" :key="index" :value="merchant.id" :label="merchant.name"></el-option>
+            <el-col :span="22"
+                :offset="2">
+                <el-form ref="form"
+                    :model="form"
+                    label-width="80px"
+                    style="padding-bottom:15px">
+                    <el-form-item label="选择店铺"
+                        v-if="type === '1'">
+                        <el-select v-model="pagination.merchantId"
+                            placeholder="请选择店铺"
+                            size="small"
+                            @change="merchantChange">
+                            <el-option value=""
+                                label="全部店铺"></el-option>
+                            <el-option v-for="(merchant,index) in merchantList"
+                                :key="index"
+                                :value="merchant.id"
+                                :label="merchant.name"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="满意程度">
@@ -25,7 +37,9 @@
         <el-row class="order-box">
             <el-col :span="24">
                 <el-card class="box-card">
-                    <div slot="header" class="card-header clearfix" v-if="true">
+                    <div slot="header"
+                        class="card-header clearfix"
+                        v-if="true">
                         <el-col :span="20">
                             <label>符合条件的评价:</label>
                             <span>{{feedbacksTotal}}条</span>
@@ -33,7 +47,10 @@
                         <!-- <span type="text">待发配送</span> -->
                     </div>
                     <el-row>
-                        <el-table :data="feedbacks" style="width: 100%" :show-header="false" stripe>
+                        <el-table :data="feedbacks"
+                            style="width: 100%"
+                            :show-header="false"
+                            stripe>
                             <el-table-column label="">
                                 <template slot-scope="props">
                                     <el-row class="card-content comments-box">
@@ -49,18 +66,41 @@
                                             <label>评论内容:</label>
                                             <span>{{props.row.content}}</span>
                                         </el-col>
-                                        <el-col :span="20" class="seller-box">
+                                        <el-col v-for="(sub,index) in props.row.subFeedbacks"
+                                            :key="index"
+                                            :span="20">
+                                            <label for="">
+                                                <!-- <span>{{props.row.createdAt | Date}}</span> -->
+                                                回复
+                                                <span>{{props.row.users ? props.row.users.userName : '匿名'}}:</span>
+                                            </label>
+                                            <span>{{sub.content}}</span>
+                                        </el-col>
+                                        <el-col :span="20"
+                                            class="seller-box">
                                             <label>商品</label>
-                                            <el-rate v-model="props.row.goodsScore" disabled show-score text-color="#ff9900" score-template="{value}">
+                                            <el-rate v-model="props.row.goodsScore"
+                                                disabled
+                                                show-score
+                                                text-color="#ff9900"
+                                                score-template="{value}">
                                             </el-rate>
                                         </el-col>
-                                        <el-col :span="20" class="seller-box">
+                                        <el-col :span="20"
+                                            class="seller-box">
                                             <label>配送</label>
-                                            <el-rate v-model="props.row.distributionScore" disabled show-score text-color="#ff9900" score-template="{value}">
+                                            <el-rate v-model="props.row.distributionScore"
+                                                disabled
+                                                show-score
+                                                text-color="#ff9900"
+                                                score-template="{value}">
                                             </el-rate>
                                             <el-col :span="14">
-                                                <el-button type="text" v-if="type !== '1'" @click="showReply(props.row.id)">回复</el-button>
-                                                <el-button type="text" @click="sendCoupon(props.row.userId)">发券</el-button>
+                                                <el-button type="text"
+                                                    v-if="type !== '1'"
+                                                    @click="showReply(props.row.id)">回复</el-button>
+                                                <el-button type="text"
+                                                    @click="sendCoupon(props.row.userId)">发券</el-button>
                                                 <!-- <el-button type="text">举报</el-button> -->
                                             </el-col>
                                         </el-col>
@@ -70,22 +110,28 @@
                             </el-table-column>
                             <el-table-column type="expand">
                                 <template slot-scope="props">
-                                    <el-form :data="props.row.orders" label-position="right" class="demo-table-expand">
+                                    <el-form :data="props.row.orders"
+                                        label-position="right"
+                                        class="demo-table-expand">
                                         <!--备注-->
                                         <el-form-item label="备注:">
                                             <span>{{ props.row.orders.remark }}</span>
                                         </el-form-item>
                                         <!--商品信息-->
                                         <el-form-item label="商品信息:">
-                                            <el-table :data="props.row.orders.orderItems" style="width: 100%" :show-header="false">
-                                                <el-table-column prop="itemName" label="商品">
+                                            <el-table :data="props.row.orders.orderItems"
+                                                style="width: 100%"
+                                                :show-header="false">
+                                                <el-table-column prop="itemName"
+                                                    label="商品">
                                                 </el-table-column>
                                                 <el-table-column label="单价">
                                                     <template slot-scope="props">
                                                         ￥{{props.row.itemPrice}}
                                                     </template>
                                                 </el-table-column>
-                                                <el-table-column prop="itemNums" label="数量">
+                                                <el-table-column prop="itemNums"
+                                                    label="数量">
                                                 </el-table-column>
                                                 <el-table-column label="总价">
                                                     <template slot-scope="props">
@@ -123,7 +169,10 @@
                                             </el-form>
                                         </el-form-item>
                                         <el-form-item>
-                                            <el-button type="primary" plain size="mini" @click="printOrder(props.row.orders)">打印订单</el-button>
+                                            <el-button type="primary"
+                                                plain
+                                                size="mini"
+                                                @click="printOrder(props.row.orders)">打印订单</el-button>
                                         </el-form-item>
                                     </el-form>
                                 </template>
@@ -134,33 +183,65 @@
             </el-col>
         </el-row>
         <!--会员送券对话框-->
-        <el-dialog class="member-editor" title="会员送券" :visible.sync="dialogFormVisible">
-            <el-form :model="userForEdit" size="small" :rules="rule" ref="couponForm">
-                <el-form-item label="选择优惠券" label-width="120px" prop="couponId">
-                    <el-select v-model="userForEdit.couponId" placeholder="请选择会优惠券">
-                        <el-option v-for="item in backCouponList" :key="item.id" :label="item.name" :value="item.id">
+        <el-dialog class="member-editor"
+            title="会员送券"
+            :visible.sync="dialogFormVisible">
+            <el-form :model="userForEdit"
+                size="small"
+                :rules="rule"
+                ref="couponForm">
+                <el-form-item label="选择优惠券"
+                    label-width="120px"
+                    prop="couponId">
+                    <el-select v-model="userForEdit.couponId"
+                        placeholder="请选择会优惠券">
+                        <el-option v-for="item in backCouponList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
                         </el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button size="small" @click="dialogFormVisible = false">取 消</el-button>
-                <el-button size="small" type="primary" @click="sendCouponConfirm">确 定</el-button>
+            <div slot="footer"
+                class="dialog-footer">
+                <el-button size="small"
+                    @click="dialogFormVisible = false">取 消</el-button>
+                <el-button size="small"
+                    type="primary"
+                    @click="sendCouponConfirm">确 定</el-button>
             </div>
         </el-dialog>
         <!--回复会员评价-->
-        <el-dialog class="member-editor" title="回复评价" :visible.sync="dialogReplyVisible">
-            <el-form :model="replyForm" size="small" :rules="replyRule" ref="replyForm">
-                <el-form-item label="回复内容" label-width="120px" prop="content">
-                    <el-input type="textarea" v-model="replyForm.content" placeholder="请填写回复内容" :autosize="{minRows:5, maxRows:25}"></el-input>
+        <el-dialog class="member-editor"
+            title="回复评价"
+            :visible.sync="dialogReplyVisible">
+            <el-form :model="replyForm"
+                size="small"
+                :rules="replyRule"
+                ref="replyForm">
+                <el-form-item label="回复内容"
+                    label-width="120px"
+                    prop="content">
+                    <el-input type="textarea"
+                        v-model="replyForm.content"
+                        placeholder="请填写回复内容"
+                        :autosize="{minRows:5, maxRows:25}"></el-input>
                 </el-form-item>
             </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button size="small" @click="dialogReplyVisible = false">取 消</el-button>
-                <el-button size="small" type="primary" @click="replyFeedbacksConfirm">确 定</el-button>
+            <div slot="footer"
+                class="dialog-footer">
+                <el-button size="small"
+                    @click="dialogReplyVisible = false">取 消</el-button>
+                <el-button size="small"
+                    type="primary"
+                    @click="replyFeedbacksConfirm">确 定</el-button>
             </div>
         </el-dialog>
-        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading"></div>
+        <div v-infinite-scroll="loadMore"
+            infinite-scroll-disabled="busy"
+            infinite-scroll-distance="20"
+            v-loading="loading"></div>
     </el-row>
 </template>
 
@@ -212,10 +293,18 @@ export default {
       this.getFeedbacksPage({ ...this.pagination, ...this.form })
     },
     replyResult() {
-      this.feedbacks.splice(0)
-      this.pagination.page = 1
-      this.getFeedbacksPage({ ...this.pagination, ...this.form })
+    //   this.feedbacks.splice(0)
+    //   this.pagination.page = 1
+    //   this.getFeedbacksPage({ ...this.pagination, ...this.form })
+      this.feedbacks.forEach(feed => {
+        if (feed.id === this.replyForm.pid) {
+          feed.subFeedbacks.push({
+            content: this.replyForm.content
+          })
+        }
+      })
       this.dialogReplyVisible = false
+      this.replyForm.content = ''
     }
   },
   computed: {
