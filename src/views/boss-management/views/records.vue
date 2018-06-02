@@ -9,20 +9,18 @@
         plain
         @click.native="getMessageConfirm(d.date, d.fullDate, $event)">{{d.date}}</mt-button>
     </div>
-    <div>
-      <mt-cell title="营业日期"
-        :value="report.date"></mt-cell>
-      <mt-cell title="营业额"
-        :value="report.totalPrice"></mt-cell>
-      <mt-cell title="订单数"
-        :value="report.successCount"></mt-cell>
-      <mt-cell title="最大订单"
-        :value="report.maxMoney"></mt-cell>
-      <mt-cell title="最小订单"
-        :value="report.minMoney"></mt-cell>
-      <mt-cell title="用户点击量"
-        :value="report.accessTimes"></mt-cell>
-    </div>
+    <mt-cell title="营业日期"
+      :value="report.date"></mt-cell>
+    <mt-cell title="营业额"
+      :value="report.totalPrice"></mt-cell>
+    <mt-cell title="订单数"
+      :value="report.successCount"></mt-cell>
+    <mt-cell title="最大订单"
+      :value="report.maxMoney"></mt-cell>
+    <mt-cell title="最小订单"
+      :value="report.minMoney"></mt-cell>
+    <mt-cell title="用户点击量"
+      :value="report.accessTimes"></mt-cell>
   </div>
 </template>
 
@@ -93,12 +91,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-$bg-blue: "#26A2FF";
-$white: "#fff";
-.active-btn {
-  background: $bg-blue;
-  color: $white;
-}
-</style>
