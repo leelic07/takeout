@@ -20,39 +20,29 @@
         <el-table-column type="index"
           :index="1"
           label="序号"></el-table-column>
-        <el-table-column label="图片">
+        <!-- <el-table-column label="图片">
           <template slot-scope="props">
             <img :src="props.row.pictures.length ? props.row.pictures[0].url : ''"
               alt=""
               style="width:60%">
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="活动类型"
           show-overflow-tooltip>
           <template slot-scope="props">
             {{props.row.couponSendType | couponSendTypes}}
           </template>
         </el-table-column>
-        <!-- <el-table-column prop="activityNo" label="活动编号"></el-table-column> -->
         <el-table-column prop="name"
           label="活动名称"
           show-overflow-tooltip></el-table-column>
-        <el-table-column label="开始日期"
-          show-overflow-tooltip>
+        <el-table-column label="有效日期">
           <template slot-scope="props">
-            {{props.row.startDate | Date}}
-          </template>
-        </el-table-column>
-        <el-table-column label="活动结束日期"
-          show-overflow-tooltip>
-          <template slot-scope="props">
-            {{props.row.endDate | Date}}
+            {{props.row.effectiveTime | effectiveTime}}
           </template>
         </el-table-column>
         <el-table-column prop="couponMoney"
           label="优惠券金额"></el-table-column>
-        <!-- <el-table-column prop="exchangeCount" label="优惠券总数"></el-table-column> -->
-        <!-- <el-table-column prop="discountRemain" label="优惠券余量"></el-table-column> -->
         <el-table-column label="操作"
           width="140">
           <template slot-scope="props">
@@ -75,7 +65,6 @@
 </template>
 
 <script>
-import Pagination from '@/components/Pagination/index'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -103,9 +92,6 @@ export default {
       'activityForEdit',
       'deleteCouponResult'
     ])
-  },
-  components: {
-    Pagination
   },
   methods: {
     ...mapActions({

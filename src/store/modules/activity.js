@@ -17,7 +17,44 @@ export default {
     updateCouponResult: {},
     deleteActivityResult: {},
     deleteCouponResult: {},
-    backCouponList: []
+    backCouponList: [],
+    effectiveDate: [{
+      label: '一个月',
+      value: 1
+    }, {
+      label: '两个月',
+      value: 2
+    }, {
+      label: '三个月',
+      value: 3
+    }, {
+      label: '四个月',
+      value: 4
+    }, {
+      label: '五个月',
+      value: 5
+    }, {
+      label: '六个月',
+      value: 6
+    }, {
+      label: '七个月',
+      value: 7
+    }, {
+      label: '八个月',
+      value: 8
+    }, {
+      label: '九个月',
+      value: 9
+    }, {
+      label: '十个月',
+      value: 10
+    }, {
+      label: '十一个月',
+      value: 11
+    }, {
+      label: '十二个月',
+      value: 12
+    }]
   },
   actions: {
     getActivityList({ commit }, pagination) {

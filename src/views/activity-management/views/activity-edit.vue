@@ -1,58 +1,87 @@
 <template>
-    <el-row class="activity-add-container">
-        <el-col :span="14" :offset="5">
-            <!--选择满减还是优惠券-->
-            <el-card>
-                <el-form :model="typeForm">
-                    <el-form-item label="活动类型">
-                        <el-radio-group v-model="typeForm.type">
-                            <el-radio label="1">满减活动</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                </el-form>
-            </el-card>
-            <!--活动内容-->
-            <el-card>
-                <!--满减活动-->
-                <el-form :label-position="labelPosition" :model="activityForEdit" ref="activityForm" :rules="activityRules" label-width="80px">
-                    <el-form-item label="活动名称" prop="name">
-                        <el-input v-model="activityForEdit.name" placeholder="请输入活动名称"></el-input>
-                    </el-form-item>
-                    <el-form-item label="满" prop="fullMoney">
-                        <el-input v-model="activityForEdit.fullMoney" placeholder="请输入满的金额">
-                          <template slot="append">元</template>
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item label="减" prop="reduceMoney">
-                        <el-input v-model="activityForEdit.reduceMoney" placeholder="请输入减的金额">
-                          <template slot="append">元</template>
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item label="活动开始时间" label-width="110px" prop="startDate">
-                        <el-date-picker v-model="activityForEdit.startDate" type="date" placeholder="选择日期">
-                        </el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="活动结束时间" label-width="110px" prop="endDate">
-                        <el-date-picker v-model="activityForEdit.endDate" type="date" placeholder="选择日期">
-                        </el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="活动参与店铺" label-width="100px">
-                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange(checkAll)">全选</el-checkbox>
-                        <el-checkbox-group v-model="activityForEdit.merchants" @change="handleCheckMerchantChange">
-                            <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
-                        </el-checkbox-group>
-                    </el-form-item>
-                    <el-form-item label="描述">
-                        <el-input type="textarea" v-model="activityForEdit.description" placeholder="请输入描述"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" size="medium" @click="updateActivityConfirm">更新活动</el-button>
-                    </el-form-item>
-                </el-form>
-                <!--优惠券-->
-            </el-card>
-        </el-col>
-    </el-row>
+  <el-row class="activity-add-container">
+    <el-col :span="14"
+      :offset="5">
+      <!--选择满减还是优惠券-->
+      <el-card>
+        <el-form :model="typeForm">
+          <el-form-item label="活动类型">
+            <el-radio-group v-model="typeForm.type">
+              <el-radio label="1">满减活动</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-form>
+      </el-card>
+      <!--活动内容-->
+      <el-card>
+        <!--满减活动-->
+        <el-form :label-position="labelPosition"
+          :model="activityForEdit"
+          ref="activityForm"
+          :rules="activityRules"
+          label-width="80px">
+          <el-form-item label="活动名称"
+            prop="name">
+            <el-input v-model="activityForEdit.name"
+              placeholder="请输入活动名称"></el-input>
+          </el-form-item>
+          <el-form-item label="满"
+            prop="fullMoney">
+            <el-input v-model="activityForEdit.fullMoney"
+              placeholder="请输入满的金额">
+              <template slot="append">元</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="减"
+            prop="reduceMoney">
+            <el-input v-model="activityForEdit.reduceMoney"
+              placeholder="请输入减的金额">
+              <template slot="append">元</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="活动开始时间"
+            label-width="110px"
+            prop="startDate">
+            <el-date-picker v-model="activityForEdit.startDate"
+              type="date"
+              placeholder="选择日期">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="活动结束时间"
+            label-width="110px"
+            prop="endDate">
+            <el-date-picker v-model="activityForEdit.endDate"
+              type="date"
+              placeholder="选择日期">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="活动参与店铺"
+            label-width="100px">
+            <el-checkbox :indeterminate="isIndeterminate"
+              v-model="checkAll"
+              @change="handleCheckAllChange(checkAll)">全选</el-checkbox>
+            <el-checkbox-group v-model="activityForEdit.merchants"
+              @change="handleCheckMerchantChange">
+              <el-checkbox v-for="(merchant,index) in merchantList"
+                :label="merchant.id"
+                :key="index">{{merchant.name}}</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+          <el-form-item label="描述">
+            <el-input type="textarea"
+              v-model="activityForEdit.description"
+              placeholder="请输入描述"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary"
+              size="medium"
+              @click="updateActivityConfirm">更新活动</el-button>
+          </el-form-item>
+        </el-form>
+        <!--优惠券-->
+      </el-card>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
