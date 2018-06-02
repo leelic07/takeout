@@ -31,7 +31,7 @@
               <i class="el-icon-circle-check el-icon--right"></i>
             </p>
             <el-col :span="24" class="order-amount-today">
-              <router-link :to="type === '1' ? '' : '/order/reservation'">
+              <router-link :to="type === '1' ? '' : '/order/records'">
                 <h1>{{merchantHomePage.pendingOrder || 0}}</h1>
                 <span>单
                   <i class="el-icon-arrow-right el-icon--right"></i>

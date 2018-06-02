@@ -1,12 +1,17 @@
 <template>
-    <div class="cell-box">
-        <mt-cell title="今日您店的运营信息如下："></mt-cell>
-        <mt-cell title="营业额" :value="report.totalPrice"></mt-cell>
-        <mt-cell title="订单数" :value="report.successCount"></mt-cell>
-        <mt-cell title="最大订单" :value="report.maxMoney"></mt-cell>
-        <mt-cell title="最小订单" :value="report.minMoney"></mt-cell>
-        <mt-cell title="用户点击量" :value="report.accessTimes"></mt-cell>
-    </div>
+  <div class="cell-box">
+    <mt-cell title="今日您店的运营信息如下："></mt-cell>
+    <mt-cell title="营业额"
+      :value="report.totalPrice"></mt-cell>
+    <mt-cell title="订单数"
+      :value="report.successCount"></mt-cell>
+    <mt-cell title="最大订单"
+      :value="report.maxMoney"></mt-cell>
+    <mt-cell title="最小订单"
+      :value="report.minMoney"></mt-cell>
+    <mt-cell title="用户点击量"
+      :value="report.accessTimes"></mt-cell>
+  </div>
 </template>
 
 <script>

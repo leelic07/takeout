@@ -18,7 +18,7 @@
         <el-table-column prop="itemName" label="商品名称"></el-table-column>
         <el-table-column prop="totalNums" label="销量"></el-table-column>
         <el-table-column prop="itemPrice" label="单价"></el-table-column>
-        <el-table-column prop="totalPrice" label="销售额"></el-table-column>
+        <!-- <el-table-column prop="totalPrice" label="销售额"></el-table-column> -->
       </el-table>
     </el-row>
     <!--分页组件-->

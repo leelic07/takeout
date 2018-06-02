@@ -1,19 +1,29 @@
 <template>
-    <div class="cell-box">
-        <div class="btn-box">
-            <mt-button v-for="(d,index) in dateList" :key="index" type="primary" size="small" @click.native="getMessageConfirm(d.date)">{{d.date}}</mt-button>
-        </div>
-        <mt-tab-container v-model="records" swipeable>
-            <mt-tab-container-item>
-                <mt-cell title="营业日期" :value="report.date"></mt-cell>
-                <mt-cell title="营业额" :value="report.totalPrice"></mt-cell>
-                <mt-cell title="订单数" :value="report.orderCount"></mt-cell>
-                <mt-cell title="最大订单" :value="report.maxOrder"></mt-cell>
-                <mt-cell title="最小订单" :value="report.minOrder"></mt-cell>
-                <mt-cell title="用户点击量" :value="report.userClick"></mt-cell>
-            </mt-tab-container-item>
-        </mt-tab-container>
+  <div class="cell-box">
+    <div class="btn-box">
+      <mt-button v-for="(d,index) in dateList"
+        :key="index"
+        type="primary"
+        :ref="`btn-${index}`"
+        size="small"
+        plain
+        @click.native="getMessageConfirm(d.date, d.fullDate, $event)">{{d.date}}</mt-button>
     </div>
+    <div>
+      <mt-cell title="营业日期"
+        :value="report.date"></mt-cell>
+      <mt-cell title="营业额"
+        :value="report.totalPrice"></mt-cell>
+      <mt-cell title="订单数"
+        :value="report.successCount"></mt-cell>
+      <mt-cell title="最大订单"
+        :value="report.maxMoney"></mt-cell>
+      <mt-cell title="最小订单"
+        :value="report.minMoney"></mt-cell>
+      <mt-cell title="用户点击量"
+        :value="report.accessTimes"></mt-cell>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -35,15 +45,6 @@ export default {
     }
   },
   computed: {
-    year() {
-      return new Date().getFullYear()
-    },
-    month() {
-      return new Date().getMonth()
-    },
-    date() {
-      return new Date().getDate()
-    },
     merchantId() {
       return localStorage['bossMerchantId']
     },
@@ -57,7 +58,13 @@ export default {
       getBossMessag: 'getBossMessag',
       getBossMerchant: 'getBossMerchant'
     }),
-    getMessageConfirm(reportTime) {
+    getMessageConfirm(date, reportTime, e) {
+      const targetEl = e.target
+      const children = targetEl.parentNode.children
+      for (const node of children) {
+        if (node.children[0].innerHTML === date) node.className = targetEl.className.replace(/is-plain/g, '')
+        else node.className.indexOf('is-plain') === -1 && (node.className = node.className.concat('is-plain'))
+      }
       this.getBossMessag({
         merchantId: this.merchantId,
         reportTime
@@ -70,12 +77,28 @@ export default {
       const m = (dd.getMonth() + 1) < 10 ? '0' + (dd.getMonth() + 1) : (dd.getMonth() + 1)// 获取当前月份的日期，不足10补0
       const d = dd.getDate() < 10 ? '0' + dd.getDate() : dd.getDate()// 获取当前几号，不足10补0
       return y + '-' + m + '-' + d
+    },
+    initDateList() {
+      for (let i = -1; i > -6; i--) {
+        this.dateList.push({
+          date: this.GetDateStr(i).substring(this.GetDateStr(i).indexOf('-') + 1),
+          fullDate: this.GetDateStr(i),
+          type: 'default'
+        })
+      }
     }
   },
   mounted() {
-    for (let i = -1; i > -6; i--) {
-      this.dateList.push({ date: this.GetDateStr(i).substring(this.GetDateStr(i).indexOf('-') + 1) })
-    }
+    this.initDateList()
   }
 }
 </script>
+
+<style lang="scss" scoped>
+$bg-blue: "#26A2FF";
+$white: "#fff";
+.active-btn {
+  background: $bg-blue;
+  color: $white;
+}
+</style>
