@@ -65,6 +65,7 @@ const getters = {
   deleteActivityResult: state => state.activity.deleteActivityResult,
   deleteCouponResult: state => state.activity.deleteCouponResult,
   backCouponList: state => state.activity.backCouponList,
+  effectiveDate: state => state.activity.effectiveDate,
   // 上传文件
   uploadFileUrl: state => state.upload.uploadFileUrl,
   // 会员管理

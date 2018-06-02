@@ -1,6 +1,7 @@
 <template>
     <el-row class="activity-add-container">
-        <el-col :span="14" :offset="5">
+        <el-col :span="14"
+            :offset="5">
             <!--选择满减还是优惠券-->
             <el-card>
                 <el-form :model="typeForm">
@@ -14,54 +15,101 @@
             <!--活动内容-->
             <el-card>
                 <!--优惠券-->
-                <el-form :label-position="labelPosition" :model="couponForEdit" ref="discountForm" :rules="discountRules" label-width="80px">
-                    <el-form-item label="优惠券名称" label-width="100px" prop="name">
-                        <el-input v-model="couponForEdit.name" placeholder="请输入活动名称"></el-input>
+                <el-form :label-position="labelPosition"
+                    :model="couponForEdit"
+                    ref="discountForm"
+                    :rules="discountRules"
+                    label-width="80px">
+                    <el-form-item label="优惠券名称"
+                        label-width="100px"
+                        prop="name">
+                        <el-input v-model="couponForEdit.name"
+                            placeholder="请输入活动名称"></el-input>
                     </el-form-item>
-                    <el-form-item label="优惠券金额" label-width="100px" prop="couponMoney">
-                        <el-input v-model="couponForEdit.couponMoney" placeholder="请输入优惠券金额">
+                    <el-form-item label="优惠券金额"
+                        label-width="100px"
+                        prop="couponMoney">
+                        <el-input v-model="couponForEdit.couponMoney"
+                            placeholder="请输入优惠券金额">
                             <template slot="append">元</template>
                         </el-input>
                     </el-form-item>
-                    <el-form-item label="活动开始时间" label-width="110px" prop="startDate">
-                        <el-date-picker v-model="couponForEdit.startDate" type="date" placeholder="选择开始日期">
-                        </el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="活动结束时间" label-width="110px" prop="endDate">
-                        <el-date-picker v-model="couponForEdit.endDate" placeholder="选择结束日期"></el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="优惠券图片" label-width="120px" prop="pictures">
-                        <el-upload class="upload-demo" :action="$_baseURL + $_uploadURL" :with-credentials="true" :on-remove="handleRemove" :on-success="handleSuccess" :file-list="fileList" list-type="picture" show-file-list>
-                            <el-button size="small" type="primary">点击上传</el-button>
-                            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，最少一张图片</div>
-                        </el-upload>
-                    </el-form-item>
-                    <el-form-item label="活动参与店铺" label-width="100px">
-                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange(checkAll)">全选</el-checkbox>
-                        <el-checkbox-group v-model="couponForEdit.merchants" @change="handleCheckMerchantChange">
-                            <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
-                        </el-checkbox-group>
-                    </el-form-item>
-                    <el-form-item label="优惠券类型" label-width="100px" prop="couponSendType">
-                        <el-select v-model="couponForEdit.couponSendType" placeholder="请选择优惠券类型">
-                            <el-option v-for="(type,index) in couponSendTypes" :key="index" :value="type.id" :label="type.name"></el-option>
+                    <el-form-item label="有效日期"
+                        prop="effectiveTime">
+                        <el-select v-model="couponForEdit.effectiveTime"
+                            placeholder="请选择有效日期">
+                            <el-option v-for="(month, index) in effectiveDate"
+                                :key="index"
+                                :label="month.label"
+                                :value="month.value"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="满多少送券" label-width="100px" v-if="isEnoughSend" prop="fullMoney">
-                        <el-input v-model="couponForEdit.fullMoney" placeholder="请输入满的金额">
+                    <!-- <el-form-item label="优惠券图片"
+                        label-width="120px"
+                        prop="pictures">
+                        <el-upload class="upload-demo"
+                            :action="$_baseURL + $_uploadURL"
+                            :with-credentials="true"
+                            :on-remove="handleRemove"
+                            :on-success="handleSuccess"
+                            :file-list="fileList"
+                            list-type="picture"
+                            show-file-list>
+                            <el-button size="small"
+                                type="primary">点击上传</el-button>
+                            <div slot="tip"
+                                class="el-upload__tip">只能上传jpg/png文件，最少一张图片</div>
+                        </el-upload>
+                    </el-form-item> -->
+                    <el-form-item label="活动参与店铺"
+                        label-width="100px">
+                        <el-checkbox :indeterminate="isIndeterminate"
+                            v-model="checkAll"
+                            @change="handleCheckAllChange(checkAll)">全选</el-checkbox>
+                        <el-checkbox-group v-model="couponForEdit.merchants"
+                            @change="handleCheckMerchantChange">
+                            <el-checkbox v-for="(merchant,index) in merchantList"
+                                :label="merchant.id"
+                                :key="index">{{merchant.name}}</el-checkbox>
+                        </el-checkbox-group>
+                    </el-form-item>
+                    <el-form-item label="优惠券类型"
+                        label-width="100px"
+                        prop="couponSendType">
+                        <el-select v-model="couponForEdit.couponSendType"
+                            placeholder="请选择优惠券类型">
+                            <el-option v-for="(type,index) in couponSendTypes"
+                                :key="index"
+                                :value="type.id"
+                                :label="type.name"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="满多少送券"
+                        label-width="100px"
+                        v-if="isEnoughSend"
+                        prop="fullMoney">
+                        <el-input v-model="couponForEdit.fullMoney"
+                            placeholder="请输入满的金额">
                             <template slot="append">元</template>
                         </el-input>
                     </el-form-item>
-                    <el-form-item label="最低消费金额" label-width="110px" prop="spendMoney">
-                        <el-input v-model="couponForEdit.spendMoney" placeholder="请输入满的金额">
+                    <el-form-item label="最低消费金额"
+                        label-width="110px"
+                        prop="spendMoney">
+                        <el-input v-model="couponForEdit.spendMoney"
+                            placeholder="请输入满的金额">
                             <template slot="append">元</template>
                         </el-input>
                     </el-form-item>
                     <el-form-item label="描述">
-                        <el-input type="textarea" v-model="couponForEdit.description" placeholder="请输入描述"></el-input>
+                        <el-input type="textarea"
+                            v-model="couponForEdit.description"
+                            placeholder="请输入描述"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" size="medium" @click="updateCouponConfirm">更新活动</el-button>
+                        <el-button type="primary"
+                            size="medium"
+                            @click="updateCouponConfirm">更新活动</el-button>
                     </el-form-item>
                 </el-form>
             </el-card>
@@ -87,7 +135,8 @@ export default {
         startDate: [{ required: true, message: '优惠券开始时间不能为空', trigger: 'blur' }],
         endDate: [{ required: true, message: '优惠券结束时间不能为空', trigger: 'blur' }],
         pictures: [{ required: true, message: '优惠券图片不能为空', trigger: 'blur' }],
-        fullMoney: [{ required: true, message: '满多少送券不能为空', trigger: 'blur' }]
+        fullMoney: [{ required: true, message: '满多少送券不能为空', trigger: 'blur' }],
+        effectiveTime: [{ required: true, message: '有效日期不能为空', trigger: 'blur' }]
       },
       fileList: [],
       fileListTemp: [],
@@ -118,7 +167,8 @@ export default {
       'couponSendTypes',
       'merchantList',
       'couponForEdit',
-      'updateCouponResult'
+      'updateCouponResult',
+      'effectiveDate'
     ])
   },
   methods: {
