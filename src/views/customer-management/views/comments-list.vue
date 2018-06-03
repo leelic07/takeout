@@ -293,9 +293,6 @@ export default {
       this.getFeedbacksPage({ ...this.pagination, ...this.form })
     },
     replyResult() {
-    //   this.feedbacks.splice(0)
-    //   this.pagination.page = 1
-    //   this.getFeedbacksPage({ ...this.pagination, ...this.form })
       this.feedbacks.forEach(feed => {
         if (feed.id === this.replyForm.pid) {
           feed.subFeedbacks.push({
