@@ -2,10 +2,15 @@
   <el-row class="order-acception-container">
     <!--切换接单内容-->
     <el-card class="box-card">
-      <el-col :span="22" :offset="2">
-        <el-form ref="form" :model="form" label-width="80px">
-          <el-form-item label="选择店铺" v-if="type === '1'">
-            <merchants-select :pagination="pagination" @merchantChange="merchantChange"></merchants-select>
+      <el-col :span="22"
+        :offset="2">
+        <el-form ref="form"
+          :model="form"
+          label-width="80px">
+          <el-form-item label="选择店铺"
+            v-if="type === '1'">
+            <merchants-select :pagination="pagination"
+              @merchantChange="merchantChange"></merchants-select>
           </el-form-item>
           <el-form-item label="处理状态">
             <el-radio-group v-model="form.status">
@@ -17,10 +22,13 @@
       </el-col>
     </el-card>
     <!--接单信息-->
-    <el-row class="order-box" :gutter="20">
+    <el-row class="order-box"
+      :gutter="20">
       <el-col>
         <el-card class="box-card">
-          <div slot="header" class="card-header clearfix" v-if="true">
+          <div slot="header"
+            class="card-header clearfix"
+            v-if="true">
             <el-col :span="20">
               <label>预定今日</label> |
               <!-- <label>14:00</label> -->
@@ -29,10 +37,15 @@
             <!-- <span type="text">待发配送</span> -->
           </div>
           <el-row>
-            <el-table :data="orderRetreats" style="width: 100%" :show-header="false" stripe>
+            <el-table :data="orderRetreats"
+              style="width: 100%"
+              :show-header="false"
+              stripe>
               <el-table-column type="expand">
                 <template slot-scope="props">
-                  <el-form :model="props.row" label-position="right" class="demo-table-expand">
+                  <el-form :model="props.row"
+                    label-position="right"
+                    class="demo-table-expand">
                     <!--备注-->
                     <el-form-item label="备注:">
                       <span>{{ props.row.orders.remark }}</span>
@@ -42,8 +55,11 @@
                     </el-form-item>
                     <!--商品信息-->
                     <el-form-item label="商品信息:">
-                      <el-table :data="props.row.orderItems" style="width: 100%" :show-header="false">
-                        <el-table-column prop="itemName" label="商品">
+                      <el-table :data="props.row.orderItems"
+                        style="width: 100%"
+                        :show-header="false">
+                        <el-table-column prop="itemName"
+                          label="商品">
                         </el-table-column>
                         <el-table-column label="单价">
                           <template slot-scope="prop">
@@ -90,9 +106,20 @@
                       <span style="color: orange;font-size: 18px;">￥{{props.row.orders.refundMoney || 0}}</span>
                     </el-form-item>
                     <el-form-item>
-                      <el-button type="danger" plain size="mini" @click="cancelOrder(props.row)" v-if="props.row.orders.isRefund === 0 && type !== '1'">取消订单并退款</el-button>
-                      <el-button type="danger" plain size="mini" @click="partCancelOrder(props.row)" v-if="props.row.orders.isRefund === 0 && type !== '1'">部分退款</el-button>
-                      <el-button type="primary" plain size="mini" @click="printOrder(props.row.orders)">打印订单</el-button>
+                      <el-button type="danger"
+                        plain
+                        size="mini"
+                        @click="cancelOrder(props.row)"
+                        v-if="props.row.orders.isRefund === 0 && type !== '1'">取消订单并退款</el-button>
+                      <el-button type="danger"
+                        plain
+                        size="mini"
+                        @click="partCancelOrder(props.row)"
+                        v-if="props.row.orders.isRefund === 0 && type !== '1'">部分退款</el-button>
+                      <el-button type="primary"
+                        plain
+                        size="mini"
+                        @click="printOrder(props.row.orders)">打印订单</el-button>
                     </el-form-item>
                   </el-form>
                 </template>
@@ -111,6 +138,15 @@
                       <label>下单时间:</label>
                       <span>{{props.row.orders.createdAt | Date}}</span>
                     </el-col>
+                    <el-col :span="20"
+                      v-if="props.row.orders.reservationTime">
+                      <label for="">期望时间:</label>
+                      <span>{{props.row.reservationTime | Date}}</span>
+                    </el-col>
+                    <el-col :span="20"
+                      v-else>
+                      <label for="">立即配送</label>
+                    </el-col>
                     <el-col>
                       <label for="">电话:</label>
                       <span>{{props.row.orders.userPhone}}</span>
@@ -128,20 +164,36 @@
       </el-col>
     </el-row>
     <!--订单退款对话框-->
-    <el-dialog class="member-editor" title="订单退款" :visible.sync="dialogFormVisible">
-      <el-form :model="refundForm" size="small" :rules="rule" ref="refundForm">
-        <el-form-item label="请输入退款金额" label-width="120px" prop="totalPrice">
-          <el-input v-model="refundForm.totalPrice" placeholder="请选填写退款金额">
+    <el-dialog class="member-editor"
+      title="订单退款"
+      :visible.sync="dialogFormVisible">
+      <el-form :model="refundForm"
+        size="small"
+        :rules="rule"
+        ref="refundForm">
+        <el-form-item label="请输入退款金额"
+          label-width="120px"
+          prop="totalPrice">
+          <el-input v-model="refundForm.totalPrice"
+            placeholder="请选填写退款金额">
             <template slot="append">元</template>
           </el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button size="small" type="primary" @click="partCancelOrderConfirm">确 定</el-button>
+      <div slot="footer"
+        class="dialog-footer">
+        <el-button size="small"
+          @click="dialogFormVisible = false">取 消</el-button>
+        <el-button size="small"
+          type="primary"
+          @click="partCancelOrderConfirm">确 定</el-button>
       </div>
     </el-dialog>
-    <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" v-loading="loading" style="height:30px;"></div>
+    <div v-infinite-scroll="loadMore"
+      infinite-scroll-disabled="busy"
+      infinite-scroll-distance="20"
+      v-loading="loading"
+      style="height:30px;"></div>
   </el-row>
 </template>
 
