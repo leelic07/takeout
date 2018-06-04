@@ -18,6 +18,8 @@ export default {
         return '已退款'
       case 8:
         return '超时未支付作废'
+      default:
+        return ''
     }
   }
 }
