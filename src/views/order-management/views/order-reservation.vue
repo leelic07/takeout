@@ -42,10 +42,10 @@
                     class="demo-table-expand">
                     <!--备注-->
                     <el-form-item label="备注:">
-                      <span>{{ props.row.remark }}</span>
+                      <span>{{ props.row.orders.remark }}</span>
                     </el-form-item>
                     <el-form-item label="用餐人数:">
-                      <span style="float:left">{{props.row.meals || 1}}人</span>
+                      <span style="float:left">{{props.row.orders.meals || 1}}人</span>
                     </el-form-item>
                     <!--商品信息-->
                     <el-form-item label="商品信息:">
@@ -75,28 +75,28 @@
                     <el-form-item>
                       <el-form>
                         <el-form-item label="餐盒费:">
-                          <span>￥{{props.row.packingCharge}}</span>
+                          <span>￥{{props.row.orders.packingCharge}}</span>
                         </el-form-item>
                         <el-form-item label="配送费:">
-                          <span>￥{{props.row.deliverMoney}}</span>
+                          <span>￥{{props.row.orders.deliverMoney}}</span>
                         </el-form-item>
                         <el-form-item label="小计:">
-                          <span>￥{{props.row.totalPrice}}</span>
+                          <span>￥{{props.row.orders.totalPrice}}</span>
                         </el-form-item>
                         <el-form-item label="活动减免:">
-                          <span>￥{{props.row.activityMoney}}</span>
+                          <span>￥{{props.row.orders.activityMoney}}</span>
                         </el-form-item>
                         <el-form-item label="优惠券:">
-                          <span>￥{{props.row.couponMoney}}</span>
+                          <span>￥{{props.row.orders.couponMoney}}</span>
                         </el-form-item>
                         <el-form-item label="平台佣金:">
-                          <span>￥{{props.row.platformCommission}}</span>
+                          <span>￥{{props.row.orders.platformCommission}}</span>
                         </el-form-item>
                         <!-- <el-form-item label="本单预计收入:">
                           <span style="color: orange;font-size: 18px;">{{props.row.orderIncome}}</span>
                         </el-form-item> -->
                         <el-form-item label="本顾客实际支付:">
-                          <span style="color: orange;font-size: 18px;">￥{{props.row.realTotalMoney}}</span>
+                          <span style="color: orange;font-size: 18px;">￥{{props.row.orders.realTotalMoney}}</span>
                         </el-form-item>
                       </el-form>
                     </el-form-item>
@@ -115,20 +115,20 @@
                 <template slot-scope="props">
                   <el-row class="card-content">
                     <el-col :span="20">
-                      <h3>{{props.row.name}}</h3>
+                      <h3>{{props.row.orders.userName}}</h3>
                     </el-col>
                     <el-col :span="20">
                       <label>订单号:</label>
-                      <span>{{props.row.orderNo}}</span>
+                      <span>{{props.row.orders.orderNo}}</span>
                     </el-col>
                     <el-col :span="20">
                       <label>下单时间:</label>
-                      <span>{{props.row.operAt | Date}}</span>
+                      <span>{{props.row.orders.createdAt | Date}}</span>
                     </el-col>
                     <el-col :span="20"
-                      v-if="props.row.orders.reservationTime">
+                      v-if="props.row.orders.reservationDate">
                       <label for="">期望时间:</label>
-                      <span>{{props.row.reservationTime | Date}}</span>
+                      <span>{{props.row.orders.reservationDate | Date}}</span>
                     </el-col>
                     <el-col :span="20"
                       v-else>
@@ -137,11 +137,11 @@
                     <span type="text">待发配送</span>
                     <el-col>
                       <label for="">电话:</label>
-                      <span>{{props.row.userPhone}}</span>
+                      <span>{{props.row.orders.userPhone}}</span>
                     </el-col>
                     <el-col :span="18">
                       <label for="">地址:</label>
-                      <span>{{props.row.userAddress}}</span>
+                      <span>{{props.row.orders.userAddress}}</span>
                     </el-col>
                   </el-row>
                 </template>

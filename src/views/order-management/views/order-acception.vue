@@ -134,9 +134,9 @@
                       <span>{{props.row.createdAt}}</span>
                     </el-col>
                     <el-col :span="20"
-                      v-if="props.row.reservationTime">
+                      v-if="props.row.reservationDate">
                       <label for="">期望时间:</label>
-                      <span>{{props.row.reservationTime | Date}}</span>
+                      <span>{{props.row.reservationDate | Date}}</span>
                     </el-col>
                     <el-col :span="20"
                       v-else>
