@@ -189,8 +189,8 @@ export default {
         path: '/activity/list'
       })
     },
-    saveCoupon(state, saveCouponResult) {
-      state.saveCouponResult = saveCouponResult
+    saveCoupon(state, res) {
+      state.saveCouponResult = res
       router.push({
         path: '/activity/coupon-list'
       })
