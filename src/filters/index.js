@@ -4,6 +4,7 @@ import grade from './modules/grade'
 import coupon from './modules/coupon'
 import goods from './modules/goods'
 import order from './modules/order'
+import merchant from './modules/merchant'
 
 export default {
   ...date,
@@ -11,5 +12,6 @@ export default {
   ...grade,
   ...coupon,
   ...goods,
-  ...order
+  ...order,
+  ...merchant
 }
