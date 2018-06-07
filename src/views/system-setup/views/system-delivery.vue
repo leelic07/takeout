@@ -3,7 +3,7 @@
         <el-col class="goods-upload-box" :span="13" :offset="5">
             <el-card>
                 <el-form :model="deliveryForm" ref="deliveryForm" :rules="rule" size="large">
-                    <el-form-item label="当前配送时间" label-width="120px" prop="oldDeliveryTime">
+                    <el-form-item label="当前配送时间" label-width="120px">
                       <el-input v-model="deliveryForm.oldDeliveryTime" :disabled="true">
                         <template slot="append">分钟</template>
                       </el-input>
