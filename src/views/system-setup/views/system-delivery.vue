@@ -1,25 +1,37 @@
 <template>
-    <el-row class="goods-upload-container">
-        <el-col class="goods-upload-box" :span="13" :offset="5">
-            <el-card>
-                <el-form :model="deliveryForm" ref="deliveryForm" :rules="rule" size="large">
-                    <el-form-item label="当前配送时间" label-width="120px">
-                      <el-input v-model="deliveryForm.oldDeliveryTime" :disabled="true">
-                        <template slot="append">分钟</template>
-                      </el-input>
-                    </el-form-item>
-                    <el-form-item label="配送时间" label-width="120px" prop="deliveryTime">
-                        <el-input v-model="deliveryForm.deliveryTime" placeholder="请填写配送时间">
-                            <template slot="append">分钟</template>
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" size="medium" @click="saveDeliveryTime">保存</el-button>
-                    </el-form-item>
-                </el-form>
-            </el-card>
-        </el-col>
-    </el-row>
+  <el-row class="goods-upload-container">
+    <el-col class="goods-upload-box"
+      :span="13"
+      :offset="5">
+      <el-card>
+        <el-form :model="deliveryForm"
+          ref="deliveryForm"
+          :rules="rule"
+          size="large">
+          <el-form-item label="当前配送时间"
+            label-width="120px">
+            <el-input v-model="deliveryForm.oldDeliveryTime"
+              :disabled="true">
+              <template slot="append">分钟</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="配送时间"
+            label-width="120px"
+            prop="deliveryTime">
+            <el-input v-model="deliveryForm.deliveryTime"
+              placeholder="请填写配送时间">
+              <template slot="append">分钟</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary"
+              size="medium"
+              @click="saveDeliveryTime">保存</el-button>
+          </el-form-item>
+        </el-form>
+      </el-card>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
