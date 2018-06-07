@@ -28,7 +28,7 @@
         <el-table-column prop="activityCount" label="活动"></el-table-column>
         <el-table-column label="状态">
           <template slot-scope="props">
-            <el-tag :type="props.row.isOnline === '1' ? 'primary' : 'danger'">{{props.row.isOnline === '1' ? '上架' : '下架'}}</el-tag>
+            <el-tag :type="Number(props.row.isOnline) === 1 ? 'primary' : 'danger'">{{props.row.isOnline | isOnline}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作">
