@@ -144,7 +144,8 @@
                       v-else>
                       <label for="">立即配送</label>
                     </el-col>
-                    <span type="text">待发配送</span>
+                    <span type="text"
+                      v-if="props.row.status === '2' || props.row.status === 2">待发配送</span>
                     <el-col>
                       <label for="">电话:</label>
                       <span>{{props.row.userPhone}}</span>

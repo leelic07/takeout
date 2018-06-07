@@ -100,7 +100,7 @@ export default {
       }
     },
     getMerchantsHomePage(state, merchantHomePageResult) {
-      state.merchantHomePage = merchantHomePageResult.data.merchants
+      state.merchantHomePage = merchantHomePageResult.data.merchants || {}
     }
   }
 }
