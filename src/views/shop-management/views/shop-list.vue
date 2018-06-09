@@ -3,29 +3,51 @@
     <!--搜索框-->
     <el-row>
       <el-col :span="5">
-        <el-input placeholder="请输入店铺名称" v-model="pagination.name"></el-input>
+        <el-input placeholder="请输入店铺名称"
+          v-model="pagination.name"></el-input>
       </el-col>
-      <el-button type="primary" icon="el-icon-search" @click="getShopList(pagination)">搜索</el-button>
+      <el-button type="primary"
+        icon="el-icon-search"
+        @click="getShopList(pagination)">搜索</el-button>
     </el-row>
     <!--店铺信息列表-->
     <el-row class="order-statics">
-      <el-table :data="shopList" stripe border fit>
-        <el-table-column type="index" :index="1" label="序号"/>
-        <el-table-column label="店铺名称" show-overflow-tooltip>
+      <el-table :data="shopList"
+        stripe
+        border
+        fit>
+        <el-table-column type="index"
+          :index="1"
+          label="序号" />
+        <el-table-column label="店铺名称"
+          show-overflow-tooltip>
           <template slot-scope="props">
-            <el-button type="text" @click="showMemberDetail(props.row)">{{props.row.name}}</el-button>
+            <el-button type="text"
+              @click="showMemberDetail(props.row)">{{props.row.name}}</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="code" label="店铺编号"></el-table-column>
-        <el-table-column prop="typeName" label="店铺类型"></el-table-column>
-        <el-table-column prop="tel" label="联系电话" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="address" label="地址" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="monthPrice" label="本月营业额"></el-table-column>
-        <el-table-column prop="monthOrder" label="本月订单数"></el-table-column>
-        <el-table-column prop="itemCount" label="商品数量"></el-table-column>
-        <el-table-column prop="itemTypeCount" label="分类数量"></el-table-column>
-        <el-table-column prop="activityQuantity" label="评分"></el-table-column>
-        <el-table-column prop="activityCount" label="活动"></el-table-column>
+        <el-table-column prop="code"
+          label="店铺编号"></el-table-column>
+        <el-table-column prop="typeName"
+          label="店铺类型"></el-table-column>
+        <el-table-column prop="tel"
+          label="联系电话"
+          show-overflow-tooltip></el-table-column>
+        <el-table-column prop="address"
+          label="地址"
+          show-overflow-tooltip></el-table-column>
+        <el-table-column prop="monthPrice"
+          label="本月营业额"></el-table-column>
+        <el-table-column prop="monthOrder"
+          label="本月订单数"></el-table-column>
+        <el-table-column prop="itemCount"
+          label="商品数量"></el-table-column>
+        <el-table-column prop="itemTypeCount"
+          label="分类数量"></el-table-column>
+        <el-table-column prop="activityQuantity"
+          label="评分"></el-table-column>
+        <el-table-column prop="activityCount"
+          label="活动"></el-table-column>
         <el-table-column label="状态">
           <template slot-scope="props">
             <el-tag :type="Number(props.row.isOnline) === 1 ? 'primary' : 'danger'">{{props.row.isOnline | isOnline}}</el-tag>
@@ -33,77 +55,121 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="props">
-            <el-button type="primary" size="mini" @click="showShopEdit(props.row.id)">编辑</el-button>
+            <el-button type="primary"
+              size="mini"
+              @click="showShopEdit(props.row.id)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-row>
     <!--分页组件-->
-    <pagination :total="shopTotal" :page="pagination.page" :rows="pagination.rows" :currentChange="currentChange"></pagination>
+    <pagination :total="shopTotal"
+      :page="pagination.page"
+      :rows="pagination.rows"
+      :currentChange="currentChange"></pagination>
     <!--店铺详情信息对话框-->
-    <el-dialog title="店铺详情" class="shop-detail" :visible.sync="dialogDetailVisible">
-      <el-form inline :model="shopDetail" size="mini">
-        <el-form-item label="店铺名称：" label-width="120px">
+    <el-dialog title="店铺详情"
+      class="shop-detail"
+      :visible.sync="dialogDetailVisible">
+      <el-form inline
+        :model="shopDetail"
+        size="mini">
+        <el-form-item label="店铺名称："
+          label-width="120px">
           <span>{{shopDetail.name}}</span>
         </el-form-item>
-        <el-form-item label="店铺编号：" label-width="120px">
+        <el-form-item label="店铺编号："
+          label-width="120px">
           <span>{{shopDetail.code}}</span>
         </el-form-item>
-        <el-form-item label="店铺类型：" label-width="120px">
+        <el-form-item label="店铺类型："
+          label-width="120px">
           <span>{{shopDetail.typeName}}</span>
         </el-form-item>
-        <el-form-item label="联系电话：" label-width="120px">
+        <el-form-item label="联系电话："
+          label-width="120px">
           <span>{{shopDetail.tel}}</span>
         </el-form-item>
-        <el-form-item label="地址：" label-width="120px">
+        <el-form-item label="地址："
+          label-width="120px">
           <span>{{shopDetail.address}}</span>
         </el-form-item>
-        <el-form-item label="本月营业额：" label-width="120px">
+        <el-form-item label="本月营业额："
+          label-width="120px">
           <span>{{shopDetail.monthPrice}}</span>
         </el-form-item>
-        <el-form-item label="本月订单数：" label-width="120px">
+        <el-form-item label="本月订单数："
+          label-width="120px">
           <span>{{shopDetail.monthOrder}}</span>
         </el-form-item>
-        <el-form-item label="商品数量：" label-width="120px">
+        <el-form-item label="商品数量："
+          label-width="120px">
           <span>{{shopDetail.itemCount}}</span>
         </el-form-item>
-        <el-form-item label="分类数量：" label-width="120px">
+        <el-form-item label="分类数量："
+          label-width="120px">
           <span>{{shopDetail.itemTypeCount}}</span>
         </el-form-item>
-        <el-form-item label="评分：" label-width="120px">
+        <el-form-item label="评分："
+          label-width="120px">
           <span>{{shopDetail.activityQuantity}}</span>
         </el-form-item>
-        <el-form-item label="活动：" label-width="120px">
+        <el-form-item label="活动："
+          label-width="120px">
           <span>{{shopDetail.activityCount}}</span>
         </el-form-item>
-        <el-form-item label="店铺状态：" label-width="120px">
+        <el-form-item label="店铺状态："
+          label-width="120px">
           <span>{{shopDetail.isOnline}}</span>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" type="primary" @click="dialogDetailVisible = false">确 定</el-button>
+      <div slot="footer"
+        class="dialog-footer">
+        <el-button size="mini"
+          type="primary"
+          @click="dialogDetailVisible = false">确 定</el-button>
       </div>
     </el-dialog>
     <!--编辑店铺信息对话框-->
-    <el-dialog class="member-editor" title="编辑店铺" :visible.sync="dialogFormVisible">
-      <el-form :model="shopForEdit" size="mini">
-        <el-form-item label="店铺名称" label-width="120px">
-          <el-input v-model="shopForEdit.name" auto-complete="off" placeholder="请填写活动类型"></el-input>
+    <el-dialog class="member-editor"
+      title="编辑店铺"
+      :visible.sync="dialogFormVisible">
+      <el-form :model="shopForEdit"
+        size="mini">
+        <el-form-item label="店铺名称"
+          label-width="120px">
+          <el-input v-model="shopForEdit.name"
+            auto-complete="off"
+            placeholder="请填写活动类型"></el-input>
         </el-form-item>
-        <el-form-item label="店铺编号" label-width="120px">
-          <el-input v-model="shopForEdit.code" auto-complete="off" placeholder="请填写活动编号"></el-input>
+        <el-form-item label="店铺编号"
+          label-width="120px">
+          <el-input v-model="shopForEdit.code"
+            auto-complete="off"
+            placeholder="请填写活动编号"></el-input>
         </el-form-item>
-        <el-form-item label="店铺类型" label-width="120px">
-          <el-select v-model="shopForEdit.typeId" placeholder="请选择店铺类型">
-            <el-option v-for="item in shopTypeList" :key="item.id" :label="item.name" :value="item.id">
+        <el-form-item label="店铺类型"
+          label-width="120px">
+          <el-select v-model="shopForEdit.typeId"
+            placeholder="请选择店铺类型">
+            <el-option v-for="item in shopTypeList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="联系电话" label-width="120px">
-          <el-input v-model="shopForEdit.tel" auto-complete="off" placeholder="请填写活动名称"></el-input>
+        <el-form-item label="联系电话"
+          label-width="120px">
+          <el-input v-model="shopForEdit.tel"
+            auto-complete="off"
+            placeholder="请填写活动名称"></el-input>
         </el-form-item>
-        <el-form-item label="地址" label-width="120px">
-          <el-input v-model="shopForEdit.address" auto-complete="off" placeholder="请填写地址"></el-input>
+        <el-form-item label="地址"
+          label-width="120px">
+          <el-input v-model="shopForEdit.address"
+            auto-complete="off"
+            placeholder="请填写地址"></el-input>
         </el-form-item>
         <!-- <el-form-item label="本月营业额" label-width="120px">
           <el-input v-model="shopList.monthPrice" auto-complete="off" placeholder="请填写备注"></el-input>
@@ -120,23 +186,27 @@
         <el-form-item label="评分" label-width="120px">
           <el-input v-model="shopForEdit.activityQuantity" auto-complete="off" placeholder="请填写备注"></el-input>
         </el-form-item> -->
-        <el-form-item label="店铺状态" label-width="120px">
+        <el-form-item label="店铺状态"
+          label-width="120px">
           <el-radio-group v-model="shopForEdit.isOnline">
             <el-radio label="1">上线店铺</el-radio>
             <el-radio label="0">关闭店铺</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button size="mini" type="primary" @click="editShopConfirm">确 定</el-button>
+      <div slot="footer"
+        class="dialog-footer">
+        <el-button size="mini"
+          @click="dialogFormVisible = false">取 消</el-button>
+        <el-button size="mini"
+          type="primary"
+          @click="editShopConfirm">确 定</el-button>
       </div>
     </el-dialog>
   </el-row>
 </template>
 
 <script>
-import Pagination from '@/components/Pagination/index'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -165,9 +235,6 @@ export default {
       'editShopResult',
       'shopTypeList'
     ])
-  },
-  components: {
-    Pagination
   },
   methods: {
     ...mapActions({

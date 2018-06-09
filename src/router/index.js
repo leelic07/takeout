@@ -328,6 +328,24 @@ export const constantRouterMap = [
       component: () => import('@/views/shop-management/views/shop-edit'),
       meta: { title: '编辑店铺', icon: 'example' },
       hidden: false
+    }, {
+      path: 'type-list',
+      name: 'TypeList',
+      component: () => import('@/views/shop-management/views/type-list'),
+      meta: { title: '店铺类型', icon: 'example' },
+      hidden: false
+    }, {// 新增店铺类型
+      path: 'type-add',
+      name: 'TypeAdd',
+      component: () => import('@/views/shop-management/views/type-add'),
+      meta: { title: '新增类型', icon: 'example' },
+      hidden: false
+    }, {
+      path: 'type-edit/:id',
+      name: 'TypeEdit',
+      component: () => import('@/views/shop-management/views/type-edit'),
+      meta: { title: '编辑类型', icon: 'example' },
+      hidden: true
     }]
   },
 

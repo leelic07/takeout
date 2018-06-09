@@ -18,6 +18,12 @@ const getters = {
   merchantListByItemId: state => state.shop.merchantListByItemId,
   updateShopResult: state => state.shop.updateShopResult,
   merchantHomePage: state => state.shop.merchantHomePage,
+  merchantTypePage: state => state.shop.merchantTypePage,
+  merchantTypeTotal: state => state.shop.merchantTypeTotal,
+  saveMerchantTypeResult: state => state.shop.saveMerchantTypeResult,
+  updateMerchantTypeResult: state => state.shop.updateMerchantTypeResult,
+  deleteMerchantTypeResult: state => state.shop.deleteMerchantTypeResult,
+  merchantTypeForEdit: state => state.shop.merchantTypeForEdit,
   // 商品管理
   goodsList: state => state.goods.goodsList,
   goodsTotal: state => state.goods.goodsTotal,

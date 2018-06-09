@@ -36,8 +36,12 @@ export default {
             break
           case 'ShopManagement':
             route.children.forEach(shop => {
-              if (shop.name === 'ShopList' || shop.name === 'ShopAdd') type !== '1' ? shop.hidden = true : shop.hidden = false
+              if (shop.name === 'ShopList' ||
+              shop.name === 'ShopAdd' ||
+              shop.name === 'TypeList' ||
+              shop.name === 'TypeAdd') type !== '1' ? shop.hidden = true : shop.hidden = false
               else type !== '1' ? shop.hidden = false : shop.hidden = true
+              if (shop.name === 'TypeEdit') shop.hidden = true
             })
             break
           case 'Goods':
