@@ -1,109 +1,190 @@
 <template>
-    <el-row class="goods-upload-container">
-        <el-col class="goods-upload-box" :span="14" :offset="5">
-            <el-card>
-                <el-form :model="goodsForEdit" ref="goodsForm" :rules="rule" size="large">
-                    <el-form-item label="商品编号" label-width="120px" prop="code">
-                        <el-input v-model="goodsForEdit.code" auto-complete="off" placeholder="请填写商品编号"></el-input>
-                    </el-form-item>
-                    <el-form-item label="商品名称" label-width="120px" prop="name">
-                        <el-input v-model="goodsForEdit.name" auto-complete="off" placeholder="请填写商品名称"></el-input>
-                    </el-form-item>
-                    <el-form-item label="单位" label-width="120px" prop="unit">
-                        <el-input v-model="goodsForEdit.unit" auto-complete="off" placeholder="请填写商品单位(如:盒)"></el-input>
-                    </el-form-item>
-                    <el-form-item label="价格" label-width="120px" prop="price">
-                        <el-input v-model="goodsForEdit.price" auto-complete="off" placeholder="请填写价格">
-                            <template slot="append">元</template>
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item label="商品分类" label-width="120px" prop="itemType">
-                        <el-select v-model="goodsForEdit.itemType" placeholder="请选择商品分类">
-                            <el-option v-for="item in goodsTypeList" :key="item.id" :label="item.name" :value="item.id">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="标签" label-width="120px" prop="label">
-                        <el-input v-model="goodsForEdit.label" auto-complete="off" placeholder="请填写商品标签"></el-input>
-                    </el-form-item>
-                    <el-form-item label="打包费" label-width="120px" prop="packingCharge">
-                        <el-input v-model="goodsForEdit.packingCharge" auto-complete="off" placeholder="请填写打包费">
-                            <template slot="append">元</template>
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item label="库存状态" label-width="120px" prop="stockStatus">
-                        <el-radio-group v-model="goodsForEdit.stockStatus">
-                            <el-radio label="0">有限</el-radio>
-                            <el-radio label="1">无限</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="库存量" label-width="120px" prop="stock" v-if="goodsForEdit.stockStatus === '0'">
-                        <el-input v-model="goodsForEdit.stock" auto-complete="off" placeholder="请填写库存量"></el-input>
-                    </el-form-item>
-                    <el-form-item label="商品图片" placeholder="请填写地址" label-width="120px">
-                        <upload-img :pictures="goodsForEdit.pictures" :limit="limit" @handleRemove="handleRemove" @handleSuccess="handleSuccess">
-                        </upload-img>
-                    </el-form-item>
-                    <el-form-item label="商品售卖店铺" label-width="120px" prop="merchants">
-                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                        <el-checkbox-group v-model="goodsForEdit.itemMerchants" @change="handleCheckMerchantChange">
-                            <el-checkbox v-for="(merchant,index) in merchantList" :label="merchant.id" :key="index">{{merchant.name}}</el-checkbox>
-                        </el-checkbox-group>
-                    </el-form-item>
-                    <el-form-item label="商品属性" label-width="120px">
-                        <el-button type="primary" size="small" @click="dialogFormVisible = !dialogFormVisible">添加商品属性</el-button>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" size="medium" @click="updateGoodsConfirm">更新</el-button>
-                    </el-form-item>
-                </el-form>
-            </el-card>
-            <!--添加商品属性弹出框-->
-            <el-dialog class="property-dialog" title="商品属性" :visible.sync="dialogFormVisible">
-                <el-row v-for="(pro,index) in goodsForEdit.itemPropertys" :key="index">
-                    <el-col :span="2">
-                        <label for="">属性名</label>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-select v-model="pro.id" placeholder="请选择属性名" @change="propertyChange(pro)">
-                            <el-option v-for="(pro,index) in propertyParents" :value="pro.id" :label="pro.name" :key="index"></el-option>
-                        </el-select>
-                    </el-col>
-                    <el-col :span="3" :offset="2">
-                        <div class="property-button decede-properties" @click="decedePropertyForm(index)" v-if="goodsForEdit.itemPropertys.length > 1">-</div>
-                        <div class="property-button add-properties" @click="addPropertyForm" v-if="goodsForEdit.itemPropertys.length === index + 1">+</div>
-                    </el-col>
-                    <el-col v-for="(ps,ind) in pro.subPropertys" :key="ind" label="">
-                        <el-col :span="3">
-                            <label for="">属性值：</label>
-                        </el-col>
-                        <el-col :span="4">
-                            <!-- <el-input v-model="ps.name" auto-complete="off" placeholder="请填写属性值"></el-input> -->
-                            <el-tag>{{ps.name}}</el-tag>
-                        </el-col>
-                        <el-col :span="2" :offset="1">
-                            <label for="">价格</label>
-                        </el-col>
-                        <el-col :span="6">
-                            <el-input v-model="ps.price" auto-complete="off" placeholder="请填写价格">
-                                <template slot="append">元</template>
-                            </el-input>
-                        </el-col>
-                        <el-col :span="2" :offset="2">
-                            <el-checkbox v-model="ps.isOpen">启用</el-checkbox>
-                        </el-col>
-                        <!-- <el-col :span="3" :offset="1"> -->
-                        <!-- <div class="property-button decede-properties" @click="decedeProperties(index,ind)" v-if="goodsForEdit.itemPropertys[index].subPropertys.length > 1">-</div> -->
-                        <!-- <div class="property-button add-properties" @click="addProperties(index)" v-if="goodsForEdit.itemPropertys[index].subPropertys.length === ind + 1">+</div> -->
-                        <!-- </el-col> -->
-                    </el-col>
-                </el-row>
-                <div slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="dialogFormVisible = false" size="small">确 定</el-button>
-                </div>
-            </el-dialog>
-        </el-col>
-    </el-row>
+  <el-row class="goods-upload-container">
+    <el-col class="goods-upload-box"
+      :span="14"
+      :offset="5">
+      <el-card>
+        <el-form :model="goodsForEdit"
+          ref="goodsForm"
+          :rules="rule"
+          size="large">
+          <el-form-item label="商品编号"
+            label-width="120px"
+            prop="code">
+            <el-input v-model="goodsForEdit.code"
+              auto-complete="off"
+              placeholder="请填写商品编号"></el-input>
+          </el-form-item>
+          <el-form-item label="商品名称"
+            label-width="120px"
+            prop="name">
+            <el-input v-model="goodsForEdit.name"
+              auto-complete="off"
+              placeholder="请填写商品名称"></el-input>
+          </el-form-item>
+          <el-form-item label="单位"
+            label-width="120px"
+            prop="unit">
+            <el-input v-model="goodsForEdit.unit"
+              auto-complete="off"
+              placeholder="请填写商品单位(如:盒)"></el-input>
+          </el-form-item>
+          <el-form-item label="价格"
+            label-width="120px"
+            prop="price">
+            <el-input v-model="goodsForEdit.price"
+              auto-complete="off"
+              placeholder="请填写价格">
+              <template slot="append">元</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="商品分类"
+            label-width="120px"
+            prop="itemType">
+            <el-select v-model="goodsForEdit.itemType"
+              placeholder="请选择商品分类">
+              <el-option v-for="item in goodsTypeList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="标签"
+            label-width="120px"
+            prop="label">
+            <el-input v-model="goodsForEdit.label"
+              auto-complete="off"
+              placeholder="请填写商品标签"></el-input>
+          </el-form-item>
+          <el-form-item label="打包费"
+            label-width="120px"
+            prop="packingCharge">
+            <el-input v-model="goodsForEdit.packingCharge"
+              auto-complete="off"
+              placeholder="请填写打包费">
+              <template slot="append">元</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="库存状态"
+            label-width="120px"
+            prop="stockStatus">
+            <el-radio-group v-model="goodsForEdit.stockStatus">
+              <el-radio label="0">有限</el-radio>
+              <el-radio label="1">无限</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="库存量"
+            label-width="120px"
+            prop="stock"
+            v-if="goodsForEdit.stockStatus === '0'">
+            <el-input v-model="goodsForEdit.stock"
+              auto-complete="off"
+              placeholder="请填写库存量"></el-input>
+          </el-form-item>
+          <el-form-item label="商品图片"
+            placeholder="请填写地址"
+            label-width="120px">
+            <upload-img :pictures="goodsForEdit.pictures"
+              :limit="limit"
+              @handleRemove="handleRemove"
+              @handleSuccess="handleSuccess">
+            </upload-img>
+          </el-form-item>
+          <el-form-item label="商品售卖店铺"
+            label-width="120px"
+            prop="merchants">
+            <el-checkbox :indeterminate="isIndeterminate"
+              v-model="checkAll"
+              @change="handleCheckAllChange">全选</el-checkbox>
+            <el-checkbox-group v-model="goodsForEdit.itemMerchants"
+              @change="handleCheckMerchantChange">
+              <el-checkbox v-for="(merchant,index) in merchantList"
+                :label="merchant.id"
+                :key="index">{{merchant.name}}</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+          <el-form-item label="商品属性"
+            label-width="120px">
+            <el-button type="primary"
+              size="small"
+              @click="dialogFormVisible = !dialogFormVisible">添加商品属性</el-button>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary"
+              size="medium"
+              @click="updateGoodsConfirm">更新</el-button>
+          </el-form-item>
+        </el-form>
+      </el-card>
+      <!--添加商品属性弹出框-->
+      <el-dialog class="property-dialog"
+        title="商品属性"
+        :visible.sync="dialogFormVisible">
+        <el-row v-for="(pro,index) in goodsForEdit.itemPropertys"
+          :key="index">
+          <el-col :span="2">
+            <label for="">属性名</label>
+          </el-col>
+          <el-col :span="8">
+            <el-select v-model="pro.id"
+              placeholder="请选择属性名"
+              @change="propertyChange(pro)">
+              <el-option v-for="(pro,index) in propertyParents"
+                :value="pro.id"
+                :label="pro.name"
+                :key="index"></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="3"
+            :offset="2">
+            <div class="property-button decede-properties"
+              @click="decedePropertyForm(index)"
+              v-if="goodsForEdit.itemPropertys.length > 1">-</div>
+            <div class="property-button add-properties"
+              @click="addPropertyForm"
+              v-if="goodsForEdit.itemPropertys.length === index + 1">+</div>
+          </el-col>
+          <el-col v-for="(ps,ind) in pro.subPropertys"
+            :key="ind"
+            label="">
+            <el-col :span="3">
+              <label for="">属性值：</label>
+            </el-col>
+            <el-col :span="4">
+              <!-- <el-input v-model="ps.name" auto-complete="off" placeholder="请填写属性值"></el-input> -->
+              <el-tag>{{ps.name}}</el-tag>
+            </el-col>
+            <el-col :span="2"
+              :offset="1">
+              <label for="">价格</label>
+            </el-col>
+            <el-col :span="6">
+              <el-input v-model="ps.price"
+                auto-complete="off"
+                placeholder="请填写价格">
+                <template slot="append">元</template>
+              </el-input>
+            </el-col>
+            <el-col :span="2"
+              :offset="2">
+              <el-checkbox v-model="ps.isOpen">启用</el-checkbox>
+            </el-col>
+            <!-- <el-col :span="3" :offset="1"> -->
+            <!-- <div class="property-button decede-properties" @click="decedeProperties(index,ind)" v-if="goodsForEdit.itemPropertys[index].subPropertys.length > 1">-</div> -->
+            <!-- <div class="property-button add-properties" @click="addProperties(index)" v-if="goodsForEdit.itemPropertys[index].subPropertys.length === ind + 1">+</div> -->
+            <!-- </el-col> -->
+          </el-col>
+        </el-row>
+        <div slot="footer"
+          class="dialog-footer">
+          <el-button type="primary"
+            @click="dialogFormVisible = false"
+            size="small">确 定</el-button>
+        </div>
+      </el-dialog>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
