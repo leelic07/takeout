@@ -1,24 +1,43 @@
 <template>
   <el-row class="goods-upload-container">
-    <el-col class="goods-upload-box" :span="14" :offset="5">
+    <el-col class="goods-upload-box"
+      :span="14"
+      :offset="5">
       <el-col :span="20">
         <el-card>
-          <el-form :model="propertyForEdit" ref="categoryForm" :rules="rule" size="large">
+          <el-form :model="propertyForEdit"
+            ref="categoryForm"
+            :rules="rule"
+            size="large">
             <!-- <el-row v-for="(standard,index) in standardForm" :key="index"> -->
-              <el-form-item label="规格名称" label-width="120px">
-                <el-input v-model="propertyForEdit.name" auto-complete="off" placeholder="请填写规格名称"></el-input>
-                <!-- <div class="property-button add-properties add-standard" @click="addStandard()" v-if="standardForm.length === index + 1">+</div> -->
-                <!-- <div class="property-button decede-properties decede-standard" @click="decedeStandardForm(index)" v-if="standardForm.length > 1">-</div> -->
-              </el-form-item>
-              <el-form-item v-for="(param,ind) in propertyForEdit.subPropertys" :key="ind" label="规格参数" label-width="120px">
-                <el-input v-model="param.name" auto-complete="off" placeholder="请填写规格参数"></el-input>
-                <div class="property-button add-properties add-standard" @click="addParams()" v-if="propertyForEdit.subPropertys.length === ind + 1">+</div>
-                <div class="property-button decede-properties decede-standard" @click="decedeParams(ind)" v-if="propertyForEdit.subPropertys.length > 1">-</div>
-              </el-form-item>
-              <el-row class="split-line"></el-row>
+            <el-form-item label="规格名称"
+              label-width="120px">
+              <el-input v-model="propertyForEdit.name"
+                auto-complete="off"
+                placeholder="请填写规格名称"></el-input>
+              <!-- <div class="property-button add-properties add-standard" @click="addStandard()" v-if="standardForm.length === index + 1">+</div> -->
+              <!-- <div class="property-button decede-properties decede-standard" @click="decedeStandardForm(index)" v-if="standardForm.length > 1">-</div> -->
+            </el-form-item>
+            <el-form-item v-for="(param,ind) in propertyForEdit.subPropertys"
+              :key="ind"
+              label="规格参数"
+              label-width="120px">
+              <el-input v-model="param.name"
+                auto-complete="off"
+                placeholder="请填写规格参数"></el-input>
+              <div class="property-button add-properties add-standard"
+                @click="addParams()"
+                v-if="propertyForEdit.subPropertys.length === ind + 1">+</div>
+              <div class="property-button decede-properties decede-standard"
+                @click="decedeParams(ind)"
+                v-if="propertyForEdit.subPropertys.length > 1">-</div>
+            </el-form-item>
+            <el-row class="split-line"></el-row>
             <!-- </el-row> -->
             <el-form-item label="">
-              <el-button type="primary" size="medium" @click="updateStandardConfirm">更新</el-button>
+              <el-button type="primary"
+                size="medium"
+                @click="updateStandardConfirm">更新</el-button>
               <!-- <el-button type="success" size="medium" @click="addStandard">新增</el-button> -->
             </el-form-item>
           </el-form>
