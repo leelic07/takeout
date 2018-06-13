@@ -5,8 +5,8 @@ export default {
   // method: 'get',
   // 基础url前缀
   // baseURL: 'http://10.10.10.10:8080',
-  baseURL: 'https://pandax.mofasion.com',
-  // baseURL: 'http://192.168.0.101:8080',
+  // baseURL: 'https://pandax.mofasion.com',
+  baseURL: 'https://app.pandax.vip',
   // baseURL: 'http://localhost:7003',
   // 请求发送之前对出参进行处理
   // transformRequest: [data => data],
