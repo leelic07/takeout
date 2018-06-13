@@ -167,9 +167,9 @@ export default {
       couponForEdit.merchants.forEach(merchant => {
         merchants.push(merchant.merchantId)
       })
-      couponForEdit.pictures.forEach(picture => {
-        picture.name = picture.url.substring(picture.url.lastIndexOf('/') + 1)
-      })
+      // couponForEdit.pictures.forEach(picture => {
+      //   picture.name = picture.url.substring(picture.url.lastIndexOf('/') + 1)
+      // })
       couponForEdit.merchants = merchants
       couponForEdit.couponSendType = Number(couponForEdit.couponSendType) || ''
       state.couponForEdit = couponForEdit
