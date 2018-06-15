@@ -164,7 +164,7 @@
             <el-input v-model="shopForEdit.distributionScope"
               auto-complete="off"
               placeholder="请填写配送范围">
-              <template slot="append">公里</template>
+              <template slot="append">米</template>
             </el-input>
           </el-form-item>
           <el-form-item>
