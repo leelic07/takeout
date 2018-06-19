@@ -92,9 +92,9 @@ export default {
           type: 1
         })
       })
-      coupon.pictures.forEach(picture => {
-        delete picture.createdAt
-      })
+      // coupon.pictures.forEach(picture => {
+      //   delete picture.createdAt
+      // })
       coupon.merchants = merchants
       coupon.startDate = new Date(coupon.startDate)
       coupon.endDate = new Date(coupon.endDate)
