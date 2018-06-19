@@ -85,7 +85,7 @@
                     </el-form-item>
                     <el-form-item label="配送范围" label-width="120px">
                         <el-input v-model="shopInfo.distributionScope" auto-complete="off" placeholder="请填写配送范围">
-                            <template slot="append">公里</template>
+                            <template slot="append">米</template>
                         </el-input>
                     </el-form-item>
                     <el-col class="shop-message">
