@@ -7,7 +7,7 @@ export default {
   // baseURL: 'http://10.10.10.10:8080',
   // baseURL: 'https://pandax.mofasion.com',
   baseURL: 'https://app.pandax.vip',
-  // baseURL: 'http://localhost:7003',
+  // baseURL: 'http://localhost:7002',
   // 请求发送之前对出参进行处理
   // transformRequest: [data => data],
   // 请求发送之后对入参进行处理
