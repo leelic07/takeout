@@ -155,10 +155,10 @@ export default {
       })
     },
     couponForEdit(newValue) {
-      newValue.pictures.forEach(picture => {
-        this.fileList.push(picture)
-        this.fileListTemp.push(picture)
-      })
+      // newValue.pictures.forEach(picture => {
+      //   this.fileList.push(picture)
+      //   this.fileListTemp.push(picture)
+      // })
     }
   },
   computed: {
