@@ -2,7 +2,7 @@ import http from '@/service'
 import router from '@/router'
 const mergeProperty = (array) => {
   array.forEach(arr => {
-    arr.orderItems.forEach(item => {
+    arr.orderItems && arr.orderItems.forEach(item => {
       item.orderItemPropertys && item.orderItemPropertys.forEach((property, index, arr) => {
         if (arr.length === 1) item.itemName += `(${property.propertyName})`
         else item.itemName += index !== arr.length - 1 ? `(${property.propertyName}+` : `${property.propertyName})`
