@@ -34,7 +34,8 @@ const user = {
     linkWebsocket({ commit }) {
       const merchantId = sessionStorage['merchantId']
       let socket = ''
-      var host = 'pandax.mofasion.com'
+      // var host = 'pandax.mofasion.com'
+      var host = 'app.pandax.vip'
       var url = `wss://${host}/ws/${sessionStorage['merchantId']}`
       if (merchantId) {
         socket = new WebSocket(url)
