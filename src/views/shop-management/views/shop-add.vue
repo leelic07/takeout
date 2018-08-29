@@ -175,7 +175,7 @@
             prop="accountName">
             <el-input v-model="shopInfo.accountName"
               auto-complete="off"
-              placeholder="请填写配送范围"></el-input>
+              placeholder="请填写登录账户"></el-input>
           </el-form-item>
           <el-form-item label="商户登录密码"
             label-width="120px"
@@ -183,7 +183,7 @@
             <el-input type="password"
               v-model="shopInfo.accountPassword"
               auto-complete="off"
-              placeholder="请填写配送范围"></el-input>
+              placeholder="请填写登录密码"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary"

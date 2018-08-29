@@ -2,12 +2,13 @@
     padding: 32px;
     .el-card {
         .el-card__body {
-            // padding: 25px 25px 0 25px;
+            padding-right: 25px;
             .el-form {
                 .el-form-item {
                     font-weight: bold;
+                    margin: 0;
                     &:not(:nth-child(2)) {
-                        margin-bottom: 15px;
+                        margin-bottom: 8px;
                     }
                     &:nth-child(2) {
                         h1 {
@@ -29,7 +30,7 @@
                         .el-col {
                             border-top: 3.5px dashed;
                             position: relative;
-                            margin-bottom: 15px;
+                            margin-bottom: 8px;
                             span {
                                 position: absolute;
                                 top: -20px;
