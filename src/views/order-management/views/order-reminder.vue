@@ -123,7 +123,7 @@
                       <span>{{props.row.createdAt | Date}}</span>
                     </el-col>
                     <el-col :span="20"
-                      v-if="props.row.orders.reservationDate">
+                      v-if="props.row.reservationDate">
                       <label for="">期望时间:</label>
                       <span>{{props.row.reservationDate | Date}}</span>
                     </el-col>
@@ -151,7 +151,8 @@
                     <el-button size="mini"
                       type="primary"
                       plain
-                      @click="distributionConfirm(props.row.id)">发起配送</el-button>
+                      @click="distributionConfirm(props.row.id)"
+                      v-if="props.row.status === '2' || props.row.status === 2">发起配送</el-button>
                   </el-row>
                 </template>
               </el-table-column>

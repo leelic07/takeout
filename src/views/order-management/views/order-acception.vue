@@ -164,7 +164,7 @@
                       type="primary"
                       plain
                       @click="distributionConfirm(props.row.id)"
-                      v-if="props.row.status === '2'">发起配送</el-button>
+                      v-if="props.row.status === '2' || props.row.status === 2">发起配送</el-button>
                   </el-row>
                 </template>
               </el-table-column>

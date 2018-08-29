@@ -57,9 +57,11 @@ export default {
     }]
   },
   actions: {
-    getActivityList({ commit }, pagination) {
+    async getActivityList({ commit }, pagination) {
       delete pagination.activityType
-      http.getActivityList(pagination).then(res => res.code === 200 && commit('getActivityList', res)).catch(err => console.log(err))
+      // http.getActivityList(pagination).then(res => res.code === 200 && commit('getActivityList', res)).catch(err => console.log(err))
+      const res = await http.getActivityList(pagination)
+      commit('getActivityList', res)
     },
     getCouponList({ commit }, pagination) {
       delete pagination.activityType

@@ -23,8 +23,10 @@ export default {
   },
   actions: {
     // 获取商户列表
-    getShopList({ commit }, pagination) {
-      http.getShopList(pagination).then(res => res.code === 200 && commit('getShopList', res)).catch(err => console.log(err))
+    async getShopList({ commit }, pagination) {
+      // http.getShopList(pagination).then(res => res.code === 200 && commit('getShopList', res)).catch(err => console.log(err))
+      const res = await http.getShopList(pagination)
+      commit('getShopList', res)
     },
     // 添加商户信息
     saveShop({ commit }, shopInfo) {
