@@ -67,6 +67,10 @@ export default {
     },
     distributionOrder({ commit }, id) {
       http.distributionOrder({ id }).then(res => res.code === 200 && commit('distributionOrder', res)).catch(err => err)
+    },
+    async cancelDistribution({ commit }, param) {
+      const res = await http.cancelDistribution(param)
+      commit('cancelDistribution', res)
     }
   },
   mutations: {
@@ -92,6 +96,9 @@ export default {
       if (status === '2') {
         state.orderAcceptionList = orders.filter(order => order.status === status)
       } else state.orderAcceptionList = orders.filter(order => order.status !== '2' && order.status !== '8')
+      state.orderAcceptionList.forEach(order => {
+        if (order.status !== '5' && order.status !== '7' && order.status !== '9') order.isDistribution = true
+      })
       mergeProperty(state.orderAcceptionList)
     },
     getOrderRetreatList(state, orderRetreatList) {

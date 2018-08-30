@@ -165,6 +165,26 @@
                       plain
                       @click="distributionConfirm(props.row.id)"
                       v-if="props.row.status === '2' || props.row.status === 2">发起配送</el-button>
+                    <el-button size="mini"
+                      type="primary"
+                      plain
+                      @click="showStatus(props.row.orderNo)"
+                      v-if="props.row.status !== '5'&&
+                      props.row.status !== '7' &&
+                      props.row.status !== '8' &&
+                      props.row.status !== '9'">
+                      查看状态
+                    </el-button>
+                    <el-button size="mini"
+                      type="danger"
+                      plain
+                      @click="cancelDistribute(props.row.orderNo)"
+                      v-if="props.row.status !== '5'&&
+                      props.row.status !== '7' &&
+                      props.row.status !== '8' &&
+                      props.row.status !== '9'">
+                      取消闪送
+                    </el-button>
                   </el-row>
                 </template>
               </el-table-column>
@@ -198,6 +218,19 @@
           type="primary"
           @click="retreatOrderConfirm">确 定</el-button>
       </div>
+    </el-dialog>
+    <!--查看闪送状态对话框-->
+    <el-dialog title="闪送状态"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose">
+      <span>这是一段信息</span>
+      <span slot="footer"
+        class="dialog-footer">
+        <el-button type="primary"
+          size="small"
+          @click="dialogVisible = false">确 定</el-button>
+      </span>
     </el-dialog>
     <div v-infinite-scroll="loadMore"
       infinite-scroll-disabled="busy"
@@ -238,6 +271,7 @@ export default {
       },
       busy: true,
       dialogFormVisible: false,
+      dialogVisible: false,
       totalPrice: '',
       orderAcceptions: []
     }
@@ -325,6 +359,16 @@ export default {
       }).then(() => {
         this.distributionOrder(id)
       }).catch(err => console.log(err))
+    },
+    cancelDistribute(orderNo) {
+      this.$confirm('确定取消闪送?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        console.log('取消')
+      }).catch(e => console.log(e))
+    },
+    showStatus(orderNo) {
+      this.dialogVisible = true
     }
   }
 }
