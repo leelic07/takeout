@@ -168,7 +168,7 @@
                     <el-button size="mini"
                       type="primary"
                       plain
-                      @click="showStatus(props.row.orderNo, props.row.id)"
+                      @click="showStatus(props.row.orderNo, props.row.id, props.row.issorderno)"
                       v-if="props.row.status !== '5'&&
                       props.row.status !== '7' &&
                       props.row.status !== '8' &&
@@ -229,7 +229,7 @@
         :model="distributionStatus">
         <el-form-item v-if="!distributionStatus.errCode">
           <el-tag for="">闪送单号:</el-tag>
-          <span>{{distributionStatus.issorder}}</span>
+          <span>{{issorderno}}</span>
         </el-form-item>
         <el-form-item>
           <el-tag for="">状态:</el-tag>
@@ -295,8 +295,9 @@ export default {
       dialogVisible: false,
       totalPrice: '',
       orderAcceptions: [],
-      orderNo: '', // 闪送单号
-      orderId: '' // 闪送id
+      orderNo: '', // 单号
+      orderId: '', // 闪送id
+      issorderno: '' // 闪送单号
     }
   },
   watch: {
@@ -404,9 +405,10 @@ export default {
         }
       }).catch(e => console.log(e))
     },
-    showStatus(orderNo, id) {
+    showStatus(orderNo, id, issorderno) {
       this.orderNo = orderNo
       this.orderId = id
+      this.issorderno = issorderno
       this.showDistribution(orderNo)
     }
   }
