@@ -69,7 +69,7 @@ export default {
     distributionOrder({ commit }, id) {
       http.distributionOrder({ id }).then(res => res.code === 200 && commit('distributionOrder', res)).catch(err => err)
     },
-    async cancelDistribution({ commit, dispatch }, param) {
+    async cancelDistribution({ commit }, param) {
       const res = await http.cancelDistribution({ orderNo: param })
       if (res.code === 200 && !res.data.errCode) return res
     },

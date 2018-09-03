@@ -170,14 +170,14 @@
                     <el-button size="mini"
                       type="primary"
                       plain
-                      @click="showStatus(props.row.orderNo)"
+                      @click="showStatus(props.row.orderNo, props.row.id)"
                       v-if="props.row.status !== 5 &&
                       props.row.status !== 7 &&
                       props.row.status !== 8 &&
                       props.row.status !== 9">
                       查看状态
                     </el-button>
-                    <el-button size="mini"
+                    <!-- <el-button size="mini"
                       type="danger"
                       plain
                       @click="cancelDistribute(props.row.orderNo, props.row.id)"
@@ -186,7 +186,7 @@
                       props.row.status !== 8 &&
                       props.row.status !== 9">
                       取消闪送
-                    </el-button>
+                    </el-button> -->
                   </el-row>
                 </template>
               </el-table-column>
@@ -229,6 +229,10 @@
       <el-form label-position="right"
         label-width="120px"
         :model="distributionStatus">
+        <el-form-item v-if="!distributionStatus.errCode">
+          <el-tag for="">闪送单号:</el-tag>
+          <span>{{distributionStatus.issorder}}</span>
+        </el-form-item>
         <el-form-item>
           <el-tag for="">状态:</el-tag>
           <span>{{distributionStatus.status || distributionStatus.orderStatusTxt}}</span>
@@ -240,6 +244,14 @@
         <el-form-item>
           <el-tag for="">{{distributionStatus.errMsg ? '错误信息' : '电话'}}</el-tag>
           <span>{{distributionStatus.errMsg || distributionStatus.courier}}</span>
+        </el-form-item>
+        <el-form-item>
+          <el-button size="small"
+            type="danger"
+            plain
+            @click="cancelDistribute()"
+            :disabled="!!distributionStatus.errCode">取消闪送</el-button>
+          <span class="remind">已取件的订单将无法取消闪送</span>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -284,7 +296,9 @@ export default {
       orderReservations: [],
       busy: true,
       dialogFormVisible: false,
-      dialogVisible: false
+      dialogVisible: false,
+      orderNo: '',
+      orderId: ''
     }
   },
   watch: {
@@ -392,19 +406,24 @@ export default {
         this.distributionOrder(id)
       }).catch(err => console.log(err))
     },
-    cancelDistribute(orderNo, id) {
+    cancelDistribute(orderNo = '', id = '') {
+      orderNo && (this.orderNo = orderNo)
+      id && (this.orderId = id)
       this.$confirm('确定取消闪送?', '提示', {
         type: 'warning'
       }).then(async() => {
-        const res = await this.cancelDistribution(orderNo)
+        const res = await this.cancelDistribution(this.orderNo)
         this.pagination.page = 1
         if (res) {
-          this.distributionOrder(id)
+          this.dialogVisible = false
+          this.distributionOrder(this.orderId)
           this.getOrderAcceptionByStatus({ ...this.pagination, ...this.form })
         }
       }).catch(e => console.log(e))
     },
-    showStatus(orderNo) {
+    showStatus(orderNo, id) {
+      this.orderNo = orderNo
+      this.orderId = id
       this.showDistribution(orderNo)
     }
   }
