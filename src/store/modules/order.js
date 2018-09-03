@@ -22,7 +22,8 @@ export default {
     orderReminderList: [],
     retreatResult: {},
     orderForPrint: {},
-    distributionResult: {}
+    distributionResult: {},
+    distributionStatus: {}
   },
   actions: {
     // 获取接单信息
@@ -68,9 +69,13 @@ export default {
     distributionOrder({ commit }, id) {
       http.distributionOrder({ id }).then(res => res.code === 200 && commit('distributionOrder', res)).catch(err => err)
     },
-    async cancelDistribution({ commit }, param) {
-      const res = await http.cancelDistribution(param)
-      commit('cancelDistribution', res)
+    async cancelDistribution({ commit, dispatch }, param) {
+      const res = await http.cancelDistribution({ orderNo: param })
+      if (res.code === 200 && !res.data.errCode) return res
+    },
+    async showDistribution({ commit }, param) {
+      const res = await http.showDistribution({ orderNo: param })
+      commit('showDistribution', res)
     }
   },
   mutations: {
@@ -146,6 +151,11 @@ export default {
     },
     distributionOrder(state, res) {
       state.distributionResult = res
+    },
+    showDistribution(state, res) {
+      if (res.code === 200) {
+        state.distributionStatus = res.data.data ? res.data.data : res.data
+      }
     }
   }
 }

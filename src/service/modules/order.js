@@ -10,5 +10,7 @@ export default {
   getOrdersRecordsPage: pagination => service.get('/orders/page', pagination).then(res => res).catch(err => err),
   getOrderReminderByStatus: pagination => service.get('/orders/reminderPage', pagination).then(res => res).catch(err => err),
   retreatOrder: order => service.post('/weixin/wxrefund', order).then(res => res).catch(err => err),
-  distributionOrder: id => service.post('/orders/updateDistribution', id).then(res => res).catch(err => err)
+  distributionOrder: id => service.post('/orders/updateDistribution', id).then(res => res).catch(err => err),
+  showDistribution: async param => await service.get('/distributions/queryOrder', param),
+  cancelDistribution: async param => await service.get('/distributions/cancel', param)
 }

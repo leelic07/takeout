@@ -1,123 +1,174 @@
 <template>
-    <el-row class="member-management-container">
-        <!--搜索框-->
-        <el-row>
-            <el-col :span="5">
-                <el-input placeholder="请输入手机号码" v-model="pagination.phone"></el-input>
-            </el-col>
-            <el-col :span="5" class="member-select">
-                <el-input placeholder="请输入微信昵称" v-model="pagination.name"></el-input>
-            </el-col>
-            <el-button type="primary" icon="el-icon-search" @click="getUsersPage(pagination)">搜索</el-button>
-        </el-row>
-        <!--会员信息列表-->
-        <el-row class="order-statics">
-            <el-table :data="userList" stripe border style="width: 100%">
-                <el-table-column prop="userNo" label="会员编号" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="userName" label="微信昵称"></el-table-column>
-                <el-table-column label="性别">
-                    <template slot-scope="props">
-                        {{ props.row.userSex | gender}}
-                    </template>
-                </el-table-column>
-                <el-table-column prop="birthday" label="生日" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="userPhone" label="手机号码" show-overflow-tooltip></el-table-column>
-                <el-table-column label="地址">
-                    <template slot-scope="props" show-overflow-tooltip>
-                        <el-popover placement="bottom" title="地址" width="200" trigger="hover" :content="props.row.address">
-                            <el-button slot="reference" type="text">查看</el-button>
-                        </el-popover>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="userScore" label="积分"></el-table-column>
-                <el-table-column label="注册时间" show-overflow-tooltip>
-                    <template slot-scope="props">
-                        {{props.row.createdAt | Date}}
-                    </template>
-                </el-table-column>
-                <el-table-column label="会员类型">
-                    <template slot-scope="props">
-                        <el-tag :closable="false" :type="props.row.gradeType">{{props.row.grade | grade}}</el-tag>
-                        <!-- <el-tag v-else-if="scope.row.orderStatus === '黄金会员'" type="warning" :closable="false">{{scope.row.orderStatus}}</el-tag>
+  <el-row class="member-management-container">
+    <!--搜索框-->
+    <el-row>
+      <el-col :span="5">
+        <el-input placeholder="请输入手机号码"
+          v-model="pagination.phone"></el-input>
+      </el-col>
+      <el-col :span="5"
+        class="member-select">
+        <el-input placeholder="请输入微信昵称"
+          v-model="pagination.name"></el-input>
+      </el-col>
+      <el-button type="primary"
+        icon="el-icon-search"
+        @click="getUsersPage(pagination)">搜索</el-button>
+    </el-row>
+    <!--会员信息列表-->
+    <el-row class="order-statics">
+      <el-table :data="userList"
+        stripe
+        border
+        style="width: 100%">
+        <el-table-column prop="userNo"
+          label="会员编号"
+          show-overflow-tooltip></el-table-column>
+        <el-table-column prop="userName"
+          label="微信昵称"></el-table-column>
+        <el-table-column label="性别">
+          <template slot-scope="props">
+            {{ props.row.userSex | gender}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="birthday"
+          label="生日"
+          show-overflow-tooltip></el-table-column>
+        <el-table-column prop="userPhone"
+          label="手机号码"
+          show-overflow-tooltip></el-table-column>
+        <el-table-column label="地址">
+          <template slot-scope="props"
+            show-overflow-tooltip>
+            <el-popover placement="bottom"
+              title="地址"
+              width="200"
+              trigger="hover"
+              :content="props.row.address">
+              <el-button slot="reference"
+                type="text">查看</el-button>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <el-table-column prop="userScore"
+          label="积分"></el-table-column>
+        <el-table-column label="注册时间"
+          show-overflow-tooltip>
+          <template slot-scope="props">
+            {{props.row.createdAt | Date}}
+          </template>
+        </el-table-column>
+        <el-table-column label="会员类型">
+          <template slot-scope="props">
+            <el-tag :closable="false"
+              :type="props.row.gradeType">{{props.row.grade | grade}}</el-tag>
+            <!-- <el-tag v-else-if="scope.row.orderStatus === '黄金会员'" type="warning" :closable="false">{{scope.row.orderStatus}}</el-tag>
                         <el-tag v-else-if="scope.row.orderStatus === '白银会员'" type="info" :closable="false">{{scope.row.orderStatus}}</el-tag> -->
-                    </template>
-                </el-table-column>
-                <el-table-column label="订单数">
-                    <template slot-scope="props">
-                        <el-button type="text" @click="showOrdersByUserId(props.row.id)">{{props.row.orderCount}}</el-button>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="totalPrice" label="消费额"></el-table-column>
-                <el-table-column label="操作" width="140">
-                    <template slot-scope="props">
-                        <el-button type="success" size="mini" @click="showMemberEdit(props.row.id)">查看</el-button>
-                        <el-button type="primary" size="mini" @click="sendCoupon(props.row.id)">送券</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-row>
-        <!--分页组件-->
-        <pagination :total="userTotal" :page="pagination.page" :rows="pagination.rows" @currentChange="currentChange"></pagination>
-        <!--查看会员详情信息-->
-        <el-dialog class="member-detail" title="会员详情" :visible.sync="dialogDetailVisible">
-            <el-row :gutter="10">
-                <!-- <el-col :span="10">
+          </template>
+        </el-table-column>
+        <el-table-column label="订单数">
+          <template slot-scope="props">
+            <el-button type="text"
+              @click="showOrdersByUserId(props.row.id)">{{props.row.orderCount}}</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column prop="totalPrice"
+          label="消费额"></el-table-column>
+        <el-table-column label="操作"
+          width="140">
+          <template slot-scope="props">
+            <el-button type="success"
+              size="mini"
+              @click="showMemberEdit(props.row.id)">查看</el-button>
+            <el-button type="primary"
+              size="mini"
+              @click="sendCoupon(props.row.id)">送券</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-row>
+    <!--分页组件-->
+    <pagination :total="userTotal"
+      :page="pagination.page"
+      :rows="pagination.rows"
+      @currentChange="currentChange"></pagination>
+    <!--查看会员详情信息-->
+    <el-dialog class="member-detail"
+      title="会员详情"
+      :visible.sync="dialogDetailVisible">
+      <el-row :gutter="10">
+        <!-- <el-col :span="10">
                     <img src="../../../assets/demo_images/000247589.jpg" alt="">
                 </el-col> -->
-                <el-col>
-                    <el-col :span="11">
-                        <label for="">姓名：
-                            <span>{{userForEdit.loginName}}</span>
-                        </label>
-                    </el-col>
-                    <el-col :span="11">
-                        <label for="">性别：
-                            <span>{{userForEdit.userSex | gender}}</span>
-                        </label>
-                    </el-col>
-                </el-col>
-                <el-col>
-                    <el-col :span="11">
-                        <label for="">电话：
-                            <span>{{userForEdit.userPhone}}</span>
-                        </label>
-                    </el-col>
-                    <el-col :span="11">
-                        <label for="">地址：
-                            <span>{{userForEdit.userAddress}}</span>
-                        </label>
-                    </el-col>
-                </el-col>
-                <el-col>
-                    <el-col :span="11">
-                        <label for="">注册时间：
-                            <span>{{userForEdit.createdAt | Date}}</span>
-                        </label>
-                    </el-col>
-                    <el-col :span="11">
-                        <label for="">备注：
-                            <span>{{userForEdit.remark}}</span>
-                        </label>
-                    </el-col>
-                </el-col>
-            </el-row>
-        </el-dialog>
-        <!--会员送券对话框-->
-        <el-dialog class="member-editor" title="会员送券" :visible.sync="dialogFormVisible">
-            <el-form :model="userForEdit" size="small" :rules="rule" ref="couponFrom">
-                <el-form-item label="选择优惠券" label-width="120px" prop="couponId">
-                    <el-select v-model="userForEdit.couponId" placeholder="请选择会优惠券">
-                        <el-option v-for="item in backCouponList" :key="item.id" :label="item.name" :value="item.id">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button size="small" @click="dialogFormVisible = false">取 消</el-button>
-                <el-button size="small" type="primary" @click="sendCouponConfirm">确 定</el-button>
-            </div>
-        </el-dialog>
-    </el-row>
+        <el-col>
+          <el-col :span="11">
+            <label for="">姓名：
+              <span>{{userForEdit.loginName}}</span>
+            </label>
+          </el-col>
+          <el-col :span="11">
+            <label for="">性别：
+              <span>{{userForEdit.userSex | gender}}</span>
+            </label>
+          </el-col>
+        </el-col>
+        <el-col>
+          <el-col :span="11">
+            <label for="">电话：
+              <span>{{userForEdit.userPhone}}</span>
+            </label>
+          </el-col>
+          <el-col :span="11">
+            <label for="">地址：
+              <span>{{userForEdit.userAddress}}</span>
+            </label>
+          </el-col>
+        </el-col>
+        <el-col>
+          <el-col :span="11">
+            <label for="">注册时间：
+              <span>{{userForEdit.createdAt | Date}}</span>
+            </label>
+          </el-col>
+          <el-col :span="11">
+            <label for="">备注：
+              <span>{{userForEdit.remark}}</span>
+            </label>
+          </el-col>
+        </el-col>
+      </el-row>
+    </el-dialog>
+    <!--会员送券对话框-->
+    <el-dialog class="member-editor"
+      title="会员送券"
+      :visible.sync="dialogFormVisible">
+      <el-form :model="userForEdit"
+        size="small"
+        :rules="rule"
+        ref="couponFrom">
+        <el-form-item label="选择优惠券"
+          label-width="120px"
+          prop="couponId">
+          <el-select v-model="userForEdit.couponId"
+            placeholder="请选择会优惠券">
+            <el-option v-for="item in backCouponList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer"
+        class="dialog-footer">
+        <el-button size="small"
+          @click="dialogFormVisible = false">取 消</el-button>
+        <el-button size="small"
+          type="primary"
+          @click="sendCouponConfirm">确 定</el-button>
+      </div>
+    </el-dialog>
+  </el-row>
 </template>
 
 <script>

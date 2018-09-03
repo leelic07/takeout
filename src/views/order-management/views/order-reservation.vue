@@ -167,6 +167,26 @@
                       plain
                       @click="distributionConfirm(props.row.id)"
                       v-if="props.row.status === '2' || props.row.status === 2">发起配送</el-button>
+                    <el-button size="mini"
+                      type="primary"
+                      plain
+                      @click="showStatus(props.row.orderNo)"
+                      v-if="props.row.status !== 5 &&
+                      props.row.status !== 7 &&
+                      props.row.status !== 8 &&
+                      props.row.status !== 9">
+                      查看状态
+                    </el-button>
+                    <el-button size="mini"
+                      type="danger"
+                      plain
+                      @click="cancelDistribute(props.row.orderNo, props.row.id)"
+                      v-if="props.row.status !== 5 &&
+                      props.row.status !== 7 &&
+                      props.row.status !== 8 &&
+                      props.row.status !== 9">
+                      取消闪送
+                    </el-button>
                   </el-row>
                 </template>
               </el-table-column>
@@ -200,6 +220,28 @@
           type="primary"
           @click="partCancelOrderConfirm">确 定</el-button>
       </div>
+    </el-dialog>
+    <!--查看闪送状态对话框-->
+    <el-dialog title="闪送状态"
+      :visible.sync="dialogVisible"
+      width="30%"
+      class="distribution-status">
+      <el-form label-position="right"
+        label-width="120px"
+        :model="distributionStatus">
+        <el-form-item>
+          <el-tag for="">状态:</el-tag>
+          <span>{{distributionStatus.status || distributionStatus.orderStatusTxt}}</span>
+        </el-form-item>
+        <el-form-item>
+          <el-tag for="">{{distributionStatus.errCode ? '错误码' : '配送员'}}</el-tag>
+          <span>{{distributionStatus.errCode || distributionStatus.courierName}}</span>
+        </el-form-item>
+        <el-form-item>
+          <el-tag for="">{{distributionStatus.errMsg ? '错误信息' : '电话'}}</el-tag>
+          <span>{{distributionStatus.errMsg || distributionStatus.courier}}</span>
+        </el-form-item>
+      </el-form>
     </el-dialog>
     <div v-infinite-scroll="loadMore"
       infinite-scroll-disabled="busy"
@@ -241,7 +283,8 @@ export default {
       totalPrice: '',
       orderReservations: [],
       busy: true,
-      dialogFormVisible: false
+      dialogFormVisible: false,
+      dialogVisible: false
     }
   },
   watch: {
@@ -264,13 +307,17 @@ export default {
     retreatResult() {
       this.getOrderReservationByStatus({ ...this.pagination, ...this.form })
       this.dialogFormVisible = false
+    },
+    distributionStatus() {
+      this.dialogVisible = true
     }
   },
   computed: {
     ...mapGetters([
       'orderReservationList',
       'loading',
-      'retreatResult'
+      'retreatResult',
+      'distributionStatus'
     ])
   },
   methods: {
@@ -278,7 +325,9 @@ export default {
       getOrderReservationList: 'getOrderReservationList',
       getOrderReservationByStatus: 'getOrderReservationByStatus',
       retreatOrder: 'retreatOrder',
-      distributionOrder: 'distributionOrder'
+      distributionOrder: 'distributionOrder',
+      cancelDistribution: 'cancelDistribution',
+      showDistribution: 'showDistribution'
     }),
     ...mapMutations({
       showLoading: 'showLoading',
@@ -342,6 +391,21 @@ export default {
       }).then(() => {
         this.distributionOrder(id)
       }).catch(err => console.log(err))
+    },
+    cancelDistribute(orderNo, id) {
+      this.$confirm('确定取消闪送?', '提示', {
+        type: 'warning'
+      }).then(async() => {
+        const res = await this.cancelDistribution(orderNo)
+        this.pagination.page = 1
+        if (res) {
+          this.distributionOrder(id)
+          this.getOrderAcceptionByStatus({ ...this.pagination, ...this.form })
+        }
+      }).catch(e => console.log(e))
+    },
+    showStatus(orderNo) {
+      this.showDistribution(orderNo)
     }
   }
 }

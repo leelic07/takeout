@@ -31,7 +31,7 @@ const user = {
     getUserById({ commit }, id) {
       http.getUserById({ id }).then(res => res.code === 200 && commit('getUserById', res)).catch(err => console.log(err))
     },
-    linkWebsocket({ commit }) {
+    linkWebsocket({ commit, dispatch }) {
       const merchantId = sessionStorage['merchantId']
       let socket = ''
       // var host = 'pandax.mofasion.com'
@@ -42,12 +42,12 @@ const user = {
         // 打开事件
         socket.onopen = function() {
           console.log('Socket 已打开')
-        // socket.send("这是来自客户端的消息" + location.href + new Date());
+          // socket.send("这是来自客户端的消息" + location.href + new Date());
         }
         // 获得消息事件
         socket.onmessage = function(msg) {
           commit('linkWebsocket', msg)
-        // 发现消息进入    调后台获取
+          // 发现消息进入    调后台获取
         }
         // 关闭事件
         socket.onclose = function() {
@@ -56,7 +56,8 @@ const user = {
             message: 'websocket已经关闭',
             showClose: true
           })
-          socket = new WebSocket(url)
+          // socket = new WebSocket(url)
+          dispatch('linkWebsocket')
         }
         // 发生了错误事件
         socket.onerror = function() {
@@ -64,7 +65,8 @@ const user = {
             message: 'websocket发生错误',
             showClose: true
           })
-          socket = new WebSocket(url)
+          // socket = new WebSocket(url)
+          dispatch('linkWebsocket')
         }
       }
     }
@@ -106,7 +108,7 @@ const user = {
           case 1:
             Notification.success({
               title: '订单提醒',
-              message: `您有一笔新的订单 <a href='#/order/acception'>查看>></a>`,
+              message: `您有一笔新的订单 <a style="color:red" href='#/order/acception'>查看>></a>`,
               duration: 0,
               dangerouslyUseHTMLString: true
             })
@@ -115,7 +117,7 @@ const user = {
           case 2:
             Notification.warning({
               title: '退单提醒',
-              message: `您有一笔新的退单 <a href='#/order/retreat'>查看>></a>`,
+              message: `您有一笔新的退单 <a style="color:red" href='#/order/retreat'>查看>></a>`,
               duration: 0,
               dangerouslyUseHTMLString: true
             })
@@ -123,7 +125,7 @@ const user = {
           case 3:
             Notification.warning({
               title: '催单提醒',
-              message: `您有一笔新的催单 <a href='#/order/reminder'>查看>></a>`,
+              message: `您有一笔新的催单 <a style="color:red" href='#/order/reminder'>查看>></a>`,
               duration: 0,
               dangerouslyUseHTMLString: true
             })

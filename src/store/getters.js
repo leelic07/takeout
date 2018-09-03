@@ -56,6 +56,7 @@ const getters = {
   retreatResult: state => state.order.retreatResult,
   orderForPrint: state => state.order.orderForPrint,
   distributionResult: state => state.order.distributionResult,
+  distributionStatus: state => state.order.distributionStatus,
   // 活动管理
   activityList: state => state.activity.activityList,
   activityTotal: state => state.activity.activityTotal,

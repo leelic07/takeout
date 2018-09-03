@@ -178,7 +178,7 @@
                     <el-button size="mini"
                       type="danger"
                       plain
-                      @click="cancelDistribute(props.row.orderNo)"
+                      @click="cancelDistribute(props.row.orderNo, props.row.id)"
                       v-if="props.row.status !== '5'&&
                       props.row.status !== '7' &&
                       props.row.status !== '8' &&
@@ -223,14 +223,23 @@
     <el-dialog title="闪送状态"
       :visible.sync="dialogVisible"
       width="30%"
-      :before-close="handleClose">
-      <span>这是一段信息</span>
-      <span slot="footer"
-        class="dialog-footer">
-        <el-button type="primary"
-          size="small"
-          @click="dialogVisible = false">确 定</el-button>
-      </span>
+      class="distribution-status">
+      <el-form label-position="right"
+        label-width="120px"
+        :model="distributionStatus">
+        <el-form-item>
+          <el-tag for="">状态:</el-tag>
+          <span>{{distributionStatus.status || distributionStatus.orderStatusTxt}}</span>
+        </el-form-item>
+        <el-form-item>
+          <el-tag for="">{{distributionStatus.errCode ? '错误码' : '配送员'}}</el-tag>
+          <span>{{distributionStatus.errCode || distributionStatus.courierName}}</span>
+        </el-form-item>
+        <el-form-item>
+          <el-tag for="">{{distributionStatus.errMsg ? '错误信息' : '电话'}}</el-tag>
+          <span>{{distributionStatus.errMsg || distributionStatus.courier}}</span>
+        </el-form-item>
+      </el-form>
     </el-dialog>
     <div v-infinite-scroll="loadMore"
       infinite-scroll-disabled="busy"
@@ -301,6 +310,9 @@ export default {
       this.orderAcceptions.splice(0)
       this.pagination.page = 1
       this.getOrderAcceptionByStatus({ ...this.pagination, ...this.form })
+    },
+    distributionStatus() {
+      this.dialogVisible = true
     }
   },
   computed: {
@@ -308,7 +320,8 @@ export default {
       'orderAcceptionList',
       'loading',
       'retreatResult',
-      'distributionResult'
+      'distributionResult',
+      'distributionStatus'
     ])
   },
   methods: {
@@ -316,7 +329,9 @@ export default {
       getOrderAcceptionList: 'getOrderAcceptionList',
       getOrderAcceptionByStatus: 'getOrderAcceptionByStatus',
       retreatOrder: 'retreatOrder',
-      distributionOrder: 'distributionOrder'
+      distributionOrder: 'distributionOrder',
+      showDistribution: 'showDistribution',
+      cancelDistribution: 'cancelDistribution'
     }),
     ...mapMutations({
       showLoading: 'showLoading',
@@ -360,15 +375,20 @@ export default {
         this.distributionOrder(id)
       }).catch(err => console.log(err))
     },
-    cancelDistribute(orderNo) {
+    cancelDistribute(orderNo, id) {
       this.$confirm('确定取消闪送?', '提示', {
         type: 'warning'
-      }).then(() => {
-        console.log('取消')
+      }).then(async() => {
+        const res = await this.cancelDistribution(orderNo)
+        this.pagination.page = 1
+        if (res) {
+          this.distributionOrder(id)
+          this.getOrderAcceptionByStatus({ ...this.pagination, ...this.form })
+        }
       }).catch(e => console.log(e))
     },
     showStatus(orderNo) {
-      this.dialogVisible = true
+      this.showDistribution(orderNo)
     }
   }
 }

@@ -153,6 +153,26 @@
                       plain
                       @click="distributionConfirm(props.row.id)"
                       v-if="props.row.status === '2' || props.row.status === 2">发起配送</el-button>
+                    <el-button size="mini"
+                      type="primary"
+                      plain
+                      @click="showStatus(props.row.orderNo)"
+                      v-if="props.row.status !== 5 &&
+                      props.row.status !== 7 &&
+                      props.row.status !== 8 &&
+                      props.row.status !== 9">
+                      查看状态
+                    </el-button>
+                    <el-button size="mini"
+                      type="danger"
+                      plain
+                      @click="cancelDistribute(props.row.orderNo, props.row.id)"
+                      v-if="props.row.status !== 5 &&
+                      props.row.status !== 7 &&
+                      props.row.status !== 8 &&
+                      props.row.status !== 9">
+                      取消闪送
+                    </el-button>
                   </el-row>
                 </template>
               </el-table-column>
@@ -160,81 +180,6 @@
           </el-row>
         </el-card>
       </el-col>
-      <!--商家关注信息-->
-      <!-- <el-col :span="10" class="order-summary">
-        <el-card>
-          <div slot="header" class="clearfix">
-            <span>今日订单概况</span>
-          </div>
-          <el-row class="card-content">
-            <el-col>
-              <label for="">已接订单:</label>
-              <b>1</b>
-              <span>笔</span>
-            </el-col>
-            <el-col>
-              <label for="">今日营业总额:</label>
-              <b>115</b>
-              <span>元</span>
-            </el-col>
-          </el-row>
-        </el-card>
-        <el-card>
-          <div slot="header" class="clearfix">
-            <span>需关注订单</span>
-          </div>
-          <el-row>
-            <el-col :span="24">
-              <el-col :span="12">
-                <label for="">紧急预订单：</label>
-                <span>
-                  <b>0</b>笔</span>
-              </el-col>
-              <el-col :span="12">
-                <a href="#">查看订单
-                  <i class="el-icon-arrow-right"></i>
-                </a>
-              </el-col>
-            </el-col>
-            <el-col :span="24">
-              <el-col :span="12">
-                <label for="">被取消配送：</label>
-                <span>
-                  <b>0</b>笔</span>
-              </el-col>
-              <el-col :span="12">
-                <a href="#">查看订单
-                  <i class="el-icon-arrow-right"></i>
-                </a>
-              </el-col>
-            </el-col>
-            <el-col :span="24">
-              <el-col :span="12">
-                <label for="">待发配送：</label>
-                <span>
-                  <b>0</b>笔</span>
-              </el-col>
-              <el-col :span="12">
-                <a href="#">查看订单
-                  <i class="el-icon-arrow-right"></i>
-                </a>
-              </el-col>
-            </el-col>
-            <el-col :span="24">
-              <el-col :span="12">
-                <label for="">未处理退款：</label>
-                <span>
-                  <b>0</b>笔</span>
-              </el-col>
-              <el-col :span="12">
-                <a href="#">查看订单
-                  <i class="el-icon-arrow-right"></i>
-                </a>
-              </el-col>
-            </el-col>
-          </el-row>
-        </el-card>
-      </el-col> -->
     </el-row>
     <!--订单退款对话框-->
     <el-dialog class="member-editor"
@@ -261,6 +206,28 @@
           type="primary"
           @click="retreatOrderConfirm">确 定</el-button>
       </div>
+    </el-dialog>
+    <!--查看闪送状态对话框-->
+    <el-dialog title="闪送状态"
+      :visible.sync="dialogVisible"
+      width="30%"
+      class="distribution-status">
+      <el-form label-position="right"
+        label-width="120px"
+        :model="distributionStatus">
+        <el-form-item>
+          <el-tag for="">状态:</el-tag>
+          <span>{{distributionStatus.status || distributionStatus.orderStatusTxt}}</span>
+        </el-form-item>
+        <el-form-item>
+          <el-tag for="">{{distributionStatus.errCode ? '错误码' : '配送员'}}</el-tag>
+          <span>{{distributionStatus.errCode || distributionStatus.courierName}}</span>
+        </el-form-item>
+        <el-form-item>
+          <el-tag for="">{{distributionStatus.errMsg ? '错误信息' : '电话'}}</el-tag>
+          <span>{{distributionStatus.errMsg || distributionStatus.courier}}</span>
+        </el-form-item>
+      </el-form>
     </el-dialog>
     <div v-infinite-scroll="loadMore"
       infinite-scroll-disabled="busy"
@@ -297,6 +264,7 @@ export default {
       busy: true,
       orderReminders: [],
       dialogFormVisible: false,
+      dialogVisible: false,
       totalPrice: '',
       refundForm: {
         totalPrice: '',
@@ -322,20 +290,26 @@ export default {
         this.busy = false
         this.orderReminders = this.orderReminders.concat(newValue)
       }
+    },
+    distributionStatus() {
+      this.dialogVisible = true
     }
   },
   computed: {
     ...mapGetters([
       'orderReminderList',
       'loading',
-      'distributionResult'
+      'distributionResult',
+      'distributionStatus'
     ])
   },
   methods: {
     ...mapActions({
       getOrderReminderByStatus: 'getOrderReminderByStatus',
       retreatOrder: 'retreatOrder',
-      distributionOrder: 'distributionOrder'
+      distributionOrder: 'distributionOrder',
+      cancelDistribution: 'cancelDistribution',
+      showDistribution: 'showDistribution'
     }),
     ...mapMutations({
       showLoading: 'showLoading',
@@ -386,6 +360,21 @@ export default {
       }).then(() => {
         this.distributionOrder(id)
       }).catch(err => console.log(err))
+    },
+    cancelDistribute(orderNo, id) {
+      this.$confirm('确定取消闪送?', '提示', {
+        type: 'warning'
+      }).then(async() => {
+        const res = await this.cancelDistribution(orderNo)
+        this.pagination.page = 1
+        if (res) {
+          this.distributionOrder(id)
+          this.getOrderAcceptionByStatus({ ...this.pagination, ...this.form })
+        }
+      }).catch(e => console.log(e))
+    },
+    showStatus(orderNo) {
+      this.showDistribution(orderNo)
     }
   }
 }

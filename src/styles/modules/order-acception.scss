@@ -47,7 +47,7 @@
           .el-button {
             float: right;
             margin-right: 5px;
-            margin-top: 10px;
+            margin-top: 15px;
           }
           .el-col {
             margin-bottom: 10px;
@@ -163,6 +163,16 @@
             }
           }
         }
+      }
+    }
+  }
+}
+
+.distribution-status {
+  .el-form {
+    .el-form-item {
+      span:nth-child(2) {
+        margin-left: 15px;
       }
     }
   }
