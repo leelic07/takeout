@@ -12,7 +12,7 @@
     </el-row>
     <!--店铺信息列表-->
     <el-row class="order-statics">
-      <el-table :data="shopList"
+      <!-- <el-table :data="shopList"
         stripe
         border
         fit>
@@ -60,7 +60,22 @@
               @click="showShopEdit(props.row.id)">编辑</el-button>
           </template>
         </el-table-column>
-      </el-table>
+      </el-table> -->
+      <lc-table :columns="columns"
+        :data="shopList">
+        <el-button slot="merchantName"
+          slot-scope="{row}"
+          type="text"
+          @click="showMemberDetail(row)">{{row.name}}</el-button>
+        <el-tag slot="status"
+          slot-scope="{row}"
+          :type="Number(row.isOnline) === 1 ? 'primary' : 'danger'">{{row.isOnline | isOnline}}</el-tag>
+        <el-button slot="operation"
+          slot-scope="{row}"
+          type="primary"
+          size="mini"
+          @click="showShopEdit(row.id)">编辑</el-button>
+      </lc-table>
     </el-row>
     <!--分页组件-->
     <pagination :total="shopTotal"
@@ -203,6 +218,7 @@
           @click="editShopConfirm">确 定</el-button>
       </div>
     </el-dialog>
+
   </el-row>
 </template>
 
@@ -219,7 +235,51 @@ export default {
       },
       dialogDetailVisible: false,
       dialogFormVisible: false,
-      shopDetail: {} // 商户详情信息
+      shopDetail: {}, // 商户详情信息
+      columns: [{
+        label: '序号',
+        type: 'index',
+        index: 1
+      }, {
+        label: '店铺名称',
+        slot: 'merchantName'
+      }, {
+        label: '店铺编号',
+        prop: 'code'
+      }, {
+        label: '店铺类型',
+        prop: 'typeName'
+      }, {
+        label: '联系电话',
+        prop: 'tel'
+      }, {
+        label: '地址',
+        prop: 'address'
+      }, {
+        label: '本月营业额',
+        prop: 'monthPrice'
+      }, {
+        label: '本月订单数',
+        prop: 'monthOrder'
+      }, {
+        label: '商品数量',
+        prop: 'itemCount'
+      }, {
+        label: '分类数量',
+        prop: 'itemTypeCount'
+      }, {
+        label: '评分',
+        prop: 'activityQuantity'
+      }, {
+        label: '活动',
+        prop: 'activityCount'
+      }, {
+        label: '状态',
+        slot: 'status'
+      }, {
+        label: '操作',
+        slot: 'operation'
+      }]
     }
   },
   watch: {
