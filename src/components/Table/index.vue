@@ -4,16 +4,16 @@
     border
     fit
     @selection-change="handleSelectionChange">
-    <el-row v-for="(col, index) in columns"
-      :key="index">
+    <template v-for="(col, index) in columns">
       <el-table-column v-if="!col.slot"
+        :key="index"
         :type="col.type"
-        :index="col.index"
         :label="col.label"
         :width="col.width"
         :prop="col.prop"
         show-overflow-tooltip/>
       <el-table-column v-else
+        :key="index"
         :type="col.type"
         :label="col.label"
         :width="col.width"
@@ -26,7 +26,7 @@
           </slot>
         </template>
       </el-table-column>
-    </el-row>
+    </template>
   </el-table>
 </template>
 

@@ -245,6 +245,10 @@
           <el-tag for="">{{distributionStatus.errMsg ? '错误信息' : '电话'}}</el-tag>
           <span>{{distributionStatus.errMsg || distributionStatus.courier}}</span>
         </el-form-item>
+        <el-form-item v-if="distributionStatus.pickupPassword">
+          <el-tag>取件码</el-tag>
+          <span>{{distributionStatus.pickupPassword}}</span>
+        </el-form-item>
         <el-form-item>
           <el-button size="small"
             type="danger"

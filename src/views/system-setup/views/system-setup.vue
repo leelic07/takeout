@@ -1,19 +1,30 @@
 <template>
   <el-row class="system-setup">
-    <el-col :span="7" :offset="8">
+    <el-col :span="7"
+      :offset="8">
       <el-card>
-        <el-form :model="orderForPrint" id="printJS-form">
+        <el-form :model="orderForPrint"
+          id="printJS-form">
           <el-form-item>
             <h1>商家小票</h1>
           </el-form-item>
           <el-form-item>
             <h1>#{{orderForPrint.orderNo}}紫竹林外卖</h1>
+            <span v-if="distributionStatus.pickupPassword">取件码：{{distributionStatus.pickupPassword}}</span>
           </el-form-item>
           <el-form-item>
             <p>*{{merchantName}}*</p>
           </el-form-item>
-          <el-form-item label="下单时间：">
-            {{orderForPrint.createdAt | Date}}
+          <el-form-item>
+            <label>下单时间：
+              <span>{{orderForPrint.createdAt | Date}}</span>
+            </label>
+            <label v-if="orderForPrint.reservationDate">
+              期望时间：
+              <span>
+                {{orderForPrint.reservationDate | Date}}
+              </span>
+            </label>
           </el-form-item>
           <el-form-item>
             <h2>备注：{{orderForPrint.remark}}</h2>
@@ -29,7 +40,8 @@
                 <th>商品数量</th>
                 <th>商品价格</th>
               </tr>
-              <tr v-for="(order,index) in orderForPrint.orderItems" :key="index">
+              <tr v-for="(order,index) in orderForPrint.orderItems"
+                :key="index">
                 <td>{{order.itemName}}</td>
                 <td>X{{order.itemNums}}</td>
                 <td>{{order.itemPrice * order.itemNums}}</td>
@@ -70,7 +82,10 @@
             </template>
           </el-form-item>
           <el-form-item>
-            <el-button type="text" size="medium" class="print-button" @click="printReceipt">打印预览</el-button>
+            <el-button type="text"
+              size="medium"
+              class="print-button"
+              @click="printReceipt">打印预览</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -91,17 +106,25 @@ export default {
   watch: {
     shopForEdit(newValue) {
       this.merchantName = newValue.name
+    },
+    orderForPrint: {
+      handler: function(val) {
+        val && this.showDistribution(val.orderNo)
+      },
+      immediate: true
     }
   },
   computed: {
     ...mapGetters([
       'orderForPrint',
-      'shopForEdit'
+      'shopForEdit',
+      'distributionStatus'
     ])
   },
   methods: {
     ...mapActions({
-      getShopForEdit: 'getShopForEdit'
+      getShopForEdit: 'getShopForEdit',
+      showDistribution: 'showDistribution'
     }),
     printReceipt() {
       Print({

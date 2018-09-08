@@ -228,20 +228,24 @@
         label-width="100px"
         :model="distributionStatus">
         <el-form-item v-if="!distributionStatus.errCode">
-          <el-tag for="">闪送单号:</el-tag>
+          <el-tag>闪送单号:</el-tag>
           <span>{{issorderno}}</span>
         </el-form-item>
         <el-form-item>
-          <el-tag for="">状态:</el-tag>
+          <el-tag>状态:</el-tag>
           <span>{{distributionStatus.status || distributionStatus.orderStatusTxt}}</span>
         </el-form-item>
         <el-form-item>
-          <el-tag for="">{{distributionStatus.errCode ? '错误码' : '配送员'}}</el-tag>
+          <el-tag>{{distributionStatus.errCode ? '错误码' : '配送员'}}</el-tag>
           <span>{{distributionStatus.errCode || distributionStatus.courierName}}</span>
         </el-form-item>
         <el-form-item>
-          <el-tag for="">{{distributionStatus.errMsg ? '错误信息' : '电话'}}</el-tag>
+          <el-tag>{{distributionStatus.errMsg ? '错误信息' : '电话'}}</el-tag>
           <span>{{distributionStatus.errMsg || distributionStatus.courier}}</span>
+        </el-form-item>
+        <el-form-item v-if="distributionStatus.pickupPassword">
+          <el-tag>取件码</el-tag>
+          <span>{{distributionStatus.pickupPassword}}</span>
         </el-form-item>
         <el-form-item>
           <el-button size="small"

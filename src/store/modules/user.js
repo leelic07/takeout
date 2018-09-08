@@ -1,8 +1,7 @@
 import http from '@/service'
 import router from '@/router'
 import { Message, Notification } from 'element-ui'
-const audios = document.createElement('audio')
-audios.src = '../../../static/audio/takeaway.mp3'// 订单语音播放
+const mp3 = require('../../../static/audio/takeaway.mp3')
 
 const user = {
   state: {
@@ -102,6 +101,9 @@ const user = {
       state.manager = managers
     },
     linkWebsocket(state, msg) {
+      const audios = document.createElement('audio')
+      // audios.src = '../../../static/audio/takeaway.mp3'// 订单语音播放
+      audios.src = mp3
       const data = JSON.parse(msg.data)
       if (data.msg !== '连接成功') {
         switch (data.type) {

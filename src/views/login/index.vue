@@ -56,7 +56,7 @@ export default {
   },
   watch: {
     users() {
-      this.linkWebsocket()
+      // this.linkWebsocket()
       this.$router.push({
         path: '/seller/index'
       })

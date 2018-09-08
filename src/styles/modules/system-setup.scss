@@ -14,6 +14,14 @@
                         h1 {
                             text-align: center;
                         }
+                        span {
+                            display: block;
+                            width: 100%;
+                            text-align: center;
+                            height: 25px;
+                            line-height: 25px;
+                            margin-bottom: -8px;
+                        }
                     }
                     &:nth-child(3) {
                         p {
@@ -24,6 +32,13 @@
                         border: 3px dashed;
                         border-left: 0;
                         border-right: 0;
+                        label {
+                            display: block;
+                            height: 25px;
+                            line-height: 25px;
+                            width: 100%;
+                            text-align: center;
+                        }
                     }
                     &:nth-child(6) {
                         border-bottom: 3px dashed;
