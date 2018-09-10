@@ -153,6 +153,7 @@ export default {
       state.distributionResult = res
     },
     showDistribution(state, res) {
+      state.distributionStatus = {}
       if (res.code === 200) {
         state.distributionStatus = res.data.data ? res.data.data : res.data
       }
