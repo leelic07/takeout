@@ -112,7 +112,11 @@ const user = {
               title: '订单提醒',
               message: `您有一笔新的订单 <a style="color:red" href='#/order/acception'>查看>></a>`,
               duration: 0,
-              dangerouslyUseHTMLString: true
+              dangerouslyUseHTMLString: true,
+              onClick: function() {
+                router.push({ path: '/order/acception' })
+                this.close()
+              }
             })
             audios.play()
             break
@@ -121,7 +125,11 @@ const user = {
               title: '退单提醒',
               message: `您有一笔新的退单 <a style="color:red" href='#/order/retreat'>查看>></a>`,
               duration: 0,
-              dangerouslyUseHTMLString: true
+              dangerouslyUseHTMLString: true,
+              onClick: function() {
+                router.push({ path: '/order/retreat' })
+                this.close()
+              }
             })
             break
           case 3:
@@ -129,7 +137,11 @@ const user = {
               title: '催单提醒',
               message: `您有一笔新的催单 <a style="color:red" href='#/order/reminder'>查看>></a>`,
               duration: 0,
-              dangerouslyUseHTMLString: true
+              dangerouslyUseHTMLString: true,
+              onClick: function() {
+                router.push({ path: '/order/reminder' })
+                this.close()
+              }
             })
             break
         }
