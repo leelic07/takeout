@@ -207,7 +207,8 @@ export default {
         itemPropertys: [{
           id: '',
           subPropertys: []
-        }]
+        }],
+        distributionType: '' // 配送状态
       },
       limit: 5,
       dialogFormVisible: false,

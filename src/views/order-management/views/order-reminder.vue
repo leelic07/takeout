@@ -160,7 +160,9 @@
                       v-if="props.row.status !== 5 &&
                       props.row.status !== 7 &&
                       props.row.status !== 8 &&
-                      props.row.status !== 9">
+                      props.row.status !== 9 &&
+                      (props.row.distributionType == 1 ||
+                      props.row.userAddress)">
                       查看状态
                     </el-button>
                     <!-- <el-button size="mini"

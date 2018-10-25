@@ -133,6 +133,14 @@
           <el-col class="shop-message">
             <el-tag>配送信息</el-tag>
           </el-col>
+          <el-form-item label="配送状态"
+            label-width="120px"
+            prop="distributionType">
+            <el-radio-group v-model="shopForEdit.distributionType">
+              <el-radio :label="0">商家配送</el-radio>
+              <el-radio :label="1">闪送配送</el-radio>
+            </el-radio-group>
+          </el-form-item>
           <el-form-item label="起送价"
             label-width="120px"
             prop="startingPrice">
@@ -223,7 +231,8 @@ export default {
         accountName: [{ required: true, message: '商户登录账户不能为空', trigger: 'blur' }],
         accountPassword: [{ required: true, message: '商户登录密码不能为空', trigger: 'blur' }],
         isOnline: [{ required: true, message: '店铺状态不能为空', trigger: 'blur' }],
-        time: [{ required: true, message: '营业时间不能为空', trigger: 'blur' }]
+        time: [{ required: true, message: '营业时间不能为空', trigger: 'blur' }],
+        distributionType: [{ required: true, message: '配送状态不能为空', trigger: 'blur' }]
       }
     }
   },

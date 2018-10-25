@@ -172,7 +172,9 @@
                       v-if="props.row.status !== '5'&&
                       props.row.status !== '7' &&
                       props.row.status !== '8' &&
-                      props.row.status !== '9'">
+                      props.row.status !== '9' &&
+                      (props.row.distributionType == 1 ||
+                      props.row.userAddress)">
                       查看状态
                     </el-button>
                     <!-- <el-button size="mini"
@@ -253,7 +255,7 @@
             plain
             @click="cancelDistribute()"
             :disabled="!!distributionStatus.errCode">取消闪送</el-button>
-            <span class="remind">已取件的订单将无法取消闪送</span>
+          <span class="remind">已取件的订单将无法取消闪送</span>
         </el-form-item>
       </el-form>
     </el-dialog>
