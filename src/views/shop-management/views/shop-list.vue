@@ -198,6 +198,9 @@ export default {
         label: '店铺编号',
         prop: 'code'
       }, {
+        label: '店铺id',
+        prop: 'id'
+      }, {
         label: '店铺类型',
         prop: 'typeName'
       }, {
