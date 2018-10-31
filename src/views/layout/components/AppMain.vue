@@ -18,16 +18,6 @@ export default {
       return this.$route.name !== undefined ? this.$route.name + +new Date() : this.$route + +new Date()
     }
   },
-  // watch: {
-  //   $router: {
-  //     handler: function(to, from) {
-  //       if (from && from.path !== '/login') {
-  //         this.linkWebsocket()
-  //       }
-  //     },
-  //     immediate: true
-  //   }
-  // },
   methods: {
     ...mapActions({
       linkWebsocket: 'linkWebsocket'

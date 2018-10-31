@@ -33,11 +33,13 @@ const user = {
     linkWebsocket({ commit, dispatch }) {
       const merchantId = sessionStorage['merchantId']
       let socket = ''
-      // var host = 'pandax.mofasion.com'
       var host = 'app.pandax.vip'
       var url = `wss://${host}/ws/${sessionStorage['merchantId']}`
       if (merchantId) {
         socket = new WebSocket(url)
+        setInterval(() => {
+          socket = new WebSocket(url)
+        }, 900000) // 每隔15分钟 链接一次websocket
         // 打开事件
         socket.onopen = function() {
           console.log('Socket 已打开')
