@@ -38,8 +38,9 @@ const user = {
       if (merchantId) {
         socket = new WebSocket(url)
         setInterval(() => {
-          socket = new WebSocket(url)
-        }, 900000) // 每隔15分钟 链接一次websocket
+          socket.close()
+          dispatch('linkWebsocket')
+        }, 600000) // 每隔10分钟 链接一次websocket
         // 打开事件
         socket.onopen = function() {
           console.log('Socket 已打开')
