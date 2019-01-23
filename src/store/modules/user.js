@@ -14,7 +14,12 @@ const user = {
   actions: {
     // 登录
     login({ commit }, userInfo) {
-      http.login(userInfo).then(res => res.code === 200 && commit('login', res)).catch(err => console.log(err))
+      http.login(userInfo).then(res => {
+        if (res.code === 200) {
+          localStorage[ userInfo.name ] = userInfo.passwordHash
+          commit('login', res)
+        }
+      }).catch(err => console.log(err))
     },
     // 登出
     logout({ commit }) {
@@ -31,10 +36,10 @@ const user = {
       http.getUserById({ id }).then(res => res.code === 200 && commit('getUserById', res)).catch(err => console.log(err))
     },
     linkWebsocket({ commit, dispatch }) {
-      const merchantId = sessionStorage['merchantId']
+      const merchantId = sessionStorage[ 'merchantId' ]
       let socket = ''
       var host = 'app.pandax.vip'
-      var url = `wss://${host}/ws/${sessionStorage['merchantId']}`
+      var url = `wss://${host}/ws/${sessionStorage[ 'merchantId' ]}`
       if (merchantId) {
         socket = new WebSocket(url)
         setInterval(() => {

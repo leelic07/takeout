@@ -1,47 +1,52 @@
 <template>
   <div class="login-container">
-    <el-form autoComplete="on"
+    <el-form
+      autocomplete="on"
       :model="loginForm"
       :rules="loginRules"
       ref="loginForm"
       label-position="left"
       label-width="0px"
-      class="card-box login-form">
+      class="card-box login-form"
+    >
       <h3 class="title">外卖管理系统</h3>
       <el-form-item prop="name">
         <span class="svg-container svg-container_login">
-          <svg-icon icon-class="user" />
+          <svg-icon icon-class="user"/>
         </span>
-        <el-input name="username"
+        <el-input
+          name="username"
           type="text"
           v-model="loginForm.name"
-          autoComplete="on"
-          placeholder="请输入用户名" />
+          autocomplete="on"
+          placeholder="请输入用户名"
+        />
       </el-form-item>
       <el-form-item prop="passwordHash">
         <span class="svg-container">
           <svg-icon icon-class="password"></svg-icon>
         </span>
-        <el-input name="password"
+        <el-input
+          name="password"
           :type="pwdType"
           @keyup.enter.native="handleLogin"
           v-model="loginForm.passwordHash"
-          autoComplete="on"
-          placeholder="请输入用户密码"></el-input>
-        <span class="show-pwd"
-          @click="showPwd">
-          <svg-icon icon-class="eye" /></span>
+          autocomplete="on"
+          placeholder="请输入用户密码"
+        ></el-input>
+        <span class="show-pwd" @click="showPwd">
+          <svg-icon icon-class="eye"/>
+        </span>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary"
+        <el-button
+          type="primary"
           style="width:100%;"
           :loading="loading"
-          @click.native.prevent="handleLogin">
-          登录
-        </el-button>
+          @click.native.prevent="handleLogin"
+        >登录</el-button>
       </el-form-item>
-      <div class="tips">
-      </div>
+      <div class="tips"></div>
     </el-form>
   </div>
 </template>
@@ -51,7 +56,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'login',
-  data() {
+  data () {
     const validatePass = (rule, value, callback) => {
       if (value.length < 5) {
         callback(new Error('密码不能小于5位'))
@@ -65,18 +70,23 @@ export default {
         passwordHash: ''
       },
       loginRules: {
-        name: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-        passwordHash: [{ required: true, trigger: 'blur', validator: validatePass }]
+        name: [ { required: true, message: '请输入用户名', trigger: 'blur' } ],
+        passwordHash: [ { required: true, trigger: 'blur', validator: validatePass } ]
       },
       loading: false,
       pwdType: 'password'
     }
   },
   watch: {
-    users() {
+    users () {
       this.$router.push({
         path: '/seller/index'
       })
+    },
+    // 监听用户名自动补全密码
+    'loginForm.name' (val) {
+      const password = localStorage[ val ]
+      if (password) this.loginForm.passwordHash = password
     }
   },
   computed: {
@@ -89,14 +99,14 @@ export default {
       login: 'login',
       linkWebsocket: 'linkWebsocket'
     }),
-    showPwd() {
+    showPwd () {
       if (this.pwdType === 'password') {
         this.pwdType = ''
       } else {
         this.pwdType = 'password'
       }
     },
-    handleLogin() {
+    handleLogin () {
       this.$refs.loginForm.validate(valid => {
         this.loading = true
         if (valid) {
